@@ -17,16 +17,35 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('first_name');
+            $table->string('middle_name');
+            $table->string('last_name');
+            $table->string('second_last_name');
+            $table->string('carnet', 7);
+            $table->boolean('state');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('avatar');
+            $table->string('avatar')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
 
-        DB::table('users')->insert(array('name'=>'admin','email'=>'admin@themesbrand.com', 'avatar' => '', 'password'=>Hash::make('123456')));
+        DB::table('users')
+            ->insert(
+                array(
+                    'first_name' => 'admin',
+                    'middle_name' => 'admin',
+                    'last_name' => 'admin',
+                    'second_last_name' => 'admin',
+                    'carnet' => 'OR15012',
+                    'state' => 1,
+                    'email' => 'admin@themesbrand.com',
+                    'avatar' => '',
+                    'password' => Hash::make('123456')
+                )
+            );
     }
 
     /**
