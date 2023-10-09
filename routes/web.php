@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SchoolController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,19 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('roo
 Route::post('/update-profile', [App\Http\Controllers\HomeController::class, 'updateProfile'])->name('updateProfile');
 Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('updatePassword');
 
+
+
+//Grupo para la rutas de escuelas
+Route::group(['prefix' => 'schools', 'as' => 'schools.'], function () {
+    Route::get('/', [SchoolController::class, 'index'])->name('index');
+    Route::get('/create', [SchoolController::class, 'create'])->name('create');
+    Route::post('/', [SchoolController::class, 'store'])->name('store');
+    Route::get('/{school}', [SchoolController::class, 'show'])->name('show');
+    Route::get('/{school}/edit', [SchoolController::class, 'edit'])->name('edit');
+    Route::put('/{school}', [SchoolController::class, 'update'])->name('update');
+    Route::delete('/{school}', [SchoolController::class, 'destroy'])->name('destroy');
+});
+
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 
 //Language Translation
@@ -30,3 +44,4 @@ Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang'
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+

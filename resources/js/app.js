@@ -418,10 +418,10 @@ File: Main Js File
       document.getElementById("layout-direction-rtl").checked = false;
       document
         .getElementById("bootstrap-style")
-        .setAttribute("href", "assets/css/bootstrap.min.css");
+        .setAttribute("href", "/assets/css/bootstrap.min.css");
       document
         .getElementById("app-style")
-        .setAttribute("href", "assets/css/app.min.css");
+        .setAttribute("href", "/assets/css/app.min.css");
       sessionStorage.setItem("is_visited", "layout-direction-ltr");
     } else if (
       document.getElementById("layout-direction-rtl").checked == true &&
