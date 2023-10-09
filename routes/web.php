@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProtocolController;
 use App\Http\Controllers\SchoolController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -25,7 +26,7 @@ Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class
 
 
 
-//Grupo para la rutas de escuelas
+//Grupo para las rutas de escuelas
 Route::group(['prefix' => 'schools', 'as' => 'schools.'], function () {
     Route::get('/', [SchoolController::class, 'index'])->name('index');
     Route::get('/create', [SchoolController::class, 'create'])->name('create');
@@ -34,6 +35,16 @@ Route::group(['prefix' => 'schools', 'as' => 'schools.'], function () {
     Route::get('/{school}/edit', [SchoolController::class, 'edit'])->name('edit');
     Route::put('/{school}', [SchoolController::class, 'update'])->name('update');
     Route::delete('/{school}', [SchoolController::class, 'destroy'])->name('destroy');
+});
+
+
+//Grupo para las rutas de protocolos
+Route::group(['prefix' => 'protocols', 'as' => 'protocols.'], function () {
+    Route::get('/', [ProtocolController::class, 'index'])->name('index');
+    Route::get('/{protocol}', [ProtocolController::class, 'show'])->name('show');
+    Route::get('/{protocol}/edit', [ProtocolController::class, 'edit'])->name('edit');
+    Route::put('/{protocol}', [ProtocolController::class, 'update'])->name('update');
+    Route::delete('/{protocol}', [ProtocolController::class, 'destroy'])->name('destroy');
 });
 
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
