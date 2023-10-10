@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProtocolController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +48,16 @@ Route::group(['prefix' => 'protocols', 'as' => 'protocols.'], function () {
     Route::delete('/{protocol}', [ProtocolController::class, 'destroy'])->name('destroy');
 });
 
+Route::group(['prefix' => 'roles', 'as' => 'roles.'], function () {
+    Route::get('/', [RoleController::class, 'index'])->name('index');
+    Route::get('/create', [RoleController::class, 'create'])->name('create');
+    Route::post('/', [RoleController::class, 'store'])->name('store');
+    Route::get('/{role}', [RoleController::class, 'show'])->name('show');
+    Route::get('/{role}/edit', [RoleController::class, 'edit'])->name('edit');
+    Route::put('/{role}', [RoleController::class, 'update'])->name('update');
+    Route::delete('/{role}', [RoleController::class, 'destroy'])->name('destroy');
+});
+
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 
 //Language Translation
@@ -55,4 +66,3 @@ Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang'
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-

@@ -482,7 +482,7 @@
         <div class="dropdown d-inline-block">
             <button type="button" class="btn header-item user text-start d-flex align-items-center" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <img class="rounded-circle header-profile-user" src="{{ (isset(Auth::user()->avatar) && Auth::user()->avatar != '')  ? asset(Auth::user()->avatar) : asset('/assets/images/users/avatar-1.jpg') }}" alt="Header Avatar">
-                <span class="d-none d-xl-inline-block ms-1" key="t-henry">{{ucfirst(Auth::user()->name)}}</span>
+                <span class="d-none d-xl-inline-block ms-1" key="t-henry">{{ucfirst(isset(Auth::user()->first_name) ? Auth::user()->first_name : "Sin nombre")}}</span>
             </button>
             <div class="dropdown-menu dropdown-menu-end pt-0">
                 <a class="dropdown-item" href="contacts-profile"><i class='bx bx-user-circle text-muted font-size-18 align-middle me-1'></i> <span class="align-middle">My Account</span></a>

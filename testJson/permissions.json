@@ -1,0 +1,52 @@
+[
+    {
+        "name": "permission1",
+        "guard_name": "web",
+        "description": "Descripción del Permiso 1"
+    },
+    {
+        "name": "permission2",
+        "guard_name": "web",
+        "description": "Descripción del Permiso 2"
+    },
+    {
+        "name": "permission3",
+        "guard_name": "web",
+        "description": "Descripción del Permiso 3"
+    },
+    {
+        "name": "permission4",
+        "guard_name": "web",
+        "description": "Descripción del Permiso 4"
+    },
+    {
+        "name": "permission5",
+        "guard_name": "web",
+        "description": "Descripción del Permiso 5"
+    },
+    {
+        "name": "permission6",
+        "guard_name": "web",
+        "description": "Descripción del Permiso 6"
+    },
+    {
+        "name": "permission7",
+        "guard_name": "web",
+        "description": "Descripción del Permiso 7"
+    },
+    {
+        "name": "permission8",
+        "guard_name": "web",
+        "description": "Descripción del Permiso 8"
+    },
+    {
+        "name": "permission9",
+        "guard_name": "web",
+        "description": "Descripción del Permiso 9"
+    },
+    {
+        "name": "permission10",
+        "guard_name": "web",
+        "description": "Descripción del Permiso 10"
+    }
+]
