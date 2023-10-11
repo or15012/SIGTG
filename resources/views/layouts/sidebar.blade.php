@@ -8,13 +8,13 @@
                 <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22">
             </span>
             <span class="logo-lg">
-                <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22"> <span class="logo-txt">@lang('translation.Symox')</span>
+                <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22"> <span class="logo-txt">@lang('translation.SIGTG-FIA')</span>
             </span>
         </a>
 
         <a href="{{ url('/') }}" class="logo logo-light">
             <span class="logo-lg">
-                <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22"> <span class="logo-txt">@lang('translation.Symox')</span>
+                <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22"> <span class="logo-txt">@lang('translation.SIGTG-FIA')</span>
             </span>
             <span class="logo-sm">
                 <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22">

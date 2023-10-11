@@ -1,5 +1,5 @@
 /*
-Template Name: Symox - Admin & Dashboard Template
+Template Name: SIGTG-FIA - Admin & Dashboard Template
 Author: Themesbrand
 Website: https://Themesbrand.com/
 Contact: Themesbrand@gmail.com
@@ -36,7 +36,7 @@ var options = {
       height: 61,
       sparkline: {
         enabled: true
-      }  
+      }
     },
     colors: barchartColors,
     stroke: {
@@ -77,7 +77,7 @@ var options = {
       height: 61,
       sparkline: {
         enabled: true
-      }  
+      }
     },
     colors: barchartColors,
     stroke: {
@@ -119,7 +119,7 @@ var options = {
       height: 61,
       sparkline: {
         enabled: true
-      }  
+      }
     },
     colors: barchartColors,
     stroke: {
@@ -161,7 +161,7 @@ var options = {
       height: 61,
       sparkline: {
         enabled: true
-      }  
+      }
     },
     colors: barchartColors,
     stroke: {
@@ -339,7 +339,7 @@ var options = {
         backgroundColor: arc._model.backgroundColor
       }
     },
-  
+
     afterDraw: function (chart) {
       for (var i = 1; i < chart.config.data.labels.length; i++) {
         var ctx = chart.chart.ctx;
@@ -402,8 +402,8 @@ var options = {
       },
     }
   };
-  
+
   var ctx = document.getElementById('sales-category');
-  
+
   window.myDoughnut = new Chart(ctx, config);
   // window.myDoughnut.generateLegend();

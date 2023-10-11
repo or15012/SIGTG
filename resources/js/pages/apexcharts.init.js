@@ -1,5 +1,5 @@
 /*
-Template Name: Symox - Admin & Dashboard Template
+Template Name: SIGTG-FIA - Admin & Dashboard Template
 Author: Themesbrand
 Website: https://themesbrand.com/
 Contact: themesbrand@gmail.com
@@ -106,15 +106,15 @@ var options = {
       }
     }]
   }
-  
+
   var chart = new ApexCharts(
     document.querySelector("#line_chart_datalabel"),
     options
   );
-  
+
   chart.render();
-  
-  
+
+
   //  Dashed line chart
   var barchartColors = getChartColorsArray("line_chart_dashed");
   var options = {
@@ -159,7 +159,7 @@ var options = {
     },
     markers: {
       size: 0,
-  
+
       hover: {
         sizeOffset: 6
       }
@@ -194,15 +194,15 @@ var options = {
       borderColor: '#f1f1f1',
     }
   }
-  
+
   var chart = new ApexCharts(
     document.querySelector("#line_chart_dashed"),
     options
   );
-  
+
   chart.render();
 
-  
+
 // Basic area Charts
 var barchartColors = getChartColorsArray("area_chart_basic");
 var options = {
@@ -223,7 +223,7 @@ var options = {
     stroke: {
       curve: 'straight'
     },
-  
+
     title: {
       text: 'Fundamental Analysis of Stocks',
       align: 'left',
@@ -247,11 +247,11 @@ var options = {
     },
     colors: ["#038edc"]
   };
-  
+
   var chart = new ApexCharts(document.querySelector("#area_chart_basic"), options);
   chart.render();
-  
-  
+
+
   //  Spline Area Charts
   var barchartColors = getChartColorsArray("area_chart_spline");
   var options = {
@@ -283,12 +283,12 @@ var options = {
       },
     },
   };
-  
+
   var chart = new ApexCharts(document.querySelector("#area_chart_spline"), options);
   chart.render();
 
 
-  
+
 // Basic Column Chart
 var barchartColors = getChartColorsArray("column_chart");
 var options = {
@@ -338,7 +338,7 @@ var options = {
     },
     fill: {
       opacity: 1
-  
+
     },
     tooltip: {
       y: {
@@ -348,15 +348,15 @@ var options = {
       }
     }
   }
-  
+
   var chart = new ApexCharts(
     document.querySelector("#column_chart"),
     options
   );
-  
+
   chart.render();
-  
-  
+
+
   // Column with Datalabels
   var barchartColors = getChartColorsArray("column_chart_datalabel");
   var options = {
@@ -420,7 +420,7 @@ var options = {
       tooltip: {
         enabled: true,
         offsetY: -35,
-  
+
       }
     },
     fill: {
@@ -462,15 +462,15 @@ var options = {
       },
     },
   }
-  
+
   var chart = new ApexCharts(
     document.querySelector("#column_chart_datalabel"),
     options
   );
-  
+
   chart.render();
 
-  
+
 // Basic Bar chart
 var barchartColors = getChartColorsArray("bar_chart");
 var options = {
@@ -500,14 +500,14 @@ var options = {
       categories: ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan', 'United States', 'China', 'Germany'],
     }
   }
-  
+
   var chart = new ApexCharts(
     document.querySelector("#bar_chart"),
     options
   );
-  
+
   chart.render();
-  
+
   // Custom DataLabels Bar
   var barchartColors = getChartColorsArray("custom_datalabels_bar");
   var options = {
@@ -587,12 +587,12 @@ var options = {
       }
     }
   };
-  
+
   var chart = new ApexCharts(document.querySelector("#custom_datalabels_bar"), options);
   chart.render();
 
 
-  
+
 // Mixed - Line Column Chart
 var barchartColors = getChartColorsArray("line_column_chart");
 var options = {
@@ -636,7 +636,7 @@ var options = {
         fontWeight: 600,
       },
     },
-  
+
   }, {
     opposite: true,
     title: {
@@ -929,7 +929,7 @@ var options = {
   var chart = new ApexCharts(document.querySelector("#color_timeline"), options);
   chart.render();
 
-  
+
 // Bubble Charts Generate Data
 
 function generateData(baseval, count, yrange) {
@@ -939,14 +939,14 @@ function generateData(baseval, count, yrange) {
       var x = Math.floor(Math.random() * (750 - 1 + 1)) + 1;;
       var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
       var z = Math.floor(Math.random() * (75 - 15 + 1)) + 15;
-  
+
       series.push([x, y, z]);
       baseval += 86400000;
       i++;
     }
     return series;
   }
-  
+
   // Simple Bubble
   var barchartColors = getChartColorsArray("simple_bubble");
   var options = {
@@ -1006,10 +1006,10 @@ function generateData(baseval, count, yrange) {
     },
     colors: barchartColors,
     };
-  
+
     var chart = new ApexCharts(document.querySelector("#simple_bubble"), options);
     chart.render();
-  
+
     // 3D Bubble
     var barchartColors = getChartColorsArray("bubble_chart");
     var options = {
@@ -1075,12 +1075,12 @@ function generateData(baseval, count, yrange) {
     },
     colors: barchartColors,
     };
-  
+
     var chart = new ApexCharts(document.querySelector("#bubble_chart"), options);
     chart.render();
 
 
-    
+
 //  Simple Pie Charts
 var barchartColors = getChartColorsArray("simple_pie_chart");
 var options = {
@@ -1100,11 +1100,11 @@ var options = {
     },
     colors: barchartColors,
   };
-  
+
   var chart = new ApexCharts(document.querySelector("#simple_pie_chart"), options);
   chart.render();
-  
-  
+
+
   // Simple Donut Charts
   var barchartColors = getChartColorsArray("simple_dount_chart");
   var options = {
@@ -1123,11 +1123,11 @@ var options = {
     },
     colors: barchartColors,
   };
-  
+
   var chart = new ApexCharts(document.querySelector("#simple_dount_chart"), options);
   chart.render();
 
-  
+
 //  Radialbar Charts
 var barchartColors = getChartColorsArray("basic_radialbar");
 var options = {
@@ -1149,7 +1149,7 @@ var options = {
 
   var chart = new ApexCharts(document.querySelector("#basic_radialbar"), options);
   chart.render();
- 
+
   // Multi-Radial Bar
   var barchartColors = getChartColorsArray("multiple_radialbar");
   var options = {
@@ -1184,7 +1184,7 @@ var options = {
   var chart = new ApexCharts(document.querySelector("#multiple_radialbar"), options);
   chart.render();
 
-  
+
 // Basic Radar Chart
 var barchartColors = getChartColorsArray("basic_radar");
 var options = {
@@ -1254,8 +1254,8 @@ var options = {
   var chart=new ApexCharts(document.querySelector("#multi_radar"), options);
   chart.render();
 
-  
-// Basic Polar Area 
+
+// Basic Polar Area
 var barchartColors = getChartColorsArray("basic_polar_area");
 var options = {
     series: [14, 23, 21, 17, 15, 10, 12, 17, 21],
@@ -1270,7 +1270,7 @@ var options = {
   fill: {
     opacity: 0.8
   },
-  
+
   legend: {
     position: 'bottom'
   },
@@ -1313,7 +1313,7 @@ var options = {
     }
   },
   theme: {
-    mode: 'light', 
+    mode: 'light',
     palette: 'palette1',
     monochrome: {
       enabled: true,

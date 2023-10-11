@@ -1,5 +1,5 @@
 /*
-Template Name: Symox - Admin & Dashboard Template
+Template Name: SIGTG-FIA - Admin & Dashboard Template
 Author: Themesbrand
 Website: https://Themesbrand.com/
 Contact: Themesbrand@gmail.com
@@ -143,8 +143,8 @@ new gridjs.Grid({
 
 // Hidden Columns
 new gridjs.Grid({
-    columns: ["Name", "Email", "Position", "Company", 
-    { 
+    columns: ["Name", "Email", "Position", "Company",
+    {
         name: 'Country',
         hidden: true
     },],

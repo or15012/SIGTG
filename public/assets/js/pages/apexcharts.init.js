@@ -6,7 +6,7 @@ var __webpack_exports__ = {};
 var _options;
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 /*
-Template Name: Symox - Admin & Dashboard Template
+Template Name: SIGTG-FIA - Admin & Dashboard Template
 Author: Themesbrand
 Website: https://themesbrand.com/
 Contact: themesbrand@gmail.com
@@ -1128,7 +1128,7 @@ var options = {
 var chart = new ApexCharts(document.querySelector("#multi_radar"), options);
 chart.render();
 
-// Basic Polar Area 
+// Basic Polar Area
 var barchartColors = getChartColorsArray("basic_polar_area");
 var options = {
   series: [14, 23, 21, 17, 15, 10, 12, 17, 21],

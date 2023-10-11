@@ -13,7 +13,7 @@
 
                             <div class="text-center mb-4">
                                 <a href="index">
-                                    <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22"> <span class="logo-txt">Symox</span>
+                                    <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22"> <span class="logo-txt">SIGTG-FIA</span>
                                 </a>
                             </div>
 
@@ -80,7 +80,7 @@
                             <div class="text-center text-muted p-4">
                                 <script>
                                     document.write(new Date().getFullYear())
-                                </script> Symox. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                                </script> SIGTG-FIA. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
                             </div>
                         </div>
                     </div>

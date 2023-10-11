@@ -1,6 +1,6 @@
 <?php
    return [
-    "Symox" => "Симокс",
+    "SIGTG-FIA" => "Симокс",
     "Dashboard" => "Приборная доска",
     "Apps" => "Программы",
     "Bootstrap" => "Бутстрап",
@@ -115,7 +115,7 @@
     "Direction" => "Направление",
     "LTR" => "LTR",
     "RTL" => "RTL",
-    "2021_©_Symox" => "2021  ©  Symox",
+    "2021_©_SIGTG-FIA" => "2021  ©  SIGTG-FIA",
     "Crafted_with_by_Themesbrand" => "Crafted with by Themesbrand",
     "User_Settings" => "Пользовательские настройки",
     "Boxed_Fixed" => "В штучной упаковке - фиксированный",

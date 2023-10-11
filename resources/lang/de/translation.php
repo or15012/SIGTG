@@ -1,6 +1,6 @@
 <?php
    return [
-    "Symox" => "Symox",
+    "SIGTG-FIA" => "SIGTG-FIA",
     "Dashboard" => "Armaturenbrett",
     "Apps" => "Apps",
     "Bootstrap" => "Bootstrap",
@@ -119,7 +119,7 @@
     "Direction" => "Richtung",
     "LTR" => "LTR",
     "RTL" => "RTL",
-    "2021_©_Symox" => "2021 © Symox",
+    "2021_©_SIGTG-FIA" => "2021 © SIGTG-FIA",
     "Crafted_with_by_Themesbrand" => "Crafted with by Themesbrand",
     "User_Settings" => "Benutzereinstellungen",
     "Boxed_Fixed" => "Boxed Fixed",

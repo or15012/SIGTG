@@ -1,5 +1,5 @@
 /*
-Template Name: Symox - Admin & Dashboard Template
+Template Name: SIGTG-FIA - Admin & Dashboard Template
 Author: Themesbrand
 Website: https://Themesbrand.com/
 Contact: Themesbrand@gmail.com

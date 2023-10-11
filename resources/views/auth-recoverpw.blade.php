@@ -13,7 +13,7 @@
 
                         <div class="text-center mb-4">
                             <a href="index">
-                                <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22"> <span class="logo-txt">Symox</span>
+                                <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22"> <span class="logo-txt">SIGTG-FIA</span>
                             </a>
                     </div>
 
@@ -21,7 +21,7 @@
                             <div class="card-body p-4">
                                 <div class="text-center mt-2">
                                     <h5 class="text-primary">Reset Password</h5>
-                                    <p class="text-muted">Reset Password with Symox.</p>
+                                    <p class="text-muted">Reset Password with SIGTG-FIA.</p>
                                 </div>
                                 <div class="p-2 mt-4">
                                     <div class="alert alert-success text-center small mb-4" role="alert">
@@ -53,7 +53,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="text-center text-muted p-4">
-                            <p class="text-white-50">© <script>document.write(new Date().getFullYear())</script> Symox. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                            <p class="text-white-50">© <script>document.write(new Date().getFullYear())</script> SIGTG-FIA. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
                         </div>
                     </div>
                 </div>

@@ -6,7 +6,7 @@
 @section('content')
     @component('components.breadcrumb')
         @slot('li_1')
-            Symox
+            SIGTG-FIA
         @endslot
         @slot('title')
             Welcome !

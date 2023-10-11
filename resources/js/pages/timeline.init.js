@@ -1,5 +1,5 @@
 /*
-Template Name: Symox - Admin & Dashboard Template
+Template Name: SIGTG-FIA - Admin & Dashboard Template
 Author: Themesbrand
 Website: https://Themesbrand.com/
 Contact: Themesbrand@gmail.com
@@ -20,7 +20,7 @@ var swiper = new Swiper(".slider", {
             slidesPerView: 4,
         },
     },
-}); 
+});
 
 var swiper = new Swiper("#timeline-card-slider", {
     slidesPerView: 1,
@@ -36,4 +36,4 @@ var swiper = new Swiper("#timeline-card-slider", {
             slidesPerView: 5,
         },
     },
-}); 
+});

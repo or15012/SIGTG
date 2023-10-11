@@ -1,5 +1,5 @@
 /*
-Template Name: Symox - Admin & Dashboard Template
+Template Name: SIGTG-FIA - Admin & Dashboard Template
 Author: Themesbrand
 Version: 1.2.0
 Website: https://Themesbrand.com/
@@ -237,7 +237,7 @@ body:not([data-sidebar-size=sm]) .app-search {
 }
 
 body[data-topbar=dark] #page-topbar, body[data-topbar=dark] .navbar-brand-box {
-  background-color: #003032;
+  background-color: #f2f2f2;
 }
 body[data-topbar=dark] .navbar-header .dropdown.show .header-item {
   background-color: rgba(255, 255, 255, 0.05);
@@ -261,8 +261,8 @@ body[data-topbar=dark] .noti-icon i {
   color: #e9ecef;
 }
 body[data-topbar=dark] .noti-icon .noti-dot {
-  -webkit-box-shadow: 0 0 0 3px #003032;
-          box-shadow: 0 0 0 3px #003032;
+  -webkit-box-shadow: 0 0 0 3px #f2f2f2;
+          box-shadow: 0 0 0 3px #f2f2f2;
 }
 body[data-topbar=dark] .logo-dark {
   display: none;
@@ -282,7 +282,7 @@ body[data-topbar=dark] .app-search input.form-control::-webkit-input-placeholder
 }
 
 body[data-sidebar=dark] .navbar-brand-box {
-  background: #003032;
+  background: #f2f2f2;
 }
 body[data-sidebar=dark] .navbar-brand-box .logo-dark {
   display: none;
@@ -843,8 +843,8 @@ body[data-sidebar=dark] .logo-txt {
   color: #fff !important;
 }
 body[data-sidebar=dark] .vertical-menu {
-  background: #003032;
-  border-color: #003032;
+  background: #f2f2f2;
+  border-color: #f2f2f2;
 }
 body[data-sidebar=dark] .vertical-menu .vertical-menu-btn {
   color: #a8b0c5;
@@ -909,7 +909,7 @@ body[data-sidebar=dark][data-sidebar-size=sm] .vertical-menu #sidebar-menu > ul 
   color: #d6e0fb;
 }
 body[data-sidebar=dark][data-sidebar-size=sm] .vertical-menu #sidebar-menu > ul ul {
-  background-color: #003032;
+  background-color: #f2f2f2;
 }
 body[data-sidebar=dark] .menu-title {
   color: #a8b0c5;
@@ -5046,7 +5046,7 @@ body[data-topbar=dark] .auth-logo .logo-txt {
   margin: 0px auto;
 }
 .authentication-bg .bg-overlay {
-  background-color: #003032;
+  background-color: #f2f2f2;
 }
 .authentication-bg .auth-cover-card .authentication-bg {
   -webkit-box-align: start;

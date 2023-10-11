@@ -13,7 +13,7 @@
 
                     <div class="text-center mb-4">
                         <a href="index">
-                            <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22"> <span class="logo-txt">Symox</span>
+                            <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22"> <span class="logo-txt">SIGTG-FIA</span>
                         </a>
                     </div>
 
@@ -21,7 +21,7 @@
                         <div class="card-body p-4">
                             <div class="text-center mt-2">
                                 <h5 class="text-primary">Welcome Back !</h5>
-                                <p class="text-muted">Sign in to continue to Symox.</p>
+                                <p class="text-muted">Sign in to continue to SIGTG-FIA.</p>
                             </div>
                             <div class="p-2 mt-4">
 
@@ -113,7 +113,7 @@
                         <script>
                             document.write(new Date().getFullYear())
 
-                        </script> Symox. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                        </script> SIGTG-FIA. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
                     </div>
                 </div>
             </div>
