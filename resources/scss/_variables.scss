@@ -5,26 +5,26 @@
 //
 
 // Vertical Sidebar - Default Light
-$sidebar-bg: #ffffff;
-$sidebar-border-color: #e9ebef;
-$sidebar-menu-item-color: #7b8190;
-$sidebar-menu-sub-item-color: #7b8190;
-$sidebar-menu-item-icon-color: #7b8190;
+$sidebar-bg: #000;
+$sidebar-border-color: #000;
+$sidebar-menu-item-color: #070707;
+$sidebar-menu-sub-item-color: #000;
+$sidebar-menu-item-icon-color: #000;
 $sidebar-menu-item-hover-color: #383c40;
 $sidebar-menu-item-active-color: #3980c0;
-$sidebar-menu-sub-item-active-color: #383c40;
-$sidebar-menu-item-active-bg-color: #f2f3fe;
+$sidebar-menu-sub-item-active-color: #000;
+$sidebar-menu-item-active-bg-color: #000;
 $sidebar-width:  255px;
 $sidebar-collapsed-width:  70px;
 $sidebar-width-sm:  160px;
 
 // Vertical Sidebar - Dark
 $sidebar-dark-bg: #f2f2f2; //2c313a
-$sidebar-dark-menu-item-color: #a8b0c5;
-$sidebar-dark-menu-sub-item-color: #a8b0c5;
-$sidebar-dark-menu-item-icon-color: #a8b0c5;
-$sidebar-dark-menu-item-hover-color: #d6e0fb;
-$sidebar-dark-menu-item-active-color: #ffffff;
+$sidebar-dark-menu-item-color: #000;
+$sidebar-dark-menu-sub-item-color: #000;
+$sidebar-dark-menu-item-icon-color: #000;
+$sidebar-dark-menu-item-hover-color: #000;
+$sidebar-dark-menu-item-active-color: #000;
 $sidebar-dark-menu-item-active-bg-color: rgba($white, .1);
 
 // Topbar - Deafult Light
@@ -49,7 +49,7 @@ $topnav-bg:   #fff;
 $menu-item-color: #7b8190;
 $menu-item-active-color: #3980c0;
 $topnav-dark-bg:   #03314D;
-$menu-dark-item-color: #a8b0c5;
+$menu-dark-item-color: #000;
 $menu-dark-item-hover-color: #d6e0fb;
 $menu-dark-item-active-color: #fff;
 

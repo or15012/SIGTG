@@ -38,15 +38,27 @@
                 <input type="text" class="form-control" id="description" name="description"
                     value="{{ old('description', $role->description) }}">
             </div>
-            <div class="mb-3">
-                <label for="permissions" class="form-label">Permisos</label>
-                <select multiple class="form-control" id="permissions" name="permissions[]">
-                    @foreach ($permissions as $permission)
-                        <option value="{{ $permission->id }}" {{ $role->hasPermissionTo($permission) ? 'selected' : '' }}>
-                            {{ $permission->name }}</option>
-                    @endforeach
-                </select>
+            <div class="row">
+                @foreach ($permissions as $permission)
+                    <div class="col-md-3">
+                        <div class="card mb-4">
+                            <div class="card-header">{{ $permission->name }}</div>
+                            <div class="card-body">
+                                <p>{{ $permission->description }}</p>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch"
+                                        id="flexSwitchCheck{{ $permission->id }}" name="permissions[]"
+                                        value="{{ $permission->id }}"
+                                        {{ $role->hasPermissionTo($permission) ? 'checked' : '' }}>
+                                    <label class="form-check-label"
+                                        for="flexSwitchCheck{{ $permission->id }}">Seleccionar</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
+
             <button type="submit" class="btn btn-primary">Actualizar</button>
         </form>
     </div>

@@ -15,7 +15,11 @@ return new class extends Migration
     {
         Schema::create('parameters', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('value');
+            $table->foreignId('cycle_id')->constrained('cycles');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

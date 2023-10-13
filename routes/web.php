@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CycleController;
 use App\Http\Controllers\ProtocolController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolController;
@@ -38,7 +39,6 @@ Route::group(['prefix' => 'schools', 'as' => 'schools.'], function () {
     Route::delete('/{school}', [SchoolController::class, 'destroy'])->name('destroy');
 });
 
-
 //Grupo para las rutas de protocolos
 Route::group(['prefix' => 'protocols', 'as' => 'protocols.'], function () {
     Route::get('/', [ProtocolController::class, 'index'])->name('index');
@@ -48,6 +48,7 @@ Route::group(['prefix' => 'protocols', 'as' => 'protocols.'], function () {
     Route::delete('/{protocol}', [ProtocolController::class, 'destroy'])->name('destroy');
 });
 
+//Grupo para las rutas de roles
 Route::group(['prefix' => 'roles', 'as' => 'roles.'], function () {
     Route::get('/', [RoleController::class, 'index'])->name('index');
     Route::get('/create', [RoleController::class, 'create'])->name('create');
@@ -58,11 +59,18 @@ Route::group(['prefix' => 'roles', 'as' => 'roles.'], function () {
     Route::delete('/{role}', [RoleController::class, 'destroy'])->name('destroy');
 });
 
-Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+//Grupo para las rutas de ciclos
+Route::group(['prefix' => 'cycles', 'as' => 'cycles.'], function () {
+    Route::get('/', [CycleController::class, 'index'])->name('index');
+    Route::get('create', [CycleController::class, 'create'])->name('create');
+    Route::post('/', [CycleController::class, 'store'])->name('store');
+    Route::get('{id}', [CycleController::class, 'show'])->name('show');
+    Route::get('{id}/edit', [CycleController::class, 'edit'])->name('edit');
+    Route::put('{id}', [CycleController::class, 'update'])->name('update');
+    Route::delete('{id}', [CycleController::class, 'destroy'])->name('destroy');
+});
 
+Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 //Language Translation
 Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);
-
-
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
