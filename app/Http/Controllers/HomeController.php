@@ -56,21 +56,21 @@ class HomeController extends Controller
     {
         $id = ucfirst(Auth::user()->id);
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email'],
-            'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'name'      => ['required', 'string', 'max:255'],
+            'email'     => ['required', 'string', 'email'],
+            'avatar'    => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:1024'],
         ]);
 
-        $user = User::find($id);
-        $user->name = $request->get('name');
-        $user->email = $request->get('email');
+        $user           = User::find($id);
+        $user->name     = $request->get('name');
+        $user->email    = $request->get('email');
 
         if ($request->file('avatar')) {
             if(@file_exists(public_path(Auth::user()->avatar))){
                 @unlink(public_path(Auth::user()->avatar));
             }
 
-            $avatar = $request->file('avatar');
+            $avatar     = $request->file('avatar');
             $avatarName = time() . '.' . $avatar->getClientOriginalExtension();
             $avatarPath = public_path('/images/');
             $avatar->move($avatarPath, $avatarName);

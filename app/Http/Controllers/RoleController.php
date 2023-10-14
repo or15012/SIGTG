@@ -33,9 +33,9 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:roles',
-            'description' => 'nullable|string|max:255',
-            'permissions' => 'array',
+            'name'          => 'required|unique:roles',
+            'description'   => 'nullable|string|max:255',
+            'permissions'   => 'array',
         ]);
 
         $role = Role::create([
@@ -59,9 +59,9 @@ class RoleController extends Controller
     public function update(Request $request, Role $role)
     {
         $request->validate([
-            'name' => 'required|unique:roles,name,' . $role->id,
-            'description' => 'nullable|string|max:255',
-            'permissions' => 'array',
+            'name'          => 'required|unique:roles,name,' . $role->id,
+            'description'   => 'nullable|string|max:255',
+            'permissions'   => 'array',
         ]);
 
         $role->name = $request->input('name');

@@ -151,8 +151,8 @@
     "Leaflet_Maps" => "Leaflet Maps",
     "User_Profile" => "Perfil del usuario",
     "Google_Maps" => "Mapas de Google",
-    "Vector_Maps" => "Vector Maps"
-
+    "Vector_Maps" => "Vector Maps",
+    "UserList"  => "Lista de usuarios"
 ];
 
 ?>

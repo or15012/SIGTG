@@ -19,14 +19,21 @@
             <div class="row mb-3">
                 <div class="col-12">
                     <label for="number" class="form-label">Número</label>
-                    <input type="number" class="form-control" id="number" name="number" required>
+                    <select class="form-select" id="number" name="number" required>
+                        <option value="1">I</option>
+                        <option value="2">II</option>
+                    </select>
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-12">
                     <label for="year" class="form-label">Año</label>
-                    <input type="number" class="form-control" id="year" name="year" required>
+                    <select class="form-select" id="year" name="year" required>
+                        <option value="{{ date('Y') - 1 }}">{{ date('Y') - 1 }}</option>
+                        <option value="{{ date('Y') }}" selected>{{ date('Y') }}</option>
+                        <option value="{{ date('Y') + 1 }}">{{ date('Y') + 1 }}</option>
+                    </select>
                 </div>
             </div>
 

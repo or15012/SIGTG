@@ -22,11 +22,13 @@ class CreateUsersTable extends Migration
             $table->string('last_name');
             $table->string('second_last_name');
             $table->string('carnet', 7);
-            $table->boolean('state');
+            $table->boolean('state')->default(1);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('avatar')->nullable();
+            $table->integer('type')->default(1)->comment('1 => estudiante, 2 => profesor'); // Agregar un comentario;
+            $table->foreignId('school_id')->constrained('schools');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
@@ -35,15 +37,16 @@ class CreateUsersTable extends Migration
         DB::table('users')
             ->insert(
                 array(
-                    'first_name' => 'admin',
-                    'middle_name' => 'admin',
-                    'last_name' => 'admin',
-                    'second_last_name' => 'admin',
-                    'carnet' => 'OR15012',
-                    'state' => 1,
-                    'email' => 'admin@themesbrand.com',
-                    'avatar' => '',
-                    'password' => Hash::make('123456')
+                    'first_name'        => 'admin',
+                    'middle_name'       => 'admin',
+                    'last_name'         => 'admin',
+                    'second_last_name'  => 'admin',
+                    'carnet'            => 'OR15012',
+                    'state'             => 1,
+                    'email'             => 'admin@themesbrand.com',
+                    'avatar'            => '',
+                    'password'          => Hash::make('123456'),
+                    'school_id'         => 1
                 )
             );
     }

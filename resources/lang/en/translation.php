@@ -151,7 +151,8 @@
 "Leaflet_Maps" => "Leaflet Maps",
 "User_Profile" => "User Profile",
 "Google_Maps" => "Google Maps",
-"Vector_Maps" => "Vector Maps"
+"Vector_Maps" => "Vector Maps",
+"UserList"  => "User List"
 ];
 
 ?>

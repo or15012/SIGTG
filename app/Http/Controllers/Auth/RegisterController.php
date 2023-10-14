@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\School;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -38,8 +39,31 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('auth');
     }
+
+
+    public function index()
+    {
+        $users      = User::all(); // Obtén todos los registros de usuarios
+        $userTypes  = User::TYPES;
+        return view('auth.index', [
+            'users'     => $users,
+            'userTypes'  => $userTypes,
+        ]);
+    }
+
+    public function showRegistrationForm()
+    {
+        $schools    = School::all(); // Obtener la lista de escuelas
+        $userTypes  = User::TYPES;
+
+        return view('auth.register', [
+            'schools'   => $schools,
+            'userTypes' => $userTypes
+        ]);
+    }
+
 
     /**
      * Get a validator for an incoming registration request.
@@ -50,9 +74,15 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'first_name'        => ['required', 'string', 'max:255'],
+            'middle_name'       => ['required', 'string', 'max:255'],
+            'last_name'         => ['required', 'string', 'max:255'],
+            'second_last_name'  => ['required', 'string', 'max:255'],
+            'carnet'            => ['required', 'string', 'max:7', 'unique:users'], // Asegúrate de ajustar la validación según tus necesidades
+            'email'             => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'school'            => ['required', 'exists:schools,id'], // Asegúrate de que exista una escuela con ese ID
+            'password'          => ['required', 'string', 'min:8', 'confirmed'],
+            'type'              => ['required'],
         ]);
     }
 
@@ -64,10 +94,15 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+        User::create([
+            'first_name'        => $data['first_name'],
+            'middle_name'       => $data['middle_name'],
+            'last_name'         => $data['last_name'],
+            'second_last_name'  => $data['second_last_name'],
+            'carnet'            => $data['carnet'],
+            'email'             => $data['email'],
+            'school_id'         => $data['school'], // Asumiendo que el campo se llama 'school_id' en tu modelo User
+            'password'          => Hash::make($data['password']),
         ]);
     }
 }

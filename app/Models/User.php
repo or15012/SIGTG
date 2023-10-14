@@ -13,6 +13,11 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
+    const TYPES = [
+        '1'         => 'Estudiante',
+        '2'         => 'Docente',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -23,7 +28,15 @@ class User extends Authenticatable
         'email',
         'password',
         'avatar',
+        'first_name',
+        'middle_name',
+        'last_name',
+        'second_last_name',
+        'type',
+        'carnet',
+        'school_id', // Asumiendo que es la clave foránea que relaciona con la tabla 'schools'
     ];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -43,4 +56,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function school()
+    {
+        return $this->belongsTo(School::class, 'school_id'); // Asumiendo que la clave foránea se llama 'school_id'
+    }
 }

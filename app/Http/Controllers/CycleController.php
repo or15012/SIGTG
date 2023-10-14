@@ -25,25 +25,25 @@ class CycleController extends Controller
     {
         // Validación de los datos del ciclo y los parámetros
         $validatedData = $request->validate([
-            'number' => 'required|integer',
-            'year' => 'required|integer',
-            'status' => 'required|boolean',
-            'parameters' => 'array', // Campo que contendrá los parámetros
+            'number'        => 'required|integer',
+            'year'          => 'required|integer',
+            'status'        => 'required|boolean',
+            'parameters'    => 'array', // Campo que contendrá los parámetros
         ]);
         // dd($request);
         // Crear un nuevo ciclo
         $cycle = Cycle::create([
-            'number' => $validatedData['number'],
-            'year' => $validatedData['year'],
-            'status' => $validatedData['status'],
+            'number'    => $validatedData['number'],
+            'year'      => $validatedData['year'],
+            'status'    => $validatedData['status'],
         ]);
 
         // Guardar los parámetros
         foreach ($validatedData['parameters'] as $key => $value) {
             Parameter::create([
-                'name' => $key,
-                'value' => $value,
-                'cycle_id' => $cycle->id,
+                'name'      => $key,
+                'value'     => $value,
+                'cycle_id'  => $cycle->id,
             ]);
         }
 
@@ -66,11 +66,12 @@ class CycleController extends Controller
     public function update(Request $request, $id)
     {
         // Validación de los datos del ciclo y los parámetros
+
         $validatedData = $request->validate([
-            'number' => 'required|integer',
-            'year' => 'required|integer',
-            'status' => 'required|boolean',
-            'parameters' => 'array', // Campo que contendrá los parámetros
+            'number'        => 'required|integer',
+            'year'          => 'required|integer',
+            'status'        => 'required|boolean',
+            'parameters'    => 'array', // Campo que contendrá los parámetros
         ]);
 
         // Encontrar el ciclo que se desea actualizar
@@ -78,11 +79,11 @@ class CycleController extends Controller
 
         // Actualizar los datos del ciclo
         $cycle->update([
-            'number' => $validatedData['number'],
-            'year' => $validatedData['year'],
-            'status' => $validatedData['status'],
+            'number'    => $validatedData['number'],
+            'year'      => $validatedData['year'],
+            'status'    => $validatedData['status'],
         ]);
-
+        // dd($cycle);
         // Actualizar o crear los parámetros
         $parameterNames = Parameter::PARAMETERS; // Obtén el array de nombres de parámetros
 
@@ -96,9 +97,9 @@ class CycleController extends Controller
             } else {
                 // Si no existe, crea un nuevo parámetro
                 Parameter::create([
-                    'name' => $key,
-                    'value' => $validatedData['parameters'][$key],
-                    'cycle_id' => $cycle->id,
+                    'name'      => $key,
+                    'value'     => $validatedData['parameters'][$key],
+                    'cycle_id'  => $cycle->id,
                 ]);
             }
         }

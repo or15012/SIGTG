@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CycleController;
 use App\Http\Controllers\ProtocolController;
 use App\Http\Controllers\RoleController;
@@ -18,14 +19,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Auth::routes();
-
+//HOME ROUTE
 Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('root');
 
-//Update User Details
+//Rutas para autentificación y usuarios
+Auth::routes();
 Route::post('/update-profile', [App\Http\Controllers\HomeController::class, 'updateProfile'])->name('updateProfile');
 Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('updatePassword');
-
+Route::get('/users', [RegisterController::class, 'index'])->name('index');
 
 
 //Grupo para las rutas de escuelas
