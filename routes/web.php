@@ -26,7 +26,7 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('roo
 Auth::routes();
 Route::post('/update-profile', [App\Http\Controllers\HomeController::class, 'updateProfile'])->name('updateProfile');
 Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('updatePassword');
-Route::get('/users', [RegisterController::class, 'index'])->name('index');
+Route::get('/users', [RegisterController::class, 'index'])->name('users.index');
 
 
 //Grupo para las rutas de escuelas

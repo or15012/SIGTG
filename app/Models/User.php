@@ -62,4 +62,11 @@ class User extends Authenticatable
     {
         return $this->belongsTo(School::class, 'school_id'); // Asumiendo que la clave foránea se llama 'school_id'
     }
+
+    public function protocols()
+    {
+        return $this->belongsToMany(Protocol::class, 'user_protocol')
+            ->withPivot('status') // Esto permite acceder a la columna 'status' de la tabla intermedia
+            ->withTimestamps();
+    }
 }

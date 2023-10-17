@@ -112,6 +112,20 @@
                 </div>
             </div>
 
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="status" class="form-label">Protocolo</label>
+                    <select class="form-select" name="protocol_id" required>
+                        <option value="" disabled selected>Seleccione protocolo</option>
+                        @forelse ($protocols as  $key => $protocol)
+                            <option value="{{ $protocol->id }}">{{ $protocol->name }}</option>
+                        @empty
+                            <option value="" disabled>No hay protocolos disponibles</option>
+                        @endforelse
+                    </select>
+                </div>
+            </div>
+
             <div class="mb-3">
                 <label class="form-label" for="userpassword">Contraseña</label>
                 <input type="password" class="form-control @error('password') is-invalid @enderror" id="userpassword"

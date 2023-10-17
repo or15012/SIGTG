@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Protocol;
 use App\Models\School;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -57,13 +59,20 @@ class RegisterController extends Controller
     {
         $schools    = School::all(); // Obtener la lista de escuelas
         $userTypes  = User::TYPES;
+        $protocols  = Protocol::all();
 
         return view('auth.register', [
             'schools'   => $schools,
-            'userTypes' => $userTypes
+            'userTypes' => $userTypes,
+            'protocols' => $protocols,
         ]);
     }
 
+    protected function registered(Request $request, $user)
+    {
+        // En lugar de iniciar sesión automáticamente, redirige al usuario a la ruta que desees
+        return redirect()->route('users.index')->with('success', 'Usuario creado con éxito');
+    }
 
     /**
      * Get a validator for an incoming registration request.
@@ -94,7 +103,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        User::create([
+        $user = User::create([
             'first_name'        => $data['first_name'],
             'middle_name'       => $data['middle_name'],
             'last_name'         => $data['last_name'],
@@ -102,7 +111,20 @@ class RegisterController extends Controller
             'carnet'            => $data['carnet'],
             'email'             => $data['email'],
             'school_id'         => $data['school'], // Asumiendo que el campo se llama 'school_id' en tu modelo User
+            'type'              => $data['type'],
             'password'          => Hash::make($data['password']),
         ]);
+
+
+        // Agregar un protocolo con status 1 y establecer status 0 para otros protocolos
+        if (!empty($data['protocol_id'])) {
+            $user->protocols()->attach([
+                $data['protocol_id'] => ['status' => 1]
+            ]);
+            // Establecer status 0 para otros protocolos
+            $user->protocols()->where('user_id', '!=', $user->id)->update(['status' => 0]);
+        }
+
+        return $user;
     }
 }

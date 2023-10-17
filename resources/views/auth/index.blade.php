@@ -27,10 +27,8 @@
             <thead>
                 <tr>
                     <th>Correo electrónico</th>
-                    <th>Primer nombre</th>
-                    <th>Segundo nombre</th>
-                    <th>Primer apellido</th>
-                    <th>Segundo apellido</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
                     <th>Carnet</th>
                     <th>Escuela</th>
                     <th>Tipo</th>
@@ -40,10 +38,8 @@
                 @foreach ($users as $user)
                     <tr>
                         <td>{{ $user->email }}</td>
-                        <td>{{ $user->first_name }}</td>
-                        <td>{{ $user->middle_name }}</td>
-                        <td>{{ $user->last_name }}</td>
-                        <td>{{ $user->second_last_name }}</td>
+                        <td>{{ $user->first_name }} {{ $user->middle_name }}</td>
+                        <td>{{ $user->last_name }} {{ $user->second_last_name }}</td>
                         <td>{{ $user->carnet }}</td>
                         <td>{{ $user->school->name }}</td>
                         <td>{{ $userTypes[$user->type] }}</td>
