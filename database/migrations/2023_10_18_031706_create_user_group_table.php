@@ -13,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('groups', function (Blueprint $table) {
+        Schema::create('user_group', function (Blueprint $table) {
             $table->id();
-            $table->integer("number");
-            $table->integer("year");
-            $table->boolean("status");
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('group_id')->constrained('groups')->onDelete('cascade');
+            $table->integer('status'); // Agregando la columna 'status' de tipo boolean
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groups');
+        Schema::dropIfExists('user_group');
     }
 };

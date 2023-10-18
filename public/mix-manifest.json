@@ -28,6 +28,7 @@
     "/assets/js/pages/ecommerce-customers.init.js": "/assets/js/pages/ecommerce-customers.init.js",
     "/assets/js/pages/ecommerce-shops.init.js": "/assets/js/pages/ecommerce-shops.init.js",
     "/assets/js/pages/contacts-list.init.js": "/assets/js/pages/contacts-list.init.js",
+    "/js/initialize.js": "/js/initialize.js",
     "/assets/css/app.css": "/assets/css/app.css",
     "/assets/css/icons.css": "/assets/css/icons.css",
     "/assets/css/bootstrap.css": "/assets/css/bootstrap.css",

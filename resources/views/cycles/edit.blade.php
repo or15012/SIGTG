@@ -52,7 +52,7 @@
                         name="parameters[{{ $parameter->name }}]" value="{{ $parameter->value }}" required>
                 </div>
             @endforeach
-            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            <button type="submit" class="btn btn-primary">Actualizar</button>
         </form>
     </div>
 @endsection

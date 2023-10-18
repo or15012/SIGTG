@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CycleController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ProtocolController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolController;
@@ -26,8 +27,14 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('roo
 Auth::routes();
 Route::post('/update-profile', [App\Http\Controllers\HomeController::class, 'updateProfile'])->name('updateProfile');
 Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('updatePassword');
+
+
 Route::get('/users', [RegisterController::class, 'index'])->name('users.index');
 
+Route::group(['prefix' => 'students', 'as' => 'students.'], function () {
+    Route::get('/get-student/{carnet}', [SchoolController::class, 'getStudent'])->name('get.student');
+
+});
 
 //Grupo para las rutas de escuelas
 Route::group(['prefix' => 'schools', 'as' => 'schools.'], function () {
@@ -70,6 +77,19 @@ Route::group(['prefix' => 'cycles', 'as' => 'cycles.'], function () {
     Route::put('{id}', [CycleController::class, 'update'])->name('update');
     Route::delete('{id}', [CycleController::class, 'destroy'])->name('destroy');
 });
+
+
+Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
+    Route::get('/', [GroupController::class, 'index'])->name('index');
+    Route::get('initialize', [GroupController::class, 'initialize'])->name('initialize');
+    Route::get('create', [GroupController::class, 'create'])->name('create');
+    Route::post('/', [GroupController::class, 'store'])->name('store');
+    Route::get('{id}', [GroupController::class, 'show'])->name('show');
+    Route::get('{id}/edit', [GroupController::class, 'edit'])->name('edit');
+    Route::put('{id}', [GroupController::class, 'update'])->name('update');
+    Route::delete('{id}', [GroupController::class, 'destroy'])->name('destroy');
+});
+
 
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 //Language Translation
