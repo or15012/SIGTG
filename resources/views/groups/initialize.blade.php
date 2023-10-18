@@ -32,7 +32,7 @@
                     <input type="text" placeholder="carnet" name="carnet" id="carnet" class="form-control">
                 </div>
                 <div class="col-12 col-md-2 col-lg-2">
-                    <button type="submit" class="btn btn-primary w-md">Agregar integrante</button>
+                    <button type="button" id="add-student" class="btn btn-primary w-md">Agregar integrante</button>
                 </div>
             </div>
             <div class="row mb-3">

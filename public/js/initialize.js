@@ -10764,7 +10764,26 @@ var __webpack_exports__ = {};
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 console.log("leido");
 $(document).ready(function () {
-  console.log("LEIDO");
+  $('#add-student').click(function () {
+    var carnet = $('#carnet').val();
+    $.ajax({
+      type: 'GET',
+      url: '/students/get-student/' + carnet,
+      success: function success(response) {
+        if (response.success) {
+          // Estudiante encontrado, puedes acceder a los datos en response.student
+          console.log(response.student);
+        } else {
+          // Estudiante no encontrado, muestra un mensaje de error
+          console.log('Estudiante no encontrado');
+        }
+      },
+      error: function error(_error) {
+        console.log('Error en la solicitud AJAX');
+        console.log(_error);
+      }
+    });
+  });
 });
 }();
 /******/ })()

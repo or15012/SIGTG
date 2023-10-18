@@ -6,6 +6,7 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ProtocolController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -32,7 +33,7 @@ Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class
 Route::get('/users', [RegisterController::class, 'index'])->name('users.index');
 
 Route::group(['prefix' => 'students', 'as' => 'students.'], function () {
-    Route::get('/get-student/{carnet}', [SchoolController::class, 'getStudent'])->name('get.student');
+    Route::get('/get-student/{carnet}', [StudentController::class, 'getStudent'])->name('get.student');
 
 });
 
