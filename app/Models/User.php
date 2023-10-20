@@ -69,4 +69,11 @@ class User extends Authenticatable
             ->withPivot('status') // Esto permite acceder a la columna 'status' de la tabla intermedia
             ->withTimestamps();
     }
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'user_group')
+            ->withPivot('status') // Esto permite acceder a la columna 'status' de la tabla intermedia
+            ->withTimestamps();
+    }
 }

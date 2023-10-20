@@ -23,6 +23,7 @@
                         @yield('content')
                     </div>
                 </div>
+                <div class="loading">Loading&#8230;</div>
                 @include('layouts.footer')
             </div>
         </div>

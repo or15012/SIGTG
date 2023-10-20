@@ -10762,23 +10762,45 @@ var __webpack_exports__ = {};
   !*** ./resources/js/initialize.js ***!
   \************************************/
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-console.log("leido");
 $(document).ready(function () {
+  var students = [];
   $('#add-student').click(function () {
     var carnet = $('#carnet').val();
+    //validare que estudiante no se encuentre en grupo actual
+
+    var carnetExiste = students.some(function (item) {
+      return item.carnet === carnet;
+    });
+    if (carnetExiste) {
+      // El carnet ya existe en el arreglo retornare sin ir a buscarlo
+      console.log('El carnet ya existe en el arreglo.');
+      return false;
+    }
+
+    //buscare el usuario
     $.ajax({
       type: 'GET',
       url: '/students/get-student/' + carnet,
+      beforeSend: function beforeSend() {
+        $('.loading').show();
+      },
       success: function success(response) {
         if (response.success) {
           // Estudiante encontrado, puedes acceder a los datos en response.student
-          console.log(response.student);
+          var user = response.student;
+
+          //añadire nuevo integrante
+          students.push(user);
+          var stringHtml = "\n                        <div class=\"col-12 col-md-6 col-lg-6 \">\n                            <div class=\"card mb-4\">\n                                <div class=\"card-header\">".concat(user.carnet, " - ").concat(user.first_name, " ").concat(user.middle_name, " ").concat(user.last_name, " ").concat(user.second_last_name, "</div>\n                                <div class=\"card-body\">\n                                <input type=\"hidden\" name=\"users[]\" value=\"").concat(user.id, " \">\n                                </div>\n                            </div>\n                        </div>");
+          $("#list-group").append(stringHtml);
         } else {
           // Estudiante no encontrado, muestra un mensaje de error
           console.log('Estudiante no encontrado');
         }
+        $('.loading').hide();
       },
       error: function error(_error) {
+        $('.loading').hide();
         console.log('Error en la solicitud AJAX');
         console.log(_error);
       }

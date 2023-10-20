@@ -18,4 +18,12 @@ class Group extends Model
         'updated_at',
         'deleted_at',
     ];
+
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_group')
+            ->withPivot('status') // Esto permite acceder a la columna 'status' de la tabla intermedia
+            ->withTimestamps();
+    }
 }

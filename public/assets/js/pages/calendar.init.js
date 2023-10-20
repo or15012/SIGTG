@@ -243,6 +243,19 @@ __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
+/***/ }),
+
+/***/ "./resources/scss/custom/sigtg/_general.scss":
+/*!***************************************************!*\
+  !*** ./resources/scss/custom/sigtg/_general.scss ***!
+  \***************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
 /***/ })
 
 /******/ 	});
@@ -335,6 +348,7 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 		var installedChunks = {
 /******/ 			"/assets/js/pages/calendar.init": 0,
 /******/ 			"assets/css/app": 0,
+/******/ 			"assets/css/_general": 0,
 /******/ 			"assets/css/icons": 0,
 /******/ 			"assets/css/bootstrap": 0
 /******/ 		};
@@ -388,10 +402,11 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	__webpack_require__.O(undefined, ["assets/css/app","assets/css/icons","assets/css/bootstrap"], function() { return __webpack_require__("./resources/js/pages/calendar.init.js"); })
-/******/ 	__webpack_require__.O(undefined, ["assets/css/app","assets/css/icons","assets/css/bootstrap"], function() { return __webpack_require__("./resources/scss/bootstrap.scss"); })
-/******/ 	__webpack_require__.O(undefined, ["assets/css/app","assets/css/icons","assets/css/bootstrap"], function() { return __webpack_require__("./resources/scss/icons.scss"); })
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["assets/css/app","assets/css/icons","assets/css/bootstrap"], function() { return __webpack_require__("./resources/scss/app.scss"); })
+/******/ 	__webpack_require__.O(undefined, ["assets/css/app","assets/css/_general","assets/css/icons","assets/css/bootstrap"], function() { return __webpack_require__("./resources/js/pages/calendar.init.js"); })
+/******/ 	__webpack_require__.O(undefined, ["assets/css/app","assets/css/_general","assets/css/icons","assets/css/bootstrap"], function() { return __webpack_require__("./resources/scss/bootstrap.scss"); })
+/******/ 	__webpack_require__.O(undefined, ["assets/css/app","assets/css/_general","assets/css/icons","assets/css/bootstrap"], function() { return __webpack_require__("./resources/scss/icons.scss"); })
+/******/ 	__webpack_require__.O(undefined, ["assets/css/app","assets/css/_general","assets/css/icons","assets/css/bootstrap"], function() { return __webpack_require__("./resources/scss/app.scss"); })
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["assets/css/app","assets/css/_general","assets/css/icons","assets/css/bootstrap"], function() { return __webpack_require__("./resources/scss/custom/sigtg/_general.scss"); })
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()

@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
-            $table->integer("number");
+            $table->integer("number")->nullable();
             $table->integer("year");
-            $table->boolean("status");
+            $table->boolean("status")->default(0);
+            $table->boolean("is_leader")->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
