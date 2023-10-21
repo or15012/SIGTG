@@ -54,9 +54,11 @@
                                         <i class="fas fa-user-check"></i>
                                     </label>
                                 @else
-                                    <button type="button" class="btn btn-danger waves-effect waves-light">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
+                                    @if($user->id === Auth::user()->id)
+                                        <div>A</div>
+                                    @else
+                                        <div>B</div>
+                                    @endif
                                 @endif
                             </div>
                         </div>

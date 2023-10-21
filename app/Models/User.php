@@ -73,7 +73,7 @@ class User extends Authenticatable
     public function groups()
     {
         return $this->belongsToMany(Group::class, 'user_group')
-            ->withPivot('status') // Esto permite acceder a la columna 'status' de la tabla intermedia
+            ->withPivot(['status','is_leader']) // Esto permite acceder a la columna 'status' de la tabla intermedia
             ->withTimestamps();
     }
 }

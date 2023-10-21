@@ -152,7 +152,8 @@
     "User_Profile" => "Perfil del usuario",
     "Google_Maps" => "Mapas de Google",
     "Vector_Maps" => "Vector Maps",
-    "UserList"  => "Lista de usuarios"
+    "UserList"  => "Lista de usuarios",
+    "Group" => "Grupos"
 ];
 
 ?>

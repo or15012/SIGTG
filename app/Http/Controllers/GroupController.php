@@ -32,9 +32,19 @@ class GroupController extends Controller
             })
             ->first();
         $groupUsers = array();
+
         if ($group) {
             // Obtener la información de los usuarios relacionados al grupo
             $groupUsers = $group->users;
+            foreach ($groupUsers as $item) {
+                if ($item->id === $user->id) {
+                    if ($item->pivot->is_leader === 1) {
+                        return view('groups.initialize', compact('user', 'group', 'groupUsers'));
+                    } else {
+                        return view('groups.confirm', compact('user', 'group', 'groupUsers'));
+                    }
+                }
+            }
         }
 
         //vere si el usuario tiene un grupo
