@@ -257,7 +257,9 @@ lodash(app_pages_assets).forEach(function (assets, type) {
         mix.js(assets[i], out + "pages");
     };
 });
-mix.js('resources/js/initialize.js', 'public/js/initialize.js');
+mix.js('resources/js/group_initialize.js', 'public/js/group_initialize.js');
+mix.js('resources/js/group_confirm.js', 'public/js/group_confirm.js');
+
 mix.combine('resources/js/pages/invoice-list.init.js', folder.dist_assets + "js/pages/invoice-list.init.js");
 mix.combine('resources/js/pages/leaflet-us-states.js', folder.dist_assets + "js/pages/leaflet-us-states.js");
 mix.combine('resources/js/pages/leaflet-map.init.js', folder.dist_assets + "js/pages/leaflet-map.init.js");

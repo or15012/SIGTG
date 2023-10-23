@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Models\Parameter;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class GroupController extends Controller
 {
@@ -62,13 +64,18 @@ class GroupController extends Controller
         $validatedData = $request->validate([
             'users'    => 'array', // Campo que contendrá los parámetros
         ]);
-
-        // Crear un nuevo ciclo
-        $group = Group::create([
-            'year'      => date("Y"),
-            'status'    => 0,
-        ]);
-
+        //revisare si viene algo en el request de ciclo
+        if (isset($request->group_id)) {
+            //voy a buscar grupo para actualizarlo
+            $group = Group::find($request->group_id);
+        } else {
+            // Crear un nuevo grupo
+            $group = Group::create([
+                'year'      => date("Y"),
+                'status'    => 0,
+            ]);
+        }
+        $group->users()->detach();
         $users = $request->input('users');
         // Preparar datos para la sincronización
         $syncData = [];
@@ -80,11 +87,10 @@ class GroupController extends Controller
             ];
             $syncData[] = $userData;
         }
+        // Insertar los nuevos usuarios
+        $group->users()->attach($syncData);
 
-        // Sincronizar los usuarios con los datos preparados
-        $group->users()->sync($syncData);
-
-        return redirect()->route('groups.index')->with('success', 'Grupo inicializado con éxito');
+        return redirect()->back()->with('success', 'Grupo inicializado con éxito');
     }
 
     public function show($id)
@@ -155,5 +161,28 @@ class GroupController extends Controller
         $group->delete();
 
         return redirect()->route('groups.index')->with('success', 'Ciclo eliminado con éxito');
+    }
+
+    public function confirmStore(Request $request)
+    {
+        try {
+            //Obteniendo info de user logueado
+            $user = Auth::user();
+
+            // Obtener el ID del grupo desde la solicitud
+            $groupId = $request->input('group_id');
+
+            // Obtener el valor de la variable 'decision' desde la solicitud
+            $decision = $request->input('decision');
+
+            $user->groups()
+                ->wherePivot('group_id', $groupId)
+                ->updateExistingPivot($groupId, ['status' => $decision]);
+
+            return redirect()->back()->with('success', 'Respuesta guardada con éxito');
+        } catch (Exception $th) {
+            Log::info($th->getMessage());
+            return redirect()->back()->withErrors(['mensaje' => 'Error al actualizar.']);
+        }
     }
 }

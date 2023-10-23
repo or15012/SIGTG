@@ -82,13 +82,16 @@ Route::group(['prefix' => 'cycles', 'as' => 'cycles.'], function () {
 
 Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
     Route::get('/', [GroupController::class, 'index'])->name('index');
-    Route::get('initialize', [GroupController::class, 'initialize'])->name('initialize');
     Route::get('create', [GroupController::class, 'create'])->name('create');
     Route::post('/', [GroupController::class, 'store'])->name('store');
+    Route::get('/initialize', [GroupController::class, 'initialize'])->name('initialize');
+    Route::post('/confirm-store', [GroupController::class, 'confirmStore'])->name('confirm.store');
     Route::get('{id}', [GroupController::class, 'show'])->name('show');
     Route::get('{id}/edit', [GroupController::class, 'edit'])->name('edit');
     Route::put('{id}', [GroupController::class, 'update'])->name('update');
     Route::delete('{id}', [GroupController::class, 'destroy'])->name('destroy');
+
+
 });
 
 

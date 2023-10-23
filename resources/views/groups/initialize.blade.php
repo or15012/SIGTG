@@ -36,13 +36,13 @@
             @endif
             <div class="row mb-3" id="list-group">
                 @forelse ($groupUsers as $user)
-                    <div class="col-12 col-md-6 col-lg-6 ">
+                    <div class="col-12 col-md-6 col-lg-6" id="user-{{ $user->id }}">
                         <div class="card mb-4">
                             <div class="card-header">
                                 {{ $user->carnet }} - {{ $user->first_name }} {{ $user->middle_name }}
                                 {{ $user->last_name }} {{ $user->second_last_name }}
                                 @if ($user->pivot->is_leader === 1)
-                                    <label class="bg-primary text-white px-2 rounded">Es lider</label>
+                                    <label class="bg-primary text-white px-2 rounded">Lider</label>
                                 @endif
                             </div>
                             <div class="card-body">
@@ -54,8 +54,17 @@
                                         <i class="fas fa-user-check"></i>
                                     </label>
                                 @else
-                                    <button type="button" class="btn btn-danger waves-effect waves-light">
-                                        <i class="fas fa-trash"></i>
+                                    <div>
+                                        <label class="my-1 fw-bold">Estado de asignación</label>
+                                    </div>
+                                    <div>
+                                        <label class="my-1 bg-soft-secondary text-opacity-100 p-2 rounded">
+                                            Enviado
+                                        </label>
+                                    </div>
+                                    <button type="button" data-user="{{ $user->id }}"
+                                        class="delete-user btn btn-danger waves-effect waves-light">
+                                        <i class="fas fa-window-close"></i>
                                     </button>
                                 @endif
                             </div>
@@ -74,12 +83,18 @@
                     </div>
                 @endforelse
             </div>
-            <button type="submit" class="btn btn-primary">Conformar grupo</button>
+            <button type="submit" class="btn btn-primary">
+                @if (isset($group))
+                    Actualizar grupo
+                @else
+                    Conformar grupo
+                @endif
+            </button>
         </form>
     </div>
 @endsection
 @section('script')
     <script src="{{ URL::asset('assets/js/pages/fontawesome.init.js') }}"></script>
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
-    <script src="{{ URL::asset('js/initialize.js') }}"></script>
+    <script src="{{ URL::asset('js/group_initialize.js') }}"></script>
 @endsection
