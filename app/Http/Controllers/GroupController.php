@@ -4,16 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Models\Parameter;
+use App\Models\UserGroup;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class GroupController extends Controller
 {
     public function index()
     {
-        $groups = Group::paginate(20);
+        $year = date('Y');
+        $groups = Group::select('*')->addSelect([
+            'user_count' => UserGroup::selectRaw('COUNT(user_id)')
+                ->whereColumn('group_id', 'groups.id')
+                ->where('status', 1)
+        ])
+            ->join('user_group as ug', 'groups.id', 'ug.group_id')
+            ->join('users as u', 'ug.user_id', 'u.id')
+            ->where('groups.year', $year)
+            ->where('ug.is_leader', 1)
+            ->paginate(20);
+
         return view('groups.index', compact('groups'));
     }
 
@@ -168,13 +181,21 @@ class GroupController extends Controller
         try {
             //Obteniendo info de user logueado
             $user = Auth::user();
-
-            // Obtener el ID del grupo desde la solicitud
+            $year = date("Y"); // Año actual
+            // Obtener el ID del grupo desde la solicitud y el valor de la variable 'decision' desde la solicitud
             $groupId = $request->input('group_id');
-
-            // Obtener el valor de la variable 'decision' desde la solicitud
-            $decision = $request->input('decision');
-
+            $decision = intval($request->input('decision'));
+            if ($decision === 1) {
+                $isActiveInOtherGroup = Group::join('user_group', 'user_group.group_id', '=', 'groups.id')
+                    ->where('user_group.user_id', $user->id)
+                    ->where('groups.year', $year)
+                    ->where('user_group.status', 1) // Supongo que '1' representa el estado activo
+                    ->exists();
+                if ($isActiveInOtherGroup) {
+                    // El usuario está activo en otro grupo este año
+                    return redirect()->back()->withErrors(['mensaje' => 'Ya te encuentras activo en otro grupo.']);
+                }
+            }
             $user->groups()
                 ->wherePivot('group_id', $groupId)
                 ->updateExistingPivot($groupId, ['status' => $decision]);

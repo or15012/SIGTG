@@ -13,7 +13,7 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Lista de Protocolos</h1>
+        <h1>Lista de Grupos</h1>
 
 
         @if (session('success'))
@@ -25,23 +25,31 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
+                    <th>Número</th>
+                    <th>Lider</th>
+                    <th>Cantidad de estudiantes</th>
+                    <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($protocols as $protocol)
+                @foreach ($groups as $group)
                     <tr>
-                        <td>{{ $protocol->id }}</td>
-                        <td>{{ $protocol->name }}</td>
                         <td>
-                            <a href="{{ route('protocols.edit', $protocol->id) }}" class="btn btn-warning">Editar</a>
-                            <form action="{{ route('protocols.destroy', $protocol->id) }}" method="POST" style="display: inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Eliminar</button>
-                            </form>
+                            @if(isset($group->number))
+                                {{ $group->number }}
+                            @else
+                                No asignado
+                            @endif
+
+                        </td>
+                        <td>{{ $group->first_name }} {{ $group->middle_name }} {{ $group->last_name }} {{ $group->second_last_name }}</td>
+                        <td>{{ $group->user_count }}</td>
+                        <td>Proyecto Iniciado</td>
+                        <td>
+                            <a href="{{ route('groups.show', $group->id) }}" class="btn btn-warning">
+                            <i class="fas fa-cog"></i>
+                            </a>
                         </td>
                     </tr>
                 @endforeach

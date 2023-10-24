@@ -59,10 +59,15 @@
                                                 @case(0)
                                                     <div id="agregado">
                                                         <label>Agregado al grupo</label>
-                                                        <button type="button" id="accept-invitation" class="btn btn-primary  waves-effect waves-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Aceptar invitación.">
+                                                        <button type="button" id="accept-invitation"
+                                                            class="btn btn-primary  waves-effect waves-light"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            title="Aceptar invitación.">
                                                             <i class="fas fa-check"></i>
                                                         </button>
-                                                        <button type="button"  id="deny-invitation" class="btn btn-danger  waves-effect waves-light" title="Rechazar invitación">
+                                                        <button type="button" id="deny-invitation"
+                                                            class="btn btn-danger  waves-effect waves-light"
+                                                            title="Rechazar invitación">
                                                             <i class="fas fa-window-close"></i>
                                                         </button>
                                                     </div>
@@ -71,7 +76,10 @@
                                                 @case(1)
                                                     <div id="confirmado">
                                                         <label>Confirmado</label>
-                                                        <button type="button" id="deny-invitation" class="btn btn-danger  waves-effect waves-light"  data-bs-toggle="tooltip" data-bs-placement="top" title="Rechazar invitación.">
+                                                        <button type="button" id="deny-invitation"
+                                                            class="btn btn-danger  waves-effect waves-light"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            title="Rechazar invitación.">
                                                             <i class="fas fa-window-close"></i>
                                                         </button>
                                                     </div>
@@ -80,7 +88,10 @@
                                                 @case(2)
                                                     <div id="rechazado">
                                                         <label>Rechazado</label>
-                                                        <button type="button" id="accept-invitation" class="btn btn-primary  waves-effect waves-light"  data-bs-toggle="tooltip" data-bs-placement="top" title="Aceptar invitación.">
+                                                        <button type="button" id="accept-invitation"
+                                                            class="btn btn-primary  waves-effect waves-light"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            title="Aceptar invitación.">
                                                             <i class="fas fa-check"></i>
                                                         </button>
                                                     </div>
@@ -132,13 +143,6 @@
                         </div>
                     @endforelse
                 </div>
-                <button type="submit" class="btn btn-primary">
-                    @if (isset($group))
-                        Actualizar grupo
-                    @else
-                        Conformar grupo
-                    @endif
-                </button>
             </form>
         </div>
     @endsection
