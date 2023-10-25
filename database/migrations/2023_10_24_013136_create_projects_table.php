@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('parameters', function (Blueprint $table) {
+        Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('value');
-            $table->foreignId('cycle_id')->constrained('cycles')->onDelete('restrict');
+            $table->timestamps('deadline');
+            $table->foreignId('group_id')->constrained('groups')->onDelete('restrict');
+            $table->foreignId('profile_id')->constrained('profiles')->onDelete('restrict');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('parameters');
+        Schema::dropIfExists('projects');
     }
 };

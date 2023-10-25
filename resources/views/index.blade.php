@@ -7,7 +7,11 @@
     @slot('title') Welcome ! @endslot
     @endcomponent
 
-            <div class="row">
+    <div class="">
+        Bienvenido {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+    </div>
+
+            {{-- <div class="row">
                 <div class="col-xl-4">
                     <div class="card bg-primary">
                         <div class="card-body">
@@ -1069,7 +1073,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
 @endsection
 @section('script')

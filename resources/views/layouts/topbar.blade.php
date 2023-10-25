@@ -28,12 +28,12 @@
             </button>
 
             <!-- Search -->
-            <form class="app-search d-none d-lg-block">
+            {{-- <form class="app-search d-none d-lg-block">
                 <div class="position-relative">
                     <input type="text" class="form-control" placeholder="Search...">
                     <span class="bx bx-search"></span>
                 </div>
-            </form>
+            </form> --}}
 
         </div>
 
@@ -55,7 +55,7 @@
                 </div>
             </div>
 
-            <div class="dropdown d-inline-block language-switch">
+            {{-- <div class="dropdown d-inline-block language-switch">
                 <button type="button" class="btn header-item"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                      @switch(Session::get('lang'))
@@ -101,7 +101,7 @@
                         <img src="{{ URL::asset ('/assets/images/flags/russia.jpg') }}" alt="user-image" class="me-1" height="12"> <span class="align-middle">Russian</span>
                     </a>
                 </div>
-            </div>
+            </div> --}}
 
 
             <div class="dropdown d-inline-block">

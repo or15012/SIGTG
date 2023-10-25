@@ -9,7 +9,6 @@
             SIGTG-FIA
         @endslot
         @slot('title')
-            Welcome !
         @endslot
     @endcomponent
     <div class="container">

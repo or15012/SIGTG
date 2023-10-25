@@ -13,13 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('parameters', function (Blueprint $table) {
+        Schema::create('evaluation_criteria', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('value');
-            $table->foreignId('cycle_id')->constrained('cycles')->onDelete('restrict');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('parameters');
+        Schema::dropIfExists('evaluation_criteria');
     }
 };

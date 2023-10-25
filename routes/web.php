@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CycleController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProtocolController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolController;
@@ -29,7 +30,7 @@ Auth::routes();
 Route::post('/update-profile', [App\Http\Controllers\HomeController::class, 'updateProfile'])->name('updateProfile');
 Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('updatePassword');
 
-
+Route::get('/home', [HomeController::class, 'home'])->name('home');
 Route::get('/users', [RegisterController::class, 'index'])->name('users.index');
 
 Route::group(['prefix' => 'students', 'as' => 'students.'], function () {
@@ -98,4 +99,4 @@ Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 //Language Translation
 Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
