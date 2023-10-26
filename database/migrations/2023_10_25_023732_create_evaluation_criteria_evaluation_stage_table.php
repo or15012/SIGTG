@@ -13,8 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('evaluation_criteria_evaluation_stage', function (Blueprint $table) {
+        Schema::create('criteria_stage', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('evaluation_criteria_id')->constrained('evaluation_criteria')->onDelete('restrict');
+            $table->foreignId('evaluation_stage_id')->constrained('evaluation_stages')->onDelete('restrict');
+            $table->decimal("note",8,2,true);
             $table->timestamps();
         });
     }

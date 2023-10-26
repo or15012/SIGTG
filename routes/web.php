@@ -80,7 +80,7 @@ Route::group(['prefix' => 'cycles', 'as' => 'cycles.'], function () {
     Route::delete('{id}', [CycleController::class, 'destroy'])->name('destroy');
 });
 
-
+//Grupo para las rutas de grupo
 Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
     Route::get('/', [GroupController::class, 'index'])->name('index');
     Route::get('create', [GroupController::class, 'create'])->name('create');
@@ -91,8 +91,6 @@ Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
     Route::get('{id}/edit', [GroupController::class, 'edit'])->name('edit');
     Route::put('{id}', [GroupController::class, 'update'])->name('update');
     Route::delete('{id}', [GroupController::class, 'destroy'])->name('destroy');
-
-
 });
 
 

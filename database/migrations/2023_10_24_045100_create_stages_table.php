@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('stages', function (Blueprint $table) {
             $table->id();
+            $table->string("name");
+            $table->foreignId('protocol_id')->constrained('users')->onDelete('restrict');
+            $table->foreignId('cyvle_id')->constrained('groups')->onDelete('restrict');
             $table->timestamps();
         });
     }

@@ -15,7 +15,11 @@ return new class extends Migration
     {
         Schema::create('observations', function (Blueprint $table) {
             $table->id();
+            $table->mediumText("description")->nullable();
+            $table->foreignId('evaluation_stage_id')->constrained('evaluation_stages')->onDelete('restrict')->nullable();
+            $table->foreignId('profile_id')->constrained('profiles')->onDelete('restrict')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

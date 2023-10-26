@@ -20,6 +20,7 @@ return new class extends Migration
             $table->boolean("status")->default(0);
             $table->boolean("is_leader")->default(0);
             $table->foreignId('state_id')->constrained('states')->onDelete('restrict');
+            $table->foreignId('protocol_id')->constrained('protocols')->onDelete('restrict');
             $table->timestamps();
             $table->softDeletes();
         });

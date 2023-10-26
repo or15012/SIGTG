@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('school_protocol', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('school_id')->constrained('schools')->onDelete('restrict');
+            $table->foreignId('protocol_id')->constrained('protocols')->onDelete('restrict');
             $table->timestamps();
         });
     }
