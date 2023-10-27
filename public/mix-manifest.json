@@ -30,6 +30,7 @@
     "/assets/js/pages/contacts-list.init.js": "/assets/js/pages/contacts-list.init.js",
     "/js/group_initialize.js": "/js/group_initialize.js",
     "/js/group_confirm.js": "/js/group_confirm.js",
+    "/js/group_edit.js": "/js/group_edit.js",
     "/assets/css/app.css": "/assets/css/app.css",
     "/assets/css/icons.css": "/assets/css/icons.css",
     "/assets/css/bootstrap.css": "/assets/css/bootstrap.css",

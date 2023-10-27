@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('user_group', function (Blueprint $table) {
             $table->id();
             $table->integer('status'); // Agregando la columna 'status' de tipo boolean
+            $table->boolean("is_leader")->default(0);
             $table->foreignId('user_id')->constrained('users')->onDelete('restrict');
             $table->foreignId('group_id')->constrained('groups')->onDelete('restrict');
             $table->timestamps();

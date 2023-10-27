@@ -1,0 +1,30 @@
+[
+    {
+        "name": "Grupo inicializado",
+        "protocol_id": 1
+    },
+    {
+        "name": "Grupo aceptado",
+        "protocol_id": 1
+    },
+    {
+        "name": "Grupo rechazado",
+        "protocol_id": 1
+    },
+    {
+        "name": "Creación de propuesta",
+        "protocol_id": 1
+    },
+    {
+        "name": "En proceso",
+        "protocol_id": 1
+    },
+    {
+        "name": "Iniciado",
+        "protocol_id": 1
+    },
+    {
+        "name": "En proceso",
+        "protocol_id": 1
+    }
+]

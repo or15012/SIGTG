@@ -11,5 +11,7 @@ class State extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'name',
+        'protocol_id'
     ];
 }

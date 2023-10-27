@@ -37,13 +37,13 @@ class CreateUsersTable extends Migration
         DB::table('users')
             ->insert(
                 array(
-                    'first_name'        => 'admin',
-                    'middle_name'       => 'admin',
-                    'last_name'         => 'admin',
-                    'second_last_name'  => 'admin',
+                    'first_name'        => 'Dennis',
+                    'middle_name'       => 'Ernesto',
+                    'last_name'         => 'Orellana',
+                    'second_last_name'  => 'Ramirez',
                     'carnet'            => 'OR15012',
                     'state'             => 1,
-                    'email'             => 'admin@themesbrand.com',
+                    'email'             => 'or15012@ues.edu.sv',
                     'avatar'            => '',
                     'password'          => Hash::make('123456'),
                     'school_id'         => 1

@@ -23,6 +23,7 @@ class GroupController extends Controller
         ])
             ->join('user_group as ug', 'groups.id', 'ug.group_id')
             ->join('users as u', 'ug.user_id', 'u.id')
+            ->join('states as s', 'groups.state_id', 's.id')
             ->where('groups.year', $year)
             ->where('ug.is_leader', 1)
             ->paginate(20);
@@ -82,10 +83,17 @@ class GroupController extends Controller
             //voy a buscar grupo para actualizarlo
             $group = Group::find($request->group_id);
         } else {
+            //recuperando el protocolo del estudiante que inicializar el grupo
+            $user = Auth::user();
+            $protocol = $user->protocols()
+                ->where('user_protocol.status', true)
+                ->first();
             // Crear un nuevo grupo
             $group = Group::create([
-                'year'      => date("Y"),
-                'status'    => 0,
+                'year'          => date("Y"),
+                'status'        => 0,
+                'state_id'      => 1,
+                'protocol_id'   => $protocol->id
             ]);
         }
         $group->users()->detach();
@@ -106,17 +114,18 @@ class GroupController extends Controller
         return redirect()->back()->with('success', 'Grupo inicializado con éxito');
     }
 
-    public function show($id)
-    {
-        $group = Group::findOrFail($id);
-        return view('groups.show', compact('group'));
-    }
-
     public function edit($id)
     {
-        $group = Group::findOrFail($id);
-        $parameterNames = Parameter::PARAMETERS;
-        return view('groups.edit', compact('group', 'parameterNames'));
+        $group = Group::select('groups.id', 'p.name', 'u.first_name', 'u.middle_name',
+                                'u.last_name', 'u.second_last_name', 'u.carnet', 'ug.is_leader')
+                ->join('user_group as ug', 'groups.id', 'ug.group_id')
+                ->join('users as u', 'ug.user_id', 'u.id')
+                ->join('protocols as p', 'groups.protocol_id', 'p.id')
+                ->where('groups.id', $id)
+                ->where('ug.status', 1)
+                ->get();
+
+        return view('groups.edit', compact('group', 'id'));
     }
 
     public function update(Request $request, $id)
@@ -124,42 +133,22 @@ class GroupController extends Controller
         // Validación de los datos del ciclo y los parámetros
 
         $validatedData = $request->validate([
-            'number'        => 'required|integer',
-            'year'          => 'required|integer',
-            'status'        => 'required|boolean',
-            'parameters'    => 'array', // Campo que contendrá los parámetros
+            'group_id'        => 'required|integer',
+            'decision'        => 'required|integer',
+            // Campo que contendrá los parámetros
         ]);
 
         // Encontrar el ciclo que se desea actualizar
         $group = Group::findOrFail($id);
 
         // Actualizar los datos del ciclo
+        // 1 = aceptado
+        // 2 = denegado
         $group->update([
-            'number'    => $validatedData['number'],
-            'year'      => $validatedData['year'],
-            'status'    => $validatedData['status'],
+            'status'    => $request->decision,
         ]);
-        // dd($group);
-        // Actualizar o crear los parámetros
-        $parameterNames = Parameter::PARAMETERS; // Obtén el array de nombres de parámetros
 
-        foreach ($parameterNames as $key => $name) {
-            // Encuentra el parámetro por su nombre
-            $parameter = $group->parameters()->where('name', $key)->first();
-
-            // Si el parámetro existe, actualízalo
-            if ($parameter) {
-                $parameter->update(['value' => $validatedData['parameters'][$key]]);
-            } else {
-                // Si no existe, crea un nuevo parámetro
-                Parameter::create([
-                    'name'      => $key,
-                    'value'     => $validatedData['parameters'][$key],
-                    'group_id'  => $group->id,
-                ]);
-            }
-        }
-        return redirect()->route('groups.index')->with('success', 'Ciclo actualizado con éxito');
+        return redirect()->route('groups.index')->with('success', 'Grupo actualizado con éxito');
     }
 
     public function destroy($id)
@@ -189,7 +178,7 @@ class GroupController extends Controller
                 $isActiveInOtherGroup = Group::join('user_group', 'user_group.group_id', '=', 'groups.id')
                     ->where('user_group.user_id', $user->id)
                     ->where('groups.year', $year)
-                    ->where('user_group.status', 1) // Supongo que '1' representa el estado activo
+                    ->where('user_group.status', 1) // '1' representa el estado confirmado
                     ->exists();
                 if ($isActiveInOtherGroup) {
                     // El usuario está activo en otro grupo este año

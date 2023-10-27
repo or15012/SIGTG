@@ -44,9 +44,9 @@
                         </td>
                         <td>{{ $group->first_name }} {{ $group->middle_name }} {{ $group->last_name }} {{ $group->second_last_name }}</td>
                         <td>{{ $group->user_count }}</td>
-                        <td>Proyecto Iniciado</td>
+                        <td>{{ $group->name }}</td>
                         <td>
-                            <a href="{{ route('groups.show', $group->id) }}" class="btn btn-warning">
+                            <a href="{{ route('groups.edit', $group->id) }}" class="btn btn-warning">
                             <i class="fas fa-cog"></i>
                             </a>
                         </td>

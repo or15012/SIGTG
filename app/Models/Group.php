@@ -14,6 +14,7 @@ class Group extends Model
         'number',
         'year',
         'status',
+        'state_id',
         'created_at',
         'updated_at',
         'deleted_at',

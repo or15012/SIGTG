@@ -10764,12 +10764,12 @@ var __webpack_exports__ = {};
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 $(document).ready(function () {
   $("#accept-invitation").click(function () {
-    $("#decision").val("1"); // Cambiar el valor a 1 antes de enviar el formulario
+    $("#decision").val("1"); // Cambiar el valor a 1 antes de enviar el formulario acepta invitacion
     $("#form-group-confirm").submit(); // Enviar el formulario
   });
 
   $("#deny-invitation").click(function () {
-    $("#decision").val("2"); // Cambiar el valor a 2 antes de enviar el formulario
+    $("#decision").val("2"); // Cambiar el valor a 2 antes de enviar el formulario deniega invitacion
     $("#form-group-confirm").submit(); // Enviar el formulario
   });
 });
