@@ -16,7 +16,7 @@ class GroupController extends Controller
     public function index()
     {
         $year = date('Y');
-        $groups = Group::select('*')->addSelect([
+        $groups = Group::select('groups.id','groups.number','u.first_name','u.middle_name','u.last_name','u.second_last_name','s.name')->addSelect([
             'user_count' => UserGroup::selectRaw('COUNT(user_id)')
                 ->whereColumn('group_id', 'groups.id')
                 ->where('status', 1)
@@ -27,7 +27,8 @@ class GroupController extends Controller
             ->where('groups.year', $year)
             ->where('ug.is_leader', 1)
             ->paginate(20);
-
+            
+            //dd($groups);
         return view('groups.index', compact('groups'));
     }
 
@@ -88,12 +89,14 @@ class GroupController extends Controller
             $protocol = $user->protocols()
                 ->where('user_protocol.status', true)
                 ->first();
+             // dd($protocol->id);
             // Crear un nuevo grupo
             $group = Group::create([
                 'year'          => date("Y"),
                 'status'        => 0,
                 'state_id'      => 1,
-                'protocol_id'   => $protocol->id
+                'protocol_id'   => $protocol->id,
+                'cycle_id'      => 1
             ]);
         }
         $group->users()->detach();
@@ -124,6 +127,8 @@ class GroupController extends Controller
                 ->where('groups.id', $id)
                 ->where('ug.status', 1)
                 ->get();
+
+                //dd($group);
 
         return view('groups.edit', compact('group', 'id'));
     }

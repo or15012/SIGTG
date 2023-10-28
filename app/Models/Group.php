@@ -15,6 +15,8 @@ class Group extends Model
         'year',
         'status',
         'state_id',
+        'protocol_id',
+        'cycle_id',
         'created_at',
         'updated_at',
         'deleted_at',
