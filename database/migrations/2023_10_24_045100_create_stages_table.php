@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string("name");
             $table->foreignId('protocol_id')->constrained('users')->onDelete('restrict');
             $table->foreignId('cycle_id')->constrained('cycles')->onDelete('restrict');
+            $table->foreignId('school_id')->constrained('schools')->onDelete('restrict');
             $table->timestamps();
         });
     }
