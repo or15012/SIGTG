@@ -16,7 +16,7 @@ class GroupController extends Controller
     public function index()
     {
         $year = date('Y');
-        $groups = Group::select('groups.id','groups.number','u.first_name','u.middle_name','u.last_name','u.second_last_name','s.name')->addSelect([
+        $groups = Group::select('groups.id', 'groups.number', 'u.first_name', 'u.middle_name', 'u.last_name', 'u.second_last_name', 's.name')->addSelect([
             'user_count' => UserGroup::selectRaw('COUNT(user_id)')
                 ->whereColumn('group_id', 'groups.id')
                 ->where('status', 1)
@@ -27,8 +27,8 @@ class GroupController extends Controller
             ->where('groups.year', $year)
             ->where('ug.is_leader', 1)
             ->paginate(20);
-            
-            //dd($groups);
+
+        //dd($groups);
         return view('groups.index', compact('groups'));
     }
 
@@ -89,7 +89,7 @@ class GroupController extends Controller
             $protocol = $user->protocols()
                 ->where('user_protocol.status', true)
                 ->first();
-             // dd($protocol->id);
+            // dd($protocol->id);
             // Crear un nuevo grupo
             $group = Group::create([
                 'year'          => date("Y"),
@@ -119,16 +119,24 @@ class GroupController extends Controller
 
     public function edit($id)
     {
-        $group = Group::select('groups.id', 'p.name', 'u.first_name', 'u.middle_name',
-                                'u.last_name', 'u.second_last_name', 'u.carnet', 'ug.is_leader')
-                ->join('user_group as ug', 'groups.id', 'ug.group_id')
-                ->join('users as u', 'ug.user_id', 'u.id')
-                ->join('protocols as p', 'groups.protocol_id', 'p.id')
-                ->where('groups.id', $id)
-                ->where('ug.status', 1)
-                ->get();
+        $group = Group::select(
+            'groups.id',
+            'p.name',
+            'u.first_name',
+            'u.middle_name',
+            'u.last_name',
+            'u.second_last_name',
+            'u.carnet',
+            'ug.is_leader'
+        )
+            ->join('user_group as ug', 'groups.id', 'ug.group_id')
+            ->join('users as u', 'ug.user_id', 'u.id')
+            ->join('protocols as p', 'groups.protocol_id', 'p.id')
+            ->where('groups.id', $id)
+            ->where('ug.status', 1)
+            ->get();
 
-                //dd($group);
+        //dd($group);
 
         return view('groups.edit', compact('group', 'id'));
     }
@@ -136,7 +144,6 @@ class GroupController extends Controller
     public function update(Request $request, $id)
     {
         // Validación de los datos del ciclo y los parámetros
-
         $validatedData = $request->validate([
             'group_id'        => 'required|integer',
             'decision'        => 'required|integer',
@@ -149,8 +156,15 @@ class GroupController extends Controller
         // Actualizar los datos del ciclo
         // 1 = aceptado
         // 2 = denegado
+
+        $stateId = 3;
+        if ($request->decision == 1) {
+            $stateId = 2;
+        }
+
         $group->update([
             'status'    => $request->decision,
+            'state_id'  => $stateId,
         ]);
 
         return redirect()->route('groups.index')->with('success', 'Grupo actualizado con éxito');

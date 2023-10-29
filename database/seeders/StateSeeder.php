@@ -20,6 +20,6 @@ class StateSeeder extends Seeder
 
         DB::table('states')->insert($data);
 
-        $this->command->info('State data seeded successfully.');
+        $this->command->info('States data seeded successfully.');
     }
 }

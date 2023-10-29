@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Trabajo de Investigación",
+        "id": 1
+    },
+    {
+        "name": "Pasantía de Práctica Profesional",
+        "id": 2
+    },
+    {
+        "name": "Pasantía de Investigación",
+        "id": 3
+    },
+    {
+        "name": "Cursos de Especialización",
+        "id": 4
+    },
+    {
+        "name": "Examen General Técnico Profesional",
+        "id": 5
+    }
+]

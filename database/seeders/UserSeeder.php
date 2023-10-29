@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 
-class SchoolSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,10 +15,10 @@ class SchoolSeeder extends Seeder
      */
     public function run()
     {
-        $data = json_decode(File::get(database_path('datos/schools.json')), true);
+        $data = json_decode(File::get(database_path('datos/users.json')), true);
 
-        DB::table('schools')->insert($data);
+        DB::table('users')->insert($data);
 
-        $this->command->info('Schools data seeded successfully.');
+        $this->command->info('States data seeded successfully.');
     }
 }
