@@ -17,3 +17,7 @@ yarn-error.log
 /public/css/
 /public/js/
 .env.local
+/public/mix-manifest.json
+/public/css/
+/public/js/
+/public/assets/

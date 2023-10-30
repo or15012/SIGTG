@@ -8,6 +8,7 @@ use App\Http\Controllers\ProtocolController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\ConsultingController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -91,6 +92,17 @@ Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
     Route::get('{id}/edit', [GroupController::class, 'edit'])->name('edit');
     Route::put('{id}', [GroupController::class, 'update'])->name('update');
     Route::delete('{id}', [GroupController::class, 'destroy'])->name('destroy');
+});
+
+//Grupo para las rutas de asesoria.
+Route::group(['prefix' => 'consultings', 'as' => 'consultings.'], function () {
+    Route::get('/', [ConsultingController::class, 'index'])->name('index');
+    Route::get('/create', [ConsultingController::class, 'create'])->name('create');
+    Route::post('/', [ConsultingController::class,  'store'])->name('store');
+    Route::get('/{consulting}', [SchoolController::class, 'show'])->name('show');
+    Route::get('/{consulting}/edit', [SchoolController::class, 'edit'])->name('edit');
+    Route::put('/{consulting}', [SchoolController::class, 'update'])->name('update');
+    Route::delete('/{consulting}', [SchoolController::class, 'destroy'])->name('destroy');
 });
 
 
