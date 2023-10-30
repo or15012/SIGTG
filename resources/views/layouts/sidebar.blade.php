@@ -41,23 +41,38 @@
 
 
                 <li>
-                    <a href="{{ url('/schools') }}">
+                    <a href="{{ route('schools.index') }}">
                         <i class="bx bx-building-house icon nav-icon"></i>
                         <span class="menu-item" data-key="t-schools">@lang('translation.Schools')</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ url('/protocols') }}">
+                    <a href="{{ route('protocols.index') }}">
                         <i class="bx bx-collection icon nav-icon"></i>
                         <span class="menu-item" data-key="t-protocols">@lang('translation.Protocols')</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="{{ url('/cycles') }}">
-                        <i class="bx bx-collection icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-protocols">@lang('translation.Protocols')</span>
+                    <a href="{{ route('cycles.index') }}">
+                        <i class="bx bx-shape-circle icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-cycles">@lang('translation.Cycles')</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('groups.index') }}">
+                        <i class="bx bx-group icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-cycles">@lang('translation.Groups')</span>
+                    </a>
+                </li>
+
+
+                <li>
+                    <a href="{{ route('profiles.preprofile.index') }}">
+                        <i class="bx bx-group icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-cycles">@lang('translation.PreProfile')</span>
                     </a>
                 </li>
 

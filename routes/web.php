@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CycleController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProtocolController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolController;
@@ -91,6 +92,14 @@ Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
     Route::get('{id}/edit', [GroupController::class, 'edit'])->name('edit');
     Route::put('{id}', [GroupController::class, 'update'])->name('update');
     Route::delete('{id}', [GroupController::class, 'destroy'])->name('destroy');
+});
+
+
+//Grupo para las rutas de preperfil y perfil
+Route::group(['prefix' => 'profiles', 'as' => 'profiles.'], function () {
+    Route::get('/preprofile/index', [ProfileController::class, 'preProfileIndex'])->name('preprofile.index');
+    Route::get('/preprofile/create', [ProfileController::class, 'preProfileCreate'])->name('preprofile.create');
+    Route::get('/preprofile/edit', [ProfileController::class, 'preProfileEdit'])->name('preprofile.edit');
 });
 
 

@@ -35,7 +35,7 @@
 
                                     <div class="mb-3">
                                         <label class="form-label" for="username">Email</label>
-                                        <input name="email" type="email" class="form-control @error('email') is-invalid @enderror" id="username" value="{{ old('email', 'admin@themesbrand.com') }}"  placeholder="Enter Email" autocomplete="email" autofocus>
+                                        <input name="email" type="email" class="form-control @error('email') is-invalid @enderror" id="username" value="{{ old('email', 'or15012@ues.edu.sv') }}"  placeholder="Enter Email" autocomplete="email" autofocus>
                                         @error('email')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>

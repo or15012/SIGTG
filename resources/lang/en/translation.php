@@ -154,8 +154,10 @@
 "Vector_Maps" => "Vector Maps",
 "UserList"  => "User List",
 "Group"     => "Group",
-"Group"     => "Group",
+"Groups"     => "Groups",
 "Schools" => "Schools",
 "Group"     => "Group",
 "Protocols" => "Protocols",
+"Cycles"    => "Cycles",
+"PreProfile" => "Pre profile"
 ];

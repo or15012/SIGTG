@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 class CycleController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $cycles = Cycle::with('parameters')->get();
