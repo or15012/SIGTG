@@ -26,7 +26,7 @@
             <thead>
                 <tr>
                     <th>Nombre</th>
-                    <th>Descripcion</th>
+                    <th style="width: 40%">Descripcion</th>
                     <th>Fecha subida</th>
                     <th>Acciones</th>
                 </tr>
@@ -35,14 +35,19 @@
                 @foreach ($preprofiles as $preprofile)
                     <tr>
                         <td>{{ $preprofile->name }} </td>
-                        <td>{{ str_limit($preprofile->description, 100, '...') }}</td>
+                        <td  style="width: 40%">{{  Illuminate\Support\Str::limit($preprofile->description, 100, '...') }}</td>
                         <td>{{ $preprofile->created_at->format('d-m-Y') }}</td>
                         <td>
-                            <a href="{{ route('profiles.preprofile.edit', $preprofile->id) }}" class="btn btn-warning">
-                            <i class="fas fa-cog"></i>
-                            </a>
+                            <a href="{{ route('profiles.preprofile.show', $preprofile->id) }}" class="btn btn-primary">Ver</a>
+                            <a href="{{ route('profiles.preprofile.edit', $preprofile->id) }}" class="btn btn-warning">Editar</a>
+                            <form action="{{ route('profiles.preprofile.destroy', $preprofile->id) }}" method="POST" style="display: inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                            </form>
                         </td>
                     </tr>
+
                 @endforeach
             </tbody>
         </table>

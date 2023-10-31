@@ -97,9 +97,17 @@ Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
 
 //Grupo para las rutas de preperfil y perfil
 Route::group(['prefix' => 'profiles', 'as' => 'profiles.'], function () {
+
     Route::get('/preprofile/index', [ProfileController::class, 'preProfileIndex'])->name('preprofile.index');
+    Route::get('/preprofiles/show/{preprofile}', [ProfileController::class, 'preProfileShow'])->name('preprofile.show');
     Route::get('/preprofile/create', [ProfileController::class, 'preProfileCreate'])->name('preprofile.create');
-    Route::get('/preprofile/edit', [ProfileController::class, 'preProfileEdit'])->name('preprofile.edit');
+    Route::post('/preprofile/store', [ProfileController::class, 'preProfileStore'])->name('preprofile.store');
+    Route::get('/preprofile/edit/{preprofile}', [ProfileController::class, 'preProfileEdit'])->name('preprofile.edit');
+    Route::put('/preprofile/update/{preprofile}', [ProfileController::class, 'preProfileUpdate'])->name('preprofile.update');
+    Route::delete('/preprofile/destroy/{preprofile}', [ProfileController::class, 'preProfileDestroy'])->name('preprofile.destroy');
+    Route::get('preprofiles/download/{preprofile}',[ProfileController::class, 'preProfileDownload'])->name('preprofile.download');
+
+
 });
 
 

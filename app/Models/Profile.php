@@ -14,6 +14,7 @@ class Profile extends Model
         'name',
         'description',
         'type',
+        'path',
         'created_at',
         'updated_at',
         'deleted_at',
