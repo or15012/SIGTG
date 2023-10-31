@@ -40,7 +40,7 @@
                         <td>{{ $consulting->topics }}</td>
                         <td>{{ $consulting->number }}</td>
                         <td>{{ $consulting->summary }}</td>
-                        <td>{{ $consulting->date }}</td>
+                        <td>{{ \Carbon\Carbon::parse($consulting->date)->format('d-m-Y') }}</td> 
                         <td>
                             <a href="{{ route('consultings.edit', $consulting->id) }}" class="btn btn-warning">Editar</a>
                             <form action="{{ route('consultings.destroy', $consulting->id) }}" method="POST" style="display: inline">

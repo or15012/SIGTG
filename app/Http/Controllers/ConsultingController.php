@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Consulting;
 use App\Models\Group;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ConsultingController extends Controller
@@ -31,7 +32,7 @@ class ConsultingController extends Controller
             'number'    => 'required|integer',
             'summary'   => 'required',
             'date'      => 'required|date', // Campo 'fecha' es obligatorio y debe ser una fecha válida'
-            
+
         ]);
 
         $consulting = Consulting::create([
@@ -46,4 +47,31 @@ class ConsultingController extends Controller
         return redirect()->route('consultings.index')->with('success', 'Asesoria creada correctamente.');
     }
 
+    public function edit(Consulting $consulting)
+    {
+
+        $consulting->date = Carbon::parse($consulting->date)->format('Y-m-d');
+        return view('consultings.edit', compact('consulting'));
+    }
+
+    public function update(Request $request, Consulting $consulting)
+    {
+        $data = $request->validate([
+            'topics'    => 'required',
+            'number'    => 'required|integer',
+            'summary'   => 'required',
+            'date'      => 'required|date', // Campo 'fecha' es obligatorio y debe ser una fecha válida'
+        ]);
+
+        $consulting->update($data);
+
+        return redirect()->route('consultings.index')->with('success', 'Asesoria actualizada correctamente.');
+    }
+
+    public function destroy(Consulting $consulting)
+    {
+        $consulting->delete();
+
+        return redirect()->route('consultings.index')->with('success', 'Asesoria eliminada correctamente.');
+    }
 }

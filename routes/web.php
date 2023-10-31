@@ -99,10 +99,10 @@ Route::group(['prefix' => 'consultings', 'as' => 'consultings.'], function () {
     Route::get('/', [ConsultingController::class, 'index'])->name('index');
     Route::get('/create', [ConsultingController::class, 'create'])->name('create');
     Route::post('/', [ConsultingController::class,  'store'])->name('store');
-    Route::get('/{consulting}', [SchoolController::class, 'show'])->name('show');
-    Route::get('/{consulting}/edit', [SchoolController::class, 'edit'])->name('edit');
-    Route::put('/{consulting}', [SchoolController::class, 'update'])->name('update');
-    Route::delete('/{consulting}', [SchoolController::class, 'destroy'])->name('destroy');
+    Route::get('/{consulting}', [ConsultingController::class, 'show'])->name('show');
+    Route::get('/{consulting}/edit', [ConsultingController::class, 'edit'])->name('edit');
+    Route::put('/{consulting}', [ConsultingController::class, 'update'])->name('update');
+    Route::delete('/{consulting}', [ConsultingController::class, 'destroy'])->name('destroy');
 });
 
 
