@@ -20,13 +20,6 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-
-        DB::table('schools')
-        ->insert(
-            array(
-                'name' => 'admin',
-            )
-        );
     }
 
     /**

@@ -1,0 +1,26 @@
+[
+    {
+        "number": 1,
+        "year": 2023,
+        "status" : 0,
+        "id": 1
+    },
+    {
+        "number": 2,
+        "year": 2023,
+        "status" : 1,
+        "id": 2
+    },
+    {
+        "number": 1,
+        "year": 2024,
+        "status" : 0,
+        "id": 3
+    },
+    {
+        "number": 2,
+        "year": 2024,
+        "status" : 0,
+        "id": 4
+    }
+]

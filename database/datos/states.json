@@ -1,30 +1,37 @@
 [
     {
         "name": "Grupo inicializado",
-        "protocol_id": 1
+        "protocol_id": 1,
+        "id": 1
     },
     {
         "name": "Grupo aceptado",
-        "protocol_id": 1
+        "protocol_id": 1,
+        "id": 2
     },
     {
         "name": "Grupo rechazado",
-        "protocol_id": 1
+        "protocol_id": 1,
+        "id": 3
     },
     {
         "name": "Creación de propuesta",
-        "protocol_id": 1
+        "protocol_id": 1,
+        "id": 4
     },
     {
         "name": "En proceso",
-        "protocol_id": 1
+        "protocol_id": 1,
+        "id": 5
     },
     {
         "name": "Iniciado",
-        "protocol_id": 1
+        "protocol_id": 1,
+        "id": 6
     },
     {
         "name": "En proceso",
-        "protocol_id": 1
+        "protocol_id": 1,
+        "id": 7
     }
 ]

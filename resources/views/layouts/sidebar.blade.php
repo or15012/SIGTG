@@ -8,13 +8,15 @@
                 <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22">
             </span>
             <span class="logo-lg">
-                <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22"> <span class="logo-txt">@lang('translation.SIGTG-FIA')</span>
+                <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22"> <span
+                    class="logo-txt">@lang('translation.SIGTG-FIA')</span>
             </span>
         </a>
 
         <a href="{{ url('/') }}" class="logo logo-light">
             <span class="logo-lg">
-                <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22"> <span class="logo-txt">@lang('translation.SIGTG-FIA')</span>
+                <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22"> <span
+                    class="logo-txt">@lang('translation.SIGTG-FIA')</span>
             </span>
             <span class="logo-sm">
                 <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22">
@@ -31,7 +33,51 @@
         <!--- Sidemenu -->
         <div id="sidebar-menu">
             <!-- Left Menu Start -->
+
+
+
+
             <ul class="metismenu list-unstyled" id="side-menu">
+
+
+                <li>
+                    <a href="{{ route('schools.index') }}">
+                        <i class="bx bx-building-house icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-schools">@lang('translation.Schools')</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('protocols.index') }}">
+                        <i class="bx bx-collection icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-protocols">@lang('translation.Protocols')</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('cycles.index') }}">
+                        <i class="bx bx-shape-circle icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-cycles">@lang('translation.Cycles')</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('groups.index') }}">
+                        <i class="bx bx-group icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-cycles">@lang('translation.Groups')</span>
+                    </a>
+                </li>
+
+
+                <li>
+                    <a href="{{ route('profiles.preprofile.index') }}">
+                        <i class="bx bx-group icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-cycles">@lang('translation.PreProfile')</span>
+                    </a>
+                </li>
+
+
+
                 <li class="menu-title" data-key="t-menu">Menu</li>
 
                 <li>
@@ -124,8 +170,10 @@
                         <li><a href="auth-lock-screen" data-key="t-lock-screen">@lang('translation.Lock_Screen')</a></li>
                         <li><a href="auth-logout" data-key="t-logout">@lang('translation.Log_Out')</a></li>
                         <li><a href="auth-confirm-mail" data-key="t-confirm-mail">@lang('translation.Confirm_Mail')</a></li>
-                        <li><a href="auth-email-verification" data-key="t-email-verification">@lang('translation.Email_Verification')</a></li>
-                        <li><a href="auth-two-step-verification" data-key="t-two-step-verification">@lang('translation.Two_Step_Verification')</a></li>
+                        <li><a href="auth-email-verification" data-key="t-email-verification">@lang('translation.Email_Verification')</a>
+                        </li>
+                        <li><a href="auth-two-step-verification"
+                                data-key="t-two-step-verification">@lang('translation.Two_Step_Verification')</a></li>
                     </ul>
                 </li>
 
@@ -265,7 +313,8 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="true">
                         <li><a href="javascript: void(0);" data-key="t-level-1.1">@lang('translation.Level_1_1')</a></li>
-                        <li><a href="javascript: void(0);" class="has-arrow" data-key="t-level-1.2">@lang('translation.Level_1_2')</a>
+                        <li><a href="javascript: void(0);" class="has-arrow"
+                                data-key="t-level-1.2">@lang('translation.Level_1_2')</a>
                             <ul class="sub-menu" aria-expanded="true">
                                 <li><a href="javascript: void(0);" data-key="t-level-2.1">@lang('translation.Level_2_1')</a></li>
                                 <li><a href="javascript: void(0);" data-key="t-level-2.2">@lang('translation.Level_2_2')</a></li>

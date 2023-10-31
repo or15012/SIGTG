@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CycleController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProtocolController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolController;
@@ -103,6 +104,22 @@ Route::group(['prefix' => 'consultings', 'as' => 'consultings.'], function () {
     Route::get('/{consulting}/edit', [ConsultingController::class, 'edit'])->name('edit');
     Route::put('/{consulting}', [ConsultingController::class, 'update'])->name('update');
     Route::delete('/{consulting}', [ConsultingController::class, 'destroy'])->name('destroy');
+});
+
+
+//Grupo para las rutas de preperfil y perfil
+Route::group(['prefix' => 'profiles', 'as' => 'profiles.'], function () {
+
+    Route::get('/preprofile/index', [ProfileController::class, 'preProfileIndex'])->name('preprofile.index');
+    Route::get('/preprofiles/show/{preprofile}', [ProfileController::class, 'preProfileShow'])->name('preprofile.show');
+    Route::get('/preprofile/create', [ProfileController::class, 'preProfileCreate'])->name('preprofile.create');
+    Route::post('/preprofile/store', [ProfileController::class, 'preProfileStore'])->name('preprofile.store');
+    Route::get('/preprofile/edit/{preprofile}', [ProfileController::class, 'preProfileEdit'])->name('preprofile.edit');
+    Route::put('/preprofile/update/{preprofile}', [ProfileController::class, 'preProfileUpdate'])->name('preprofile.update');
+    Route::delete('/preprofile/destroy/{preprofile}', [ProfileController::class, 'preProfileDestroy'])->name('preprofile.destroy');
+    Route::get('preprofiles/download/{preprofile}',[ProfileController::class, 'preProfileDownload'])->name('preprofile.download');
+
+
 });
 
 

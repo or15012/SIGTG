@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Escuela de Arquitectura",
+        "id": 1
+    },
+    {
+        "name": "Escuela de Ingeniería Mecánica",
+        "id": 2
+    },
+    {
+        "name": "Escuela de Ingeniería Civil",
+        "id": 3
+    },
+    {
+        "name": "Escuela de Ingeniería Eléctrica",
+        "id": 4
+    },
+    {
+        "name": "Escuela de Ingeniería Industrial",
+        "id": 5
+    },
+    {
+        "name": "Escuela de Ingeniería Química y de Ingeniería de Alimentos",
+        "id": 6
+    }
+]

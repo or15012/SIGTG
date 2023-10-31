@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Log;
 
 class StudentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function getStudent($carnet)
     {
         try {
