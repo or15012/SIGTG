@@ -19,4 +19,9 @@ class Profile extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function observations()
+    {
+        return $this->hasMany(Observation::class);
+    }
 }

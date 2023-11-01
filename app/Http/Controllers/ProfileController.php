@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\Observation;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,7 +30,9 @@ class ProfileController extends Controller
             })
             ->first();
 
-        $preprofiles = Profile::where('group_id', $group->id)->paginate(10);
+        $preprofiles = Profile::where('group_id', $group->id)
+            ->where("type", 0)
+            ->paginate(10);
 
         return view('preprofiles.index', compact('preprofiles'));
     }
@@ -121,5 +124,68 @@ class ProfileController extends Controller
     {
         $filePath = storage_path("app/{$preprofile->path}");
         return response()->download($filePath);
+    }
+
+
+
+    public function preProfileCoodinatorIndex()
+    {
+        //obtener grupo actual del user logueado
+        $user = Auth::user();
+        // Obtiene el año actual
+        $year = date('Y');
+        // Realiza una consulta para verificar si el usuario está en un grupo del año actual
+        $protocolsWithStatus = $user->protocols()->wherePivot('status', 1)->first();
+
+        $groups = Group::where('groups.year', $year)
+            ->where('groups.status', 1)
+            ->get(["id"]);
+
+        $preprofiles = Profile::whereIn('group_id', $groups)
+            ->where("type", 0)
+            ->paginate(10);
+
+        return view('preprofiles.coordinator.index', compact('preprofiles'));
+    }
+
+    public function preProfileCoodinatorShow(Profile $preprofile)
+    {
+        return view('preprofiles.coordinator.show', compact('preprofile'));
+    }
+
+
+    public function preProfileCoodinatorUpdate(Request $request, Profile $preprofile){
+
+        dd($request);
+        return view('preprofiles.coordinator.show', compact('preprofile'));
+    }
+
+
+    public function preProfileCoodinatorObservationsList(Profile $preprofile)
+    {
+        return view('preprofiles.coordinator.observations', ['preprofile' => $preprofile]);
+    }
+
+
+    public function preProfileCoordinatorObservationCreate(Request $request, Profile $preprofile)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'new_path' => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
+        ]);
+
+        // Actualizar los campos del perfil
+        $preprofile->name = $request->input('name');
+        $preprofile->description = $request->input('description');
+
+        // Procesar y guardar el nuevo archivo si se proporciona
+        if ($request->hasFile('new_path')) {
+            $newPath = $request->file('new_path')->store('preprofiles');
+            $preprofile->path = $newPath;
+        }
+        $preprofile->update();
+
+        return redirect()->route('profiles.coordinator.index')->with('success', 'El preperfil se ha actualizado correctamente');
     }
 }
