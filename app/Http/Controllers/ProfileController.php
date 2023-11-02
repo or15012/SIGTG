@@ -155,8 +155,13 @@ class ProfileController extends Controller
 
 
     public function preProfileCoodinatorUpdate(Request $request, Profile $preprofile){
+        $validatedData = $request->validate([
+            'decision' => 'required',// Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
+        ]);
 
-        dd($request);
+        $preprofile->status = $request->decision;
+        $preprofile->update();
+
         return view('preprofiles.coordinator.show', compact('preprofile'));
     }
 
@@ -167,25 +172,26 @@ class ProfileController extends Controller
     }
 
 
-    public function preProfileCoordinatorObservationCreate(Request $request, Profile $preprofile)
+    public function preProfileCoordinatorObservationCreate(Profile $preprofile)
     {
+        return view('preprofiles.coordinator.create', ['preprofile' => $preprofile]);
+    }
+
+
+    public function preProfileCoordinatorObservationStore(Request $request)
+    {
+        // Validación de los datos del formulario
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'new_path' => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
+            'profile_id' => 'required', // Esto valida que el archivo sea un PDF (puedes ajustar según tus necesidades)
         ]);
 
-        // Actualizar los campos del perfil
-        $preprofile->name = $request->input('name');
-        $preprofile->description = $request->input('description');
+        // Crear un nueva observación
+        $observation                = new Observation();
+        $observation->description   = $request->description;
+        $observation->profile_id    = $request->profile_id;
+        $observation->save();
 
-        // Procesar y guardar el nuevo archivo si se proporciona
-        if ($request->hasFile('new_path')) {
-            $newPath = $request->file('new_path')->store('preprofiles');
-            $preprofile->path = $newPath;
-        }
-        $preprofile->update();
-
-        return redirect()->route('profiles.coordinator.index')->with('success', 'El preperfil se ha actualizado correctamente');
+        return redirect()->route('profiles.preprofile.coordinator.observation.list', [$request->profile_id])->with('success', 'La observación se ha guardado correctamente');
     }
 }

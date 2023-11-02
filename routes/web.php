@@ -112,7 +112,11 @@ Route::group(['prefix' => 'profiles', 'as' => 'profiles.'], function () {
     Route::put('/preprofile/coordinator/update/{preprofile}', [ProfileController::class, 'preProfileCoodinatorUpdate'])->name('preprofile.coordinator.update');
     Route::get('/preprofile/coordinator/observation/list/{preprofile}', [ProfileController::class, 'preProfileCoodinatorObservationsList'])->name('preprofile.coordinator.observation.list');
     Route::get('/preprofile/coordinator/observation/create/{preprofile}', [ProfileController::class, 'preProfileCoordinatorObservationCreate'])->name('preprofile.coordinator.observation.create');
+    Route::post('/preprofile/coordinator/observation/store', [ProfileController::class, 'preProfileCoordinatorObservationStore'])->name('preprofile.coordinator.observation.store');
+
 });
+
+
 
 
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');

@@ -159,6 +159,7 @@
 "Group"     => "Group",
 "Protocols" => "Protocols",
 "Cycles"    => "Cycles",
-"PreProfile" => "Pre profile",
+"PreProfile" => "Pre profiles",
 "ShowPreperfil" => "Show preprofile",
+"PreProfileAdviser" => "Pre profiles (adviser)",
 ];

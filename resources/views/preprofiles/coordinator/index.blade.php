@@ -34,7 +34,7 @@
                     <tr>
                         <td>{{ $preprofile->name }} </td>
                         <td  style="width: 40%">{{  Illuminate\Support\Str::limit($preprofile->description, 100, '...') }}</td>
-                        <td>{{ $preprofile->created_at->format('d-m-Y') }}</td>
+                        <td class="text-nowrap">{{ $preprofile->created_at->format('d-m-Y') }}</td>
                         <td>
                             @switch($preprofile->status)
                                 @case(0)
@@ -50,7 +50,7 @@
                                 @break
 
                                 @case(3)
-                                        Pre perfil aceptado.
+                                        Pre perfil rechazado.
                                 @break
 
                                 @default

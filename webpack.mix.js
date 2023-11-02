@@ -260,6 +260,8 @@ lodash(app_pages_assets).forEach(function (assets, type) {
 mix.js('resources/js/group_initialize.js', 'public/js/group_initialize.js');
 mix.js('resources/js/group_confirm.js', 'public/js/group_confirm.js');
 mix.js('resources/js/group_edit.js', 'public/js/group_edit.js');
+mix.js('resources/js/preprofille_observation_show.js', 'public/js/preprofille_observation_show.js');
+
 
 mix.combine('resources/js/pages/invoice-list.init.js', folder.dist_assets + "js/pages/invoice-list.init.js");
 mix.combine('resources/js/pages/leaflet-us-states.js', folder.dist_assets + "js/pages/leaflet-us-states.js");

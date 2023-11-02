@@ -31,7 +31,7 @@
             @method('PUT')
 
             <input type="hidden" name="profile_id" value="{{ $preprofile->id }}">
-
+            <input type="hidden" id="decision" name="decision" value="">
             <button type="button" id="accept-preprofile" class="btn btn-primary  waves-effect waves-light"
                 data-bs-toggle="tooltip" data-bs-placement="top" title="Aceptar preperfil.">
                 <i class="fas fa-check"></i>
