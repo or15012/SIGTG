@@ -119,8 +119,16 @@ Route::group(['prefix' => 'profiles', 'as' => 'profiles.'], function () {
     Route::delete('/preprofile/destroy/{preprofile}', [ProfileController::class, 'preProfileDestroy'])->name('preprofile.destroy');
     Route::get('preprofiles/download/{preprofile}',[ProfileController::class, 'preProfileDownload'])->name('preprofile.download');
 
+    Route::get('/preprofile/coordinator/index', [ProfileController::class, 'preProfileCoodinatorIndex'])->name('preprofile.coordinator.index');
+    Route::get('/preprofile/coordinator/show/{preprofile}', [ProfileController::class, 'preProfileCoodinatorShow'])->name('preprofile.coordinator.show');
+    Route::put('/preprofile/coordinator/update/{preprofile}', [ProfileController::class, 'preProfileCoodinatorUpdate'])->name('preprofile.coordinator.update');
+    Route::get('/preprofile/coordinator/observation/list/{preprofile}', [ProfileController::class, 'preProfileCoodinatorObservationsList'])->name('preprofile.coordinator.observation.list');
+    Route::get('/preprofile/coordinator/observation/create/{preprofile}', [ProfileController::class, 'preProfileCoordinatorObservationCreate'])->name('preprofile.coordinator.observation.create');
+    Route::post('/preprofile/coordinator/observation/store', [ProfileController::class, 'preProfileCoordinatorObservationStore'])->name('preprofile.coordinator.observation.store');
 
 });
+
+
 
 
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');

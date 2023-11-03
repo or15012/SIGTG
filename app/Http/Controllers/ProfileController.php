@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\Observation;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,7 +30,9 @@ class ProfileController extends Controller
             })
             ->first();
 
-        $preprofiles = Profile::where('group_id', $group->id)->paginate(10);
+        $preprofiles = Profile::where('group_id', $group->id)
+            ->where("type", 0)
+            ->paginate(10);
 
         return view('preprofiles.index', compact('preprofiles'));
     }
@@ -121,5 +124,77 @@ class ProfileController extends Controller
     {
         $filePath = storage_path("app/{$preprofile->path}");
         return response()->download($filePath);
+    }
+
+
+
+    public function preProfileCoodinatorIndex()
+    {
+        //obtener grupo actual del user logueado
+        $user = Auth::user();
+        // Obtiene el año actual
+        $year = date('Y');
+        // Realiza una consulta para verificar si el usuario está en un grupo del año actual
+        $protocolsWithStatus = $user->protocols()->wherePivot('status', 1)->first();
+
+        $groups = Group::where('groups.year', $year)
+            ->where('groups.status', 1)
+            ->get(["id"]);
+
+        $preprofiles = Profile::whereIn('group_id', $groups)
+            ->where("type", 0)
+            ->paginate(10);
+
+        return view('preprofiles.coordinator.index', compact('preprofiles'));
+    }
+
+    public function preProfileCoodinatorShow(Profile $preprofile)
+    {
+        return view('preprofiles.coordinator.show', compact('preprofile'));
+    }
+
+
+    public function preProfileCoodinatorUpdate(Request $request, Profile $preprofile){
+        $validatedData = $request->validate([
+            'decision' => 'required',// Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
+        ]);
+
+        $preprofile->status = $request->decision;
+        if($request->decision == 1){
+            $preprofile->type = 1;
+        }
+        $preprofile->update();
+
+        return view('preprofiles.coordinator.show', compact('preprofile'));
+    }
+
+
+    public function preProfileCoodinatorObservationsList(Profile $preprofile)
+    {
+        return view('preprofiles.coordinator.observations', ['preprofile' => $preprofile]);
+    }
+
+
+    public function preProfileCoordinatorObservationCreate(Profile $preprofile)
+    {
+        return view('preprofiles.coordinator.create', ['preprofile' => $preprofile]);
+    }
+
+
+    public function preProfileCoordinatorObservationStore(Request $request)
+    {
+        // Validación de los datos del formulario
+        $validatedData = $request->validate([
+            'description' => 'required|string',
+            'profile_id' => 'required', // Esto valida que el archivo sea un PDF (puedes ajustar según tus necesidades)
+        ]);
+
+        // Crear un nueva observación
+        $observation                = new Observation();
+        $observation->description   = $request->description;
+        $observation->profile_id    = $request->profile_id;
+        $observation->save();
+
+        return redirect()->route('profiles.preprofile.coordinator.observation.list', [$request->profile_id])->with('success', 'La observación se ha guardado correctamente');
     }
 }
