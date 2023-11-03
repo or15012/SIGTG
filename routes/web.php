@@ -10,6 +10,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ConsultingController;
+use App\Http\Controllers\StageController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -126,6 +127,17 @@ Route::group(['prefix' => 'profiles', 'as' => 'profiles.'], function () {
     Route::get('/preprofile/coordinator/observation/create/{preprofile}', [ProfileController::class, 'preProfileCoordinatorObservationCreate'])->name('preprofile.coordinator.observation.create');
     Route::post('/preprofile/coordinator/observation/store', [ProfileController::class, 'preProfileCoordinatorObservationStore'])->name('preprofile.coordinator.observation.store');
 
+});
+
+//Grupo para las rutas de etapas evaluativas.
+Route::group(['prefix' => 'stages', 'as' => 'stages.'], function () {
+    Route::get('/', [StageController::class, 'index'])->name('index');
+    Route::get('/create', [StageController::class, 'create'])->name('create');
+    Route::post('/', [StageController::class,  'store'])->name('store');
+    Route::get('/{stage}', [StageController::class, 'show'])->name('show');
+    Route::get('/{stage}/edit', [StageController::class, 'edit'])->name('edit');
+    Route::put('/{stage}', [StageController::class, 'update'])->name('update');
+    Route::delete('/{stage}', [StageController::class, 'destroy'])->name('destroy');
 });
 
 
