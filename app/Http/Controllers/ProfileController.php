@@ -160,6 +160,9 @@ class ProfileController extends Controller
         ]);
 
         $preprofile->status = $request->decision;
+        if($request->decision == 1){
+            $preprofile->type = 1;
+        }
         $preprofile->update();
 
         return view('preprofiles.coordinator.show', compact('preprofile'));

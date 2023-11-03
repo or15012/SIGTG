@@ -20,30 +20,99 @@
                 </p>
             </div>
         </div>
+        <div class="row">
+            <div class="mb-3 col-12 col-md-6 col-lg-6">
+                <label for="description" class="form-label">Descripción:</label>
+                <p>{{ $preprofile->description }}</p>
+            </div>
+            <div class="mb-3 col-12 col-md-6 col-lg-6">
+                <label for="status" class="form-label">Estado:</label>
+                <p>
+                    @switch($preprofile->status)
+                        @case(0)
+                            Pre perfil presentado.
+                        @break
 
-        <div class="mb-3 ">
-            <label for="description" class="form-label">Descripción:</label>
-            <p>{{ $preprofile->description }}</p>
+                        @case(1)
+                            Pre perfil aprobado.
+                        @break
+
+                        @case(2)
+                            Pre perfil observado.
+                        @break
+
+                        @case(3)
+                            Pre perfil rechazado.
+                        @break
+
+                        @default
+                    @endswitch
+                </p>
+            </div>
         </div>
 
-        <form action="{{ route('profiles.preprofile.coordinator.update', $preprofile->id) }}" id="form-preprofile-confirm" method="POST">
+        <form action="{{ route('profiles.preprofile.coordinator.update', $preprofile->id) }}" id="form-preprofile-confirm"
+            method="POST">
             @csrf
             @method('PUT')
 
             <input type="hidden" name="profile_id" value="{{ $preprofile->id }}">
             <input type="hidden" id="decision" name="decision" value="">
-            <button type="button" id="accept-preprofile" class="btn btn-primary  waves-effect waves-light"
-                data-bs-toggle="tooltip" data-bs-placement="top" title="Aceptar preperfil.">
-                <i class="fas fa-check"></i>
-            </button>
-            <button type="button" id="review-preprofile" class="btn btn-secondary  waves-effect waves-light"
-                data-bs-toggle="tooltip" data-bs-placement="top" title="Observar preperfil.">
-                <i class="fas fa-exclamation-triangle"></i>
-            </button>
-            <button type="button" id="deny-preprofile" class="btn btn-danger  waves-effect waves-light"
-                title="Rechazar preprefil.">
-                <i class="fas fa-window-close"></i>
-            </button>
+            <div>
+                @switch($preprofile->status)
+                    @case(0)
+                        <button type="button" id="accept-preprofile" class="btn btn-primary " data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" aria-label="Dark" data-bs-original-title="Aceptar preperfil.">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button type="button" id="review-preprofile" class="btn btn-secondary waves-effect waves-light"
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Observar preperfil.">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </button>
+                        <button type="button" id="deny-preprofile" class="btn btn-danger  waves-effect waves-light" |
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Rechazar preprefil.">
+                            <i class="fas fa-window-close"></i>
+                        </button>
+                    @break
+
+                    @case(1)
+                        <button type="button" id="review-preprofile" class="btn btn-secondary waves-effect waves-light"
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Observar preperfil.">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </button>
+                        <button type="button" id="deny-preprofile" class="btn btn-danger  waves-effect waves-light" |
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Rechazar preprefil.">
+                            <i class="fas fa-window-close"></i>
+                        </button>
+                    @break
+
+                    @case(2)
+                        <button type="button" id="accept-preprofile" class="btn btn-primary " data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" aria-label="Dark" data-bs-original-title="Aceptar preperfil.">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button type="button" id="deny-preprofile" class="btn btn-danger  waves-effect waves-light" |
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Rechazar preprefil.">
+                            <i class="fas fa-window-close"></i>
+                        </button>
+                    @break
+
+                    @case(3)
+                        <button type="button" id="accept-preprofile" class="btn btn-primary " data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" aria-label="Dark" data-bs-original-title="Aceptar preperfil.">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button type="button" id="review-preprofile" class="btn btn-secondary waves-effect waves-light"
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Observar preperfil.">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </button>
+                    @break
+
+                    @default
+                @endswitch
+
+            </div>
+
         </form>
     </div>
 @endsection

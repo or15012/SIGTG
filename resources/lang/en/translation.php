@@ -162,4 +162,5 @@
 "PreProfile" => "Pre profiles",
 "ShowPreperfil" => "Show preprofile",
 "PreProfileAdviser" => "Pre profiles (adviser)",
+"Profiles"          => "Profiles",
 ];

@@ -84,6 +84,13 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="{{ route('profiles.preprofile.coordinator.index') }}">
+                        <i class="bx bx-file-blank icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-preprofileadviser">@lang('translation.Profiles')</span>
+                    </a>
+                </li>
+
 
 
 
