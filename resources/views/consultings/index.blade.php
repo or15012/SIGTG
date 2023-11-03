@@ -14,7 +14,9 @@
     @endcomponent
     <div class="container">
         <h1>Lista de Asesorias</h1>
+        @if($userType === 1)
         <a href="{{ route('consultings.create') }}" class="btn btn-primary mb-3">Agregar asesoria</a>
+        @endif
 
         @if (session('success'))
             <div class="alert alert-success">
@@ -40,7 +42,7 @@
                         <td>{{ $consulting->topics }}</td>
                         <td>{{ $consulting->number }}</td>
                         <td>{{ $consulting->summary }}</td>
-                        <td>{{ \Carbon\Carbon::parse($consulting->date)->format('d-m-Y') }}</td> 
+                        <td>{{ \Carbon\Carbon::parse($consulting->date)->format('d-m-Y') }}</td>
                         <td>
                             <a href="{{ route('consultings.edit', $consulting->id) }}" class="btn btn-warning">Editar</a>
                             <form action="{{ route('consultings.destroy', $consulting->id) }}" method="POST" style="display: inline">

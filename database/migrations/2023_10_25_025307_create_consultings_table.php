@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('consultings', function (Blueprint $table) {
             $table->id();
             $table->longText("topics");
-            $table->integer("number");
-            $table->longText("summary");
+            $table->integer("number")->nullable();
+            $table->longText("summary")->nullable();
             $table->timestamp("date");
             $table->foreignId('group_id')->constrained('groups')->onDelete('restrict');
             $table->timestamps();

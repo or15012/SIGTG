@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Consulting extends Model
 {
     use HasFactory, SoftDeletes;
-    
+
     protected $fillable = [
         'topics',
         'number',
