@@ -104,6 +104,13 @@ class ConsultingController extends Controller
         return redirect()->route('consultings.index')->with('success', 'Asesoria actualizada correctamente.');
     }
 
+    public function show(Consulting $consulting)
+    {
+
+        // Devuelve la vista 'consultings.show' pasando la asesoría como una variable compacta
+        return view('consultings.show', compact('consulting'));
+    }
+
     public function destroy(Consulting $consulting)
     {
         $consulting->delete();
