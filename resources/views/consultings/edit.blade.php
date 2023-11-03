@@ -31,12 +31,7 @@
             <div class="mb-3">
                 <label for="topics" class="form-label">Tema</label>
                 <input type="text" class="form-control" id="topics" name="topics"
-                    value="{{ old('topics', $consulting->topics) }}" required>
-            </div>
-            <div class="mb-3">
-                <label for="number" class="form-label">Número</label>
-                <input type="number" class="form-control" id="number" name="number"
-                    value="{{ old('number', $consulting->number) }}" required>
+                    value="{{ old('topics', $consulting->topics) }}" required readonly>
             </div>
             <div class="mb-3">
                 <label for="summary" class="form-label">Resumen</label>
@@ -46,8 +41,9 @@
             <div class="mb-3">
                 <label for="date" class="form-label">Fecha</label>
                 <input type="date" class="form-control" id="date" name="date"
-                    value="{{ old('date', $consulting->date) }}" required>
+                    value="{{ old('date', $consulting->date) }}" required readonly>
             </div>
+            <input type="hidden" name="group_id" value="{{ $consulting->group_id }}">
             <button type="submit" class="btn btn-primary">Actualizar</button>
         </form>
     </div>

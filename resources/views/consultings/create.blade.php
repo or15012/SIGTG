@@ -27,22 +27,22 @@
 
         <form action="{{ route('consultings.store') }}" method="POST">
             @csrf
+        @if($userType === 1) <!-- Tipo de usuario estudiante -->
             <div class="mb-3">
                 <label for="topics" class="form-label">Tema</label>
                 <input type="text" class="form-control" id="topics" name="topics" value="{{ old('topics') }}" required>
             </div>
             <div class="mb-3">
-                <label for="number" class="form-label">Número</label>
-                <input type="number" class="form-control" id="number" name="number" value="{{ old('number') }}" required>
+                <label for="date" class="form-label">Fecha</label>
+                <input type="date" class="form-control" id="date" name="date" value="{{ old('date') }}" required>
             </div>
+        @elseif($userType === 2) <!-- Tipo de usuario docente -->
             <div class="mb-3">
                 <label for="summary" class="form-label">Resumen</label>
                 <input type="text" class="form-control" id="summary" name="summary" value="{{ old('summary') }}" required>
             </div>
-            <div class="mb-3">
-                <label for="date" class="form-label">Fecha</label>
-                <input type="date" class="form-control" id="date" name="date" value="{{ old('date') }}" required>
-            </div>
+        @endif
+
             <button type="submit" class="btn btn-primary">Guardar</button>
         </form>
     </div>
