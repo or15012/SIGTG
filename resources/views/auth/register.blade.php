@@ -72,15 +72,19 @@
                 @enderror
             </div>
 
-            <div class="mb-3">
+            <div>
                 <label class="form-label" for="useremail">Correo electrónico</label>
-                <input type="email" class="form-control @error('email') is-invalid @enderror" id="useremail"
-                    value="{{ old('email') }}" name="email" placeholder="Ingrese correo electrónico" autofocus>
-                @error('email')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+                <div class="input-group">
+                    <input type="text" class="form-control @error('email') is-invalid @enderror" id="useremail"
+                        value="{{ old('email') }}" name="email" placeholder="Ingresa acá sólo tu nombre de usuario" autofocus>
+                    <span class="input-group-text" id="basic-addon2">@ues.edu.sv</span>
+                    @error('email')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                    
+                </div>
             </div>
 
             <div class="row mb-3">
@@ -107,6 +111,20 @@
                             <option value="{{ $key }}">{{ $type }}</option>
                         @empty
                             <option value="" disabled>No hay tipos disponibles</option>
+                        @endforelse
+                    </select>
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="status" class="form-label">Modalidad</label>
+                    <select class="form-select" name="type" required>
+                        <option value="" disabled selected>Seleccione la modalidad</option>
+                        @forelse ($modalities as  $key => $value)
+                            <option value="{{ $value->id }}">{{ $value->name }}</option>
+                        @empty
+                            <option value="" disabled>No hay modalidades disponibles</option>
                         @endforelse
                     </select>
                 </div>
