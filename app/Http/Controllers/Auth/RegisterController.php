@@ -95,6 +95,7 @@ class RegisterController extends Controller
             'school'            => ['required', 'exists:schools,id'], // Asegúrate de que exista una escuela con ese ID
             'password'          => ['required', 'string', 'min:8', 'confirmed'],
             'type'              => ['required'],
+            'modality_id'              => ['required'],
         ]);
     }
 
@@ -112,10 +113,11 @@ class RegisterController extends Controller
             'last_name'         => $data['last_name'],
             'second_last_name'  => $data['second_last_name'],
             'carnet'            => $data['carnet'],
-            'email'             => $data['email'],
+            'email'             => $data['email'].'@ues.edu.sv',
             'school_id'         => $data['school'], // Asumiendo que el campo se llama 'school_id' en tu modelo User
             'type'              => $data['type'],
             'password'          => Hash::make($data['password']),
+            'modality_id'       => $data['modality_id']
         ]);
 
 

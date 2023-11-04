@@ -35,6 +35,7 @@ class User extends Authenticatable
         'type',
         'carnet',
         'school_id', // Asumiendo que es la clave foránea que relaciona con la tabla 'schools'
+        'modality_id'
     ];
 
 
@@ -75,5 +76,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Group::class, 'user_group')
             ->withPivot(['status','is_leader']) // Esto permite acceder a la columna 'status' de la tabla intermedia
             ->withTimestamps();
+    }
+
+    public function modality()
+    {
+        return $this->belongsTo(Modality::class, 'modality_id'); 
     }
 }
