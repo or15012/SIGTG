@@ -1,0 +1,12 @@
+[
+    {
+        "id": 1,
+        "name": "Presencial",
+        "type": "0"
+    },
+    {
+        "id": 2,
+        "name": "En línea",
+        "type": "0"
+    }
+]

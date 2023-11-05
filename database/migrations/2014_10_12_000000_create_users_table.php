@@ -29,6 +29,7 @@ class CreateUsersTable extends Migration
             $table->string('avatar')->nullable();
             $table->integer('type')->default(1)->comment('1 => estudiante, 2 => profesor'); // Agregar un comentario;
             $table->foreignId('school_id')->constrained('schools')->onDelete('restrict');
+            $table->foreignId('modality_id')->constrained('modalities')->onDelete('restrict');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Modality;
 use App\Models\Protocol;
 use App\Models\School;
 use App\Providers\RouteServiceProvider;
@@ -60,11 +61,13 @@ class RegisterController extends Controller
         $schools    = School::all(); // Obtener la lista de escuelas
         $userTypes  = User::TYPES;
         $protocols  = Protocol::all();
+        $modalities  = Modality::all();
 
         return view('auth.register', [
             'schools'   => $schools,
             'userTypes' => $userTypes,
             'protocols' => $protocols,
+            'modalities' => $modalities,
         ]);
     }
 
@@ -88,10 +91,11 @@ class RegisterController extends Controller
             'last_name'         => ['required', 'string', 'max:255'],
             'second_last_name'  => ['required', 'string', 'max:255'],
             'carnet'            => ['required', 'string', 'max:7', 'unique:users'], // Asegúrate de ajustar la validación según tus necesidades
-            'email'             => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email'             => ['required', 'string', 'max:255', 'unique:users', 'not_regex:/@/'],
             'school'            => ['required', 'exists:schools,id'], // Asegúrate de que exista una escuela con ese ID
             'password'          => ['required', 'string', 'min:8', 'confirmed'],
             'type'              => ['required'],
+            'modality_id'              => ['required'],
         ]);
     }
 
@@ -109,10 +113,11 @@ class RegisterController extends Controller
             'last_name'         => $data['last_name'],
             'second_last_name'  => $data['second_last_name'],
             'carnet'            => $data['carnet'],
-            'email'             => $data['email'],
+            'email'             => $data['email'].'@ues.edu.sv',
             'school_id'         => $data['school'], // Asumiendo que el campo se llama 'school_id' en tu modelo User
             'type'              => $data['type'],
             'password'          => Hash::make($data['password']),
+            'modality_id'       => $data['modality_id']
         ]);
 
 

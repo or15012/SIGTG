@@ -72,15 +72,19 @@
                 @enderror
             </div>
 
-            <div class="mb-3">
+            <div>
                 <label class="form-label" for="useremail">Correo electrónico</label>
-                <input type="email" class="form-control @error('email') is-invalid @enderror" id="useremail"
-                    value="{{ old('email') }}" name="email" placeholder="Ingrese correo electrónico" autofocus>
-                @error('email')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+                <div class="input-group">
+                    <input type="text" class="form-control @error('email') is-invalid @enderror" id="useremail"
+                        value="{{ old('email') }}" name="email" placeholder="Ingresa acá sólo tu nombre de usuario" autofocus>
+                    <span class="input-group-text" id="basic-addon2">@ues.edu.sv</span>
+                    @error('email')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                    
+                </div>
             </div>
 
             <div class="row mb-3">
@@ -111,6 +115,20 @@
                     </select>
                 </div>
             </div>
+            
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="modality_id" class="form-label">Modalidad</label>
+                    <select class="form-select" name="modality_id" required>
+                        <option value="" disabled selected>Seleccione la modalidad</option>
+                        @forelse ($modalities as  $key => $value)
+                            <option value="{{ $value->id }}">{{ $value->name }}</option>
+                        @empty
+                            <option value="" disabled>No hay modalidades disponibles</option>
+                        @endforelse
+                    </select>
+                </div>
+            </div>
 
             <div class="row mb-3">
                 <div class="col-12">
@@ -127,9 +145,16 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label" for="userpassword">Contraseña</label>
-                <input type="password" class="form-control @error('password') is-invalid @enderror" id="userpassword"
+                <div><label class="form-label" for="userpassword">Contraseña</label><span class="float-end btn m-0 p-0 btn-outline-info" id="btnGeneratePassword">Generar contraseña</span></div>
+                <div class="input-group">
+                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="userpassword"
                     name="password" placeholder="Ingrese password" autofocus>
+                    <span class="input-group-text">
+    <i class="fa fa-eye show_hide_pwd" 
+   style="cursor: pointer"></i>
+   </span>
+                </div>
+                    
                 @error('password')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -138,8 +163,14 @@
             </div>
             <div class="mb-3">
                 <label class="form-label" for="confirmpassword">Confirmar contraseña</label>
-                <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror"
+                <div class="input-group">
+                    <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror"
                     id="confirmpassword" name="password_confirmation" placeholder="Ingrese confirmación de contraseña" autofocus>
+                <span class="input-group-text">
+    <i class="fa fa-eye show_hide_pwd" 
+   style="cursor: pointer"></i>
+   </span>
+                </div>
                 @error('password_confirmation')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -155,4 +186,23 @@
 
 @section('script')
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            $('#btnGeneratePassword').on('click',function(e){
+                let randomstring = Math.random().toString(36).slice(-8);
+                $('#userpassword').val(randomstring);
+                $('#confirmpassword').val(randomstring);
+            });
+
+
+            $('.show_hide_pwd').on('click', function(e){
+                const togglePassword = $(this);
+                const password = $(this).parent().parent().find('input');
+                const type = password.attr("type") === "password" ? "text" : "password";
+                password.attr("type", type);
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
+            });
+        });
+    </script>
 @endsection
