@@ -76,14 +76,7 @@
                     @break
 
                     @case(1)
-                        <button type="button" id="review-preprofile" class="btn btn-secondary waves-effect waves-light"
-                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Observar preperfil.">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </button>
-                        <button type="button" id="deny-preprofile" class="btn btn-danger  waves-effect waves-light" |
-                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Rechazar preprefil.">
-                            <i class="fas fa-window-close"></i>
-                        </button>
+
                     @break
 
                     @case(2)

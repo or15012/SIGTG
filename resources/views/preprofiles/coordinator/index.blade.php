@@ -22,6 +22,7 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
+                    <th>Número de grupo</th>
                     <th>Nombre</th>
                     <th style="width: 40%">Descripcion</th>
                     <th>Fecha subida</th>
@@ -32,6 +33,7 @@
             <tbody>
                 @foreach ($preprofiles as $preprofile)
                     <tr>
+                        <td>{{ $preprofile->number }}</td>
                         <td>{{ $preprofile->name }} </td>
                         <td  style="width: 40%">{{  Illuminate\Support\Str::limit($preprofile->description, 100, '...') }}</td>
                         <td class="text-nowrap">{{ $preprofile->created_at->format('d-m-Y') }}</td>

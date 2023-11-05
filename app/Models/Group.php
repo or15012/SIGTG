@@ -29,4 +29,11 @@ class Group extends Model
             ->withPivot(['status','is_leader']) // Esto permite acceder a la columna 'status' de la tabla intermedia
             ->withTimestamps();
     }
+
+    public function teacherUsers()
+    {
+        return $this->belongsToMany(User::class, 'teacher_group')
+            ->withPivot(['status']) // Esto permite acceder a la columna 'status' de la tabla intermedia
+            ->withTimestamps();
+    }
 }

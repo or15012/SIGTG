@@ -136,12 +136,13 @@ class ProfileController extends Controller
         $year = date('Y');
         // Realiza una consulta para verificar si el usuario está en un grupo del año actual
         $protocolsWithStatus = $user->protocols()->wherePivot('status', 1)->first();
-
         $groups = Group::where('groups.year', $year)
             ->where('groups.status', 1)
+            ->where('protocol_id', $protocolsWithStatus->pivot->protocol_id)
             ->get(["id"]);
 
-        $preprofiles = Profile::whereIn('group_id', $groups)
+        $preprofiles = Profile::join('groups as g','g.id', 'profiles.group_id')
+            ->whereIn('group_id', $groups)
             ->where("type", 0)
             ->paginate(10);
 
@@ -161,7 +162,16 @@ class ProfileController extends Controller
 
         $preprofile->status = $request->decision;
         if($request->decision == 1){
-            $preprofile->type = 1;
+            //creare a partir del preperfil un perfil
+            $profile                = new Profile();
+            $profile->name          = $preprofile->name;
+            $profile->description   = $preprofile->description;
+            $profile->group_id      = $preprofile->group_id;
+            $profile->path          = $preprofile->path;
+            $profile->profile_id    = $preprofile->id;
+            $profile->status        = 1;
+            $profile->type          = 1;
+            $profile->save();
         }
         $preprofile->update();
 
@@ -196,5 +206,27 @@ class ProfileController extends Controller
         $observation->save();
 
         return redirect()->route('profiles.preprofile.coordinator.observation.list', [$request->profile_id])->with('success', 'La observación se ha guardado correctamente');
+    }
+
+
+    public function index()
+    {
+        //obtener grupo actual del user logueado
+        $user = Auth::user();
+        // Obtiene el año actual
+        $year = date('Y');
+        // Realiza una consulta para verificar si el usuario está en un grupo del año actual
+        $group = Group::where('groups.year', $year)
+            ->where('groups.status', 1)
+            ->whereHas('users', function ($query) use ($user) {
+                $query->where('users.id', $user->id);
+            })
+            ->first();
+
+        $preprofiles = Profile::where('group_id', $group->id)
+            ->where("type", 1)
+            ->paginate(10);
+
+        return view('preprofiles.index', compact('preprofiles'));
     }
 }

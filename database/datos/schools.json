@@ -22,5 +22,9 @@
     {
         "name": "Escuela de Ingeniería Química y de Ingeniería de Alimentos",
         "id": 6
+    },
+    {
+        "name": "Escuela de Ingeniería Sistemas Informaticos",
+        "id": 7
     }
 ]

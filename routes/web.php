@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 |
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| contains the 'web' middleware group. Now create something great!
 |
 */
 
@@ -94,6 +94,13 @@ Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
     Route::get('{id}/edit', [GroupController::class, 'edit'])->name('edit');
     Route::put('{id}', [GroupController::class, 'update'])->name('update');
     Route::delete('{id}', [GroupController::class, 'destroy'])->name('destroy');
+
+    //Rutas para actualiza comite evaluador y asesor.
+    Route::get('/evaluating-committee-index/{group}', [GroupController::class, 'evaluatingCommitteeIndex'])->name('evaluating.committee.index');
+    Route::get('/evaluating-committee-get', [GroupController::class, 'evaluatingCommitteeGet'])->name('evaluating.committee.get');
+    Route::put('/evaluating-committee-update/{group}', [GroupController::class, 'evaluatingCommitteeUpdate'])->name('evaluating.committee.update');
+    Route::delete('/evaluating-committee-destroy/{group}', [GroupController::class, 'evaluatingCommitteeDestroy'])->name('evaluating.committee.destroy');
+
 });
 
 //Grupo para las rutas de asesoria.
@@ -126,6 +133,10 @@ Route::group(['prefix' => 'profiles', 'as' => 'profiles.'], function () {
     Route::get('/preprofile/coordinator/observation/list/{preprofile}', [ProfileController::class, 'preProfileCoodinatorObservationsList'])->name('preprofile.coordinator.observation.list');
     Route::get('/preprofile/coordinator/observation/create/{preprofile}', [ProfileController::class, 'preProfileCoordinatorObservationCreate'])->name('preprofile.coordinator.observation.create');
     Route::post('/preprofile/coordinator/observation/store', [ProfileController::class, 'preProfileCoordinatorObservationStore'])->name('preprofile.coordinator.observation.store');
+
+
+    Route::get('/index', [ProfileController::class, 'index'])->name('index');
+
 
 });
 

@@ -64,6 +64,7 @@
         "rater-js": "^1.0.1",
         "rtlcss": "^3.0.0",
         "save": "^2.4.0",
+        "select2": "^4.1.0-rc.0",
         "simplebar": "^4.2.3",
         "source-map": "^0.7.4",
         "sweetalert2": "^11.0.18",

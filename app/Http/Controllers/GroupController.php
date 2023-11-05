@@ -155,7 +155,6 @@ class GroupController extends Controller
             // Campo que contendrá los parámetros
         ]);
 
-        // Encontrar el ciclo que se desea actualizar
         $group = Group::findOrFail($id);
 
         // Actualizar los datos del ciclo
@@ -163,15 +162,32 @@ class GroupController extends Controller
         // 2 = denegado
 
         $stateId = 3;
+
         if ($request->decision == 1) {
             $stateId = 2;
+            $consultingGroup = Group::where('number', '!=', null)
+                ->where('protocol_id', $group->protocol_id)
+                ->orderBy('id', 'desc')
+                ->first();
+
+            if (isset($consultingGroup)) {
+                $number = $consultingGroup->number + 1;
+            } else {
+                $number = 1;
+            }
+            $data = [
+                'status'    => $request->decision,
+                'state_id'  => $stateId,
+                'number'    => $number
+            ];
+        }else{
+            $data = [
+                'status'    => $request->decision,
+                'state_id'  => $stateId,
+            ];
+
         }
-
-        $group->update([
-            'status'    => $request->decision,
-            'state_id'  => $stateId,
-        ]);
-
+        $group->update($data);
         return redirect()->route('groups.index')->with('success', 'Grupo actualizado con éxito');
     }
 
@@ -219,4 +235,35 @@ class GroupController extends Controller
             return redirect()->back()->withErrors(['mensaje' => 'Error al actualizar.']);
         }
     }
+
+    public function evaluatingCommitteeIndex(Group $group)
+    {
+        $groupCommittees = Group::select(
+            'groups.id',
+            'groups.number',
+            'u.first_name',
+            'u.middle_name',
+            'u.last_name',
+            'u.second_last_name',
+            'u.email',
+            'u.id',
+        )
+            ->join('teacher_group as tg', 'groups.id', 'tg.group_id')
+            ->join('users as u', 'tg.user_id', 'u.id')
+            ->join('protocols as p', 'groups.protocol_id', 'p.id')
+            ->where('u.type', 2)
+            ->where('groups.id', $group->id)
+            ->get();
+
+        return view('groups.evaluationCommittees.index', compact('groupCommittees'));
+    }
+
+
+    public function evaluatingCommitteeGet(Group $group)
+    {
+
+
+
+    }
+
 }

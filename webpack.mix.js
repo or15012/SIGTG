@@ -261,6 +261,7 @@ mix.js('resources/js/group_initialize.js', 'public/js/group_initialize.js');
 mix.js('resources/js/group_confirm.js', 'public/js/group_confirm.js');
 mix.js('resources/js/group_edit.js', 'public/js/group_edit.js');
 mix.js('resources/js/preprofille_observation_show.js', 'public/js/preprofille_observation_show.js');
+mix.js('resources/js/evaluation_committee_search.js', 'public/js/evaluation_committee_search.js');
 
 
 mix.combine('resources/js/pages/invoice-list.init.js', folder.dist_assets + "js/pages/invoice-list.init.js");
@@ -271,3 +272,4 @@ mix.combine('resources/js/pages/chartjs.js', folder.dist_assets + "js/pages/char
 mix.combine('resources/js/app.js', folder.dist_assets + "js/app.js");
 
 mix.autoload({jquery: ['$', 'window.jQuery', 'jQuery'],});
+require('select2');

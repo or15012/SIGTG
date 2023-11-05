@@ -35,19 +35,23 @@
                 @foreach ($groups as $group)
                     <tr>
                         <td>
-                            @if(isset($group->number))
+                            @if (isset($group->number))
                                 {{ $group->number }}
                             @else
                                 No asignado
                             @endif
 
                         </td>
-                        <td>{{ $group->first_name }} {{ $group->middle_name }} {{ $group->last_name }} {{ $group->second_last_name }}</td>
+                        <td>{{ $group->first_name }} {{ $group->middle_name }} {{ $group->last_name }}
+                            {{ $group->second_last_name }}</td>
                         <td>{{ $group->user_count }}</td>
                         <td>{{ $group->name }}</td>
                         <td>
+                            <a href="{{ route('groups.evaluating.committee.index', $group->id) }}" class="btn btn-secondary">
+                                <i class="fas fa-balance-scale"></i>
+                            </a>
                             <a href="{{ route('groups.edit', $group->id) }}" class="btn btn-warning">
-                            <i class="fas fa-cog"></i>
+                                <i class="fas fa-cog"></i>
                             </a>
                         </td>
                     </tr>
@@ -58,5 +62,5 @@
 @endsection
 
 @section('script')
-     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+    <script src="{{ URL::asset('assets/js/app.js') }}"></script>
 @endsection
