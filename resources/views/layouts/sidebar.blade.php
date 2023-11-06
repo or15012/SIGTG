@@ -91,6 +91,13 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="{{ route('stages.index') }}">
+                        <i class="bx bx-building-house icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-schools">@lang('Stages')</span>
+                    </a>
+                </li>
+
 
 
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CycleController;
+use App\Http\Controllers\EvaluationCriteriaController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
@@ -140,6 +141,15 @@ Route::group(['prefix' => 'stages', 'as' => 'stages.'], function () {
     Route::delete('/{stage}', [StageController::class, 'destroy'])->name('destroy');
 });
 
+//Grupo para las rutas de criterios de evaluación.
+Route::group(['prefix' => 'criterias', 'as' => 'criterias.'], function () {
+    Route::get('/{id}', [EvaluationCriteriaController::class, 'index'])->name('index');
+    Route::get('/create/{id}', [EvaluationCriteriaController::class, 'create'])->name('create');
+    Route::post('/store', [EvaluationCriteriaController::class,  'store'])->name('store');
+    Route::get('/{criteria}/edit', [EvaluationCriteriaController::class, 'edit'])->name('edit');
+    Route::put('/{criteria}', [EvaluationCriteriaController::class, 'update'])->name('update');
+    Route::delete('/{criteria}', [EvaluationCriteriaController::class, 'destroy'])->name('destroy');
+});
 
 
 
