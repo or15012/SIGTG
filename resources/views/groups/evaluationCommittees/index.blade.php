@@ -15,15 +15,15 @@
         <h1>Tribunal Evaluador</h1>
 
         <!-- Agregar el botón para abrir el modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#searchModal">
+        {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#searchModal">
             Abrir Modal
-        </button>
+        </button> --}}
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
         @endif
-
+        <h6>Lista de tribunal asignado a grupo</h6>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -56,6 +56,64 @@
                 @endforeach
             </tbody>
         </table>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex flex-wrap align-items-center">
+                    <h5 class="card-title mb-0">Asignación de tribunal evaluador</h5>
+
+                </div>
+            </div>
+            <div class="card-body px-4">
+                <form action="{{ route('groups.evaluating.committee.update', $group->id) }}" method="post" enctype="multipart/form-data"
+                    id="evaluating-committee-update">
+                    @csrf
+                    @method('PUT')
+                    <div class="row mb-3">
+                        <label class="col-12 col-md-4 col-lg-4" for="teachers">Docentes:</label>
+                        <div class="col-12 col-md-8 col-lg-8">
+                            <select name="teachers[]" id="teachers" multiple="multiple">
+                                <option></option>
+                                @forelse ($teachers as  $teacher)
+                                    <option value="{{ $teacher->id }}">
+                                        {{ $teacher->first_name }} {{ $teacher->middle_name }}
+                                        {{ $teacher->last_name }} {{ $teacher->second_last_name }}
+                                    </option>
+                                @empty
+                                    <option disabled selected>Sin opciones disponibles</option>
+                                @endforelse
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-12 col-md-4 col-lg-4" for="type">Tipo:</label>
+                        <div class="col-12 col-md-8 col-lg-8">
+                            <select class="form-select" name="type_committee" id="type_committee" required>
+                                <option value="" selected disabled>Seleccione tipo</option>
+                                <option value="0">Asesor</option>
+                                <option value="1">Jurado</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="row mb-3">
+                        <label class="col-12 col-md-4 col-lg-4" for="agreement">Acuerdo:</label>
+                        <div class="col-12 col-md-8 col-lg-8">
+                            <input  class="form-control"  type="file" name="agreement" id="agreement">
+                        </div>
+                    </div>
+
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button type="submit" class="btn btn-primary me-md-2" type="button">Guardar</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
     </div>
 
 

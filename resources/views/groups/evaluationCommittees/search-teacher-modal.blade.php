@@ -8,10 +8,7 @@
             <div class="modal-body">
                 <!-- Campo Select2 -->
                 <select class="form-control select2" style="width: 100%;" id="miSelect">
-                    <!-- Opciones del Select2 -->
-                    <option value="1">Opción 1</option>
-                    <option value="2">Opción 2</option>
-                    <option value="3">Opción 3</option>
+
                 </select>
             </div>
             <div class="modal-footer">

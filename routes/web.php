@@ -90,14 +90,12 @@ Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
     Route::post('/', [GroupController::class, 'store'])->name('store');
     Route::get('/initialize', [GroupController::class, 'initialize'])->name('initialize');
     Route::post('/confirm-store', [GroupController::class, 'confirmStore'])->name('confirm.store');
-    Route::get('{id}', [GroupController::class, 'show'])->name('show');
     Route::get('{id}/edit', [GroupController::class, 'edit'])->name('edit');
     Route::put('{id}', [GroupController::class, 'update'])->name('update');
     Route::delete('{id}', [GroupController::class, 'destroy'])->name('destroy');
 
     //Rutas para actualiza comite evaluador y asesor.
     Route::get('/evaluating-committee-index/{group}', [GroupController::class, 'evaluatingCommitteeIndex'])->name('evaluating.committee.index');
-    Route::get('/evaluating-committee-get', [GroupController::class, 'evaluatingCommitteeGet'])->name('evaluating.committee.get');
     Route::put('/evaluating-committee-update/{group}', [GroupController::class, 'evaluatingCommitteeUpdate'])->name('evaluating.committee.update');
     Route::delete('/evaluating-committee-destroy/{group}', [GroupController::class, 'evaluatingCommitteeDestroy'])->name('evaluating.committee.destroy');
 

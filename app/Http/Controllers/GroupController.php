@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Models\Parameter;
+use App\Models\User;
 use App\Models\UserGroup;
 use Exception;
 use Illuminate\Http\Request;
@@ -180,12 +181,11 @@ class GroupController extends Controller
                 'state_id'  => $stateId,
                 'number'    => $number
             ];
-        }else{
+        } else {
             $data = [
                 'status'    => $request->decision,
                 'state_id'  => $stateId,
             ];
-
         }
         $group->update($data);
         return redirect()->route('groups.index')->with('success', 'Grupo actualizado con éxito');
@@ -247,6 +247,7 @@ class GroupController extends Controller
             'u.second_last_name',
             'u.email',
             'u.id',
+            'tg.type',
         )
             ->join('teacher_group as tg', 'groups.id', 'tg.group_id')
             ->join('users as u', 'tg.user_id', 'u.id')
@@ -254,16 +255,52 @@ class GroupController extends Controller
             ->where('u.type', 2)
             ->where('groups.id', $group->id)
             ->get();
+            // dd($groupCommittees);
+        $teachers = User::where('type', 2)->get();
 
-        return view('groups.evaluationCommittees.index', compact('groupCommittees'));
+        return view('groups.evaluationCommittees.index', compact('groupCommittees','teachers', 'group'));
     }
 
 
-    public function evaluatingCommitteeGet(Group $group)
+    public function evaluatingCommitteeGet(Request $request)
     {
+        if (isset($request)) {
+            $palabra = $request["term"]["term"];
+            $teachersResult =  $teachers = User::where('type', 2)->get()->toArray();
+        }
+        $teachers = array(
+            'results' => array(
+                [
+                    "id" => 1,
+                    "text" => "hola"
+                ]
+            ),
+        );
 
-
-
+        return response()->json($teachers);
     }
 
+    public function evaluatingCommitteeUpdate(Request $request, Group $group)
+    {
+        dd($request);
+        $validatedData = $request->validate([
+            'teachers'    => 'array', // Campo que contendrá los parámetros
+        ]);
+
+        $syncData = [];
+        foreach ($teachers as $key => $userId) {
+            $userData = [
+                'user_id'   => intval($userId),
+                'status'    => ($key === 0) ? 1 : 0, // Establecer status = 1 para el primer usuario, 0 para los demás
+                'is_leader' => ($key === 0) ? 1 : 0, // Establecer is_leader = 1 para el primer usuario, 0 para los demás
+            ];
+            $syncData[] = $userData;
+        }
+        // Insertar los nuevos usuarios
+        $group->users()->attach($syncData);
+    }
+
+    public function evaluatingCommitteeDestroy(Request $request)
+    {
+    }
 }
