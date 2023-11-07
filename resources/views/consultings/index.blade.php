@@ -14,8 +14,8 @@
     @endcomponent
     <div class="container">
         <h1>Lista de Asesorias</h1>
-        @if($userType === 1)
-        <a href="{{ route('consultings.create') }}" class="btn btn-primary mb-3">Agregar asesoria</a>
+        @if ($userType === 1)
+            <a href="{{ route('consultings.create') }}" class="btn btn-primary mb-3">Agregar asesoria</a>
         @endif
 
         @if (session('success'))
@@ -44,11 +44,15 @@
                         <td>{{ $consulting->summary }}</td>
                         <td>{{ \Carbon\Carbon::parse($consulting->date)->format('d-m-Y') }}</td>
                         <td>
+                            <a href="{{ route('consultings.show', $consulting->id) }}" class="btn btn-primary">Ver</a>
                             <a href="{{ route('consultings.edit', $consulting->id) }}" class="btn btn-warning">Editar</a>
-                            <form action="{{ route('consultings.destroy', $consulting->id) }}" method="POST" style="display: inline">
+                            <form action="{{ route('consultings.destroy', $consulting->id) }}" method="POST"
+                                style="display: inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                                @if ($consulting->number !== null)
+                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                @endif
                             </form>
                         </td>
                     </tr>
@@ -59,5 +63,5 @@
 @endsection
 
 @section('script')
-     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+    <script src="{{ URL::asset('assets/js/app.js') }}"></script>
 @endsection
