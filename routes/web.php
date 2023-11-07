@@ -141,6 +141,10 @@ Route::group(['prefix' => 'profiles', 'as' => 'profiles.'], function () {
 
 
     Route::get('/index', [ProfileController::class, 'index'])->name('index');
+    Route::get('/coordinator-show', [ProfileController::class, 'coordinatorShow'])->name('coordinator.show');
+    Route::get('/coordinator-observation-list', [ProfileController::class, 'coordinatorObservationList'])->name('coordinator.observation.list');
+    Route::get('/coordinator-observation-create', [ProfileController::class, 'coordinatorObservationCreate'])->name('coordinator.observation.create');
+
 
 
 });

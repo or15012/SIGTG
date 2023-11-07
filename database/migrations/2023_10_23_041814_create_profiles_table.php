@@ -19,6 +19,7 @@ return new class extends Migration
             $table->longText("description");
             $table->boolean("type");
             $table->string("path");
+            $table->integer("status");
             $table->foreignId('group_id')->constrained('groups')->onDelete('restrict');
             $table->timestamps();
             $table->softDeletes();

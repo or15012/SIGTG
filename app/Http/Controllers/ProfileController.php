@@ -31,7 +31,7 @@ class ProfileController extends Controller
             ->first();
 
         $preprofiles = Profile::where('group_id', $group->id)
-            ->where("type", 0)
+            ->where('type', 0)
             ->paginate(10);
 
         return view('preprofiles.index', compact('preprofiles'));
@@ -122,7 +122,7 @@ class ProfileController extends Controller
 
     public function preProfileDownload(Profile $preprofile)
     {
-        $filePath = storage_path("app/{$preprofile->path}");
+        $filePath = storage_path('app/{$preprofile->path}');
         return response()->download($filePath);
     }
 
@@ -139,12 +139,15 @@ class ProfileController extends Controller
         $groups = Group::where('groups.year', $year)
             ->where('groups.status', 1)
             ->where('protocol_id', $protocolsWithStatus->pivot->protocol_id)
-            ->get(["id"]);
+            ->get(['id']);
 
-        $preprofiles = Profile::join('groups as g','g.id', 'profiles.group_id')
+        $preprofiles = Profile::join('groups as g', 'g.id', 'profiles.group_id')
             ->whereIn('group_id', $groups)
-            ->where("type", 0)
+            ->where('type', 0)
+            ->select('profiles.status', 'profiles.name', 'profiles.description', 'profiles.created_at', 'g.number', 'profiles.id')
             ->paginate(10);
+
+
 
         return view('preprofiles.coordinator.index', compact('preprofiles'));
     }
@@ -155,13 +158,14 @@ class ProfileController extends Controller
     }
 
 
-    public function preProfileCoodinatorUpdate(Request $request, Profile $preprofile){
+    public function preProfileCoodinatorUpdate(Request $request, Profile $preprofile)
+    {
         $validatedData = $request->validate([
-            'decision' => 'required',// Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
+            'decision' => 'required', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
         ]);
 
         $preprofile->status = $request->decision;
-        if($request->decision == 1){
+        if ($request->decision == 1) {
             //creare a partir del preperfil un perfil
             $profile                = new Profile();
             $profile->name          = $preprofile->name;
@@ -169,7 +173,7 @@ class ProfileController extends Controller
             $profile->group_id      = $preprofile->group_id;
             $profile->path          = $preprofile->path;
             $profile->profile_id    = $preprofile->id;
-            $profile->status        = 1;
+            $profile->status        = 0;
             $profile->type          = 1;
             $profile->save();
         }
@@ -216,17 +220,19 @@ class ProfileController extends Controller
         // Obtiene el año actual
         $year = date('Y');
         // Realiza una consulta para verificar si el usuario está en un grupo del año actual
-        $group = Group::where('groups.year', $year)
+        $protocolsWithStatus = $user->protocols()->wherePivot('status', 1)->first();
+        $groups = Group::where('groups.year', $year)
             ->where('groups.status', 1)
-            ->whereHas('users', function ($query) use ($user) {
-                $query->where('users.id', $user->id);
-            })
-            ->first();
+            ->where('protocol_id', $protocolsWithStatus->pivot->protocol_id)
+            ->get(['id']);
 
-        $preprofiles = Profile::where('group_id', $group->id)
-            ->where("type", 1)
+        $preprofiles = Profile::join('groups as g', 'g.id', 'profiles.group_id')
+            ->whereIn('group_id', $groups)
+            ->where('type', 1)
+            ->select('profiles.status', 'profiles.name', 'profiles.description', 'profiles.created_at', 'g.number', 'profiles.id')
             ->paginate(10);
 
-        return view('preprofiles.index', compact('preprofiles'));
+
+        return view('profiles.index', compact('preprofiles'));
     }
 }
