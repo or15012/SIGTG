@@ -97,7 +97,7 @@ Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
     //Rutas para actualiza comite evaluador y asesor.
     Route::get('/evaluating-committee-index/{group}', [GroupController::class, 'evaluatingCommitteeIndex'])->name('evaluating.committee.index');
     Route::put('/evaluating-committee-update/{group}', [GroupController::class, 'evaluatingCommitteeUpdate'])->name('evaluating.committee.update');
-    Route::delete('/evaluating-committee-destroy/{group}', [GroupController::class, 'evaluatingCommitteeDestroy'])->name('evaluating.committee.destroy');
+    Route::delete('/evaluating-committee-destroy/{user}/{type}/{group}', [GroupController::class, 'evaluatingCommitteeDestroy'])->name('evaluating.committee.destroy');
 
 });
 

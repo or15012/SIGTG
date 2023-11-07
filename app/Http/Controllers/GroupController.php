@@ -282,25 +282,39 @@ class GroupController extends Controller
 
     public function evaluatingCommitteeUpdate(Request $request, Group $group)
     {
-        dd($request);
+
         $validatedData = $request->validate([
-            'teachers'    => 'array', // Campo que contendrá los parámetros
+            'teachers'          => 'array|required', // Campo que contendrá los parámetros
+            'type_committee'    => 'required',
+            'agreement'         => 'required|mimes:pdf',
         ]);
 
+        // Procesar y guardar el archivo
+        if ($request->hasFile('agreement')) {
+            $path = $request->file('agreement')->store('agreement'); // Define la carpeta de destino donde se guardará el archivo
+        }
+
         $syncData = [];
-        foreach ($teachers as $key => $userId) {
+        foreach ($request->teachers as $key => $userId) {
             $userData = [
-                'user_id'   => intval($userId),
-                'status'    => ($key === 0) ? 1 : 0, // Establecer status = 1 para el primer usuario, 0 para los demás
-                'is_leader' => ($key === 0) ? 1 : 0, // Establecer is_leader = 1 para el primer usuario, 0 para los demás
+                'user_id'           => intval($userId),
+                'status'            => 1 , // Establecer status = 1
+                'type'              => $request->type_committee, // Establecer asesor = 0 , jurados = 1
+                'path_agreement'    => $path
             ];
             $syncData[] = $userData;
         }
         // Insertar los nuevos usuarios
-        $group->users()->attach($syncData);
+        $group->teacherUsers()->attach($syncData);
+        $text = $request->type_committee == 0 ? "Asesor(a)" : "Jurado(a)";
+
+        return redirect()->back()->with('success', $text . "agregada con exito.");
     }
 
-    public function evaluatingCommitteeDestroy(Request $request)
+    public function evaluatingCommitteeDestroy($user,$type, Group $group)
     {
+        $group->teacherUsers()->wherePivot('type', $type)->detach($user);
+
+        return redirect()->back()->with('success', "Jurado(a) eliminada con exito.");
     }
 }

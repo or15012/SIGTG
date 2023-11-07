@@ -23,6 +23,16 @@
                 {{ session('success') }}
             </div>
         @endif
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <h6>Lista de tribunal asignado a grupo</h6>
         <table class="table table-bordered">
             <thead>
@@ -47,10 +57,14 @@
                         </td>
                         <td>{{ $groupCommittee->email }}</td>
                         <td>
-                            <a href="{{ route('groups.evaluating.committee.destroy', $groupCommittee->id) }}"
-                                class="btn btn-danger">
-                                <i class="fas fa-trash"></i>
-                            </a>
+                            <form
+                                action="{{ route('groups.evaluating.committee.destroy', [$groupCommittee->id, $groupCommittee->type, $group->id]) }}"
+                                method="POST" style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                            </form>
+
                         </td>
                     </tr>
                 @endforeach
@@ -65,8 +79,8 @@
                 </div>
             </div>
             <div class="card-body px-4">
-                <form action="{{ route('groups.evaluating.committee.update', $group->id) }}" method="post" enctype="multipart/form-data"
-                    id="evaluating-committee-update">
+                <form action="{{ route('groups.evaluating.committee.update', $group->id) }}" method="post"
+                    enctype="multipart/form-data" id="evaluating-committee-update">
                     @csrf
                     @method('PUT')
                     <div class="row mb-3">
@@ -75,7 +89,7 @@
                             <select name="teachers[]" id="teachers" multiple="multiple">
                                 <option></option>
                                 @forelse ($teachers as  $teacher)
-                                    <option value="{{ $teacher->id }}">
+                                    <option value="{{ $teacher->id }}"  {{ in_array($teacher->id, old('teachers', [])) ? 'selected' : '' }}>
                                         {{ $teacher->first_name }} {{ $teacher->middle_name }}
                                         {{ $teacher->last_name }} {{ $teacher->second_last_name }}
                                     </option>
@@ -91,8 +105,8 @@
                         <div class="col-12 col-md-8 col-lg-8">
                             <select class="form-select" name="type_committee" id="type_committee" required>
                                 <option value="" selected disabled>Seleccione tipo</option>
-                                <option value="0">Asesor</option>
-                                <option value="1">Jurado</option>
+                                <option value="0"  {{ old('type_committee') == '0' ? 'selected' : '' }}>Asesor</option>
+                                <option value="1"  {{ old('type_committee') == '1' ? 'selected' : '' }}>Jurado</option>
                             </select>
                         </div>
                     </div>
@@ -101,7 +115,7 @@
                     <div class="row mb-3">
                         <label class="col-12 col-md-4 col-lg-4" for="agreement">Acuerdo:</label>
                         <div class="col-12 col-md-8 col-lg-8">
-                            <input  class="form-control"  type="file" name="agreement" id="agreement">
+                            <input class="form-control" type="file" name="agreement" id="agreement">
                         </div>
                     </div>
 
