@@ -262,6 +262,7 @@ mix.js('resources/js/group_confirm.js', 'public/js/group_confirm.js');
 mix.js('resources/js/group_edit.js', 'public/js/group_edit.js');
 mix.js('resources/js/preprofille_observation_show.js', 'public/js/preprofille_observation_show.js');
 mix.js('resources/js/evaluation_committee_search.js', 'public/js/evaluation_committee_search.js');
+mix.js('resources/js/users.js', 'public/js/users.js');
 
 
 mix.combine('resources/js/pages/invoice-list.init.js', folder.dist_assets + "js/pages/invoice-list.init.js");

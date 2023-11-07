@@ -186,23 +186,5 @@
 
 @section('script')
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
-    <script>
-        $(document).ready(function(){
-            $('#btnGeneratePassword').on('click',function(e){
-                let randomstring = Math.random().toString(36).slice(-8);
-                $('#userpassword').val(randomstring);
-                $('#confirmpassword').val(randomstring);
-            });
-
-
-            $('.show_hide_pwd').on('click', function(e){
-                const togglePassword = $(this);
-                const password = $(this).parent().parent().find('input');
-                const type = password.attr("type") === "password" ? "text" : "password";
-                password.attr("type", type);
-                this.classList.toggle('fa-eye');
-                this.classList.toggle('fa-eye-slash');
-            });
-        });
-    </script>
+    <script src="{{ URL::asset('js/users.js') }}"></script>
 @endsection

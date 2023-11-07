@@ -34,7 +34,13 @@ Route::post('/update-profile', [App\Http\Controllers\HomeController::class, 'upd
 Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('updatePassword');
 
 Route::get('/home', [HomeController::class, 'home'])->name('home');
-Route::get('/users', [RegisterController::class, 'index'])->name('users.index');
+
+Route::group(['prefix' => 'users'], function () {
+    Route::get('/', [RegisterController::class, 'index'])->name('users.index');
+    Route::get('/download_template', [RegisterController::class, 'download_template'])->name('users.download_template');
+    Route::post('/import', [RegisterController::class, 'import_users'])->name('users.import');
+
+});
 
 Route::group(['prefix' => 'students', 'as' => 'students.'], function () {
     Route::get('/get-student/{carnet}', [StudentController::class, 'getStudent'])->name('get.student');
