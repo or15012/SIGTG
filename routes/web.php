@@ -37,7 +37,7 @@ Route::get('/home', [HomeController::class, 'home'])->name('home');
 
 Route::group(['prefix' => 'users'], function () {
     Route::get('/', [RegisterController::class, 'index'])->name('users.index');
-    Route::get('/download_template', [RegisterController::class, 'download_template'])->name('users.download_template');
+    Route::get('/download-template', [RegisterController::class, 'downloadTemplate'])->name('users.download.template');
     Route::post('/import', [RegisterController::class, 'import_users'])->name('users.import');
 
 });

@@ -138,7 +138,7 @@ class RegisterController extends Controller
     }
 
 
-    public function download_template() {
+    public function downloadTemplate() {
         return response()->download(public_path('uploads/users/formato-importacion-usuarios.xlsx'));
     }
 
