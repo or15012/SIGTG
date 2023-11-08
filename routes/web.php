@@ -40,7 +40,7 @@ Route::group(['prefix' => 'users'], function () {
     Route::get('/', [RegisterController::class, 'index'])->name('users.index');
     Route::get('/download-template', [RegisterController::class, 'downloadTemplate'])->name('users.download.template');
     Route::post('/import', [RegisterController::class, 'import_users'])->name('users.import');
-
+    Route::get('test', [RegisterController::class, 'testCorreo']);
 });
 
 Route::group(['prefix' => 'students', 'as' => 'students.'], function () {

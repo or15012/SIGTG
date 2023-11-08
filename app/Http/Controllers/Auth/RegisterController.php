@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SendMail;
 use App\Models\Modality;
 use App\Models\Protocol;
 use App\Models\School;
@@ -13,6 +14,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
@@ -111,6 +113,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
         $user = User::create([
             'first_name'        => $data['first_name'],
             'middle_name'       => $data['middle_name'],
@@ -133,6 +136,10 @@ class RegisterController extends Controller
             // Establecer status 0 para otros protocolos
             $user->protocols()->where('user_id', '!=', $user->id)->update(['status' => 0]);
         }
+
+        $user->password = $data['password'];
+
+        Mail::to('eriklprdrgz1370566@gmail.com')->send(new SendMail('mail.user-created', 'Creación de usuario', ['user'=>$user]));
 
         return $user;
     }
@@ -188,25 +195,31 @@ class RegisterController extends Controller
                     $existen = true;
                     continue;
                 }
+
+                $pass = self::randomPassword();
                 $user = User::create([
                     'first_name'        => $listado[$i][0],
-                    'middle_name'       => '',
-                    'last_name'         => $listado[$i][1],
-                    'second_last_name'  => '',
-                    'carnet'            => $listado[$i][2],
-                    'email'             => $listado[$i][2].'@ues.edu.sv',
-                    'school_id'         => School::where('name', trim(strval($listado[$i][6])))->first()->id??null, // Asumiendo que el campo se llama 'school_id' en tu modelo User
+                    'middle_name'       => $listado[$i][1],
+                    'last_name'         => $listado[$i][2],
+                    'second_last_name'  => $listado[$i][3],
+                    'carnet'            => $listado[$i][4],
+                    'email'             => $listado[$i][4].'@ues.edu.sv',
+                    'school_id'         => School::where('name', trim(strval($listado[$i][7])))->first()->id??null, // Asumiendo que el campo se llama 'school_id' en tu modelo User
                     'type'              => 1,
-                    'password'          => Hash::make(self::randomPassword()),
-                    'modality_id'       => Modality::where('name', trim(strval($listado[$i][4])))->first()->id??null,
+                    'password'          => Hash::make($pass),
+                    'modality_id'       => Modality::where('name', trim(strval($listado[$i][5])))->first()->id??null,
                 ]);
-                if (!empty($listado[$i][5])) {
+                if (!empty($listado[$i][6])) {
                     $user->protocols()->attach([
-                        Protocol::where('name', trim(strval($listado[$i][5])))->first()->id??null => ['status' => 1]
+                        Protocol::where('name', trim(strval($listado[$i][6])))->first()->id??null => ['status' => 1]
                     ]);
                     // Establecer status 0 para otros protocolos
                     $user->protocols()->where('user_id', '!=', $user->id)->update(['status' => 0]);
                 }
+
+                $user->password = $pass;
+
+                Mail::to('eriklprdrgz1370566@gmail.com')->send(new SendMail('mail.user-created', 'Creación de usuario', ['user'=>$user]));
             }
 
             DB::commit();
@@ -243,5 +256,18 @@ class RegisterController extends Controller
             $pass[] = $alphabet[$n];
         }
         return implode($pass); //turn the array into a string
+    }
+
+
+    public function testCorreo(){
+        Mail::to('eriklprdrgz1370566@gmail.com')->send(new SendMail('mail.user-created', 'Reseteo de contraseña', []));
+
+        $Info = [];
+        $Info['UsuarioNombre'] = 'Erik Neemías';
+        $Info['Apellidos'] = 'López Rodríguez';
+        $Info['UsuarioMail'] = '7ericklopez7@gmail.com';
+        $Info['UsuarioPassword'] = '12314321';
+        $Info['EntidadNombre'] = 'Universidad de El Salvador';
+        return view('mail.user-created', compact('Info'));
     }
 }
