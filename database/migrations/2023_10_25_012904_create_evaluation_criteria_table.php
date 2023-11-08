@@ -20,6 +20,10 @@ return new class extends Migration
             $table->foreignId('stage_id')->constrained('stages')->onDelete('restrict');
             $table->timestamps();
             $table->softDeletes();
+
+
+             //Restricción de unicidad
+             $table->unique(['name','stage_id']);
         });
     }
 

@@ -163,4 +163,5 @@
 "ShowPreperfil" => "Show preprofile",
 "PreProfileAdviser" => "Pre profiles (adviser)",
 "Profiles"          => "Profiles",
+"MyGroup"          => "My Group",
 ];

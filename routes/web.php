@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CycleController;
+use App\Http\Controllers\EvaluationCriteriaController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
@@ -37,7 +38,7 @@ Route::get('/home', [HomeController::class, 'home'])->name('home');
 
 Route::group(['prefix' => 'users'], function () {
     Route::get('/', [RegisterController::class, 'index'])->name('users.index');
-    Route::get('/download_template', [RegisterController::class, 'download_template'])->name('users.download_template');
+    Route::get('/download-template', [RegisterController::class, 'downloadTemplate'])->name('users.download.template');
     Route::post('/import', [RegisterController::class, 'import_users'])->name('users.import');
 
 });
@@ -96,16 +97,14 @@ Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
     Route::post('/', [GroupController::class, 'store'])->name('store');
     Route::get('/initialize', [GroupController::class, 'initialize'])->name('initialize');
     Route::post('/confirm-store', [GroupController::class, 'confirmStore'])->name('confirm.store');
-    Route::get('{id}', [GroupController::class, 'show'])->name('show');
     Route::get('{id}/edit', [GroupController::class, 'edit'])->name('edit');
     Route::put('{id}', [GroupController::class, 'update'])->name('update');
     Route::delete('{id}', [GroupController::class, 'destroy'])->name('destroy');
 
     //Rutas para actualiza comite evaluador y asesor.
     Route::get('/evaluating-committee-index/{group}', [GroupController::class, 'evaluatingCommitteeIndex'])->name('evaluating.committee.index');
-    Route::get('/evaluating-committee-get', [GroupController::class, 'evaluatingCommitteeGet'])->name('evaluating.committee.get');
     Route::put('/evaluating-committee-update/{group}', [GroupController::class, 'evaluatingCommitteeUpdate'])->name('evaluating.committee.update');
-    Route::delete('/evaluating-committee-destroy/{group}', [GroupController::class, 'evaluatingCommitteeDestroy'])->name('evaluating.committee.destroy');
+    Route::delete('/evaluating-committee-destroy/{user}/{type}/{group}', [GroupController::class, 'evaluatingCommitteeDestroy'])->name('evaluating.committee.destroy');
 
 });
 
@@ -142,6 +141,10 @@ Route::group(['prefix' => 'profiles', 'as' => 'profiles.'], function () {
 
 
     Route::get('/index', [ProfileController::class, 'index'])->name('index');
+    Route::get('/coordinator-show', [ProfileController::class, 'coordinatorShow'])->name('coordinator.show');
+    Route::get('/coordinator-observation-list', [ProfileController::class, 'coordinatorObservationList'])->name('coordinator.observation.list');
+    Route::get('/coordinator-observation-create', [ProfileController::class, 'coordinatorObservationCreate'])->name('coordinator.observation.create');
+
 
 
 });
@@ -157,6 +160,15 @@ Route::group(['prefix' => 'stages', 'as' => 'stages.'], function () {
     Route::delete('/{stage}', [StageController::class, 'destroy'])->name('destroy');
 });
 
+//Grupo para las rutas de criterios de evaluación.
+Route::group(['prefix' => 'criterias', 'as' => 'criterias.'], function () {
+    Route::get('/{id}', [EvaluationCriteriaController::class, 'index'])->name('index');
+    Route::get('/create/{id}', [EvaluationCriteriaController::class, 'create'])->name('create');
+    Route::post('/store', [EvaluationCriteriaController::class,  'store'])->name('store');
+    Route::get('/{criteria}/edit', [EvaluationCriteriaController::class, 'edit'])->name('edit');
+    Route::put('/{criteria}', [EvaluationCriteriaController::class, 'update'])->name('update');
+    Route::delete('/{criteria}', [EvaluationCriteriaController::class, 'destroy'])->name('destroy');
+});
 
 
 

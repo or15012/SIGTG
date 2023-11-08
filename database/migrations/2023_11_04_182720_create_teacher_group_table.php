@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('status'); // Agregando la columna 'status' de tipo boolean
             $table->boolean("type")->default(0);
+            $table->string("path_agreement");
             $table->foreignId('user_id')->constrained('users')->onDelete('restrict');
             $table->foreignId('group_id')->constrained('groups')->onDelete('restrict');
             $table->timestamps();

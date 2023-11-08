@@ -9,6 +9,8 @@ class TeacherGroup extends Model
 {
     use HasFactory;
 
+    // Asesor = 0
+    // Jurado = 1
     protected $table = 'teacher_group'; // Nombre de la tabla en la base de datos
 
     protected $fillable = [

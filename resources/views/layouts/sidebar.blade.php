@@ -62,6 +62,13 @@
                 </li>
 
                 <li>
+                    <a href="{{ route('groups.initialize') }}">
+                        <i class="bx bx-group icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-my.group">@lang('translation.MyGroup')</span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="{{ route('groups.index') }}">
                         <i class="bx bx-group icon nav-icon"></i>
                         <span class="menu-item" data-key="t-cycles">@lang('translation.Groups')</span>
@@ -85,13 +92,18 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('profiles.preprofile.coordinator.index') }}">
+                    <a href="{{ route('profiles.index') }}">
                         <i class="bx bx-file-blank icon nav-icon"></i>
                         <span class="menu-item" data-key="t-preprofileadviser">@lang('translation.Profiles')</span>
                     </a>
                 </li>
 
-
+                <li>
+                    <a href="{{ route('stages.index') }}">
+                        <i class="bx bx-building-house icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-schools">@lang('Stages')</span>
+                    </a>
+                </li>
 
 
                 <li class="menu-title" data-key="t-menu">Menu</li>
