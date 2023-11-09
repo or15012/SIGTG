@@ -41,6 +41,13 @@
 
 
                 <li>
+                    <a href="{{ route('users.index') }}">
+                        <i class="bx bx-user-plus icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-users">@lang('translation.Users')</span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="{{ route('schools.index') }}">
                         <i class="bx bx-building-house icon nav-icon"></i>
                         <span class="menu-item" data-key="t-schools">@lang('translation.Schools')</span>
@@ -94,19 +101,26 @@
                 <li>
                     <a href="{{ route('profiles.index') }}">
                         <i class="bx bx-file-blank icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-preprofileadviser">@lang('translation.Profiles')</span>
+                        <span class="menu-item" data-key="t-profile">@lang('translation.Profiles')</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('profiles.coordinator.index') }}">
+                        <i class="bx bx-file-blank icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-preprofileadviser">@lang('translation.ProfilesAdviser')</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ route('stages.index') }}">
-                        <i class="bx bx-building-house icon nav-icon"></i>
+                        <i class="bx bx-git-pull-request icon nav-icon"></i>
                         <span class="menu-item" data-key="t-schools">@lang('Stages')</span>
                     </a>
                 </li>
 
 
-                <li class="menu-title" data-key="t-menu">Menu</li>
+                {{-- <li class="menu-title" data-key="t-menu">Menu</li>
 
                 <li>
                     <a href="{{ url('/') }}">
@@ -349,7 +363,7 @@
                             </ul>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
 
             </ul>
         </div>

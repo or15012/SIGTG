@@ -19,6 +19,10 @@ return new class extends Migration
             $table->longText("description");
             $table->boolean("type");
             $table->string("path");
+            $table->string("vision_path");
+            $table->string("summary_path");
+            $table->string("size_calculation_path");
+            $table->integer('proposal_priority');
             $table->integer("status");
             $table->foreignId('group_id')->constrained('groups')->onDelete('restrict');
             $table->timestamps();

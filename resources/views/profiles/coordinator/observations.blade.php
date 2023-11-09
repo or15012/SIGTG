@@ -12,8 +12,8 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Lista de Perfiles</h1>
-
+        <h1>Observaciones Perfil: {{ $profile->name }}</h1>
+        <a href="{{ route('profiles.coordinator.observation.create', $profile->id) }}" class="btn btn-primary m-1">Generar observación</a>
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -23,22 +23,16 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Nombre</th>
-                    <th style="width: 40%">Descripcion</th>
-                    <th>Fecha subida</th>
-                    <th>Acciones</th>
+                    <th style="width: 50%">Descripcion</th>
+                    <th>Fecha</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($profiles as $profile)
+                @foreach ($profile->observations as $observation)
                     <tr>
-                        <td>{{ $profile->name }} </td>
-                        <td  style="width: 40%">{{  Illuminate\Support\Str::limit($profile->description, 100, '...') }}</td>
-                        <td>{{ $profile->created_at->format('d-m-Y') }}</td>
-                        <td>
-                            <a href="{{ route('profiles.show', $profile->id) }}" class="btn btn-primary">Ver</a>
-                            <a href="{{ route('profiles.edit', $profile->id) }}" class="btn btn-warning">Editar</a>
-                        </td>
+                        <td  style="width: 40%">{{  Illuminate\Support\Str::limit($observation->description, 100, '...') }}</td>
+                        <td>{{ $observation->created_at->format('d-m-Y') }}</td>
+
                     </tr>
 
                 @endforeach

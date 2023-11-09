@@ -16,6 +16,11 @@ class ProfileController extends Controller
         $this->middleware('auth');
     }
 
+    /**
+      *
+      * Metodos para estudiantes creación y edicion de preperfiles
+      */
+
     public function preProfileIndex()
     {
         //obtener grupo actual del user logueado
@@ -122,13 +127,18 @@ class ProfileController extends Controller
 
     public function preProfileDownload(Profile $preprofile)
     {
-        $filePath = storage_path('app/{$preprofile->path}');
+        $filePath = storage_path('app/' . $preprofile->path);
         return response()->download($filePath);
     }
 
 
 
-    public function preProfileCoodinatorIndex()
+     /**
+      *
+      * Metodos para coordinadores revision, cambio de estado y generacion de obseraciones de preperfiles
+      */
+
+    public function preProfileCoordinatorIndex()
     {
         //obtener grupo actual del user logueado
         $user = Auth::user();
@@ -152,13 +162,13 @@ class ProfileController extends Controller
         return view('preprofiles.coordinator.index', compact('preprofiles'));
     }
 
-    public function preProfileCoodinatorShow(Profile $preprofile)
+    public function preProfileCoordinatorShow(Profile $preprofile)
     {
         return view('preprofiles.coordinator.show', compact('preprofile'));
     }
 
 
-    public function preProfileCoodinatorUpdate(Request $request, Profile $preprofile)
+    public function preProfileCoordinatorUpdate(Request $request, Profile $preprofile)
     {
         $validatedData = $request->validate([
             'decision' => 'required', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
@@ -183,7 +193,7 @@ class ProfileController extends Controller
     }
 
 
-    public function preProfileCoodinatorObservationsList(Profile $preprofile)
+    public function preProfileCoordinatorObservationsList(Profile $preprofile)
     {
         return view('preprofiles.coordinator.observations', ['preprofile' => $preprofile]);
     }
@@ -213,7 +223,73 @@ class ProfileController extends Controller
     }
 
 
-    public function index()
+
+     /**
+      *
+      * Metodos para estudiantes creación y edicion de preperfiles
+      */
+
+      public function profileIndex()
+      {
+          //obtener grupo actual del user logueado
+          $user = Auth::user();
+          // Obtiene el año actual
+          $year = date('Y');
+          // Realiza una consulta para verificar si el usuario está en un grupo del año actual
+          $group = Group::where('groups.year', $year)
+              ->where('groups.status', 1)
+              ->whereHas('users', function ($query) use ($user) {
+                  $query->where('users.id', $user->id);
+              })
+              ->first();
+
+          $profiles = Profile::where('group_id', $group->id)
+              ->where('type', 1)
+              ->paginate(10);
+
+          return view('profiles.index', compact('profiles'));
+      }
+
+      public function profileShow(Profile $profile)
+      {
+          return view('profiles.show', compact('profile'));
+      }
+
+      public function profileEdit(Profile $profile)
+      {
+          return view('profiles.edit', ['profile' => $profile]);
+      }
+
+
+      public function profileUpdate(Request $request, Profile $profiles)
+      {
+          $validatedData = $request->validate([
+              'name' => 'required|string|max:255',
+              'description' => 'required|string',
+              'new_path' => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
+          ]);
+
+          // Actualizar los campos del perfil
+          $profiles->name = $request->input('name');
+          $profiles->description = $request->input('description');
+
+          // Procesar y guardar el nuevo archivo si se proporciona
+          if ($request->hasFile('new_path')) {
+              $newPath = $request->file('new_path')->store('preprofiles');
+              $profiles->path = $newPath;
+          }
+          $profiles->update();
+
+          return redirect()->route('profiles.index')->with('success', 'El preperfil se ha actualizado correctamente');
+      }
+
+
+    /**
+      *
+      * Metodos para coordinadores revision, cambio de estado y generacion de obseraciones de perfiles
+      */
+
+    public function coordinatorIndex()
     {
         //obtener grupo actual del user logueado
         $user = Auth::user();
@@ -233,6 +309,39 @@ class ProfileController extends Controller
             ->paginate(10);
 
 
-        return view('profiles.index', compact('preprofiles'));
+        return view('profiles.coordinator.index', compact('preprofiles'));
     }
+
+    public function CoordinatorShow(Profile $profile)
+    {
+        return view('profiles.coordinator.show', compact('profile'));
+    }
+
+    public function coordinatorObservationsList(Profile $profile)
+    {
+        return view('profiles.coordinator.observations', ['profile' => $profile]);
+    }
+
+    public function coordinatorObservationCreate(Profile $profile)
+    {
+        return view('profiles.coordinator.create', ['profile' => $profile]);
+    }
+
+    public function coordinatorObservationStore(Request $request)
+    {
+        // Validación de los datos del formulario
+        $validatedData = $request->validate([
+            'description' => 'required|string',
+            'profile_id' => 'required', // Esto valida que el archivo sea un PDF (puedes ajustar según tus necesidades)
+        ]);
+
+        // Crear un nueva observación
+        $observation                = new Observation();
+        $observation->description   = $request->description;
+        $observation->profile_id    = $request->profile_id;
+        $observation->save();
+
+        return redirect()->route('profiles.coordinator.observation.list', [$request->profile_id])->with('success', 'La observación se ha guardado correctamente');
+    }
+
 }

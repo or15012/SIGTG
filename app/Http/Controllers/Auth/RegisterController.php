@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use Illuminate\Support\Facades\Log;
 
 class RegisterController extends Controller
 {
@@ -149,7 +150,7 @@ class RegisterController extends Controller
         return response()->download(public_path('uploads/users/formato-importacion-usuarios.xlsx'));
     }
 
-    public function import_users(Request $request)
+    public function import(Request $request)
     {
         $request = $request;
 
@@ -209,6 +210,7 @@ class RegisterController extends Controller
                     'password'          => Hash::make($pass),
                     'modality_id'       => Modality::where('name', trim(strval($listado[$i][5])))->first()->id??null,
                 ]);
+
                 if (!empty($listado[$i][6])) {
                     $user->protocols()->attach([
                         Protocol::where('name', trim(strval($listado[$i][6])))->first()->id??null => ['status' => 1]
@@ -219,7 +221,11 @@ class RegisterController extends Controller
 
                 $user->password = $pass;
 
-                Mail::to('eriklprdrgz1370566@gmail.com')->send(new SendMail('mail.user-created', 'Creación de usuario', ['user'=>$user]));
+                try {
+                    Mail::to('eriklprdrgz1370566@gmail.com')->send(new SendMail('mail.user-created', 'Creación de usuario', ['user'=>$user]));
+                } catch (Exception $th) {
+                    Log::info($th->getMessage());
+                }
             }
 
             DB::commit();
@@ -239,6 +245,7 @@ class RegisterController extends Controller
         return redirect()->route('users.index')->with('success', 'Quotation Created Sucessfully');
         // return response()->download(public_path('quotations/uploads/file.xlsx'));
         } catch (Exception $e) {
+            dd($e);
             return redirect()->route('users.index')
                     ->withErrors(['Sorry, Error Occured !', 'Asegúrese que el archivo tenga el formato correcto.'])
                     ->withInput();
