@@ -35,6 +35,10 @@ class ProfileController extends Controller
             })
             ->first();
 
+        if(!isset($group)){
+            return redirect('home')->withErrors(['mensaje' => 'Debe tener un grupo activo.']);
+        }
+
         $preprofiles = Profile::where('group_id', $group->id)
             ->where('type', 0)
             ->paginate(10);
@@ -54,14 +58,30 @@ class ProfileController extends Controller
     {
         // Validación de los datos del formulario
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'path' => 'required|mimes:pdf', // Esto valida que el archivo sea un PDF (puedes ajustar según tus necesidades)
+            'name'                  => 'required|string|max:255',
+            'description'           => 'required|string',
+            'path'                  => 'required|mimes:pdf', // Esto valida que el archivo sea un PDF (puedes ajustar según tus necesidades)
+            'summary_path'          => 'required|mimes:pdf',
+            'vision_path'           => 'required|mimes:pdf',
+            'size_calculation_path' => 'required|mimes:pdf',
+            'proposal_priority'     => 'required|integer',
         ]);
 
         // Procesar y guardar el archivo
         if ($request->hasFile('path')) {
             $path = $request->file('path')->store('preprofiles'); // Define la carpeta de destino donde se guardará el archivo
+        }
+
+        if ($request->hasFile('summary_path')) {
+            $summary_path = $request->file('summary_path')->store('preprofiles'); // Define la carpeta de destino donde se guardará el archivo
+        }
+
+        if ($request->hasFile('vision_path')) {
+            $vision_path = $request->file('vision_path')->store('preprofiles'); // Define la carpeta de destino donde se guardará el archivo
+        }
+
+        if ($request->hasFile('size_calculation_path')) {
+            $size_calculation_path = $request->file('size_calculation_path')->store('preprofiles'); // Define la carpeta de destino donde se guardará el archivo
         }
 
         $user = Auth::user();
@@ -74,12 +94,17 @@ class ProfileController extends Controller
             ->first();
 
         // Crear un nuevo perfil
-        $profile                = new Profile;
-        $profile->name          = $request->input('name');
-        $profile->description   = $request->input('description');
-        $profile->path          = $path; // Asigna el nombre del archivo (o null si no se cargó un archivo)
-        $profile->type          = 0;
-        $profile->group_id      = $group->id;
+        $profile                        = new Profile;
+        $profile->name                  = $request->input('name');
+        $profile->description           = $request->input('description');
+        $profile->path                  = $path; // Asigna el nombre del archivo (o null si no se cargó un archivo)
+        $profile->summary_path          = $summary_path;
+        $profile->vision_path           = $vision_path;
+        $profile->size_calculation_path = $size_calculation_path;
+        $profile->proposal_priority     = $request->input('proposal_priority');
+        $profile->type                  = 0;
+        $profile->group_id              = $group->id;
+        $profile->status                = 0;
         $profile->save();
 
         return redirect()->route('profiles.preprofile.index')->with('success', 'El pre perfil se ha guardado correctamente');
@@ -125,9 +150,10 @@ class ProfileController extends Controller
         return redirect()->route('profiles.preprofile.index')->with('success', 'Preperfil eliminado correctamente.');
     }
 
-    public function preProfileDownload(Profile $preprofile)
+    public function preProfileDownload(Profile $preprofile, $file)
     {
-        $filePath = storage_path('app/' . $preprofile->path);
+        dd()
+        $filePath = storage_path('app/' . $preprofile->$file);
         return response()->download($filePath);
     }
 

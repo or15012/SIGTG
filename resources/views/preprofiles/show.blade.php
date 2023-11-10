@@ -8,23 +8,30 @@
     <div class="container">
         <h1 class="mb-5">Detalles del Preperfil</h1>
 
-        <div class="mb-3">
-            <label for="name" class="form-label">Nombre:</label>
-            <p>{{ $preprofile->name }}</p>
+        <div class="row">
+            <div class="mb-3 col-12 col-md-6">
+                <label for="name" class="form-label">Nombre:</label>
+                <p>{{ $preprofile->name }}</p>
+            </div>
+
+            <div class="mb-3 col-12 col-md-6">
+                <label for="description" class="form-label">Descripción:</label>
+                <p>{{ $preprofile->description }}</p>
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label for="description" class="form-label">Descripción:</label>
-            <p>{{ $preprofile->description }}</p>
+        <div class="row">
+            <div class="mb-3 col-12 col-md-6">
+                <label for="path" class="form-label">Archivo preperfil:</label>
+                <p>
+                    <a href="{{ route('profiles.preprofile.download', [$preprofile->id, 'path']) }}" target="_blank">Ver archivo</a>
+
+                </p>
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label for="path" class="form-label">Archivo preperfil:</label>
-            <p>
-                <a href="{{ route('profiles.preprofile.download', $preprofile->id) }}" target="_blank">Ver archivo</a>
 
-            </p>
-        </div>
+
     </div>
 @endsection
 
