@@ -26,6 +26,7 @@
                     <th>Nombre</th>
                     <th style="width: 40%">Descripcion</th>
                     <th>Fecha subida</th>
+                    <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -35,6 +36,28 @@
                         <td>{{ $profile->name }} </td>
                         <td  style="width: 40%">{{  Illuminate\Support\Str::limit($profile->description, 100, '...') }}</td>
                         <td>{{ $profile->created_at->format('d-m-Y') }}</td>
+                        <td>
+                            @switch($profile->status)
+                                @case(0)
+                                        Perfil presentado.
+                                @break
+
+                                @case(1)
+                                        Perfil aprobado.
+                                @break
+
+                                @case(2)
+                                        Perfil observado.
+                                @break
+
+                                @case(3)
+                                        Perfil rechazado.
+                                @break
+
+                                @default
+
+                            @endswitch
+                        </td>
                         <td>
                             <a href="{{ route('profiles.show', $profile->id) }}" class="btn btn-primary">Ver</a>
                             <a href="{{ route('profiles.edit', $profile->id) }}" class="btn btn-warning">Editar</a>

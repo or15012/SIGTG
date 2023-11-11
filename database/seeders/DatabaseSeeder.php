@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             StateSeeder::class,
             UserSeeder::class,
             CycleSeeder::class,
+            ParameterSeeder::class,
+            UserProtocolSeeder::class,
         ]);
     }
 }

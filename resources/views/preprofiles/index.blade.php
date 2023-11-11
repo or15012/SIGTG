@@ -28,6 +28,7 @@
                     <th>Nombre</th>
                     <th style="width: 40%">Descripcion</th>
                     <th>Fecha subida</th>
+                    <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -37,6 +38,28 @@
                         <td>{{ $preprofile->name }} </td>
                         <td  style="width: 40%">{{  Illuminate\Support\Str::limit($preprofile->description, 100, '...') }}</td>
                         <td>{{ $preprofile->created_at->format('d-m-Y') }}</td>
+                        <td>
+                            @switch($preprofile->status)
+                                @case(0)
+                                        Pre perfil presentado.
+                                @break
+
+                                @case(1)
+                                        Pre perfil aprobado.
+                                @break
+
+                                @case(2)
+                                        Pre perfil observado.
+                                @break
+
+                                @case(3)
+                                        Pre perfil rechazado.
+                                @break
+
+                                @default
+
+                            @endswitch
+                        </td>
                         <td>
                             <a href="{{ route('profiles.preprofile.show', $preprofile->id) }}" class="btn btn-primary">Ver</a>
                             <a href="{{ route('profiles.preprofile.edit', $preprofile->id) }}" class="btn btn-warning">Editar</a>

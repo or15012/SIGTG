@@ -131,7 +131,7 @@ Route::group(['prefix' => 'profiles', 'as' => 'profiles.'], function () {
     Route::get('/preprofile/edit/{preprofile}', [ProfileController::class, 'preProfileEdit'])->name('preprofile.edit');
     Route::put('/preprofile/update/{preprofile}', [ProfileController::class, 'preProfileUpdate'])->name('preprofile.update');
     Route::delete('/preprofile/destroy/{preprofile}', [ProfileController::class, 'preProfileDestroy'])->name('preprofile.destroy');
-    Route::get('preprofiles/download/{preprofile}',[ProfileController::class, 'preProfileDownload'])->name('preprofile.download');
+    Route::get('/preprofiles/download/{preprofile}/{file}',[ProfileController::class, 'preProfileDownload'])->name('preprofile.download');
 
     //Rutas para coordinadores revision, cambio de estado y generacion de obseraciones de preperfiles
     Route::get('/preprofile/coordinator/index', [ProfileController::class, 'preProfileCoordinatorIndex'])->name('preprofile.coordinator.index');
