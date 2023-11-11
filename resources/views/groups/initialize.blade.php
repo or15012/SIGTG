@@ -28,7 +28,7 @@
                     <input type="text" placeholder="carnet" id="carnet" class="form-control">
                 </div>
                 <div class="col-12 col-md-2 col-lg-2">
-                    <button type="button" id="add-student" class="btn btn-primary w-md">Agregar integrante</button>
+                    <button type="button" id="add-student" class="btn btn-primary w-md" @if(isset($group) && $group->status != 0) disabled @endif>Agregar integrante</button>
                 </div>
             </div>
             @if (isset($group))
@@ -58,9 +58,19 @@
                                         <label class="my-1 fw-bold">Estado de asignación</label>
                                     </div>
                                     <div>
-                                        <label class="my-1 bg-soft-secondary text-opacity-100 p-2 rounded">
-                                            Enviado
-                                        </label>
+                                        @switch($user->pivot->status)
+                                            @case(1)
+                                                <label class="my-1 bg-soft-success text-opacity-100 p-2 rounded">Aceptado
+                                                </label>
+                                                @break
+                                            @case(2)
+                                                <label class="my-1 bg-soft-danger text-opacity-100 p-2 rounded">Rechazado
+                                                </label>
+                                                @break
+                                            @default
+                                                <label class="my-1 bg-soft-secondary text-opacity-100 p-2 rounded">Enviado
+                                                </label>
+                                        @endswitch
                                     </div>
                                     <button type="button" data-user="{{ $user->id }}"
                                         class="delete-user btn btn-danger waves-effect waves-light">
@@ -83,7 +93,7 @@
                     </div>
                 @endforelse
             </div>
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-primary @if(isset($group) && $group->status != 0) d-none @endif">
                 @if (isset($group))
                     Actualizar grupo
                 @else

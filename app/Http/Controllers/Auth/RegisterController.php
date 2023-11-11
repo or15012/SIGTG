@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Mail\SendMail;
+use App\Models\Group;
 use App\Models\Modality;
 use App\Models\Protocol;
 use App\Models\School;
@@ -140,7 +141,7 @@ class RegisterController extends Controller
 
         $user->password = $data['password'];
 
-        Mail::to('eriklprdrgz1370566@gmail.com')->send(new SendMail('mail.user-created', 'Creación de usuario', ['user'=>$user]));
+        Mail::to($user->email)->send(new SendMail('mail.user-created', 'Creación de usuario', ['user'=>$user]));
 
         return $user;
     }
@@ -152,8 +153,6 @@ class RegisterController extends Controller
 
     public function import(Request $request)
     {
-        $request = $request;
-
         $validator = Validator::make($request->all(),
         [
             'excelFile.required' => 'Selecciona un archivo de tipo .xslx',
@@ -173,9 +172,6 @@ class RegisterController extends Controller
 
                 mkdir(Storage::path('public/uploads/users'), 0755, true);
             }
-
-            $request = $request;
-
 
             $extension = $request->file('excelFile')->getClientOriginalExtension();
             $request->file('excelFile')->storeAs('uploads/users', 'file.' . $extension, 'public');
@@ -222,7 +218,7 @@ class RegisterController extends Controller
                 $user->password = $pass;
 
                 try {
-                    Mail::to('eriklprdrgz1370566@gmail.com')->send(new SendMail('mail.user-created', 'Creación de usuario', ['user'=>$user]));
+                    Mail::to($user->email)->send(new SendMail('mail.user-created', 'Creación de usuario', ['user'=>$user]));
                 } catch (Exception $th) {
                     Log::info($th->getMessage());
                 }
@@ -240,12 +236,10 @@ class RegisterController extends Controller
                     ->with(['success'=>'Importación correcta.'])
                     ->withInput();
 
-        Storage::disk('public')->delete('users/file.' . $extension);
+            Storage::disk('public')->delete('users/file.' . $extension);
 
-        return redirect()->route('users.index')->with('success', 'Quotation Created Sucessfully');
-        // return response()->download(public_path('quotations/uploads/file.xlsx'));
+            return redirect()->route('users.index')->with('success', 'Importación correcta.');
         } catch (Exception $e) {
-            dd($e);
             return redirect()->route('users.index')
                     ->withErrors(['Sorry, Error Occured !', 'Asegúrese que el archivo tenga el formato correcto.'])
                     ->withInput();
@@ -267,14 +261,18 @@ class RegisterController extends Controller
 
 
     public function testCorreo(){
-        Mail::to('eriklprdrgz1370566@gmail.com')->send(new SendMail('mail.user-created', 'Reseteo de contraseña', []));
+        // Mail::to('eriklprdrgz1370566@gmail.com')->send(new SendMail('mail.user-created', 'Reseteo de contraseña', []));
 
         $Info = [];
-        $Info['UsuarioNombre'] = 'Erik Neemías';
-        $Info['Apellidos'] = 'López Rodríguez';
+        $Info['first_name'] = 'Erik Neemías';
+        $Info['last_name'] = 'López Rodríguez';
         $Info['UsuarioMail'] = '7ericklopez7@gmail.com';
         $Info['UsuarioPassword'] = '12314321';
         $Info['EntidadNombre'] = 'Universidad de El Salvador';
-        return view('mail.user-created', compact('Info'));
+
+        $group = Group::find(1);
+
+        return Mail::to('eriklprdrgz1370566@gmail.com')->send(new SendMail('mail.notification', 'Notificacion de grupo', ['title'=>'Notificacion de grupo | UES', 'body'=>'Notificacion de grupo | UES', 'body'=>'Le informamos que su grupo ha sido aceptado.']));
+        // return view('mail.notification', ['Info'=>['title'=>'Notificacion de grupo | UES', 'body'=>'Le informamos que su grupo ha sido aceptado.']]);
     }
 }
