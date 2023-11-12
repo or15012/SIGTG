@@ -14,6 +14,7 @@
     @endcomponent
     <div class="container">
         <h1>Listado de Ciclos</h1>
+        <a href="{{ route('cycles.create') }}" class="btn btn-primary mb-3">Agregar ciclo</a>
         <table class="table">
             <thead>
                 <tr>

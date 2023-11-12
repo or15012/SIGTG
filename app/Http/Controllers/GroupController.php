@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendMail;
+use App\Models\Cycle;
 use App\Models\Group;
 use App\Models\Parameter;
 use App\Models\User;
@@ -11,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class GroupController extends Controller
 {
@@ -96,15 +99,19 @@ class GroupController extends Controller
                 ->where('user_protocol.status', true)
                 ->first();
             // dd($protocol->id);
+            $cycle_id = Cycle::where('status', 1)->first()->id??1;
             // Crear un nuevo grupo
             $group = Group::create([
                 'year'          => date("Y"),
                 'status'        => 0,
                 'state_id'      => 1,
                 'protocol_id'   => $protocol->id,
-                'cycle_id'      => 1
+                'cycle_id'      => $cycle_id
             ]);
         }
+        $existing_users = $group->users()->pluck('user_group.user_id')->toArray();
+
+        $news = [];
         $group->users()->detach();
         $users = $request->input('users');
         // Preparar datos para la sincronización
@@ -116,11 +123,20 @@ class GroupController extends Controller
                 'is_leader' => ($key === 0) ? 1 : 0, // Establecer is_leader = 1 para el primer usuario, 0 para los demás
             ];
             $syncData[] = $userData;
+
+            if (!in_array(intval($userId), $existing_users) && $key > 0) {
+                try {
+                    $user = User::find(intval($userId));
+                    Mail::to($user->email)->send(new SendMail('mail.user-invited-to-group', 'Invitación a grupo', ['user'=>$user, 'group'=>$group]));
+                } catch (\Throwable $th) {
+                    //throw $th;
+                }
+            }
         }
         // Insertar los nuevos usuarios
         $group->users()->attach($syncData);
 
-        return redirect()->back()->with('success', 'Grupo inicializado con éxito');
+        return redirect()->back()->with('success', 'Grupo inicializado con éxito.');
     }
 
     public function edit($id)
@@ -149,46 +165,66 @@ class GroupController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validación de los datos del ciclo y los parámetros
-        $validatedData = $request->validate([
-            'group_id'        => 'required|integer',
-            'decision'        => 'required|integer',
-            // Campo que contendrá los parámetros
-        ]);
+        try {
+            // Validación de los datos del ciclo y los parámetros
+            $validatedData = $request->validate([
+                'group_id'        => 'required|integer',
+                'decision'        => 'required|integer',
+                // Campo que contendrá los parámetros
+            ]);
 
-        $group = Group::findOrFail($id);
+            $group = Group::findOrFail($id);
 
-        // Actualizar los datos del ciclo
-        // 3 = aceptado
-        // 4 = denegado
+            // Actualizar los datos del ciclo
+            // 1 = aceptado
+            // 2 = denegado
 
-        $stateId = 4;
-
-        if ($request->decision == 1) {
             $stateId = 3;
-            $consultingGroup = Group::where('number', '!=', null)
-                ->where('protocol_id', $group->protocol_id)
-                ->orderBy('id', 'desc')
-                ->first();
 
-            if (isset($consultingGroup)) {
-                $number = $consultingGroup->number + 1;
+            DB::beginTransaction();
+
+            DB::statement("DELETE FROM user_group WHERE group_id = ? AND status != 1", [$id]);
+
+            if ($request->decision == 1) {
+                $stateId = 2;
+                $consultingGroup = Group::where('number', '!=', null)
+                    ->where('protocol_id', $group->protocol_id)
+                    ->orderBy('id', 'desc')
+                    ->first();
+
+                if (isset($consultingGroup)) {
+                    $number = $consultingGroup->number + 1;
+                } else {
+                    $number = 1;
+                }
+                $data = [
+                    'status'    => $request->decision,
+                    'state_id'  => $stateId,
+                    'number'    => $number
+                ];
+
+                foreach ($group->users as $user) {
+                    Mail::to($user->email)->send(new SendMail('mail.notification', 'Notificacion de grupo', ['title'=>"Notificacion del grupo $group->number", 'body'=>"Hola $user->first_name, te informamos que tu grupo ha sido <b>ACEPTADO</b>."]));
+                }
+
             } else {
-                $number = 1;
+                $data = [
+                    'status'    => $request->decision,
+                    'state_id'  => $stateId,
+                ];
+
+                foreach ($group->users as $user) {
+                    Mail::to($user->email)->send(new SendMail('mail.notification', 'Notificacion de grupo', ['title'=>"Notificacion del grupo $group->number", 'body'=>"Hola $user->first_name, lamentamos informarte que tu grupo ha sido <b>RECHAZADO</b>."]));
+                }
             }
-            $data = [
-                'status'    => $request->decision,
-                'state_id'  => $stateId,
-                'number'    => $number
-            ];
-        } else {
-            $data = [
-                'status'    => $request->decision,
-                'state_id'  => $stateId,
-            ];
+            $group->update($data);
+
+            DB::commit();
+            return redirect()->route('groups.index')->with('success', 'Grupo actualizado con éxito');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return back()->withErrors(['¡Ups! Lo sentimos, algo salió mal.']);
         }
-        $group->update($data);
-        return redirect()->route('groups.index')->with('success', 'Grupo actualizado con éxito');
     }
 
     public function destroy($id)
@@ -208,6 +244,15 @@ class GroupController extends Controller
     public function confirmStore(Request $request)
     {
         try {
+            $group = Group::find($request->input('group_id'));
+            $parameterMaxGroup = Parameter::where('name', 'max_group')->where('cycle_id', $group->cycle_id)->first();
+
+            $usersGroup = UserGroup::where('group_id', $request->input('group_id'))->where('status', 1)->get();
+
+            if ($parameterMaxGroup != null && count($usersGroup) >= $parameterMaxGroup->value) {
+                return redirect()->back()->withErrors(['mensaje' => 'Lo sentimos el grupo ya ha sido completado.']);
+            }
+
             //Obteniendo info de user logueado
             $user = Auth::user();
             $year = date("Y"); // Año actual
