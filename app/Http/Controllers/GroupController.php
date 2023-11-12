@@ -159,13 +159,13 @@ class GroupController extends Controller
         $group = Group::findOrFail($id);
 
         // Actualizar los datos del ciclo
-        // 1 = aceptado
-        // 2 = denegado
+        // 3 = aceptado
+        // 4 = denegado
 
-        $stateId = 3;
+        $stateId = 4;
 
         if ($request->decision == 1) {
-            $stateId = 2;
+            $stateId = 3;
             $consultingGroup = Group::where('number', '!=', null)
                 ->where('protocol_id', $group->protocol_id)
                 ->orderBy('id', 'desc')

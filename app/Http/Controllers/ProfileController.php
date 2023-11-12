@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Group;
 use App\Models\Observation;
 use App\Models\Profile;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,9 +18,9 @@ class ProfileController extends Controller
     }
 
     /**
-      *
-      * Metodos para estudiantes creación y edicion de preperfiles
-      */
+     *
+     * Metodos para estudiantes creación y edicion de preperfiles
+     */
 
     public function preProfileIndex()
     {
@@ -35,7 +36,7 @@ class ProfileController extends Controller
             })
             ->first();
 
-        if(!isset($group)){
+        if (!isset($group)) {
             return redirect('home')->withErrors(['mensaje' => 'Debe tener un grupo activo.']);
         }
 
@@ -126,17 +127,33 @@ class ProfileController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'new_path' => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
+            'proposal_priority' => 'required|integer',
+            'path' => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
+            'summary_path' => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
+            'vision_path' => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
+            'size_calculation_path' => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
         ]);
 
         // Actualizar los campos del perfil
-        $preprofile->name = $request->input('name');
-        $preprofile->description = $request->input('description');
-
+        $preprofile->name               = $request->input('name');
+        $preprofile->description        = $request->input('description');
+        $preprofile->proposal_priority  = $request->input('proposal_priority');
         // Procesar y guardar el nuevo archivo si se proporciona
-        if ($request->hasFile('new_path')) {
-            $newPath = $request->file('new_path')->store('preprofiles');
-            $preprofile->path = $newPath;
+        if ($request->hasFile('path')) {
+            $path = $request->file('path')->store('preprofiles');
+            $preprofile->path = $path;
+        }
+        if ($request->hasFile('summary_path')) {
+            $summary_path = $request->file('summary_path')->store('preprofiles');
+            $preprofile->summary_path = $summary_path;
+        }
+        if ($request->hasFile('vision_path')) {
+            $vision_path = $request->file('vision_path')->store('preprofiles');
+            $preprofile->vision_path = $vision_path;
+        }
+        if ($request->hasFile('size_calculation_path')) {
+            $size_calculation_path = $request->file('size_calculation_path')->store('preprofiles');
+            $preprofile->size_calculation_path = $size_calculation_path;
         }
         $preprofile->update();
 
@@ -152,17 +169,17 @@ class ProfileController extends Controller
 
     public function preProfileDownload(Profile $preprofile, $file)
     {
-        dd()
+
         $filePath = storage_path('app/' . $preprofile->$file);
         return response()->download($filePath);
     }
 
 
 
-     /**
-      *
-      * Metodos para coordinadores revision, cambio de estado y generacion de obseraciones de preperfiles
-      */
+    /**
+     *
+     * Metodos para coordinadores revision, cambio de estado y generacion de obseraciones de preperfiles
+     */
 
     public function preProfileCoordinatorIndex()
     {
@@ -203,14 +220,18 @@ class ProfileController extends Controller
         $preprofile->status = $request->decision;
         if ($request->decision == 1) {
             //creare a partir del preperfil un perfil
-            $profile                = new Profile();
-            $profile->name          = $preprofile->name;
-            $profile->description   = $preprofile->description;
-            $profile->group_id      = $preprofile->group_id;
-            $profile->path          = $preprofile->path;
-            $profile->profile_id    = $preprofile->id;
-            $profile->status        = 0;
-            $profile->type          = 1;
+            $profile                        = new Profile();
+            $profile->name                  = $preprofile->name;
+            $profile->description           = $preprofile->description;
+            $profile->group_id              = $preprofile->group_id;
+            $profile->proposal_priority     = $preprofile->proposal_priority;
+            $profile->path                  = $preprofile->path;
+            $profile->vision_path           = $preprofile->vision_path;
+            $profile->summary_path          = $preprofile->summary_path;
+            $profile->size_calculation_path = $preprofile->size_calculation_path;
+            $profile->profile_id            = $preprofile->id;
+            $profile->status                = 0;
+            $profile->type                  = 1;
             $profile->save();
         }
         $preprofile->update();
@@ -250,70 +271,86 @@ class ProfileController extends Controller
 
 
 
-     /**
-      *
-      * Metodos para estudiantes creación y edicion de preperfiles
-      */
+    /**
+     *
+     * Metodos para estudiantes creación y edicion de preperfiles
+     */
 
-      public function profileIndex()
-      {
-          //obtener grupo actual del user logueado
-          $user = Auth::user();
-          // Obtiene el año actual
-          $year = date('Y');
-          // Realiza una consulta para verificar si el usuario está en un grupo del año actual
-          $group = Group::where('groups.year', $year)
-              ->where('groups.status', 1)
-              ->whereHas('users', function ($query) use ($user) {
-                  $query->where('users.id', $user->id);
-              })
-              ->first();
+    public function profileIndex()
+    {
+        //obtener grupo actual del user logueado
+        $user = Auth::user();
+        // Obtiene el año actual
+        $year = date('Y');
+        // Realiza una consulta para verificar si el usuario está en un grupo del año actual
+        $group = Group::where('groups.year', $year)
+            ->where('groups.status', 1)
+            ->whereHas('users', function ($query) use ($user) {
+                $query->where('users.id', $user->id);
+            })
+            ->first();
 
-          $profiles = Profile::where('group_id', $group->id)
-              ->where('type', 1)
-              ->paginate(10);
+        $profiles = Profile::where('group_id', $group->id)
+            ->where('type', 1)
+            ->paginate(10);
 
-          return view('profiles.index', compact('profiles'));
-      }
+        return view('profiles.index', compact('profiles'));
+    }
 
-      public function profileShow(Profile $profile)
-      {
-          return view('profiles.show', compact('profile'));
-      }
+    public function profileShow(Profile $profile)
+    {
+        return view('profiles.show', compact('profile'));
+    }
 
-      public function profileEdit(Profile $profile)
-      {
-          return view('profiles.edit', ['profile' => $profile]);
-      }
+    public function profileEdit(Profile $profile)
+    {
+        return view('profiles.edit', ['profile' => $profile]);
+    }
 
 
-      public function profileUpdate(Request $request, Profile $profiles)
-      {
-          $validatedData = $request->validate([
-              'name' => 'required|string|max:255',
-              'description' => 'required|string',
-              'new_path' => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
-          ]);
+    public function profileUpdate(Request $request, Profile $profiles)
+    {
+        $validatedData = $request->validate([
+            'name'                  => 'required|string|max:255',
+            'description'           => 'required|string',
+            'path'                  => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
+            'summary_path'          => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
+            'vision_path'           => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
+            'size_calculation_path' => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
+        ]);
 
-          // Actualizar los campos del perfil
-          $profiles->name = $request->input('name');
-          $profiles->description = $request->input('description');
+        // Actualizar los campos del perfil
+        $profiles->name = $request->input('name');
+        $profiles->description = $request->input('description');
 
-          // Procesar y guardar el nuevo archivo si se proporciona
-          if ($request->hasFile('new_path')) {
-              $newPath = $request->file('new_path')->store('preprofiles');
-              $profiles->path = $newPath;
-          }
-          $profiles->update();
+        // Procesar y guardar el nuevo archivo si se proporciona
+        if ($request->hasFile('path')) {
+            $path = $request->file('path')->store('preprofiles');
+            $profiles->path = $path;
+        }
+        if ($request->hasFile('summary_path')) {
+            $summary_path = $request->file('summary_path')->store('preprofiles');
+            $profiles->summary_path = $summary_path;
+        }
+        if ($request->hasFile('vision_path')) {
+            $vision_path = $request->file('vision_path')->store('preprofiles');
+            $profiles->vision_path = $vision_path;
+        }
+        if ($request->hasFile('size_calculation_path')) {
+            $size_calculation_path = $request->file('size_calculation_path')->store('preprofiles');
+            $profiles->size_calculation_path = $size_calculation_path;
+        }
 
-          return redirect()->route('profiles.index')->with('success', 'El preperfil se ha actualizado correctamente');
-      }
+        $profiles->update();
+
+        return redirect()->route('profiles.index')->with('success', 'El preperfil se ha actualizado correctamente');
+    }
 
 
     /**
-      *
-      * Metodos para coordinadores revision, cambio de estado y generacion de obseraciones de perfiles
-      */
+     *
+     * Metodos para coordinadores revision, cambio de estado y generacion de obseraciones de perfiles
+     */
 
     public function coordinatorIndex()
     {
@@ -343,6 +380,26 @@ class ProfileController extends Controller
         return view('profiles.coordinator.show', compact('profile'));
     }
 
+    public function CoordinatorUpdate(Request $request, Profile $profile)
+    {
+        $validatedData = $request->validate([
+            'decision' => 'required', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
+        ]);
+
+        $profile->status = $request->decision;
+        if ($request->decision == 1) {
+            //creare a partir del perfil el proyecto
+            $project                = new Project();
+            $project->name          = $profile->name;
+            $project->group_id      = $profile->group_id;
+            $project->profile_id    = $profile->profile_id;
+            $project->save();
+        }
+        $profile->update();
+
+        return view('profiles.coordinator.show', compact('profile'));
+    }
+
     public function coordinatorObservationsList(Profile $profile)
     {
         return view('profiles.coordinator.observations', ['profile' => $profile]);
@@ -369,5 +426,4 @@ class ProfileController extends Controller
 
         return redirect()->route('profiles.coordinator.observation.list', [$request->profile_id])->with('success', 'La observación se ha guardado correctamente');
     }
-
 }

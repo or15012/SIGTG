@@ -150,7 +150,7 @@ Route::group(['prefix' => 'profiles', 'as' => 'profiles.'], function () {
     //Rutas para coordinadores revision, cambio de estado y generacion de obseraciones de perfiles
     Route::get('/coordinator/index', [ProfileController::class, 'coordinatorIndex'])->name('coordinator.index');
     Route::get('/coordinator/show/{profile}', [ProfileController::class, 'coordinatorShow'])->name('coordinator.show');
-    Route::put('/coordinator/update/{preprofile}', [ProfileController::class, 'coordinatorUpdate'])->name('coordinator.update');
+    Route::put('/coordinator/update/{profile}', [ProfileController::class, 'coordinatorUpdate'])->name('coordinator.update');
     Route::get('/coordinator/observation/list/{profile}', [ProfileController::class, 'coordinatorObservationsList'])->name('coordinator.observation.list');
     Route::get('/coordinator/observation/create/{profile}', [ProfileController::class, 'coordinatorObservationCreate'])->name('coordinator.observation.create');
     Route::post('/coordinator/observation/store', [ProfileController::class, 'coordinatorObservationStore'])->name('coordinator.observation.store');

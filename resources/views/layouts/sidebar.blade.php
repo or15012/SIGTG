@@ -100,15 +100,15 @@
 
                 <li>
                     <a href="{{ route('profiles.index') }}">
-                        <i class="bx bx-file-blank icon nav-icon"></i>
+                        <i class="bx bx-file icon nav-icon"></i>
                         <span class="menu-item" data-key="t-profile">@lang('translation.Profiles')</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ route('profiles.coordinator.index') }}">
-                        <i class="bx bx-file-blank icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-preprofileadviser">@lang('translation.ProfilesAdviser')</span>
+                        <i class="bx bx-file icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-profileadviser">@lang('translation.ProfilesAdviser')</span>
                     </a>
                 </li>
 

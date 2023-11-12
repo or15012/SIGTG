@@ -28,6 +28,7 @@
                     <th>Nombre</th>
                     <th style="width: 40%">Descripcion</th>
                     <th>Fecha subida</th>
+                    <th>Prioridad</th>
                     <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
@@ -38,6 +39,7 @@
                         <td>{{ $preprofile->name }} </td>
                         <td  style="width: 40%">{{  Illuminate\Support\Str::limit($preprofile->description, 100, '...') }}</td>
                         <td>{{ $preprofile->created_at->format('d-m-Y') }}</td>
+                        <td>{{ $preprofile->proposal_priority }}</td>
                         <td>
                             @switch($preprofile->status)
                                 @case(0)
