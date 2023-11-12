@@ -11,6 +11,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ConsultingController;
+use App\Http\Controllers\EvaluationDocumentController;
 use App\Http\Controllers\StageController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -178,6 +179,16 @@ Route::group(['prefix' => 'criterias', 'as' => 'criterias.'], function () {
     Route::delete('/{criteria}', [EvaluationCriteriaController::class, 'destroy'])->name('destroy');
 });
 
+//Grupo para los documentos
+Route::group(['prefix' => 'evaluations_documents', 'as' => 'evaluations_documents.'], function () {
+    Route::get('/', [EvaluationDocumentController::class, 'index'])->name('index');
+    Route::get('/create', [EvaluationDocumentController::class, 'create'])->name('create');
+    Route::post('/', [EvaluationDocumentController::class,  'store'])->name('store');
+    Route::get('/{evaluations_documents}', [EvaluationDocumentController::class, 'show'])->name('show');
+    Route::get('/{evaluations_documents}/edit', [EvaluationDocumentController::class, 'edit'])->name('edit');
+    Route::put('/{evaluations_documents}', [EvaluationDocumentController::class, 'update'])->name('update');
+    Route::delete('/{evaluations_documents}', [EvaluationDocumentController::class, 'destroy'])->name('destroy');
+});
 
 
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
