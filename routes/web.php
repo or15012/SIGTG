@@ -12,6 +12,7 @@ use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ConsultingController;
 use App\Http\Controllers\EvaluationDocumentController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\StageController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -46,7 +47,6 @@ Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
 
 Route::group(['prefix' => 'students', 'as' => 'students.'], function () {
     Route::get('/get-student/{carnet}', [StudentController::class, 'getStudent'])->name('get.student');
-
 });
 
 //Grupo para las rutas de escuelas
@@ -106,7 +106,6 @@ Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
     Route::get('/evaluating-committee-index/{group}', [GroupController::class, 'evaluatingCommitteeIndex'])->name('evaluating.committee.index');
     Route::put('/evaluating-committee-update/{group}', [GroupController::class, 'evaluatingCommitteeUpdate'])->name('evaluating.committee.update');
     Route::delete('/evaluating-committee-destroy/{user}/{type}/{group}', [GroupController::class, 'evaluatingCommitteeDestroy'])->name('evaluating.committee.destroy');
-
 });
 
 //Grupo para las rutas de asesoria.
@@ -124,38 +123,43 @@ Route::group(['prefix' => 'consultings', 'as' => 'consultings.'], function () {
 //Grupo para las rutas de preperfil y perfil
 Route::group(['prefix' => 'profiles', 'as' => 'profiles.'], function () {
 
-    //Rutas para estudiantes creación y edicion de preperfiles
-    Route::get('/preprofile/index', [ProfileController::class, 'preProfileIndex'])->name('preprofile.index');
-    Route::get('/preprofiles/show/{preprofile}', [ProfileController::class, 'preProfileShow'])->name('preprofile.show');
-    Route::get('/preprofile/create', [ProfileController::class, 'preProfileCreate'])->name('preprofile.create');
-    Route::post('/preprofile/store', [ProfileController::class, 'preProfileStore'])->name('preprofile.store');
-    Route::get('/preprofile/edit/{preprofile}', [ProfileController::class, 'preProfileEdit'])->name('preprofile.edit');
-    Route::put('/preprofile/update/{preprofile}', [ProfileController::class, 'preProfileUpdate'])->name('preprofile.update');
-    Route::delete('/preprofile/destroy/{preprofile}', [ProfileController::class, 'preProfileDestroy'])->name('preprofile.destroy');
-    Route::get('/preprofiles/download/{preprofile}/{file}',[ProfileController::class, 'preProfileDownload'])->name('preprofile.download');
-
-    //Rutas para coordinadores revision, cambio de estado y generacion de obseraciones de preperfiles
-    Route::get('/preprofile/coordinator/index', [ProfileController::class, 'preProfileCoordinatorIndex'])->name('preprofile.coordinator.index');
-    Route::get('/preprofile/coordinator/show/{preprofile}', [ProfileController::class, 'preProfileCoordinatorShow'])->name('preprofile.coordinator.show');
-    Route::put('/preprofile/coordinator/update/{preprofile}', [ProfileController::class, 'preProfileCoordinatorUpdate'])->name('preprofile.coordinator.update');
-    Route::get('/preprofile/coordinator/observation/list/{preprofile}', [ProfileController::class, 'preProfileCoordinatorObservationsList'])->name('preprofile.coordinator.observation.list');
-    Route::get('/preprofile/coordinator/observation/create/{preprofile}', [ProfileController::class, 'preProfileCoordinatorObservationCreate'])->name('preprofile.coordinator.observation.create');
-    Route::post('/preprofile/coordinator/observation/store', [ProfileController::class, 'preProfileCoordinatorObservationStore'])->name('preprofile.coordinator.observation.store');
-
     //Rutas para estudiantes  edicion de perfiles
     Route::get('/index', [ProfileController::class, 'profileIndex'])->name('index');
     Route::get('/show/{profile}', [ProfileController::class, 'profileShow'])->name('show');
     Route::get('/edit/{profile}', [ProfileController::class, 'profileEdit'])->name('edit');
     Route::put('/update/{profile}', [ProfileController::class, 'profileUpdate'])->name('update');
 
-    //Rutas para coordinadores revision, cambio de estado y generacion de obseraciones de perfiles
-    Route::get('/coordinator/index', [ProfileController::class, 'coordinatorIndex'])->name('coordinator.index');
-    Route::get('/coordinator/show/{profile}', [ProfileController::class, 'coordinatorShow'])->name('coordinator.show');
-    Route::put('/coordinator/update/{profile}', [ProfileController::class, 'coordinatorUpdate'])->name('coordinator.update');
-    Route::get('/coordinator/observation/list/{profile}', [ProfileController::class, 'coordinatorObservationsList'])->name('coordinator.observation.list');
-    Route::get('/coordinator/observation/create/{profile}', [ProfileController::class, 'coordinatorObservationCreate'])->name('coordinator.observation.create');
-    Route::post('/coordinator/observation/store', [ProfileController::class, 'coordinatorObservationStore'])->name('coordinator.observation.store');
+    Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
+        //Rutas para coordinadores revision, cambio de estado y generacion de obseraciones de perfiles
+        Route::get('/index', [ProfileController::class, 'coordinatorIndex'])->name('index');
+        Route::get('/show/{profile}', [ProfileController::class, 'coordinatorShow'])->name('show');
+        Route::put('/update/{profile}', [ProfileController::class, 'coordinatorUpdate'])->name('update');
+        Route::get('/observation/list/{profile}', [ProfileController::class, 'coordinatorObservationsList'])->name('observation.list');
+        Route::get('/observation/create/{profile}', [ProfileController::class, 'coordinatorObservationCreate'])->name('observation.create');
+        Route::post('/observation/store', [ProfileController::class, 'coordinatorObservationStore'])->name('observation.store');
+    });
 
+    //Rutas para estudiantes creación y edicion de preperfiles
+    Route::group(['prefix' => 'preprofile', 'as' => 'preprofile.'], function () {
+        Route::get('/index', [ProfileController::class, 'preProfileIndex'])->name('index');
+        Route::get('/show/{preprofile}', [ProfileController::class, 'preProfileShow'])->name('show');
+        Route::get('/create', [ProfileController::class, 'preProfileCreate'])->name('create');
+        Route::post('/store', [ProfileController::class, 'preProfileStore'])->name('store');
+        Route::get('/edit/{preprofile}', [ProfileController::class, 'preProfileEdit'])->name('edit');
+        Route::put('/update/{preprofile}', [ProfileController::class, 'preProfileUpdate'])->name('update');
+        Route::delete('/destroy/{preprofile}', [ProfileController::class, 'preProfileDestroy'])->name('destroy');
+        Route::get('/download/{preprofile}/{file}', [ProfileController::class, 'preProfileDownload'])->name('download');
+
+        Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
+            //Rutas para coordinadores revision, cambio de estado y generacion de obseraciones de preperfiles
+            Route::get('/index', [ProfileController::class, 'preProfileCoordinatorIndex'])->name('index');
+            Route::get('/show/{preprofile}', [ProfileController::class, 'preProfileCoordinatorShow'])->name('show');
+            Route::put('/update/{preprofile}', [ProfileController::class, 'preProfileCoordinatorUpdate'])->name('update');
+            Route::get('/observation/list/{preprofile}', [ProfileController::class, 'preProfileCoordinatorObservationsList'])->name('observation.list');
+            Route::get('/observation/create/{preprofile}', [ProfileController::class, 'preProfileCoordinatorObservationCreate'])->name('observation.create');
+            Route::post('/observation/store', [ProfileController::class, 'preProfileCoordinatorObservationStore'])->name('observation.store');
+        });
+    });
 });
 
 //Grupo para las rutas de etapas evaluativas.
@@ -188,6 +192,22 @@ Route::group(['prefix' => 'evaluations_documents', 'as' => 'evaluations_document
     Route::get('/{evaluations_documents}/edit', [EvaluationDocumentController::class, 'edit'])->name('edit');
     Route::put('/{evaluations_documents}', [EvaluationDocumentController::class, 'update'])->name('update');
     Route::delete('/{evaluations_documents}', [EvaluationDocumentController::class, 'destroy'])->name('destroy');
+});
+
+
+//Grupo para las rutas de proyectos
+Route::group(['prefix' => 'projects', 'as' => 'projects.'], function () {
+    Route::get('/', [ProjectController::class, 'index'])->name('index');
+    Route::get('/create', [ProjectController::class, 'create'])->name('create');
+    Route::post('/', [ProjectController::class,  'store'])->name('store');
+    Route::get('/{project}', [ProjectController::class, 'show'])->name('show');
+    Route::get('/{project}/edit', [ProjectController::class, 'edit'])->name('edit');
+    Route::put('/{project}', [ProjectController::class, 'update'])->name('update');
+    Route::delete('/{project}', [ProjectController::class, 'destroy'])->name('destroy');
+
+    Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
+        Route::get('/', [ProjectController::class, 'coordinatorIndex'])->name('index');
+    });
 });
 
 

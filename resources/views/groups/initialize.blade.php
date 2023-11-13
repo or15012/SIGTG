@@ -94,11 +94,7 @@
                 @endforelse
             </div>
             <button type="submit" class="btn btn-primary @if(isset($group) && $group->status != 0) d-none @endif">
-                @if (isset($group))
-                    Actualizar grupo
-                @else
                     Conformar grupo
-                @endif
             </button>
         </form>
     </div>

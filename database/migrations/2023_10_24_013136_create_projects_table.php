@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->timestamp('deadline')->nullable();
+            $table->timestamp('deadline')->nullable()->default(null);
             $table->foreignId('group_id')->constrained('groups')->onDelete('restrict');
             $table->foreignId('profile_id')->constrained('profiles')->onDelete('restrict');
             $table->timestamps();

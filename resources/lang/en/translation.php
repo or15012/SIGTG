@@ -166,5 +166,8 @@
 "ProfilesAdviser"   => "Profiles (adviser)",
 "MyGroup"           => "My Group",
 "Users"             => "Users",
-"ShowPerfil"        => "Ver Perfil"
+"ShowPerfil"        => "Show Perfil",
+"Stages"            => "Stages (adviser)",
+"Projects"          => "Projects",
+"ProjectsAdviser"   => "Projects (adviser)",
 ];

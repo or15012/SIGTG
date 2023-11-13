@@ -115,7 +115,21 @@
                 <li>
                     <a href="{{ route('stages.index') }}">
                         <i class="bx bx-git-pull-request icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-schools">@lang('Stages')</span>
+                        <span class="menu-item" data-key="t-schools">@lang('translation.Stages')</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('projects.index') }}">
+                        <i class="bx bx-code-block icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-projects">@lang('translation.Projects')</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('projects.coordinator.index') }}">
+                        <i class="bx bx-code-block icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-projectsadviser">@lang('translation.Projects')</span>
                     </a>
                 </li>
 

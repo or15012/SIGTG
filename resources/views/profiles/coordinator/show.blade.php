@@ -8,22 +8,23 @@
     <div class="container">
         <h1 class="mb-5">Detalles del Perfil</h1>
 
-        <div class="mb-3">
-            <label for="name" class="form-label">Nombre:</label>
-            <p>{{ $profile->name }}</p>
-        </div>
 
-        <div class="mb-3">
-            <label for="description" class="form-label">Descripción:</label>
-            <p>{{ $profile->description }}</p>
+        <div class="row">
+            <div class="mb-3 col-12 col-md-6">
+                <label for="name" class="form-label">Nombre:</label>
+                <p>{{ $profile->name }}</p>
+            </div>
+            <div class="mb-3 col-12 col-md-6">
+                <label for="description" class="form-label">Descripción:</label>
+                <p>{{ $profile->description }}</p>
+            </div>
         </div>
-
         <div class="row">
             <div class="mb-3 col-12 col-md-6">
                 <label for="path" class="form-label">Archivo preperfil:</label>
                 <p>
                     <a href="{{ route('profiles.preprofile.download', [$profile->id, 'path']) }}" target="_blank">Ver
-                        archivo</a>
+                        archivo </a>
                 </p>
             </div>
 
@@ -35,7 +36,6 @@
                 </p>
             </div>
         </div>
-
         <div class="row">
             <div class="mb-3 col-12 col-md-6">
                 <label for="path" class="form-label">Archivo visión:</label>
@@ -44,7 +44,6 @@
                         archivo</a>
                 </p>
             </div>
-
             <div class="mb-3 col-12 col-md-6">
                 <label for="path" class="form-label">Archivo calculo de tamaño:</label>
                 <p>
@@ -53,7 +52,6 @@
                 </p>
             </div>
         </div>
-
         <form action="{{ route('profiles.coordinator.update', $profile->id) }}" id="form-profile-confirm" method="POST">
             @csrf
             @method('PUT')
@@ -95,4 +93,5 @@
 
 @section('script')
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+    <script src="{{ URL::asset('js/profile_coordinator_show.js') }}"></script>
 @endsection
