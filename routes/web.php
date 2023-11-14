@@ -11,9 +11,12 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ConsultingController;
+use App\Http\Controllers\ExtensionController;
 use App\Http\Controllers\StageController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -179,6 +182,17 @@ Route::group(['prefix' => 'criterias', 'as' => 'criterias.'], function () {
 });
 
 
+// Prórrogas (extensions).
+Route::group(['prefix' => 'extensions', 'as' => 'extensions.'], function () {
+    Route::get('/', [ExtensionController::class, 'index'])->name('index');
+    Route::get('/create', [ExtensionController::class, 'create'])->name('create');
+    Route::post('/', [ExtensionController::class,  'store'])->name('store');
+    Route::get('/{extension}/edit', [ExtensionController::class, 'edit'])->name('edit');
+    Route::put('/{extension}', [ExtensionController::class, 'update'])->name('update');
+});
+
+// download file
+Route::middleware('auth')->get('download', fn(Request $request)=>response()->download(storage_path('app/' . $request->file)))->name('download');
 
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 //Language Translation

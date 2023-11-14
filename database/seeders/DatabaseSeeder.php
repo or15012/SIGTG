@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\TypeExtension;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -23,6 +24,7 @@ class DatabaseSeeder extends Seeder
             CycleSeeder::class,
             ParameterSeeder::class,
             UserProtocolSeeder::class,
+            TypeExtensionSeeder::class
         ]);
     }
 }

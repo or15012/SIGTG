@@ -118,6 +118,13 @@
                         <span class="menu-item" data-key="t-schools">@lang('Stages')</span>
                     </a>
                 </li>
+                
+                <li>
+                    <a href="{{ route('extensions.index') }}">
+                        <i class="bx bx-git-pull-request icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-extensions">@lang('Extensions')</span>
+                    </a>
+                </li>
 
 
                 {{-- <li class="menu-title" data-key="t-menu">Menu</li>
