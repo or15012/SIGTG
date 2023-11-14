@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EvaluationStage;
 use App\Models\Group;
 use App\Models\Project;
 use App\Models\School;
@@ -30,23 +31,60 @@ class ProjectController extends Controller
             })
             ->first();
 
-        $project_users = Project::join('profiles as p', 'projects.profile_id', 'p.id')
-            ->join('user_group as ug', 'ug.group_id', 'projects.group_id')
-            ->where('projects.group_id', $group->id)->get();
-
         $project = Project::join('profiles as p', 'projects.profile_id', 'p.id')
-            ->where('projects.group_id', $group->id)->first();
+            ->where('projects.group_id', $group->id)
+            ->first();
+
+        $projectUsers = Project::join('profiles as p', 'projects.profile_id', 'p.id')
+            ->join('user_group as ug', 'ug.group_id', 'projects.group_id')
+            ->join('users as u', 'ug.user_id', 'u.id')
+            ->where('projects.group_id', $group->id)
+            ->get();
 
         $stages = Stage::where("protocol_id", $group->protocol_id)
-                                ->where('cycle_id',$group->cycle_id)
-                                ->where('school_id',$user->school_id)
-                                ->get();
+            ->where('cycle_id', $group->cycle_id)
+            ->where('school_id', $user->school_id)
+            ->orderBy('stages.sort', 'asc')
+            ->get();
 
+        $evalutionStages = EvaluationStage::where('project_id', $project->id)
+            ->select('stg.id')
+            ->join('stages as stg', 'evaluation_stages.stage_id', 'stg.id')
+            ->get();
+
+        $groupCommittees = Group::select(
+            'groups.id',
+            'groups.number',
+            'u.first_name',
+            'u.middle_name',
+            'u.last_name',
+            'u.second_last_name',
+            'u.email',
+            'u.id',
+            'tg.type',
+        )
+            ->join('teacher_group as tg', 'groups.id', 'tg.group_id')
+            ->join('users as u', 'tg.user_id', 'u.id')
+            ->join('protocols as p', 'groups.protocol_id', 'p.id')
+            ->where('u.type', 2)
+            ->where('groups.id', $group->id)
+            ->get();
+
+        $totalStages = $stages->count(); // Total de etapas
+        $presentedStages = $evalutionStages->count(); // Etapas ya presentadas
+        if ($totalStages > 0) {
+            $progressPercentage = ($presentedStages / $totalStages) * 100;
+        } else {
+            $progressPercentage = 0; // En caso de que no haya etapas totales
+        }
 
         return view('projects.index', [
-            'project_users' => $project_users,
-            'project'       => $project,
-            'stages'        => $stages,
+            'projectUsers'          => $projectUsers,
+            'project'               => $project,
+            'stages'                => $stages,
+            'evalutionStages'       => $evalutionStages,
+            'groupCommittees'       => $groupCommittees,
+            'progressPercentage'    => $progressPercentage,
         ]);
     }
 }
