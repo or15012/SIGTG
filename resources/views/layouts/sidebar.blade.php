@@ -129,7 +129,7 @@
                 <li>
                     <a href="{{ route('projects.coordinator.index') }}">
                         <i class="bx bx-code-block icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-projectsadviser">@lang('translation.Projects')</span>
+                        <span class="menu-item" data-key="t-projectsadviser">@lang('translation.ProjectsAdviser')</span>
                     </a>
                 </li>
 

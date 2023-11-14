@@ -62,48 +62,49 @@
         <div>
             <h3>Etapas evaluativas</h3>
         </div>
-        {{-- @forelse ( as )
-
-        @empty
-
-        @endforelse --}}
         <div class="row">
-            <div class="col-xl-3 col-sm-6 mb-3">
-                <div class="card text-black  o-hidden h-100" style="background-color: #008fc5">
-                    <div class="card-body">
-                        <div class="mr-5 text-white">Etapa 1</div>
-                        <div class="card-body-icon">
-                            <i class="fas fa-graduation-cap"></i>
-                        </div>
+            @forelse ($stages as  $stage)
+                <div class="col-xl-3 col-sm-6 mb-3">
+                    <div class="card text-black o-hidden h-100 bg-primary">
+                        <div class="card-body">
+                            <div class="mr-5 text-white">Etapa 1</div>
+                            <div class="card-body-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
 
-                    </div>
-                    <a class="card-footer text-gray clearfix small z-1" href="" style="background-color: #008fc5">
-                        <span class="float-left text-white ">Ver Detalles</span>
-                        <span class="float-right text-white">
-                            <i class="fa fa-angle-right"></i>
-                        </span>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xl-3 col-sm-6 mb-3">
-                <div class="card text-black  o-hidden h-100">
-                    <div class="card-body">
-                        <div class="card-body-icon">
-                            <i class="fas fa-graduation-cap"></i>
                         </div>
-                        <div class="mr-5">Etapa 2</div>
+                        <a class="card-footer text-gray clearfix small z-1 bg-primary" href="">
+                            <span class="float-left text-white ">Ver Detalles</span>
+                            <span class="float-right text-white">
+                                <i class="fa fa-angle-right"></i>
+                            </span>
+                        </a>
                     </div>
-                    <a class="card-footer text-black clearfix small z-1"
-                        href="">
-                        <span class="float-left">Ver detalles</span>
-                        <span class="float-right">
-                            <i class="fa fa-angle-right"></i>
-                        </span>
-                    </a>
                 </div>
-            </div>
+
+                <div class="col-xl-3 col-sm-6 mb-3">
+                    <div class="card text-black  o-hidden h-100">
+                        <div class="card-body">
+                            <div class="card-body-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="mr-5">Etapa 2</div>
+                        </div>
+                        <a class="card-footer text-black clearfix small z-1" href="">
+                            <span class="float-left">Ver detalles</span>
+                            <span class="float-right">
+                                <i class="fa fa-angle-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+            @empty
+                <h3>
+                    Sin etapas evaluativas
+                </h3>
+            @endforelse
+
         </div>
 
     </div>
