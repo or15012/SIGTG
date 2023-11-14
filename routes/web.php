@@ -13,6 +13,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ConsultingController;
 use App\Http\Controllers\EvaluationDocumentController;
 use App\Http\Controllers\StageController;
+use App\Models\EvaluationDocument;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -184,10 +185,11 @@ Route::group(['prefix' => 'evaluations_documents', 'as' => 'evaluations_document
     Route::get('/', [EvaluationDocumentController::class, 'index'])->name('index');
     Route::get('/create', [EvaluationDocumentController::class, 'create'])->name('create');
     Route::post('/', [EvaluationDocumentController::class,  'store'])->name('store');
-    Route::get('/{evaluations_documents}', [EvaluationDocumentController::class, 'show'])->name('show');
-    Route::get('/{evaluations_documents}/edit', [EvaluationDocumentController::class, 'edit'])->name('edit');
-    Route::put('/{evaluations_documents}', [EvaluationDocumentController::class, 'update'])->name('update');
-    Route::delete('/{evaluations_documents}', [EvaluationDocumentController::class, 'destroy'])->name('destroy');
+    Route::get('/{evaluation_document}', [EvaluationDocumentController::class, 'show'])->name('show');
+    Route::get('/{evaluation_document}/edit', [EvaluationDocumentController::class, 'edit'])->name('edit');
+    Route::put('/{evaluation_document}', [EvaluationDocumentController::class, 'update'])->name('update');
+    Route::delete('/{evaluation_document}', [EvaluationDocumentController::class, 'destroy'])->name('destroy');
+    Route::get('/download/{evaluation_document}/{file}',[EvaluationDocumentController::class, 'evaluationsDownload'])->name('download');
 });
 
 

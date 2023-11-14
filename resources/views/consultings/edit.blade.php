@@ -31,17 +31,17 @@
             <div class="mb-3">
                 <label for="topics" class="form-label">Tema</label>
                 <input type="text" class="form-control" id="topics" name="topics"
-                    value="{{ old('topics', $consulting->topics) }}" required readonly>
+                    value="{{ old('topics', $consulting->topics) }}" @if($user->type == 2) disabled @endif required>
             </div>
             <div class="mb-3">
                 <label for="summary" class="form-label">Resumen</label>
                 <input type="text" class="form-control" id="summary" name="summary"
-                    value="{{ old('summary', $consulting->summary) }}" required>
+                    value="{{ old('summary', $consulting->summary) }}" @if($user->type == 1) disabled @endif required>
             </div>
             <div class="mb-3">
                 <label for="date" class="form-label">Fecha</label>
                 <input type="date" class="form-control" id="date" name="date"
-                    value="{{ old('date', $consulting->date) }}" required readonly>
+                    value="{{ old('date', $consulting->date) }}" required>
             </div>
             <input type="hidden" name="group_id" value="{{ $consulting->group_id }}">
             <button type="submit" class="btn btn-primary">Actualizar</button>
