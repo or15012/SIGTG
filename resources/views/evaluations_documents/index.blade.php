@@ -38,8 +38,12 @@
                         <td>{{ $evaluation_document->name }}</td>
                         <td>{{ $evaluation_document->created_at->format('d-m-Y') }}</td>
                         <td>
-                            <a href="{{ route('evaluations_documents.edit', $evaluation_document->id) }}" class="btn btn-warning">Editar</a>
-                            <form action="{{ route('evaluations_documents.destroy', $evaluation_document->id) }}" method="POST" style="display: inline">
+                            <a href="{{ route('evaluations_documents.show', $evaluation_document->id) }}"
+                                class="btn btn-primary">Ver</a>
+                            <a href="{{ route('evaluations_documents.edit', $evaluation_document->id) }}"
+                                class="btn btn-warning">Editar</a>
+                            <form action="{{ route('evaluations_documents.destroy', $evaluation_document->id) }}"
+                                method="POST" style="display: inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">Eliminar</button>
@@ -53,5 +57,5 @@
 @endsection
 
 @section('script')
-     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+    <script src="{{ URL::asset('assets/js/app.js') }}"></script>
 @endsection

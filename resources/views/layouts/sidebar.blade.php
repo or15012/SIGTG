@@ -140,6 +140,19 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="{{ route('consultings.index') }}">
+                        <i class="bx bx-file icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-consultings">@lang('Consultings')</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('evaluations_documents.index') }}">
+                        <i class="bx bx-file icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-evaluationsdocuments">@lang('EvaluationsDocuments')</span>
+                    </a>
+                </li>
 
                 {{-- <li class="menu-title" data-key="t-menu">Menu</li>
 

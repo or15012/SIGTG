@@ -69,18 +69,27 @@ class ConsultingController extends Controller
     public function edit(Consulting $consulting)
     {
 
+        $user = auth()->user();
         $consulting->date = Carbon::parse($consulting->date)->format('Y-m-d');
-        return view('consultings.edit', compact('consulting'));
+        return view('consultings.edit', compact('consulting', 'user'));
     }
 
     public function update(Request $request, Consulting $consulting)
     {
-        $data = $request->validate([
-            'topics'    => 'required',
-            //'number'    => 'required|integer',
-            'summary'   => 'required',
-            'date'      => 'required|date', // Campo 'fecha' es obligatorio y debe ser una fecha válida'
-        ]);
+        $user = auth()->user();
+        if ($user->type === 1) {
+
+            $data = $request->validate([
+                'topics'    => 'required',
+                'date'      => 'required|date', // Campo 'fecha' es obligatorio y debe ser una fecha válida'
+            ]);
+        } elseif ($user->type === 2) {
+
+            $data = $request->validate([
+                'summary'   => 'required',
+                'date'      => 'required|date', // Campo 'fecha' es obligatorio y debe ser una fecha válida'
+            ]);
+        }
 
         // Obtener el campo 'number' del request y sumarle 1
         //dd($consulting);
