@@ -36,4 +36,8 @@ class Group extends Model
             ->withPivot(['status']) // Esto permite acceder a la columna 'status' de la tabla intermedia
             ->withTimestamps();
     }
+
+    public function cycle(){
+        return $this->belongsTo(Cycle::class, 'cycle_id');
+    }
 }

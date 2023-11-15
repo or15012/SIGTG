@@ -8,6 +8,7 @@ use App\Models\Group;
 use App\Models\Parameter;
 use App\Models\User;
 use App\Models\UserGroup;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -88,11 +89,13 @@ class GroupController extends Controller
         $validatedData = $request->validate([
             'users'    => 'array', // Campo que contendrá los parámetros
         ]);
-        //revisare si viene algo en el request de ciclo
-        if (isset($request->group_id)) {
-            //voy a buscar grupo para actualizarlo
-            $group = Group::find($request->group_id);
-        } else {
+        try {
+            DB::beginTransaction();
+            //revisare si viene algo en el request de ciclo
+            if (isset($request->group_id)) {
+                //voy a buscar grupo para actualizarlo
+                $group = Group::find($request->group_id);
+            } else {
             //recuperando el protocolo del estudiante que inicializar el grupo
             $user = Auth::user();
             $protocol = $user->protocols()
@@ -108,35 +111,46 @@ class GroupController extends Controller
                 'protocol_id'   => $protocol->id,
                 'cycle_id'      => $cycle_id
             ]);
-        }
-        $existing_users = $group->users()->pluck('user_group.user_id')->toArray();
+            }
+            $existing_users_ids = $group->users()->pluck('user_group.user_id')->toArray();
+            $existing_users = array_column($group->users->toArray(), 'pivot');
 
-        $news = [];
-        $group->users()->detach();
-        $users = $request->input('users');
-        // Preparar datos para la sincronización
-        $syncData = [];
-        foreach ($users as $key => $userId) {
-            $userData = [
-                'user_id'   => intval($userId),
-                'status'    => ($key === 0) ? 1 : 0, // Establecer status = 1 para el primer usuario, 0 para los demás
-                'is_leader' => ($key === 0) ? 1 : 0, // Establecer is_leader = 1 para el primer usuario, 0 para los demás
-            ];
-            $syncData[] = $userData;
+            for ($i=0; $i < count($existing_users); $i++) { 
+                $existing_users[$i]['created_at'] = Carbon::parse($existing_users[$i]['created_at'])->format('Y-m-d H:i:s');
+                $existing_users[$i]['updated_at'] = Carbon::parse($existing_users[$i]['created_at'])->format('Y-m-d H:i:s');
+            }
 
-            if (!in_array(intval($userId), $existing_users) && $key > 0) {
-                try {
-                    $user = User::find(intval($userId));
-                    Mail::to($user->email)->send(new SendMail('mail.user-invited-to-group', 'Invitación a grupo', ['user'=>$user, 'group'=>$group]));
-                } catch (\Throwable $th) {
-                    //throw $th;
+            $group->users()->detach();
+            $users = $request->input('users');
+            // Preparar datos para la sincronización
+            $syncData = $existing_users;
+            foreach ($users as $key => $userId) {
+                if (!in_array(intval($userId), $existing_users_ids)) {
+                    $userData = [
+                        'user_id'   => intval($userId),
+                        'status'    => ($key === 0) ? 1 : 0, // Establecer status = 1 para el primer    usuario, 0 para los demás
+                        'is_leader' => ($key === 0) ? 1 : 0, // Establecer is_leader = 1 para el primer     usuario, 0 para los demás
+                    ];
+                    $syncData[] = $userData;
+                }
+
+                if (!in_array(intval($userId), $existing_users_ids) && $key > 0) {
+                    try {
+                        $user = User::find(intval($userId));
+                        Mail::to($user->email)->send(new SendMail('mail.user-invited-to-group', 'Invitación a grupo', ['user'=>$user, 'group'=>$group]));
+                    } catch (\Throwable $th) {
+                        //throw $th;
+                    }
                 }
             }
+            // Insertar los nuevos usuarios
+            $group->users()->attach($syncData);
+            DB::commit();
+            return redirect()->back()->with('success', 'Grupo inicializado con éxito.');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Hubo un error intente de nuevo.');
         }
-        // Insertar los nuevos usuarios
-        $group->users()->attach($syncData);
-
-        return redirect()->back()->with('success', 'Grupo inicializado con éxito.');
     }
 
     public function edit($id)

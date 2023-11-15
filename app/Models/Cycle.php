@@ -14,6 +14,8 @@ class Cycle extends Model
         'year',
         'number',
         'status',
+        'date_start',
+        'date_end',
         'created_at',
         'updated_at',
         'deleted_at',

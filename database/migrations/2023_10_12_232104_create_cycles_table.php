@@ -18,6 +18,8 @@ return new class extends Migration
             $table->integer('number');
             $table->integer('year');
             $table->boolean('status');
+            $table->date('date_start');
+            $table->date('date_end');
             $table->timestamps();
             $table->softDeletes();
         });
