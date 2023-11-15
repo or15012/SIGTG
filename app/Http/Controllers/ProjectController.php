@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EvaluationDocument;
 use App\Models\EvaluationStage;
 use App\Models\Group;
 use App\Models\Project;
@@ -47,8 +48,9 @@ class ProjectController extends Controller
             ->orderBy('stages.sort', 'asc')
             ->get();
 
-        $evalutionStages = EvaluationStage::where('project_id', $project->id)
+        $evaluationStages = EvaluationStage::where('project_id', $project->id)
             ->select('stg.id')
+            ->where('status', 1)
             ->join('stages as stg', 'evaluation_stages.stage_id', 'stg.id')
             ->get();
 
@@ -71,7 +73,7 @@ class ProjectController extends Controller
             ->get();
 
         $totalStages = $stages->count(); // Total de etapas
-        $presentedStages = $evalutionStages->count(); // Etapas ya presentadas
+        $presentedStages = $evaluationStages->count(); // Etapas ya presentadas
         if ($totalStages > 0) {
             $progressPercentage = ($presentedStages / $totalStages) * 100;
         } else {
@@ -82,9 +84,49 @@ class ProjectController extends Controller
             'projectUsers'          => $projectUsers,
             'project'               => $project,
             'stages'                => $stages,
-            'evalutionStages'       => $evalutionStages,
+            'evaluationStages'       => $evaluationStages,
             'groupCommittees'       => $groupCommittees,
             'progressPercentage'    => $progressPercentage,
         ]);
+    }
+
+
+    public function showStage(Project $project, Stage $stage)
+    {
+        $evaluationStages = EvaluationStage::where('project_id', $project->id)
+            ->where('stage_id', $stage->id)
+            ->first();
+        $evaluationDocuments = array();
+
+        if (isset($evaluationStages)) {
+            $evaluationDocuments = EvaluationDocument::where('evaluation_stage_id', $evaluationStages->id)
+                ->get();
+        } else {
+            $evaluationStages                = new EvaluationStage();
+            $evaluationStages->project_id    = $project->id;
+            $evaluationStages->stage_id      = $stage->id;
+            $evaluationStages->save();
+        }
+
+
+        return view('projects.show-stage', [
+            "stage"                 => $stage,
+            "project"               => $project,
+            "evaluationStages"       => $evaluationStages,
+            "evaluationDocuments"   => $evaluationDocuments,
+        ]);
+    }
+
+
+    public function submitStage(Request $request, EvaluationStage $evaluation_stage)
+    {
+
+        $evaluation_stage->status = $request->decision;
+        $evaluation_stage->update();
+
+
+        return redirect()
+            ->route('projects.show.stage', [$evaluation_stage->project_id, $evaluation_stage->stage_id])
+            ->with('success', 'Documento guardado correctamente.');
     }
 }

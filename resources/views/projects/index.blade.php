@@ -96,7 +96,7 @@
                 $flag = false;
             @endphp
             @forelse ($stages as  $stage)
-                @if ($evalutionStages->contains('id', $stage->id))
+                @if ($evaluationStages->contains('id', $stage->id))
                     <div class="col-xl-3 col-sm-6 mb-3">
                         <div class="card text-black  o-hidden h-100">
                             <div class="card-body">
@@ -105,7 +105,7 @@
                                 </div>
                                 <div class="mr-5">{{ $stage->name }}</div>
                             </div>
-                            <a class="card-footer text-black clearfix small z-1" href="">
+                            <a class="card-footer text-black clearfix small z-1" href="{{route('projects.show.stage',[$project->id, $stage->id]) }}">
                                 <span class="float-left">Ver detalles</span>
                                 <span class="float-right">
                                     <i class="fa fa-angle-right"></i>
@@ -124,7 +124,7 @@
                                     </div>
 
                                 </div>
-                                <a class="card-footer text-black clearfix small z-1 bg-primary" href="">
+                                <a class="card-footer text-black clearfix small z-1 bg-primary" href="{{route('projects.show.stage',[$project->id, $stage->id]) }}">
                                     <span class="float-left text-white ">Ver Detalles</span>
                                     <span class="float-right text-white">
                                         <i class="fa fa-angle-right"></i>
@@ -144,7 +144,7 @@
                                         <i class="fas fa-graduation-cap"></i>
                                     </div>
                                 </div>
-                                <a class="card-footer text-black clearfix small z-1" href="">
+                                <a class="card-footer text-black clearfix small z-1" href="{{route('projects.show.stage',[$project->id, $stage->id]) }}">
                                     <span class="float-left">Ver detalles</span>
                                     <span class="float-right">
                                         <i class="fa fa-angle-right"></i>
