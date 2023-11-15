@@ -13,14 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cycles', function (Blueprint $table) {
-            $table->id();
-            $table->integer('number');
-            $table->integer('year');
-            $table->boolean('status');
-            $table->timestamps();
-            $table->softDeletes();
+        //
+        Schema::table('cycles', function (Blueprint $table) {
+            $table->date('date_start');
+            $table->date('date_end'); // Cambia el tipo de dato según tu necesidad
         });
+
     }
 
     /**
@@ -30,6 +28,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cycles');
+        //
+        Schema::table('evaluation_stages', function (Blueprint $table) {
+            $table->dropColumn('date_start');
+            $table->dropColumn('date_end');
+        });
     }
 };
