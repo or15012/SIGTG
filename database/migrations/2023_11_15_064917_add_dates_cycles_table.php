@@ -15,8 +15,8 @@ return new class extends Migration
     {
         //
         Schema::table('cycles', function (Blueprint $table) {
-            $table->date('date_start');
-            $table->date('date_end'); // Cambia el tipo de dato según tu necesidad
+            $table->date('date_start')->nullable();
+            $table->date('date_end')->nullable(); // Cambia el tipo de dato según tu necesidad
         });
 
     }

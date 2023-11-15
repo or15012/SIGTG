@@ -132,7 +132,7 @@
                         <span class="menu-item" data-key="t-projectsadviser">@lang('translation.ProjectsAdviser')</span>
                     </a>
                 </li>
-                
+
                 {{-- <li>
                     <a href="{{ route('extensions.index') }}">
                         <i class="bx bx-git-pull-request icon nav-icon"></i>
@@ -147,12 +147,12 @@
                     </a>
                 </li>
 
-                <li>
+                {{-- <li>
                     <a href="{{ route('evaluations_documents.index') }}">
                         <i class="bx bx-file icon nav-icon"></i>
                         <span class="menu-item" data-key="t-evaluationsdocuments">@lang('EvaluationsDocuments')</span>
                     </a>
-                </li>
+                </li> --}}
 
                 {{-- <li class="menu-title" data-key="t-menu">Menu</li>
 
