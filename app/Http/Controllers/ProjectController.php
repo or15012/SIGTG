@@ -85,6 +85,7 @@ class ProjectController extends Controller
             'evalutionStages'       => $evalutionStages,
             'groupCommittees'       => $groupCommittees,
             'progressPercentage'    => $progressPercentage,
+            'group'    => $group,
         ]);
     }
 }

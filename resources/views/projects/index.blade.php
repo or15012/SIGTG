@@ -12,7 +12,22 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Consultar proyecto</h1>
+        <div class="w-100 d-flex justify-content-between align-items-center">
+            <h1>Consultar proyecto</h1>
+
+            @php
+                $today = new DateTime();
+                $date_end = new DateTime($group->cycle->date_end);
+                $date_end_mod = clone $date_end;
+                $date_end_mod->modify("-20 days");
+            @endphp
+
+            @if($today >= $date_end_mod && $today <= $date_end)
+                <a href="{{ route('extensions.index') }}" class="btn btn-secondary float-end">
+                    <i class="fa fa-plus"></i>&nbsp; Solicitar prórroga
+                </a>
+            @endif
+        </div>
 
         <h5>Nombre: {{ $project->name }}</h5>
         @if (session('success'))
