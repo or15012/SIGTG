@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\CriteriaStageController;
 use App\Http\Controllers\CycleController;
 use App\Http\Controllers\EvaluationCriteriaController;
+use App\Http\Controllers\EvaluationStageController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
@@ -190,6 +192,14 @@ Route::group(['prefix' => 'evaluations_documents', 'as' => 'evaluations_document
     Route::delete('/{evaluations_documents}', [EvaluationDocumentController::class, 'destroy'])->name('destroy');
 });
 
+//Grupo para las rutas de notas.
+Route::group(['prefix' => 'grades', 'as' => 'grades.'], function () {
+    Route::get('/', [CriteriaStageController::class, 'index'])->name('index');
+    //Route::get('/{id}', [EvaluationStageController::class, 'groups'])->name('groups');
+    Route::get('/create/{id}', [CriteriaStageController::class, 'create'])->name('create');
+    Route::get('/grades/{group}/{etapa}/edit', [CriteriaStageController::class, 'edit'])->name('edit');
+    Route::post('/', [CriteriaStageController::class, 'save'])->name('save');
+});
 
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 //Language Translation
