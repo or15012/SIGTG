@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\CriteriaStageController;
 use App\Http\Controllers\CycleController;
 use App\Http\Controllers\EvaluationCriteriaController;
+use App\Http\Controllers\EvaluationStageController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
@@ -197,6 +199,14 @@ Route::group(['prefix' => 'evaluations_documents', 'as' => 'evaluations_document
     Route::get('/download/{evaluation_document}/{file}',[EvaluationDocumentController::class, 'evaluationsDownload'])->name('download');
 });
 
+//Grupo para las rutas de notas.
+Route::group(['prefix' => 'grades', 'as' => 'grades.'], function () {
+    Route::get('/', [CriteriaStageController::class, 'index'])->name('index');
+    //Route::get('/{id}', [EvaluationStageController::class, 'groups'])->name('groups');
+    Route::get('/create/{id}', [CriteriaStageController::class, 'create'])->name('create');
+    Route::get('/grades/{group}/{etapa}/edit', [CriteriaStageController::class, 'edit'])->name('edit');
+    Route::post('/', [CriteriaStageController::class, 'save'])->name('save');
+});
 
 //Grupo para las rutas de proyectos
 Route::group(['prefix' => 'projects', 'as' => 'projects.'], function () {

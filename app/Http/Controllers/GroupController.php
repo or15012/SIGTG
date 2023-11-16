@@ -237,7 +237,7 @@ class GroupController extends Controller
             return redirect()->route('groups.index')->with('success', 'Grupo actualizado con éxito');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return back()->withErrors(['¡Ups! Lo sentimos, algo salió mal.']);
+            return back()->withErrors(['¡Ups! Lo sentimos, algo salió mal.', $th->getMessage()]);
         }
     }
 
