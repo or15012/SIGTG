@@ -13,8 +13,7 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Lista de Protocolos</h1>
-
+        <h1>Lista de protocolos</h1>
 
         @if (session('success'))
             <div class="alert alert-success">
@@ -36,11 +35,16 @@
                         <td>{{ $protocol->id }}</td>
                         <td>{{ $protocol->name }}</td>
                         <td>
-                            <a href="{{ route('protocols.edit', $protocol->id) }}" class="btn btn-warning">Editar</a>
-                            <form action="{{ route('protocols.destroy', $protocol->id) }}" method="POST" style="display: inline">
+                            <a href="{{ route('protocols.show', $protocol->id) }}" class="btn btn-primary"><i
+                                class="fas fa-eye"></i></a>
+                            <a href="{{ route('protocols.edit', $protocol->id) }}" class="btn btn-primary"><i
+                                class="fas fa-pen"></i></a>
+                            <form action="{{ route('protocols.destroy', $protocol->id) }}" method="POST"
+                                style="display: inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                                <button type="submit" class="btn btn-danger buttonDelete"><i
+                                        class="fas fa-trash-alt"></i></button>
                             </form>
                         </td>
                     </tr>
@@ -51,5 +55,5 @@
 @endsection
 
 @section('script')
-     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+    <script src="{{ URL::asset('assets/js/app.js') }}"></script>
 @endsection
