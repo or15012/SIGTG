@@ -48,8 +48,8 @@
                 <tbody>
 
                     @foreach ($users as $user)
-                        <tr>
-                            <td>{{ $user->first_name }}</td>
+                        <tr id="user-{{$user->id}}" data-value="{{$user->id}}">
+                            <td>{{ $user->first_name }} {{ $user->middle_name }} {{ $user->last_name }}  {{ $user->second_last_name }}</td>
                             @foreach ($criteria as $item)
                                 <td>
                                     @php
@@ -57,7 +57,7 @@
                                             return $grade->user_id === $user->id && $grade->evaluation_criteria_id === $item->id;
                                         });
                                     @endphp
-                                    <input class="note" min="0" max="10" step="0.01" type="number"
+                                    <input id="note-{{$user->id}}-{{ $item->id }}" class="note" min="0" max="10" step="0.01" type="number"
                                         name="notes[{{ $user->id }}][{{ $item->id }}]"
                                         value="{{ $existingGrade ? $existingGrade->note : 0 }}" required>
                                 </td>
@@ -80,4 +80,5 @@
 
 @section('script')
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+    <script src="{{ URL::asset('js/evaluation_stage_create.js') }}"></script>
 @endsection

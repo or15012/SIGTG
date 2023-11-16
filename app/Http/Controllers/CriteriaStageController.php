@@ -32,7 +32,7 @@ class CriteriaStageController extends Controller
         $criteria   = EvaluationCriteria::where('stage_id', $stage->id)->get();
         $users      = User::join('user_group as ug', 'ug.user_id', 'users.id')
             ->where('ug.group_id', $group->id)
-            ->select('users.id', 'users.first_name')
+            ->select('users.id', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.second_last_name')
             ->get();
         $evaluationStages = EvaluationStage::where('project_id', $project->id)
             ->where('stage_id', $stage->id)
@@ -76,9 +76,8 @@ class CriteriaStageController extends Controller
                 }
             }
             return back()->with('success', 'Notas guardadas exitosamente.');
-            return redirect()->route('grades.index')->with('success', 'Notas guardadas exitosamente.');
+
         } catch (\Throwable $th) {
-            dd($th);
             return redirect()->route('grades.index')->with('error', $th->getMessage());
         }
     }
