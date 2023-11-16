@@ -18,6 +18,13 @@ class ProtocolController extends Controller
         return view('protocols.index', compact('protocols'));
     }
 
+    public function show(Protocol $protocol)
+    {
+
+        // Devuelve la vista 'schools.show' pasando la asesoría como una variable compacta
+        return view('protocols.show', compact('protocol'));
+    }
+
     public function edit(Protocol $protocol)
     {
         return view('protocols.edit', compact('protocol'));

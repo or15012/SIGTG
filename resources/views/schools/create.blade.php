@@ -13,7 +13,11 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Agregar Escuela</h1>
+        <div class="contenedor">
+            <a href="{{ route('schools.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
+        <h1>Registrar escuela</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -29,9 +33,13 @@
             @csrf
             <div class="mb-3">
                 <label for="name" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
+                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}"
+                    required>
             </div>
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <div class="contenedor">
+                <a href="{{ route('schools.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
+                <button type="submit" class="btn btn-primary ">Guardar</button>
+                <div>
         </form>
     </div>
 @endsection

@@ -13,7 +13,11 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Editar Escuela</h1>
+        <div class="contenedor">
+            <a href="{{ route('protocols.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
+        <h1>Editar protocolo</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -33,7 +37,10 @@
                 <input type="text" class="form-control" id="name" name="name"
                     value="{{ old('name', $protocol->name) }}" required>
             </div>
-            <button type="submit" class="btn btn-primary">Actualizar</button>
+            <div class="contenedor">
+                <button type="submit" class="btn btn-primary">Actualizar</button>
+                <a href="{{ route('protocols.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
+                <div>
         </form>
     </div>
 @endsection

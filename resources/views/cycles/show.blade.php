@@ -13,7 +13,11 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Detalles del Ciclo</h1>
+        <div class="contenedor">
+            <a href="{{ route('cycles.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
+        <h1>Detalles del ciclo</h1>
         <p><strong>Número:</strong> {{ $cycle->number }}</p>
         <p><strong>Año:</strong> {{ $cycle->year }}</p>
         <p><strong>Estado:</strong> {{ $cycle->status ? 'Activo' : 'Inactivo' }}</p>

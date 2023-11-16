@@ -13,8 +13,8 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Lista de Escuelas</h1>
-        <a href="{{ route('schools.create') }}" class="btn btn-primary mb-3">Agregar Escuela</a>
+        <h1>Lista de escuelas</h1>
+        <a href="{{ route('schools.create') }}" class="btn btn-primary mb-3">Nueva escuela</a>
 
         @if (session('success'))
             <div class="alert alert-success">
@@ -36,11 +36,16 @@
                         <td>{{ $school->id }}</td>
                         <td>{{ $school->name }}</td>
                         <td>
-                            <a href="{{ route('schools.edit', $school->id) }}" class="btn btn-warning">Editar</a>
-                            <form action="{{ route('schools.destroy', $school->id) }}" method="POST" style="display: inline">
+                            <a href="{{ route('schools.show', $school->id) }}" class="btn btn-primary"><i
+                                    class="fas fa-eye"></i></a>
+                            <a href="{{ route('schools.edit', $school->id) }}" class="btn btn-primary"><i
+                                    class="fas fa-pen"></i></a>
+                            <form action="{{ route('schools.destroy', $school->id) }}" method="POST"
+                                style="display: inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                                <button type="submit" class="btn btn-danger buttonDelete"><i
+                                        class="fas fa-trash-alt"></i></button>
                             </form>
                         </td>
                     </tr>
@@ -51,5 +56,5 @@
 @endsection
 
 @section('script')
-     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+    <script src="{{ URL::asset('assets/js/app.js') }}"></script>
 @endsection

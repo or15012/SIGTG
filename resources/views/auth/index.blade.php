@@ -14,8 +14,8 @@
     @endcomponent
 
     <div class="container">
-        <h1>Lista de Usuarios</h1>
-        <a href="{{ route('register') }}" class="btn btn-primary mb-3">Agregar Usuario</a>
+        <h1>Lista de usuarios</h1>
+        <a href="{{ route('register') }}" class="btn btn-primary mb-3">Nuevo usuario</a>
         <div class="float-end d-flex justify-content-end align-items-center">
             <a href="{{ route('users.download.template') }}" class="btn btn-primary">Descargar plantilla</a>
 

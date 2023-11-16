@@ -13,6 +13,10 @@
         @endslot
     @endcomponent
     <div class="container">
+        <div class="contenedor">
+            <a href="{{ route('users.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
         <form method="POST" class="form-horizontal" action="{{ route('register') }}" enctype="multipart/form-data">
             @csrf
 
@@ -83,7 +87,7 @@
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
-                    
+
                 </div>
             </div>
 
@@ -115,7 +119,7 @@
                     </select>
                 </div>
             </div>
-            
+
             <div class="row mb-3">
                 <div class="col-12">
                     <label for="modality_id" class="form-label">Modalidad</label>
@@ -150,11 +154,11 @@
                     <input type="password" class="form-control @error('password') is-invalid @enderror" id="userpassword"
                     name="password" placeholder="Ingrese password" autofocus>
                     <span class="input-group-text">
-    <i class="fa fa-eye show_hide_pwd" 
+    <i class="fa fa-eye show_hide_pwd"
    style="cursor: pointer"></i>
    </span>
                 </div>
-                    
+
                 @error('password')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -167,7 +171,7 @@
                     <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror"
                     id="confirmpassword" name="password_confirmation" placeholder="Ingrese confirmación de contraseña" autofocus>
                 <span class="input-group-text">
-    <i class="fa fa-eye show_hide_pwd" 
+    <i class="fa fa-eye show_hide_pwd"
    style="cursor: pointer"></i>
    </span>
                 </div>
@@ -178,6 +182,7 @@
                 @enderror
             </div>
             <div class="mt-3 text-end">
+                <a href="{{ route('users.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
                 <button class="btn btn-primary w-sm waves-effect waves-light" type="submit">Guardar</button>
             </div>
         </form>

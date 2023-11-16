@@ -34,6 +34,14 @@ class SchoolController extends Controller
         return redirect()->route('schools.index')->with('success', 'Escuela creada correctamente.');
     }
 
+
+    public function show(School $school)
+    {
+
+        // Devuelve la vista 'schools.show' pasando la asesoría como una variable compacta
+        return view('schools.show', compact('school'));
+    }
+
     public function edit(School $school)
     {
         return view('schools.edit', compact('school'));
