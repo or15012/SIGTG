@@ -24,4 +24,8 @@ class Project extends Model
         return $this->hasMany(Extension::class, 'project_id');
     }
 
+    public function group()
+    {
+        return $this->belongsTo(Group::class, 'group_id');
+    }
 }

@@ -201,22 +201,13 @@ Route::group(['prefix' => 'evaluations_documents', 'as' => 'evaluations_document
 
 //Grupo para las rutas de notas.
 Route::group(['prefix' => 'grades', 'as' => 'grades.'], function () {
-    Route::get('/', [CriteriaStageController::class, 'index'])->name('index');
-    //Route::get('/{id}', [EvaluationStageController::class, 'groups'])->name('groups');
-    Route::get('/create/{id}', [CriteriaStageController::class, 'create'])->name('create');
-    Route::get('/grades/{group}/{etapa}/edit', [CriteriaStageController::class, 'edit'])->name('edit');
-    Route::post('/', [CriteriaStageController::class, 'save'])->name('save');
+    Route::get('/create/{project}/{stage}', [CriteriaStageController::class, 'create'])->name('create');
+    Route::post('/store', [CriteriaStageController::class, 'store'])->name('store');
 });
 
 //Grupo para las rutas de proyectos
 Route::group(['prefix' => 'projects', 'as' => 'projects.'], function () {
     Route::get('/', [ProjectController::class, 'index'])->name('index');
-    // Route::get('/create', [ProjectController::class, 'create'])->name('create');
-    // Route::post('/', [ProjectController::class,  'store'])->name('store');
-    // Route::get('/{project}', [ProjectController::class, 'show'])->name('show');
-    // Route::get('/{project}/edit', [ProjectController::class, 'edit'])->name('edit');
-    // Route::put('/{project}', [ProjectController::class, 'update'])->name('update');
-    // Route::delete('/{project}', [ProjectController::class, 'destroy'])->name('destroy');
     Route::get('/show-stage/{project}/{stage}', [ProjectController::class, 'showStage'])->name('show.stage');
     Route::put('/submit-stage/{evaluation_stage}', [ProjectController::class, 'submitStage'])->name('submit.stage');
     Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {

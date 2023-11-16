@@ -44,4 +44,9 @@ class Group extends Model
     public function userGroups(){
         return $this->belongsToMany(UserGroup::class,'group_id');
     }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class, 'group_id');
+    }
 }

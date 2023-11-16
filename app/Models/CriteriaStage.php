@@ -12,6 +12,7 @@ class CriteriaStage extends Model
 
     protected $fillable = [
         'evaluation_criteria_id',
+        'evaluation_stage_id',
         'user_id',
         'note',
         ];

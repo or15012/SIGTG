@@ -13,7 +13,10 @@
         @endslot
     @endcomponent
 
-    @if (session('success'))
+
+
+    <div class="container">
+        @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
@@ -24,45 +27,54 @@
                 {{ session('error') }}
             </div>
         @endif
-
-    <div class="container">
         <h1>Registro de Notas</h1>
+        <form action="{{ route('grades.store') }}" method="post">
+            @csrf
+            <input type="hidden" name="evaluation_stage_id" value="{{ $evaluationStages->id }}">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Nombre de alumno</th>
+                        @foreach ($criteria as $item)
+                            <th>
+                                {{ $item->name }}
+                                <br>
+                                {{ $item->percentage }}%
+                            </th>
+                        @endforeach
+                        <td>Nota Final</td>
+                    </tr>
+                </thead>
+                <tbody>
 
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Grupo</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @foreach ($etapas as $etapa)
-
-                <tr>
-                    <td>{{ $etapa->id }}</td>
-                    <td>{{$etapa->name}}</td>
-
-                    <td>
-                        <a href="{{ route('grades.edit', ['group' => $group->id, 'etapa' => $etapa->id]) }}" class="btn btn-warning">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
-                                </svg>
-                        </a>
-
-
-                    </td>
-                </tr>
-
-            @endforeach
-            </tbody>
-            
+                    @foreach ($users as $user)
+                        <tr>
+                            <td>{{ $user->first_name }}</td>
+                            @foreach ($criteria as $item)
+                                <td>
+                                    @php
+                                        $existingGrade = $grades->first(function ($grade) use ($user, $item) {
+                                            return $grade->user_id === $user->id && $grade->evaluation_criteria_id === $item->id;
+                                        });
+                                    @endphp
+                                    <input class="note" min="0" max="10" step="0.01" type="number"
+                                        name="notes[{{ $user->id }}][{{ $item->id }}]"
+                                        value="{{ $existingGrade ? $existingGrade->note : 0 }}" required>
+                                </td>
+                            @endforeach
+                            <td>
+                                <input class="final-note" min="0" max="10" step="0.01" type="number"
+                                    name="finalnote[{{ $user->id }}]" value="" required>
+                            </td>
+                        </tr>
+                    @endforeach
 
 
+                </tbody>
+            </table>
 
-
-        </table>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
     </div>
 @endsection
 

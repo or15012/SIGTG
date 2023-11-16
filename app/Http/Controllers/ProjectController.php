@@ -33,6 +33,7 @@ class ProjectController extends Controller
             ->first();
 
         $project = Project::join('profiles as p', 'projects.profile_id', 'p.id')
+            ->select('projects.id', 'projects.name')
             ->where('projects.group_id', $group->id)
             ->first();
 
