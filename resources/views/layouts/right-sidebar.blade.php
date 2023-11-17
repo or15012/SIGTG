@@ -28,17 +28,6 @@
                 <label class="form-check-label" for="layout-horizontal">@lang('translation.Horizontal')</label>
             </div>
 
-            <h6 class="mt-4 mb-3 pt-2">@lang('translation.Theme_Mode') </h6>
-
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="layout-mode" id="layout-mode-light" value="light">
-                <label class="form-check-label" for="layout-mode-light">@lang('translation.Light')</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="layout-mode" id="layout-mode-dark" value="dark">
-                <label class="form-check-label" for="layout-mode-dark">@lang('translation.Dark')</label>
-            </div>
-
             <h6 class="mt-4 mb-3">@lang('translation.Layout_Width') </h6>
 
             <div class="form-check form-check-inline">

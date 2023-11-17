@@ -13,7 +13,7 @@
 
                         <div class="text-center mb-4">
                             <a href="index">
-                                <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22"> <span class="logo-txt">SIGTG-FIA</span>
+                                <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22"> <span class="logo-txt">SIGTG - FIA</span>
                             </a>
                     </div>
 
@@ -27,7 +27,7 @@
                                     </div>
                                     <div class="mt-4 pt-2">
                                         <h5>You are Logged Out</h5>
-                                        <p class="text-muted font-size-15">Thank you for using <span class="fw-semibold text-dark">SIGTG-FIA</span></p>
+                                        <p class="text-muted font-size-15">Thank you for using <span class="fw-semibold text-dark">SIGTG - FIA</span></p>
                                         <div class="mt-4">
                                             {{--  <a href="login" class="btn btn-primary w-100 waves-effect waves-light">Sign In</a>  --}}
                                             <a href="{{ url('login') }}" class="btn btn-primary w-100 waves-effect waves-light">Sign In</a>
@@ -44,7 +44,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="text-center text-muted p-4">
-                            <p class="text-white-50">© <script>document.write(new Date().getFullYear())</script> SIGTG-FIA. </p>
+                            <p class="text-white-50">© <script>document.write(new Date().getFullYear())</script> SIGTG - FIA. </p>
                         </div>
                     </div>
                 </div>

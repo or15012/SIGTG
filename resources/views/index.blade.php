@@ -3,7 +3,7 @@
 
 @section('content')
     @component('components.breadcrumb')
-    @slot('li_1') SIGTG-FIA @endslot
+    @slot('li_1') SIGTG - FIA@endslot
     @slot('title') Welcome ! @endslot
     @endcomponent
 
@@ -29,7 +29,7 @@
                                     <li><i class="bx bx-polygon font-size-24"></i></li>
                                 </ul>
                                 <div class="main-wid position-relative">
-                                    <h3 class="text-white">SIGTG-FIA Dashboard</h3>
+                                    <h3 class="text-white">SIGTG - FIADashboard</h3>
 
                                     <h3 class="text-white mb-0"> Welcome Back, Peter Kelsey!</h3>
 

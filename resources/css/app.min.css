@@ -94,7 +94,7 @@ body:not([data-sidebar-size=sm]) .app-search {
     vertical-align: text-bottom;
     margin-left: 5px;
     line-height: 1;
-    color: #384861 !important
+    color: #000000 !important
 }
 
 .app-search {
@@ -1229,7 +1229,7 @@ body[data-sidebar=light] .logo-light {
 }
 
 body[data-sidebar=light] .logo-txt {
-    color: #384861 !important
+    color: #000000 !important
 }
 
 body[data-sidebar=light][data-sidebar-size=sm] .logo span.logo-lg {
@@ -1307,7 +1307,7 @@ body[data-sidebar=brand] .navbar-brand-box .logo-light {
 }
 
 body[data-sidebar=brand] .navbar-brand-box .logo-txt {
-    color: #fff !important
+    color: #000000 !important
 }
 
 body[data-sidebar=brand] #sidebar-menu ul li.menu-title {

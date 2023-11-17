@@ -1,6 +1,6 @@
 <?php
    return [
-"SIGTG-FIA" => "SIGTG-FIA",
+"SIGTG - FIA" => "SIGTG - FIA",
 "Dashboard" => "Dashboard",
 "Apps" => "Apps",
 "Bootstrap" => "Bootstrap",
@@ -119,7 +119,7 @@
 "Direction" => "Direction",
 "LTR" => "LTR",
 "RTL" => "RTL",
-"2021_©_SIGTG-FIA" => "2021 © SIGTG-FIA",
+"2021_©_SIGTG - FIA" => "2021 © SIGTG - FIA",
 "Crafted_with_by_Themesbrand" => "Crafted with by Themesbrand",
 "User_Settings" => "User Settings",
 "Boxed_Fixed" => "Boxed Fixed",

@@ -6,7 +6,7 @@
 @section('content')
     @component('components.breadcrumb')
         @slot('li_1')
-            SIGTG-FIA
+            SIGTG - FIA
         @endslot
         @slot('title')
             Welcome !
@@ -29,7 +29,40 @@
             </div>
         @endif
 
-        <table class="table table-bordered">
+        <style>
+            .table,
+            .table-bordered {
+                width: 100%;
+                margin-bottom: 1rem;
+                border-collapse: collapse;
+            }
+
+            .table th,
+            .table td,
+            .table-bordered th,
+            .table-bordered td {
+                padding: 0.75rem;
+                border: 1px solid #eff0f2;
+            }
+
+            .table thead tr,
+            .table-bordered thead tr {
+                background-color: red !important; /* Añade !important para asegurarte de que este estilo prevalezca */
+                color: white;
+            }
+
+            .table tbody tr:nth-child(even),
+            .table-bordered tbody tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            .table tbody tr:nth-child(odd),
+            .table-bordered tbody tr:nth-child(odd) {
+                background-color: #e6e6e6;
+            }
+        </style>
+
+        <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>

@@ -12,10 +12,10 @@
                     <div class="home-wrapper text-center">
                         <a href="index" class="auth-logo">
                             <span class="logo-lg">
-                                <img src="assets/images/logo-sm.svg" alt="" height="22"> <span class="logo-txt">SIGTG-FIA</span>
+                                <img src="assets/images/logo-sm.svg" alt="" height="22"> <span class="logo-txt">SIGTG - FIA</span>
                             </span>
                         </a>
-                        <h3 class="mt-3">Let's get started with SIGTG-FIA</h3>
+                        <h3 class="mt-3">Let's get started with SIGTG - FIA</h3>
                         <p class="mb-0">It will be as simple as Occidental in fact it will be Occidental.</p>
 
                         <div class="row justify-content-center mt-5">

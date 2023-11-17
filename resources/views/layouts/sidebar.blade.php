@@ -9,14 +9,14 @@
             </span>
             <span class="logo-lg">
                 <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22"> <span
-                    class="logo-txt">@lang('translation.SIGTG-FIA')</span>
+                    class="logo-txt">@lang('translation.SIGTG - FIA')</span>
             </span>
         </a>
 
         <a href="{{ url('/') }}" class="logo logo-light">
             <span class="logo-lg">
                 <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22"> <span
-                    class="logo-txt">@lang('translation.SIGTG-FIA')</span>
+                    class="logo-txt">@lang('translation.SIGTG - FIA')</span>
             </span>
             <span class="logo-sm">
                 <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22">
@@ -162,112 +162,6 @@
                         <span class="menu-item" data-key="t-dashboards">@lang('translation.Dashboard')</span>
                         <span class="badge rounded-pill bg-success">@lang('translation.5+')</span>
                     </a>
-                </li>
-
-                <li class="menu-title" data-key="t-applications">@lang('translation.Applications')</li>
-
-                <li>
-                    <a href="apps-calendar">
-                        <i class="bx bx-calendar icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-calendar">@lang('translation.Calendar')</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="apps-chat">
-                        <i class="bx bx-chat icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-chat">@lang('translation.Chat')</span>
-                        <span class="badge rounded-pill bg-danger" data-key="t-hot">@lang('translation.Hot')</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow">
-                        <i class="bx bx-envelope icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-email">@lang('translation.Email')</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="email-inbox" data-key="t-inbox">@lang('translation.Inbox')</a></li>
-                        <li><a href="email-read" data-key="t-read-email">@lang('translation.Read_Email')</a></li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow">
-                        <i class="bx bx-store icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-ecommerce">@lang('translation.Ecommerce')</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="ecommerce-products" data-key="t-products">@lang('translation.Products')</a></li>
-                        <li><a href="ecommerce-product-detail" data-key="t-product-detail">@lang('translation.Product_Detail')</a></li>
-                        <li><a href="ecommerce-orders" data-key="t-orders">@lang('translation.Orders')</a></li>
-                        <li><a href="ecommerce-customers" data-key="t-customers">@lang('translation.Customers')</a></li>
-                        <li><a href="ecommerce-cart" data-key="t-cart">@lang('translation.Cart')</a></li>
-                        <li><a href="ecommerce-checkout" data-key="t-checkout">@lang('translation.Checkout')</a></li>
-                        <li><a href="ecommerce-shops" data-key="t-shops">@lang('translation.Shops')</a></li>
-                        <li><a href="ecommerce-add-product" data-key="t-add-product">@lang('translation.Add_Product')</a></li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow">
-                        <i class="bx bx-receipt icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-invoices">@lang('translation.Invoices')</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="invoices-list" data-key="t-invoice-list">@lang('translation.Invoice_List')</a></li>
-                        <li><a href="invoices-detail" data-key="t-invoice-detail">@lang('translation.Invoice_Detail')</a></li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow">
-                        <i class="bx bxs-user-detail icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-contacts">@lang('translation.Contacts')</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="contacts-grid" data-key="t-user-grid">@lang('translation.User_Grid') </a></li>
-                        <li><a href="contacts-list" data-key="t-user-list">@lang('translation.User_List')</a></li>
-                        <li><a href="contacts-profile" data-key="t-user-settings">@lang('translation.Profile')</a></li>
-                    </ul>
-                </li>
-
-                <li class="menu-title" data-key="t-pages">@lang('translation.Pages')</li>
-
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow">
-                        <i class="bx bx-user-circle icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-authentication">@lang('translation.Authentication')</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="auth-login" data-key="t-login">@lang('translation.Login')</a></li>
-                        <li><a href="auth-register" data-key="t-register">@lang('translation.Register')</a></li>
-                        <li><a href="auth-recoverpw" data-key="t-recover-password">@lang('translation.Recover_Password')</a></li>
-                        <li><a href="auth-lock-screen" data-key="t-lock-screen">@lang('translation.Lock_Screen')</a></li>
-                        <li><a href="auth-logout" data-key="t-logout">@lang('translation.Log_Out')</a></li>
-                        <li><a href="auth-confirm-mail" data-key="t-confirm-mail">@lang('translation.Confirm_Mail')</a></li>
-                        <li><a href="auth-email-verification" data-key="t-email-verification">@lang('translation.Email_Verification')</a>
-                        </li>
-                        <li><a href="auth-two-step-verification"
-                                data-key="t-two-step-verification">@lang('translation.Two_Step_Verification')</a></li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="javascript: void(0);" class="has-arrow">
-                        <i class="bx bx-file icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-utility">@lang('translation.Utility')</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="pages-starter" data-key="t-starter-page">@lang('translation.Starter_Page')</a></li>
-                        <li><a href="pages-maintenance" data-key="t-maintenance">@lang('translation.Maintenance')</a></li>
-                        <li><a href="pages-comingsoon" data-key="t-coming-soon">@lang('translation.Coming_Soon')</a></li>
-                        <li><a href="pages-timeline" data-key="t-timeline">@lang('translation.Timeline')</a></li>
-                        <li><a href="pages-faqs" data-key="t-faqs">@lang('translation.FAQs')</a></li>
-                        <li><a href="pages-pricing" data-key="t-pricing">@lang('translation.Pricing')</a></li>
-                        <li><a href="pages-404" data-key="t-error-404">@lang('translation.Error_404')</a></li>
-                        <li><a href="pages-500" data-key="t-error-500">@lang('translation.Error_500')</a></li>
-                    </ul>
                 </li>
 
                 <li>

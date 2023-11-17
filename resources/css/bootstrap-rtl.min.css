@@ -1,6 +1,6 @@
 @charset "UTF-8";
 /*
-Template Name: SIGTG-FIA - Admin & Dashboard Template
+Template Name: SIGTG - SISTEMA INFORMÁTICO PARA LA GESTIÓN DE TRABAJOS DE GRADUACIÓN
 Author: Themesbrand
 Version: 1.2.0
 Website: https://Themesbrand.com/
@@ -2010,26 +2010,46 @@ progress {
   --bs-table-active-color: #495057;
   --bs-table-active-bg: rgba(0, 0, 0, 0.1);
   --bs-table-hover-color: #495057;
-  --bs-table-hover-bg: #f8f9fa;
+  --bs-table-hover-bg: #faf8fa;
   width: 100%;
   margin-bottom: 1rem;
   color: var(--bs-table-color);
   vertical-align: top;
   border-color: var(--bs-table-border-color);
 }
-.table > :not(caption) > * > * {
-  padding: 0.75rem 0.75rem;
-  background-color: var(--bs-table-bg);
-  border-bottom-width: 1px;
-  -webkit-box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
-          box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+
+/* Estilo para tablas */
+.table,
+.table-bordered {
+  width: 100%;
+  margin-bottom: 1rem;
+  border-collapse: collapse;
 }
-.table > tbody {
-  vertical-align: inherit;
+
+.table th,
+.table td,
+.table-bordered th,
+.table-bordered td {
+  padding: 0.75rem;
+  border: 1px solid #eff0f2;
 }
-.table > thead {
-  vertical-align: bottom;
+
+.table thead tr,
+.table-bordered thead tr {
+  background-color: red !important;
+  color: white;
 }
+
+.table tbody tr:nth-child(even),
+.table-bordered tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.table tbody tr:nth-child(odd),
+.table-bordered tbody tr:nth-child(odd) {
+  background-color: #e6e6e6;
+}
+
 
 .table-group-divider {
   border-top: 2px solid #eff0f2;
@@ -2041,13 +2061,6 @@ progress {
 
 .table-sm > :not(caption) > * > * {
   padding: 0.25rem 0.25rem;
-}
-
-.table-bordered > :not(caption) > * {
-  border-width: 1px 0;
-}
-.table-bordered > :not(caption) > * > * {
-  border-width: 0 1px;
 }
 
 .table-borderless > :not(caption) > * > * {
