@@ -91,7 +91,6 @@ class GroupController extends Controller
             'users'    => 'array', // Campo que contendrá los parámetros
         ]);
         try {
-            DB::beginTransaction();
             //revisare si viene algo en el request de ciclo
             if (isset($request->group_id)) {
                 //voy a buscar grupo para actualizarlo
@@ -116,7 +115,7 @@ class GroupController extends Controller
             $existing_users_ids = $group->users()->pluck('user_group.user_id')->toArray();
             $existing_users = array_column($group->users->toArray(), 'pivot');
 
-            for ($i=0; $i < count($existing_users); $i++) { 
+            for ($i=0; $i < count($existing_users); $i++) {
                 $existing_users[$i]['created_at'] = Carbon::parse($existing_users[$i]['created_at'])->format('Y-m-d H:i:s');
                 $existing_users[$i]['updated_at'] = Carbon::parse($existing_users[$i]['created_at'])->format('Y-m-d H:i:s');
             }
@@ -124,7 +123,7 @@ class GroupController extends Controller
             $group->users()->detach();
             $users = $request->input('users');
             // Preparar datos para la sincronización
-            $syncData = $existing_users;
+            // $syncData = $existing_users;
             foreach ($users as $key => $userId) {
                 if (!in_array(intval($userId), $existing_users_ids)) {
                     $userData = [
@@ -146,10 +145,8 @@ class GroupController extends Controller
             }
             // Insertar los nuevos usuarios
             $group->users()->attach($syncData);
-            DB::commit();
             return redirect()->back()->with('success', 'Grupo inicializado con éxito.');
         } catch (\Throwable $th) {
-            DB::rollBack();
             return redirect()->back()->with('error', 'Hubo un error intente de nuevo.');
         }
     }
@@ -383,7 +380,7 @@ class GroupController extends Controller
     public function modalAuthorizationLetter(Request $request){
         return view('groups.modal.attach_authorization_letter', ['group_id'=>$request->group_id]);
     }
-    
+
     public function storeAuthorizationLetter(Request $request){
         try {
             DB::beginTransaction();
