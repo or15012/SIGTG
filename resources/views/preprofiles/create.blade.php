@@ -13,7 +13,7 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Agregar Preperfil</h1>
+        <h1>Registrar preperfil</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">

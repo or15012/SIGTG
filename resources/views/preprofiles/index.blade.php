@@ -12,7 +12,7 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Lista de Preperfiles</h1>
+        <h1>Lista de preperfiles</h1>
         <a href="{{ route('profiles.preprofile.create') }}" class="btn btn-primary mb-3">Agregar Preprefil</a>
 
 

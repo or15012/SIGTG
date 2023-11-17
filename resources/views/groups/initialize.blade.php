@@ -11,7 +11,7 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Conformar grupo</h1>
+        <h1>Conformar grupos</h1>
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -25,10 +25,11 @@
             @csrf
             <div class="row mb-3">
                 <div class="col-12 col-md-10 col-lg-10">
-                    <input type="text" placeholder="carnet" id="carnet" class="form-control">
+                    <input type="text" placeholder="Ingrese carnet del estudiante" id="carnet" class="form-control">
                 </div>
                 <div class="col-12 col-md-2 col-lg-2">
-                    <button type="button" id="add-student" class="btn btn-primary w-md" @if(isset($group) && $group->status != 0) disabled @endif>Agregar integrante</button>
+                    <button type="button" id="add-student" class="btn btn-primary w-md"
+                        @if (isset($group) && $group->status != 0) disabled @endif>Agregar integrante</button>
                 </div>
             </div>
             @if (isset($group))
@@ -38,11 +39,11 @@
                 @forelse ($groupUsers as $user)
                     <div class="col-12 col-md-6 col-lg-6" id="user-{{ $user->id }}">
                         <div class="card mb-4">
-                            <div class="card-header">
+                            <div style="background-color: #F2DEDE;" class="card-header">
                                 {{ $user->carnet }} - {{ $user->first_name }} {{ $user->middle_name }}
                                 {{ $user->last_name }} {{ $user->second_last_name }}
                                 @if ($user->pivot->is_leader === 1)
-                                    <label class="bg-primary text-white px-2 rounded">Lider</label>
+                                    <label style="background-color: #f2f2f2;" class="px-2 rounded">LIDER</label>
                                 @endif
                             </div>
                             <div class="card-body">
@@ -62,13 +63,16 @@
                                             @case(1)
                                                 <label class="my-1 bg-soft-success text-opacity-100 p-2 rounded">Aceptado
                                                 </label>
-                                                @break
+                                            @break
+
                                             @case(2)
                                                 <label class="my-1 bg-soft-danger text-opacity-100 p-2 rounded">Rechazado
                                                 </label>
-                                                @break
+                                            @break
+
                                             @default
-                                                <label class="my-1 bg-soft-secondary text-opacity-100 p-2 rounded">Enviado
+                                                <label style="background-color:#F2F2F2"
+                                                    class="my-1 text-opacity-100 p-2 rounded">Enviado
                                                 </label>
                                         @endswitch
                                     </div>
@@ -80,27 +84,28 @@
                             </div>
                         </div>
                     </div>
-                @empty
-                    <div class="col-12 col-md-6 col-lg-6 ">
-                        <div class="card mb-4">
-                            <div class="card-header">{{ $user->carnet }} - {{ $user->first_name }}
-                                {{ $user->middle_name }}
-                                {{ $user->last_name }} {{ $user->second_last_name }}</div>
-                            <div class="card-body">
-                                <input type="hidden" name="users[]" value="{{ $user->id }}">
+                    @empty
+                        <div class="col-12 col-md-6 col-lg-6 ">
+                            <div class="card mb-4">
+                                <div style="background-color: #F2DEDE;" class="card-header">{{ $user->carnet }} -
+                                    {{ $user->first_name }}
+                                    {{ $user->middle_name }}
+                                    {{ $user->last_name }} {{ $user->second_last_name }}</div>
+                                <div class="card-body">
+                                    <input type="hidden" name="users[]" value="{{ $user->id }}">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @endforelse
-            </div>
-            <button type="submit" class="btn btn-primary @if(isset($group) && $group->status != 0) d-none @endif">
+                    @endforelse
+                </div>
+                <button type="submit" class="btn btn-primary @if (isset($group) && $group->status != 0) d-none @endif">
                     Conformar grupo
-            </button>
-        </form>
-    </div>
-@endsection
-@section('script')
-    <script src="{{ URL::asset('assets/js/pages/fontawesome.init.js') }}"></script>
-    <script src="{{ URL::asset('assets/js/app.js') }}"></script>
-    <script src="{{ URL::asset('js/group_initialize.js') }}"></script>
-@endsection
+                </button>
+            </form>
+        </div>
+    @endsection
+    @section('script')
+        <script src="{{ URL::asset('assets/js/pages/fontawesome.init.js') }}"></script>
+        <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+        <script src="{{ URL::asset('js/group_initialize.js') }}"></script>
+    @endsection
