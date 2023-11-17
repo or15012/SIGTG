@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class GroupController extends Controller
 {
@@ -163,7 +164,9 @@ class GroupController extends Controller
             'u.last_name',
             'u.second_last_name',
             'u.carnet',
-            'ug.is_leader'
+            'ug.is_leader',
+            'groups.authorization_letter',
+            'groups.status'
         )
             ->join('user_group as ug', 'groups.id', 'ug.group_id')
             ->join('users as u', 'ug.user_id', 'u.id')
@@ -375,5 +378,29 @@ class GroupController extends Controller
         $group->teacherUsers()->wherePivot('type', $type)->detach($user);
 
         return redirect()->back()->with('success', "Jurado(a) eliminada con exito.");
+    }
+
+    public function modalAuthorizationLetter(Request $request){
+        return view('groups.modal.attach_authorization_letter', ['group_id'=>$request->group_id]);
+    }
+    
+    public function storeAuthorizationLetter(Request $request){
+        try {
+            DB::beginTransaction();
+            $group = Group::find($request->group_id);
+        if ($request->hasFile('authorization_letter')) {
+            if(is_file(storage_path('app/' . $group->authorization_letter)))
+            {
+                Storage::delete($group->authorization_letter);
+            }
+            $group->authorization_letter = $request->file('authorization_letter')->storeAs('groups', date('Ymdhis').'-'.$request->file('authorization_letter')->getClientOriginalName().'.'.$request->file('authorization_letter')->getClientOriginalExtension());
+            $group->save();
+            DB::commit();
+            return redirect()->action([GroupController::class, 'index'])->with('success', 'Carta de autorización subida exitosamente.');
+        }
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->action([GroupController::class, 'index'])->with('error', 'Algo salió mal. Intente nuevamente.');
+        }
     }
 }

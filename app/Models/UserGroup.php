@@ -29,4 +29,20 @@ class UserGroup extends Model
     {
         return $this->belongsTo(Group::class, 'group_id');
     }
+    
+    public function status()
+    {
+        switch($this->pivot->status){
+            case(0):
+                return 'No aceptado';
+            
+            case(1):
+                return 'Confirmado';
+            
+            case(2):
+                return 'Rechazado';
+            default: 
+                return 'No found';
+        }
+    }
 }

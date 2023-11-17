@@ -13,6 +13,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ConsultingController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EvaluationDocumentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ExtensionController;
@@ -110,6 +111,10 @@ Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
     Route::get('/evaluating-committee-index/{group}', [GroupController::class, 'evaluatingCommitteeIndex'])->name('evaluating.committee.index');
     Route::put('/evaluating-committee-update/{group}', [GroupController::class, 'evaluatingCommitteeUpdate'])->name('evaluating.committee.update');
     Route::delete('/evaluating-committee-destroy/{user}/{type}/{group}', [GroupController::class, 'evaluatingCommitteeDestroy'])->name('evaluating.committee.destroy');
+
+    // rutas para adjuntar carta de autorizacion
+    Route::get('/modal-authorization-letter', [GroupController::class, 'modalAuthorizationLetter'])->name('modal.autorization.letter');
+    Route::post('/modal-authorization-letter', [GroupController::class, 'storeAuthorizationLetter'])->name('store.autorization.letter');
 });
 
 //Grupo para las rutas de asesoria.
@@ -224,8 +229,17 @@ Route::group(['prefix' => 'extensions', 'as' => 'extensions.'], function () {
     Route::put('/{extension}', [ExtensionController::class, 'update'])->name('update');
 });
 
+// Documentos
+Route::group(['prefix' => 'document', 'as' => 'document.'], function () {
+    Route::get('/authorization/letter/{group}', [DocumentController::class, 'authorization_letter'])->name('authorization.letter');
+    // Route::get('/create', [ExtensionController::class, 'create'])->name('create');
+    // Route::post('/', [ExtensionController::class,  'store'])->name('store');
+    // Route::get('/{extension}/edit', [ExtensionController::class, 'edit'])->name('edit');
+    // Route::put('/{extension}', [ExtensionController::class, 'update'])->name('update');
+});
+
 // download file
-Route::middleware('auth')->get('download', fn(Request $request)=>response()->download(storage_path('app/' . $request->file)))->name('download');
+Route::middleware('auth')->get('download', [DocumentController::class, 'downloadDocument'])->name('download');
 
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 //Language Translation

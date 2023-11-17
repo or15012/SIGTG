@@ -21,6 +21,12 @@
             </div>
         @endif
 
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -53,6 +59,10 @@
                             <a href="{{ route('groups.edit', $group->id) }}" class="btn btn-warning">
                                 <i class="fas fa-cog"></i>
                             </a>
+                            <button class="btn btn-secondary ajax-modal" data-title="Carta de autorización"
+                    href="{{route('groups.modal.autorization.letter', ['group_id'=>$group->id])}}">
+                                <i class="fas fa-file"></i>
+                            </button>
                         </td>
                     </tr>
                 @endforeach
