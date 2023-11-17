@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendMail;
 use App\Models\Group;
 use App\Models\Observation;
 use App\Models\Profile;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ProfileController extends Controller
 {
@@ -108,6 +110,12 @@ class ProfileController extends Controller
         $profile->status                = 0;
         $profile->save();
 
+        // Enviar correo electrónico
+        try {
+            Mail::to($user->email)->send(new SendMail('mail.preprofile-saved', 'Preperfil enviado con éxito', ['user' => $user, 'profile' => $profile]));
+        } catch (\Throwable $th) {
+            //Working..
+        }
         return redirect()->route('profiles.preprofile.index')->with('success', 'El pre perfil se ha guardado correctamente');
     }
 
@@ -133,31 +141,41 @@ class ProfileController extends Controller
             'vision_path' => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
             'size_calculation_path' => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
         ]);
+        try {
+            // Actualizar los campos del perfil
+            $preprofile->name               = $request->input('name');
+            $preprofile->description        = $request->input('description');
+            $preprofile->proposal_priority  = $request->input('proposal_priority');
+            // Procesar y guardar el nuevo archivo si se proporciona
+            if ($request->hasFile('path')) {
+                $path = $request->file('path')->store('preprofiles');
+                $preprofile->path = $path;
+            }
+            if ($request->hasFile('summary_path')) {
+                $summary_path = $request->file('summary_path')->store('preprofiles');
+                $preprofile->summary_path = $summary_path;
+            }
+            if ($request->hasFile('vision_path')) {
+                $vision_path = $request->file('vision_path')->store('preprofiles');
+                $preprofile->vision_path = $vision_path;
+            }
+            if ($request->hasFile('size_calculation_path')) {
+                $size_calculation_path = $request->file('size_calculation_path')->store('preprofiles');
+                $preprofile->size_calculation_path = $size_calculation_path;
+            }
+            $preprofile->update();
 
-        // Actualizar los campos del perfil
-        $preprofile->name               = $request->input('name');
-        $preprofile->description        = $request->input('description');
-        $preprofile->proposal_priority  = $request->input('proposal_priority');
-        // Procesar y guardar el nuevo archivo si se proporciona
-        if ($request->hasFile('path')) {
-            $path = $request->file('path')->store('preprofiles');
-            $preprofile->path = $path;
+            // Envío de correo electrónico de notificación
+            try {
+                $user = Auth::user(); 
+                Mail::to($user->email)->send(new SendMail('mail.preprofile-updated', 'Actualización de preperfil', ['preprofile' => $preprofile]));
+            } catch (\Throwable $th) {
+                //return redirect()->route('profiles.preprofile.index')->with('error', 'Hubo un error al enviar el correo electrónico de notificación. Por favor, inténtelo de nuevo.');
+            }
+            return redirect()->route('profiles.preprofile.index')->with('success', 'El preperfil se ha actualizado correctamente');
+        } catch (\Throwable $th) {
+            return redirect()->route('profiles.preprofile.index')->with('error', 'Hubo un error al actualizar el preperfil. Por favor, inténtelo de nuevo.');
         }
-        if ($request->hasFile('summary_path')) {
-            $summary_path = $request->file('summary_path')->store('preprofiles');
-            $preprofile->summary_path = $summary_path;
-        }
-        if ($request->hasFile('vision_path')) {
-            $vision_path = $request->file('vision_path')->store('preprofiles');
-            $preprofile->vision_path = $vision_path;
-        }
-        if ($request->hasFile('size_calculation_path')) {
-            $size_calculation_path = $request->file('size_calculation_path')->store('preprofiles');
-            $preprofile->size_calculation_path = $size_calculation_path;
-        }
-        $preprofile->update();
-
-        return redirect()->route('profiles.preprofile.index')->with('success', 'El preperfil se ha actualizado correctamente');
     }
 
     public function preProfileDestroy(Profile $preprofile)
@@ -235,6 +253,18 @@ class ProfileController extends Controller
             $profile->save();
         }
         $preprofile->update();
+
+        // Obtener estudiantes del grupo
+        $students = $preprofile->group->users;
+
+        // Envío de correo electrónico a cada estudiante del grupo
+        foreach ($students as $student) {
+            try {
+                Mail::to($student->email)->send(new SendMail('mail.preprofile-updated', 'Notificación de modificación de preperfil', ['preprofile' => $preprofile]));
+            } catch (\Throwable $th) {
+                // Working..
+            }
+        }
 
         return view('preprofiles.coordinator.show', compact('preprofile'));
     }
