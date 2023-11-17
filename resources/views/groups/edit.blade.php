@@ -16,11 +16,20 @@
 
 
             <div class="d-flex justify-content-end align-items-center">
-                <a class="btn btn-secondary" href="{{route('document.authorization.letter', $id)}}"><i class="fa fa-file"></i>&nbsp;&nbsp;Carta de autorización</a>
+                <a class="btn btn-secondary" href="{{ route('document.authorization.letter', $id) }}"><i
+                        class="fa fa-file"></i>&nbsp;&nbsp;Carta de autorización</a>
 
-                @if($group[0]->authorization_letter)
-                    <a class="btn btn-info" style="margin-left: 5px" href="{{route('download', ['file'=>$group[0]->authorization_letter])}}"><i class="fa fa-file"></i>&nbsp;&nbsp;Carta adjunta</a>
+                @if ($group[0]->authorization_letter)
+                    <a class="btn btn-info" style="margin-left: 5px"
+                        href="{{ route('download', ['file' => $group[0]->authorization_letter]) }}"><i
+                            class="fa fa-file"></i>&nbsp;&nbsp;Carta adjunta</a>
                 @endif
+
+                <div class="contenedor">
+                    <a href="{{ route('groups.index') }}" class="btn btn-danger regresar-button"><i
+                            class="fas fa-arrow-left"></i>
+                        Regresar</a>
+                </div>
             </div>
         </div>
         @if ($errors->any())
@@ -52,7 +61,7 @@
                                 {{ $user->carnet }} - {{ $user->first_name }} {{ $user->middle_name }}
                                 {{ $user->last_name }} {{ $user->second_last_name }}
                                 @if ($user->is_leader === 1)
-                                    <label class="bg-primary text-white px-2 rounded">Lider</label>
+                                    <label style="background-color: #f2f2f2;" class="px-2 rounded">LIDER</label>
                                 @endif
                             </div>
                         </div>
@@ -64,14 +73,12 @@
                     Grupo sin usuarios
                 </div>
             @endforelse
-
-            @if($group[0]->status == 0)
-                <div class="d-flex justify-content-end" >
+            @if ($group[0]->status == 0)
+                <div class="d-flex justify-content-end">
                     <button type="button" id="accept-group" class="btn btn-primary me-2">Aceptar Grupo</button>
                     <button type="button" id="deny-group" class="btn btn-danger ms-2">Denegar grupo</button>
                 </div>
             @endif
-
         </form>
     </div>
 @endsection

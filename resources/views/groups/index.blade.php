@@ -12,7 +12,7 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Lista de Grupos</h1>
+        <h1>Lista de grupos</h1>
 
 
         @if (session('success'))
@@ -53,10 +53,10 @@
                         <td>{{ $group->user_count }}</td>
                         <td>{{ $group->name }}</td>
                         <td>
-                            <a href="{{ route('groups.evaluating.committee.index', $group->id) }}" class="btn btn-secondary">
+                            <a href="{{ route('groups.evaluating.committee.index', $group->id) }}" class="btn btn-primary">
                                 <i class="fas fa-balance-scale"></i>
                             </a>
-                            <a href="{{ route('groups.edit', $group->id) }}" class="btn btn-warning">
+                            <a href="{{ route('groups.edit', $group->id) }}" class="btn btn-primary">
                                 <i class="fas fa-cog"></i>
                             </a>
                             <button class="btn btn-secondary ajax-modal" data-title="Carta de autorización"
