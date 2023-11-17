@@ -40,4 +40,13 @@ class Group extends Model
     public function cycle(){
         return $this->belongsTo(Cycle::class, 'cycle_id');
     }
+
+    public function userGroups(){
+        return $this->belongsToMany(UserGroup::class,'group_id');
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class, 'group_id');
+    }
 }

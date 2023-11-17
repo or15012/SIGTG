@@ -44,14 +44,14 @@
                         <td>{{ $consulting->summary }}</td>
                         <td>{{ \Carbon\Carbon::parse($consulting->date)->format('d-m-Y') }}</td>
                         <td>
-                            <a href="{{ route('consultings.show', $consulting->id) }}" class="btn btn-primary">Ver</a>
-                            <a href="{{ route('consultings.edit', $consulting->id) }}" class="btn btn-warning">Editar</a>
+                            <a href="{{ route('consultings.show', $consulting->id) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
+                            <a href="{{ route('consultings.edit', $consulting->id) }}" class="btn btn-primary"><i class="fas fa-pen"></i></a>
                             <form action="{{ route('consultings.destroy', $consulting->id) }}" method="POST"
                                 style="display: inline">
                                 @csrf
                                 @method('DELETE')
                                 @if ($consulting->number !== null)
-                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                    <button type="submit" class="btn btn-danger buttonDelete"><i class="fas fa-trash-alt"></i></button>
                                 @endif
                             </form>
                         </td>

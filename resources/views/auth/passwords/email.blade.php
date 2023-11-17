@@ -69,7 +69,7 @@
                         <p class="text-white-50">© <script>
                                 document.write(new Date().getFullYear())
 
-                            </script> SIGTG-FIA. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                            </script> SIGTG-FIA. </p>
                     </div>
                 </div>
             </div>

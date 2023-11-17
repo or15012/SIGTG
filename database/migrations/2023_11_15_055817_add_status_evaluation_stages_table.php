@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cycles', function (Blueprint $table) {
-            $table->id();
-            $table->integer('number');
-            $table->integer('year');
-            $table->boolean('status');
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::table('evaluation_stages', function (Blueprint $table) {
+            $table->integer('status')->default(0); // Cambia el tipo de dato según tu necesidad
         });
     }
 
@@ -30,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cycles');
+        Schema::table('evaluation_stages', function (Blueprint $table) {
+            $table->dropColumn('status');
+        });
     }
 };

@@ -23,9 +23,11 @@ class EvaluationDocumentController extends Controller
         return view('evaluations_documents.index', compact('evaluations_documents'));
     }
 
-    public function create()
+    public function create(EvaluationStage $evaluation_stage)
     {
-        return view('evaluations_documents.create');
+        return view('evaluations_documents.create', [
+            "evaluation_stage" => $evaluation_stage
+        ]);
     }
 
     public function store(Request $request)
@@ -33,6 +35,7 @@ class EvaluationDocumentController extends Controller
         $data = $request->validate([
             'name'                  => 'required|string|max:255',
             'path'                  => 'required|mimes:pdf,rar,zip', // Esto valida que el archivo sea un PDF, rar o zip (puedes ajustar según tus necesidades)
+            'evaluation_stage_id'   => 'required|integer'
         ]);
 
         // Procesar y guardar el archivo
@@ -42,11 +45,15 @@ class EvaluationDocumentController extends Controller
 
         $evaluations_documents = EvaluationDocument::create([
             'name'                  => $request['name'],
-            'evaluation_stage_id'   => 1,
+            'evaluation_stage_id'   => $request['evaluation_stage_id'],
             'path'                  => $path
         ]);
 
-        return redirect()->route('evaluations_documents.index')->with('success', 'Documento guardado correctamente.');
+        $evaluation_stage = EvaluationStage::find($request['evaluation_stage_id']);
+
+        return redirect()
+            ->route('projects.show.stage', [$evaluation_stage->project_id, $evaluation_stage->stage_id])
+            ->with('success', 'Documento guardado correctamente.');
     }
 
     public function edit(EvaluationDocument $evaluation_document)

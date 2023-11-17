@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\CriteriaStageController;
 use App\Http\Controllers\CycleController;
 use App\Http\Controllers\EvaluationCriteriaController;
+use App\Http\Controllers\EvaluationStageController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
@@ -193,7 +195,7 @@ Route::group(['prefix' => 'criterias', 'as' => 'criterias.'], function () {
 //Grupo para los documentos
 Route::group(['prefix' => 'evaluations_documents', 'as' => 'evaluations_documents.'], function () {
     Route::get('/', [EvaluationDocumentController::class, 'index'])->name('index');
-    Route::get('/create', [EvaluationDocumentController::class, 'create'])->name('create');
+    Route::get('/create/{evaluation_stage}', [EvaluationDocumentController::class, 'create'])->name('create');
     Route::post('/', [EvaluationDocumentController::class,  'store'])->name('store');
     Route::get('/{evaluation_document}', [EvaluationDocumentController::class, 'show'])->name('show');
     Route::get('/{evaluation_document}/edit', [EvaluationDocumentController::class, 'edit'])->name('edit');
@@ -202,17 +204,17 @@ Route::group(['prefix' => 'evaluations_documents', 'as' => 'evaluations_document
     Route::get('/download/{evaluation_document}/{file}',[EvaluationDocumentController::class, 'evaluationsDownload'])->name('download');
 });
 
+//Grupo para las rutas de notas.
+Route::group(['prefix' => 'grades', 'as' => 'grades.'], function () {
+    Route::get('/create/{project}/{stage}', [CriteriaStageController::class, 'create'])->name('create');
+    Route::post('/store', [CriteriaStageController::class, 'store'])->name('store');
+});
 
 //Grupo para las rutas de proyectos
 Route::group(['prefix' => 'projects', 'as' => 'projects.'], function () {
     Route::get('/', [ProjectController::class, 'index'])->name('index');
-    Route::get('/create', [ProjectController::class, 'create'])->name('create');
-    Route::post('/', [ProjectController::class,  'store'])->name('store');
-    Route::get('/{project}', [ProjectController::class, 'show'])->name('show');
-    Route::get('/{project}/edit', [ProjectController::class, 'edit'])->name('edit');
-    Route::put('/{project}', [ProjectController::class, 'update'])->name('update');
-    Route::delete('/{project}', [ProjectController::class, 'destroy'])->name('destroy');
-
+    Route::get('/show-stage/{project}/{stage}', [ProjectController::class, 'showStage'])->name('show.stage');
+    Route::put('/submit-stage/{evaluation_stage}', [ProjectController::class, 'submitStage'])->name('submit.stage');
     Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
         Route::get('/', [ProjectController::class, 'coordinatorIndex'])->name('index');
     });

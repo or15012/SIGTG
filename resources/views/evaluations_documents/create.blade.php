@@ -35,6 +35,7 @@
                 <label for="path" class="form-label">Archivo etapa</label>
                 <input type="file" class="form-control" id="path" name="path" required>
             </div>
+            <input type="hidden" name="evaluation_stage_id" value="{{ $evaluation_stage->id }}">
             <button type="submit" class="btn btn-primary">Guardar</button>
         </form>
     </div>

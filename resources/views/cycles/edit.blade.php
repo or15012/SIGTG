@@ -13,7 +13,11 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Editar Ciclo</h1>
+        <div class="contenedor">
+            <a href="{{ route('cycles.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
+        <h1>Editar ciclo</h1>
         <form action="{{ route('cycles.update', $cycle->id) }}" method="POST">
             @csrf
             @method('PUT')
@@ -52,7 +56,10 @@
                         name="parameters[{{ $parameter->name }}]" value="{{ $parameter->value }}" required>
                 </div>
             @endforeach
-            <button type="submit" class="btn btn-primary">Actualizar</button>
+            <div class="contenedor">
+                <a href="{{ route('cycles.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Actualizar</button>
+                <div>
         </form>
     </div>
 @endsection
