@@ -11,7 +11,18 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Actualizar grupo</h1>
+        <div class="d-flex justify-content-between align-items-center">
+            <h1>Actualizar grupo</h1>
+
+
+            <div class="d-flex justify-content-end align-items-center">
+                <a class="btn btn-secondary" href="{{route('document.authorization.letter', $id)}}"><i class="fa fa-file"></i>&nbsp;&nbsp;Carta de autorización</a>
+
+                @if($group[0]->authorization_letter)
+                    <a class="btn btn-info" style="margin-left: 5px" href="{{route('download', ['file'=>$group[0]->authorization_letter])}}"><i class="fa fa-file"></i>&nbsp;&nbsp;Carta adjunta</a>
+                @endif
+            </div>
+        </div>
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -53,10 +64,13 @@
                     Grupo sin usuarios
                 </div>
             @endforelse
-            <div class="d-flex justify-content-end" >
-                <button type="button" id="accept-group" class="btn btn-primary me-2">Aceptar Grupo</button>
-                <button type="button" id="deny-group" class="btn btn-danger ms-2">Denegar grupo</button>
-            </div>
+
+            @if($group[0]->status == 0)
+                <div class="d-flex justify-content-end" >
+                    <button type="button" id="accept-group" class="btn btn-primary me-2">Aceptar Grupo</button>
+                    <button type="button" id="deny-group" class="btn btn-danger ms-2">Denegar grupo</button>
+                </div>
+            @endif
 
         </form>
     </div>
