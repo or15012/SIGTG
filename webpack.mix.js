@@ -264,7 +264,7 @@ mix.js('resources/js/preprofille_observation_show.js', 'public/js/preprofille_ob
 mix.js('resources/js/evaluation_committee_search.js', 'public/js/evaluation_committee_search.js');
 mix.js('resources/js/users.js', 'public/js/users.js');
 mix.js('resources/js/profile_coordinator_show.js', 'public/js/profile_coordinator_show.js');
-
+mix.js('resources/js/evaluation_stage_create.js', 'public/js/evaluation_stage_create.js');
 
 mix.combine('resources/js/pages/invoice-list.init.js', folder.dist_assets + "js/pages/invoice-list.init.js");
 mix.combine('resources/js/pages/leaflet-us-states.js', folder.dist_assets + "js/pages/leaflet-us-states.js");

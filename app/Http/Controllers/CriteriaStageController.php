@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\EvaluationCriteria;
 use App\Models\CriteriaStage;
 use App\Models\EvaluationStage;
+use App\Models\EvaluationStageNote;
 use App\Models\Group;
 use App\Models\Project;
 use App\Models\Stage;
@@ -58,9 +59,16 @@ class CriteriaStageController extends Controller
             'notes'                 => 'required|array',
             'finalnote'             => 'required|array',
         ]);
+
         try {
             foreach ($request->notes as $userId => $note) {
+                $totalGrade = 0; // Inicializar la nota final del estudiante
                 foreach ($note as $criteriaId => $value) {
+
+                    $percentage = EvaluationCriteria::find($criteriaId)->percentage;
+
+                    // Calcular la contribución de esta nota al total según el porcentaje del criterio
+                    $totalGrade += ($value * $percentage) / 100;
 
                     CriteriaStage::updateOrCreate(
                         [
@@ -74,9 +82,21 @@ class CriteriaStageController extends Controller
                         ]
                     );
                 }
+
+                $totalGrade = round($totalGrade, 2);
+
+                // Guardar la nota final para este estudiante
+                EvaluationStageNote::updateOrCreate(
+                    [
+                        'user_id' => $userId,
+                        'evaluation_stage_id' => $request->evaluation_stage_id,
+                    ],
+                    [
+                        'note' => $totalGrade,
+                    ]
+                );
             }
             return back()->with('success', 'Notas guardadas exitosamente.');
-
         } catch (\Throwable $th) {
             return redirect()->route('grades.index')->with('error', $th->getMessage());
         }

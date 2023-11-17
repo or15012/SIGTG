@@ -57,19 +57,17 @@
                                             return $grade->user_id === $user->id && $grade->evaluation_criteria_id === $item->id;
                                         });
                                     @endphp
-                                    <input id="note-{{$user->id}}-{{ $item->id }}" class="note" min="0" max="10" step="0.01" type="number"
+                                    <input id="note-{{$user->id}}-{{ $item->id }}" data-percentage="{{$item->percentage}}" class="note" min="0" max="10" step="0.01" type="number"
                                         name="notes[{{ $user->id }}][{{ $item->id }}]"
                                         value="{{ $existingGrade ? $existingGrade->note : 0 }}" required>
                                 </td>
                             @endforeach
-                            <td>
-                                <input class="final-note" min="0" max="10" step="0.01" type="number"
-                                    name="finalnote[{{ $user->id }}]" value="" required>
+                            <td class="final-grade">
+                                <input class="final-note-{{ $user->id }}" min="0" max="10" step="0.01" type="number"
+                                    name="finalnote[{{ $user->id }}]" value="" required readonly >
                             </td>
                         </tr>
                     @endforeach
-
-
                 </tbody>
             </table>
 
