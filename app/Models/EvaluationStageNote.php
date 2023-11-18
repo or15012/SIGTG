@@ -9,7 +9,7 @@ class EvaluationStageNote extends Model
 {
     use HasFactory;
 
-    protected $table = 'evalution_stage_note';
+    protected $table = 'evaluation_stage_note';
     protected $fillable = [
         "evaluation_stage_id",
         "user_id",

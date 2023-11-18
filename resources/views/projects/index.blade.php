@@ -19,10 +19,10 @@
                 $today = new DateTime();
                 $date_end = new DateTime($group->cycle->date_end);
                 $date_end_mod = clone $date_end;
-                $date_end_mod->modify("-20 days");
+                $date_end_mod->modify('-20 days');
             @endphp
 
-            @if($today >= $date_end_mod && $today <= $date_end)
+            @if ($today >= $date_end_mod && $today <= $date_end)
                 <a href="{{ route('extensions.index') }}" class="btn btn-secondary float-end">
                     <i class="fa fa-plus"></i>&nbsp; Solicitar prórroga
                 </a>
@@ -41,8 +41,9 @@
             </div><!-- end card header -->
             <div class="card-body">
                 <div class="progress">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="{{ $progressPercentage }}"
-                        aria-valuemin="0" aria-valuemax="100" style="width: {{ $progressPercentage }}%"></div>
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                        aria-valuenow="{{ $progressPercentage }}" aria-valuemin="0" aria-valuemax="100"
+                        style="width: {{ $progressPercentage }}%"></div>
                 </div>
             </div><!-- end card-body -->
         </div><!-- end card -->
@@ -92,13 +93,13 @@
                     </thead>
                     <tbody>
                         @foreach ($groupCommittees as $groupCommittee)
-                        @if ($groupCommittee->type == 1)
-                            <tr>
-                                <td>{{ $groupCommittee->first_name }} {{ $groupCommittee->middle_name }}
-                                    {{ $groupCommittee->last_name }} {{ $groupCommittee->second_last_name }}</td>
-                            </tr>
-                        @endif
-                    @endforeach
+                            @if ($groupCommittee->type == 1)
+                                <tr>
+                                    <td>{{ $groupCommittee->first_name }} {{ $groupCommittee->middle_name }}
+                                        {{ $groupCommittee->last_name }} {{ $groupCommittee->second_last_name }}</td>
+                                </tr>
+                            @endif
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -120,7 +121,8 @@
                                 </div>
                                 <div class="mr-5">{{ $stage->name }}</div>
                             </div>
-                            <a class="card-footer text-black clearfix small z-1" href="{{route('projects.show.stage',[$project->id, $stage->id]) }}">
+                            <a class="card-footer text-black clearfix small z-1"
+                                href="{{ route('projects.show.stage', [$project->id, $stage->id]) }}">
                                 <span class="float-left">Ver detalles</span>
                                 <span class="float-right">
                                     <i class="fa fa-angle-right"></i>
@@ -139,7 +141,8 @@
                                     </div>
 
                                 </div>
-                                <a class="card-footer text-black clearfix small z-1 bg-primary" href="{{route('projects.show.stage',[$project->id, $stage->id]) }}">
+                                <a class="card-footer text-black clearfix small z-1 bg-primary"
+                                    href="{{ route('projects.show.stage', [$project->id, $stage->id]) }}">
                                     <span class="float-left text-white ">Ver Detalles</span>
                                     <span class="float-right text-white">
                                         <i class="fa fa-angle-right"></i>
@@ -159,7 +162,8 @@
                                         <i class="fas fa-graduation-cap"></i>
                                     </div>
                                 </div>
-                                <a class="card-footer text-black clearfix small z-1" href="{{route('projects.show.stage',[$project->id, $stage->id]) }}">
+                                <a class="card-footer text-black clearfix small z-1"
+                                    href="{{ route('projects.show.stage', [$project->id, $stage->id]) }}">
                                     <span class="float-left">Ver detalles</span>
                                     <span class="float-right">
                                         <i class="fa fa-angle-right"></i>
@@ -176,6 +180,56 @@
             @endforelse
 
         </div>
+
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header bg-transparent border-bottom text-uppercase">
+                    Notas de estudiantes
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nombre de alumno</th>
+                                @foreach ($stages as $item)
+                                    <th>
+                                        {{ $item->name }}
+                                        {{-- <br>
+                                        {{ $item->percentage }}% --}}
+                                    </th>
+                                @endforeach
+                                {{-- <td>Nota Final</td> --}}
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach ($projectUsers as $user)
+                                <tr id="user-{{ $user->id }}" data-value="{{ $user->id }}">
+                                    <td>{{ $user->first_name }} {{ $user->middle_name }} {{ $user->last_name }}
+                                        {{ $user->second_last_name }}</td>
+                                    @foreach ($stages as $item)
+                                        <td>
+                                            @php
+                                                $existingGrade = $evaluationStagesNotes->first(function ($evaluationStagesNotes) use ($user, $item) {
+                                                    return $evaluationStagesNotes->user_id === $user->id && $evaluationStagesNotes->id === $item->id;
+                                                });
+                                            @endphp
+                                            <label>{{ $existingGrade ? $existingGrade->note : 0 }}
+                                            </label>
+                                        </td>
+                                    @endforeach
+                                    {{-- <td class="final-grade">
+                                        <input class="final-note-{{ $user->id }}" min="0" max="10"
+                                            step="0.01" type="number" name="finalnote[{{ $user->id }}]"
+                                            value="" required readonly>
+                                    </td> --}}
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div><!-- end col -->
 
     </div>
 @endsection

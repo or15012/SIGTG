@@ -55,6 +55,12 @@ class ProjectController extends Controller
             ->join('stages as stg', 'evaluation_stages.stage_id', 'stg.id')
             ->get();
 
+        $evaluationStagesNotes = EvaluationStage::where('project_id', $project->id)
+            ->select('esn.user_id', 'esn.evaluation_stage_id', 'esn.note', 'stg.id')
+            ->join('stages as stg', 'evaluation_stages.stage_id', 'stg.id')
+            ->join('evaluation_stage_note as esn', 'evaluation_stages.id', 'esn.evaluation_stage_id')
+            ->get();
+
         $groupCommittees = Group::select(
             'groups.id',
             'groups.number',
@@ -80,15 +86,16 @@ class ProjectController extends Controller
         } else {
             $progressPercentage = 0; // En caso de que no haya etapas totales
         }
-
+        // dd($evaluationStagesNotes);
         return view('projects.index', [
             'projectUsers'          => $projectUsers,
             'project'               => $project,
             'stages'                => $stages,
-            'evaluationStages'       => $evaluationStages,
+            'evaluationStages'      => $evaluationStages,
             'groupCommittees'       => $groupCommittees,
             'progressPercentage'    => $progressPercentage,
-            'group'    => $group,
+            'group'                 => $group,
+            'evaluationStagesNotes' => $evaluationStagesNotes,
         ]);
     }
 
