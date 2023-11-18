@@ -29,9 +29,9 @@
         <h1>Registro de Notas</h1>
 
         {{$groups[0]['group']}}
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped table-hover">
             <thead>
-                <tr>
+                <tr class="table-danger">
                     <th>ID</th>
                     <th>Grupo</th>
                     <th>Acciones</th>

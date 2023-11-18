@@ -2289,8 +2289,8 @@ progress {
 
 .table {
     --bs-table-color: #495057;
-    --bs-table-bg: transparent;
-    --bs-table-border-color: #eff0f2;
+    --bs-table-bg: #fff;
+    --bs-table-border-color: #3a3a3a;
     --bs-table-accent-bg: transparent;
     --bs-table-striped-color: #495057;
     --bs-table-striped-bg: #f8f9fa;
@@ -16265,7 +16265,7 @@ body[data-layout-mode=dark] .nav-pills .nav-link.active {
 .table .table-light {
     color: #495057;
     border-color: #eff0f2;
-    background-color: #f8f9fa
+    background-color: #fff
 }
 
 .table-nowrap td,

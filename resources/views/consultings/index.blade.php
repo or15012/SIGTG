@@ -24,9 +24,9 @@
             </div>
         @endif
 
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped table-hover">
             <thead>
-                <tr>
+                <tr class="table-danger">
                     <th>ID</th>
                     <th>Tema</th>
                     <th>Número</th>

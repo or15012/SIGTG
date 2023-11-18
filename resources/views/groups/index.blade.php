@@ -21,9 +21,9 @@
             </div>
         @endif
 
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped table-hover">
             <thead>
-                <tr>
+                <tr class="table-danger">
                     <th>Número</th>
                     <th>Lider</th>
                     <th>Cantidad de estudiantes</th>
