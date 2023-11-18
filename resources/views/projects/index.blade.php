@@ -22,11 +22,24 @@
                 $date_end_mod->modify("-20 days");
             @endphp
 
-            @if($today >= $date_end_mod && $today <= $date_end)
-                <a href="{{ route('extensions.index') }}" class="btn btn-secondary float-end">
-                    <i class="fa fa-plus"></i>&nbsp; Solicitar prórroga
-                </a>
-            @endif
+            <div class="d-flex justify-content-end align-items-center">
+                <a class="btn btn-secondary" href="{{ route('document.approvement.report', $project->id) }}"><i
+                        class="fa fa-file"></i>&nbsp;&nbsp;Acta de aprobación</a>
+
+                <a class="btn btn-info ajax-modal" style="margin-left: 5px" data-title="Acta de aprobación de proyecto" data-bs-toggle="tooltip" data-bs-title="Subir Acta de aprobación"
+                        href="{{route('projects.modal.approvement.report', ['project_id'=>$project->id])}}"><i
+                            class="fa fa-upload"></i></a>
+                @if ($project->approvement_report)
+                    <a class="btn btn-primary" style="margin-left: 5px" data-bs-toggle="tooltip" data-bs-title="Descargar Acta de aprobación"
+                        href="{{ route('download', ['file' => $project->approvement_report]) }}"><i
+                            class="fa fa-download"></i></a>
+                @endif
+                @if($today >= $date_end_mod && $today <= $date_end)
+                    <a href="{{ route('extensions.index') }}" style="margin-left: 5px" class="btn btn-success float-end">
+                        <i class="fa fa-plus"></i>&nbsp; Solicitar prórroga
+                    </a>
+                @endif
+            </div>
         </div>
 
         <h5>Nombre: {{ $project->name }}</h5>

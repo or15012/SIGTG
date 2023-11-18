@@ -10,6 +10,8 @@ use App\Models\School;
 use App\Models\Stage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -33,7 +35,7 @@ class ProjectController extends Controller
             ->first();
 
         $project = Project::join('profiles as p', 'projects.profile_id', 'p.id')
-            ->select('projects.id', 'projects.name')
+            ->select('projects.id', 'projects.name', 'projects.approvement_report')
             ->where('projects.group_id', $group->id)
             ->first();
 
@@ -130,5 +132,30 @@ class ProjectController extends Controller
         return redirect()
             ->route('projects.show.stage', [$evaluation_stage->project_id, $evaluation_stage->stage_id])
             ->with('success', 'Documento guardado correctamente.');
+    }
+
+
+    public function modalApprovementReport(Request $request){
+        return view('projects.modal.attach_approvement_report', ['project_id'=>$request->project_id]);
+    }
+
+    public function storeApprovementReport(Request $request){
+        try {
+            DB::beginTransaction();
+            $project = Project::find($request->project_id);
+            if ($request->hasFile('approvement_report')) {
+            if(is_file(storage_path('app/' . $project->approvement_report)))
+            {
+                Storage::delete($project->approvement_report);
+            }
+            $project->approvement_report = $request->file('approvement_report')->storeAs('projects', $project->id.'-'.$request->file('approvement_report')->getClientOriginalName());
+            $project->save();
+            DB::commit();
+            return redirect()->action([ProjectController::class, 'index'])->with('success', 'Acta de aprobación subida exitosamente.');
+        }
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->action([ProjectController::class, 'index'])->with('error', 'Algo salió mal. Intente nuevamente.');
+        }
     }
 }
