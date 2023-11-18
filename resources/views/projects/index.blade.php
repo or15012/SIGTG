@@ -119,7 +119,8 @@
                                 <div class="card-body-icon">
                                     <i class="fas fa-graduation-cap"></i>
                                 </div>
-                                <div class="mr-5">{{ $stage->name }}</div>
+                                <div class="mr-5 text-black">{{ $stage->name }}</div>
+                                <div class="mr-5 text-black">{{ $stage->percentage }}%</div>
                             </div>
                             <a class="card-footer text-black clearfix small z-1"
                                 href="{{ route('projects.show.stage', [$project->id, $stage->id]) }}">
@@ -136,6 +137,7 @@
                             <div class="card text-black o-hidden h-100 bg-primary">
                                 <div class="card-body">
                                     <div class="mr-5 text-white">{{ $stage->name }}</div>
+                                    <div class="mr-5 text-white">{{ $stage->percentage }}%</div>
                                     <div class="card-body-icon">
                                         <i class="fas fa-graduation-cap"></i>
                                     </div>
@@ -158,6 +160,7 @@
                             <div class="card text-black o-hidden h-100">
                                 <div class="card-body">
                                     <div class="mr-5 text-black">{{ $stage->name }}</div>
+                                    <div class="mr-5 text-black">{{ $stage->percentage }}%</div>
                                     <div class="card-body-icon">
                                         <i class="fas fa-graduation-cap"></i>
                                     </div>
@@ -198,10 +201,10 @@
                                         {{ $item->percentage }}% --}}
                                     </th>
                                 @endforeach
-                                {{-- <td>Nota Final</td> --}}
+                                <td>Nota final</td>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="notes">
 
                             @foreach ($projectUsers as $user)
                                 <tr id="user-{{ $user->id }}" data-value="{{ $user->id }}">
@@ -214,15 +217,14 @@
                                                     return $evaluationStagesNotes->user_id === $user->id && $evaluationStagesNotes->id === $item->id;
                                                 });
                                             @endphp
-                                            <label>{{ $existingGrade ? $existingGrade->note : 0 }}
+                                            <label class="note" data-percentage="{{$item->percentage}}">{{ $existingGrade ? $existingGrade->note : 0 }}
                                             </label>
                                         </td>
                                     @endforeach
-                                    {{-- <td class="final-grade">
-                                        <input class="final-note-{{ $user->id }}" min="0" max="10"
-                                            step="0.01" type="number" name="finalnote[{{ $user->id }}]"
-                                            value="" required readonly>
-                                    </td> --}}
+                                    <td class="final-grade">
+                                        <label class="final-note-{{ $user->id }}">
+                                        </label>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -236,4 +238,5 @@
 
 @section('script')
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+    <script src="{{ URL::asset('js/project_index.js') }}"></script>
 @endsection

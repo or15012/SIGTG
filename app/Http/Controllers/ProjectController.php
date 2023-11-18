@@ -86,7 +86,7 @@ class ProjectController extends Controller
         } else {
             $progressPercentage = 0; // En caso de que no haya etapas totales
         }
-        // dd($evaluationStagesNotes);
+
         return view('projects.index', [
             'projectUsers'          => $projectUsers,
             'project'               => $project,
