@@ -390,7 +390,7 @@ class GroupController extends Controller
             {
                 Storage::delete($group->authorization_letter);
             }
-            $group->authorization_letter = $request->file('authorization_letter')->storeAs('groups', date('Ymdhis').'-'.$request->file('authorization_letter')->getClientOriginalName().'.'.$request->file('authorization_letter')->getClientOriginalExtension());
+            $group->authorization_letter = $request->file('authorization_letter')->storeAs('groups', $group->id.'-'.$request->file('authorization_letter')->getClientOriginalName());
             $group->save();
             DB::commit();
             return redirect()->action([GroupController::class, 'index'])->with('success', 'Carta de autorización subida exitosamente.');

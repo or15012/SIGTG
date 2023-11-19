@@ -218,6 +218,10 @@ Route::group(['prefix' => 'projects', 'as' => 'projects.'], function () {
     Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
         Route::get('/', [ProjectController::class, 'coordinatorIndex'])->name('index');
     });
+
+    // rutas para adjuntar acta de aprobación
+    Route::get('/modal-approvement-report', [ProjectController::class, 'modalApprovementReport'])->name('modal.approvement.report');
+    Route::post('/modal-approvement-report', [ProjectController::class, 'storeApprovementReport'])->name('store.approvement.report');
 });
 
 // Prórrogas (extensions).
@@ -232,6 +236,7 @@ Route::group(['prefix' => 'extensions', 'as' => 'extensions.'], function () {
 // Documentos
 Route::group(['prefix' => 'document', 'as' => 'document.'], function () {
     Route::get('/authorization/letter/{group}', [DocumentController::class, 'authorization_letter'])->name('authorization.letter');
+    Route::get('/approvement/report/{group}', [DocumentController::class, 'approvement_report'])->name('approvement.report');
     // Route::get('/create', [ExtensionController::class, 'create'])->name('create');
     // Route::post('/', [ExtensionController::class,  'store'])->name('store');
     // Route::get('/{extension}/edit', [ExtensionController::class, 'edit'])->name('edit');
