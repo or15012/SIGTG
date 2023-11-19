@@ -13,6 +13,10 @@
         @endslot
     @endcomponent
     <div class="container">
+            <div class="contenedor">
+                <a href="{{ route('profiles.preprofile.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+                    Regresar</a>
+            </div>
         <h1>Registrar preperfil</h1>
 
         @if ($errors->any())
@@ -61,8 +65,10 @@
                 <label for="path" class="form-label">Prioridad de propuesta</label>
                 <input type="number" class="form-control" id="proposal_priority" name="proposal_priority" required>
             </div>
-
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <div class="contenedor">
+                <a href="{{ route('profiles.preprofile.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
         </form>
     </div>
 @endsection

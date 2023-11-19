@@ -6,7 +6,12 @@
 
 @section('content')
     <div class="container">
-        <h1 class="mb-5">Detalles del Preperfil</h1>
+        <div class="contenedor">
+            <a href="{{ route('profiles.preprofile.index') }}" class="btn btn-danger regresar-button"><i
+                    class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
+        <h1 class="mb-5">Detalles del preperfil</h1>
         <h2>Propuesta prioridad # <b> {{ $preprofile->proposal_priority }}</b></h2>
         <div class="row">
             <div class="mb-3 col-12 col-md-6">
@@ -24,14 +29,16 @@
             <div class="mb-3 col-12 col-md-6">
                 <label for="path" class="form-label">Archivo preperfil:</label>
                 <p>
-                    <a href="{{ route('profiles.preprofile.download', [$preprofile->id, 'path']) }}" target="_blank">Ver archivo</a>
+                    <a href="{{ route('profiles.preprofile.download', [$preprofile->id, 'path']) }}" target="_blank"
+                        class="btn btn-secondary archivo">Ver archivo</a>
                 </p>
             </div>
 
             <div class="mb-3 col-12 col-md-6">
                 <label for="path" class="form-label">Archivo resumen:</label>
                 <p>
-                    <a href="{{ route('profiles.preprofile.download', [$preprofile->id, 'summary_path']) }}" target="_blank">Ver archivo</a>
+                    <a href="{{ route('profiles.preprofile.download', [$preprofile->id, 'summary_path']) }}" target="_blank"
+                        class="btn btn-secondary archivo">Ver archivo</a>
                 </p>
             </div>
         </div>
@@ -40,14 +47,16 @@
             <div class="mb-3 col-12 col-md-6">
                 <label for="path" class="form-label">Archivo visión:</label>
                 <p>
-                    <a href="{{ route('profiles.preprofile.download', [$preprofile->id, 'vision_path']) }}" target="_blank">Ver archivo</a>
+                    <a href="{{ route('profiles.preprofile.download', [$preprofile->id, 'vision_path']) }}" target="_blank"
+                        class="btn btn-secondary archivo">Ver archivo</a>
                 </p>
             </div>
 
             <div class="mb-3 col-12 col-md-6">
                 <label for="path" class="form-label">Archivo calculo de tamaño:</label>
                 <p>
-                    <a href="{{ route('profiles.preprofile.download', [$preprofile->id, 'size_calculation_path']) }}" target="_blank">Ver archivo</a>
+                    <a href="{{ route('profiles.preprofile.download', [$preprofile->id, 'size_calculation_path']) }}"
+                        target="_blank" class="btn btn-secondary archivo">Ver archivo</a>
                 </p>
             </div>
         </div>

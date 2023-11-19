@@ -39,11 +39,11 @@
                 @forelse ($groupUsers as $user)
                     <div class="col-12 col-md-6 col-lg-6" id="user-{{ $user->id }}">
                         <div class="card mb-4">
-                            <div style="background-color: #F2DEDE;" class="card-header">
+                            <div class="card-header red-student">
                                 {{ $user->carnet }} - {{ $user->first_name }} {{ $user->middle_name }}
                                 {{ $user->last_name }} {{ $user->second_last_name }}
                                 @if ($user->pivot->is_leader === 1)
-                                    <label style="background-color: #f2f2f2;" class="px-2 rounded">LIDER</label>
+                                    <label class="px-2 rounded gray-project">LIDER</label>
                                 @endif
                             </div>
                             <div class="card-body">
@@ -71,8 +71,8 @@
                                             @break
 
                                             @default
-                                                <label style="background-color:#F2F2F2"
-                                                    class="my-1 text-opacity-100 p-2 rounded">Enviado
+                                                <label
+                                                    class="my-1 text-opacity-100 p-2 rounded gray-project">Enviado
                                                 </label>
                                         @endswitch
                                     </div>

@@ -12,7 +12,11 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Tribunal Evaluador</h1>
+        <div class="contenedor">
+            <a href="{{ route('groups.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
+        <h1>Tribunal evaluador</h1>
 
         <!-- Agregar el botón para abrir el modal -->
         {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#searchModal">
@@ -62,7 +66,8 @@
                                 method="POST" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                <button type="submit" class="btn btn-danger buttonDelete"><i
+                                        class="fas fa-trash-alt"></i></button>
                             </form>
 
                         </td>
@@ -89,7 +94,8 @@
                             <select name="teachers[]" id="teachers" multiple="multiple">
                                 <option></option>
                                 @forelse ($teachers as  $teacher)
-                                    <option value="{{ $teacher->id }}"  {{ in_array($teacher->id, old('teachers', [])) ? 'selected' : '' }}>
+                                    <option value="{{ $teacher->id }}"
+                                        {{ in_array($teacher->id, old('teachers', [])) ? 'selected' : '' }}>
                                         {{ $teacher->first_name }} {{ $teacher->middle_name }}
                                         {{ $teacher->last_name }} {{ $teacher->second_last_name }}
                                     </option>
@@ -105,8 +111,8 @@
                         <div class="col-12 col-md-8 col-lg-8">
                             <select class="form-select" name="type_committee" id="type_committee" required>
                                 <option value="" selected disabled>Seleccione tipo</option>
-                                <option value="0"  {{ old('type_committee') == '0' ? 'selected' : '' }}>Asesor</option>
-                                <option value="1"  {{ old('type_committee') == '1' ? 'selected' : '' }}>Jurado</option>
+                                <option value="0" {{ old('type_committee') == '0' ? 'selected' : '' }}>Asesor</option>
+                                <option value="1" {{ old('type_committee') == '1' ? 'selected' : '' }}>Jurado</option>
                             </select>
                         </div>
                     </div>
@@ -119,10 +125,12 @@
                         </div>
                     </div>
 
-
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button type="submit" class="btn btn-primary me-md-2" type="button">Guardar</button>
-                    </div>
+                        <div class="contenedor">
+                            <a href="{{ route('groups.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
+                            <button type="submit" class="btn btn-primary me-md-2" type="button">Guardar</button>
+                            <div>
+                            </div>
 
                 </form>
             </div>

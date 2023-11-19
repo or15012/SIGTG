@@ -13,7 +13,11 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Editar Perfil</h1>
+        <div class="contenedor">
+            <a href="{{ route('profiles.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
+        <h1>Editar perfil</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -31,7 +35,8 @@
 
             <div class="mb-3">
                 <label for="name" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="name" name="name" value="{{ $profile->name }}" required>
+                <input type="text" class="form-control" id="name" name="name" value="{{ $profile->name }}"
+                    required>
             </div>
 
             <div class="mb-5">
@@ -41,7 +46,8 @@
 
             <div class="mb-3">
                 <label for="path" class="form-label">Archivo perfil actual</label>
-                <a href="{{ route('profiles.preprofile.download', [$profile->id, 'path']) }}" class="btn btn-link">Descargar archivo actual</a>
+                <a href="{{ route('profiles.preprofile.download', [$profile->id, 'path']) }}"
+                    class="btn btn-secondary archivo">Descargar archivo actual</a>
             </div>
 
             <div class="mb-5">
@@ -51,7 +57,8 @@
 
             <div class="mb-3">
                 <label for="summary_path" class="form-label">Archivo resumen actual</label>
-                <a href="{{ route('profiles.preprofile.download', [$profile->id, 'summary_path']) }}" class="btn btn-link">Descargar archivo actual</a>
+                <a href="{{ route('profiles.preprofile.download', [$profile->id, 'summary_path']) }}"
+                    class="btn btn-secondary archivo">Descargar archivo actual</a>
             </div>
 
             <div class="mb-5">
@@ -61,7 +68,8 @@
 
             <div class="mb-3">
                 <label for="vision_path" class="form-label">Archivo visión actual</label>
-                <a href="{{ route('profiles.preprofile.download', [$profile->id, 'vision_path']) }}" class="btn btn-link">Descargar archivo actual</a>
+                <a href="{{ route('profiles.preprofile.download', [$profile->id, 'vision_path']) }}"
+                    class="btn btn-secondary archivo">Descargar archivo actual</a>
             </div>
 
             <div class="mb-5">
@@ -71,7 +79,8 @@
 
             <div class="mb-3">
                 <label for="size_calculation_path" class="form-label">Archivo calculo de tamaño actual</label>
-                <a href="{{ route('profiles.preprofile.download', [$profile->id, 'size_calculation_path']) }}" class="btn btn-link">Descargar archivo actual</a>
+                <a href="{{ route('profiles.preprofile.download', [$profile->id, 'size_calculation_path']) }}"
+                    class="btn btn-secondary archivo">Descargar archivo actual</a>
             </div>
 
             <div class="mb-5">
@@ -79,9 +88,10 @@
                 <input type="file" class="form-control" id="size_calculation_path" name="size_calculation_path">
             </div>
 
-
-
-            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            <div class="contenedor">
+                <a href="{{ route('profiles.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Actualizar</button>
+            </div>
         </form>
     </div>
 @endsection

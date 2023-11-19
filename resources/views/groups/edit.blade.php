@@ -16,7 +16,8 @@
 
 
             <div class="d-flex justify-content-end align-items-center">
-                <a class="btn btn-secondary" href="{{ route('document.authorization.letter', $id) }}"><i
+                <a class="btn btn-secondary"
+                    style="margin-right: 15px; href="{{ route('document.authorization.letter', $id) }}><i
                         class="fa fa-file"></i>&nbsp;&nbsp;Carta de autorización</a>
 
                 @if ($group[0]->authorization_letter)
@@ -76,7 +77,7 @@
             @if ($group[0]->status == 0)
                 <div class="d-flex justify-content-end">
                     <button type="button" id="accept-group" class="btn btn-primary me-2">Aceptar Grupo</button>
-                    <button type="button" id="deny-group" class="btn btn-danger ms-2">Denegar grupo</button>
+                    <button type="button" id="deny-group" class="btn btn-danger buttonDelete ms-2">Denegar grupo</button>
                 </div>
             @endif
         </form>
