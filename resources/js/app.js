@@ -1,5 +1,5 @@
 /*
-Template Name: SIGTG-FIA - Admin & Dashboard Template
+Template Name: SIGTG - SISTEMA INFORMÁTICO PARA LA GESTIÓN DE TRABAJOS DE GRADUACIÓN
 Author: Themesbrand
 Version: 1.2.0
 Website: https://Themesbrand.com/

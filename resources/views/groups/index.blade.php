@@ -6,7 +6,7 @@
 @section('content')
     @component('components.breadcrumb')
         @slot('li_1')
-            SIGTG-FIA
+            SIGTG - FIA
         @endslot
         @slot('title')
         @endslot
@@ -29,7 +29,7 @@
 
         <table class="table table-bordered">
             <thead>
-                <tr>
+                <tr class="table-danger">
                     <th>Número</th>
                     <th>Lider</th>
                     <th>Cantidad de estudiantes</th>

@@ -1,5 +1,5 @@
 /*
-Template Name: SIGTG-FIA - Admin & Dashboard Template
+Template Name: SIGTG - SISTEMA INFORMÁTICO PARA LA GESTIÓN DE TRABAJOS DE GRADUACIÓN
 Author: Themesbrand
 Version: 1.2.0
 Website: https://Themesbrand.com/
@@ -9,7 +9,7 @@ File: Main Css File
 @import url("https://fonts.googleapis.com/css2?family=Be+Vietnam:wght@300;400;500;600;700&display=swap");
 body[data-layout-mode=dark] {
   background-color: #030f16;
-  color: #6f7d86;
+  color: #3d3f41;
 }
 body[data-layout-mode=dark] .h1, body[data-layout-mode=dark] .h2, body[data-layout-mode=dark] .h3, body[data-layout-mode=dark] .h4, body[data-layout-mode=dark] .h5, body[data-layout-mode=dark] .h6,
 body[data-layout-mode=dark] h1, body[data-layout-mode=dark] h2, body[data-layout-mode=dark] h3, body[data-layout-mode=dark] h4, body[data-layout-mode=dark] h5, body[data-layout-mode=dark] h6 {
@@ -60,7 +60,7 @@ body:not([data-sidebar-size=sm]) .app-search {
   width: 255px;
   position: fixed;
   z-index: 1;
-  background-color: #ffffff;
+  background-color: #000000;
   -webkit-box-shadow: 0 2px 3px rgba(56, 72, 97, 0.06);
           box-shadow: 0 2px 3px rgba(56, 72, 97, 0.06);
 }
@@ -86,7 +86,7 @@ body:not([data-sidebar-size=sm]) .app-search {
   vertical-align: text-bottom;
   margin-right: 5px;
   line-height: 1;
-  color: #384861 !important;
+  color: #000000 !important;
 }
 
 /* Search */
@@ -1032,7 +1032,7 @@ body[data-sidebar=light] .logo-light {
   display: none;
 }
 body[data-sidebar=light] .logo-txt {
-  color: #384861 !important;
+  color: #000000 !important;
 }
 body[data-sidebar=light][data-sidebar-size=sm] .logo span.logo-lg {
   display: none;
@@ -1093,7 +1093,7 @@ body[data-sidebar=brand] .navbar-brand-box .logo-light {
   display: block;
 }
 body[data-sidebar=brand] .navbar-brand-box .logo-txt {
-  color: #fff !important;
+  color: #000000 !important;
 }
 body[data-sidebar=brand] #sidebar-menu ul li.menu-title {
   color: rgba(255, 255, 255, 0.7);

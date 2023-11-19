@@ -6,7 +6,7 @@
 @section('content')
     @component('components.breadcrumb')
         @slot('li_1')
-            SIGTG-FIA
+            SIGTG - FIA
         @endslot
         @slot('title')
             Welcome !
@@ -44,9 +44,9 @@
     {!! implode('', $errors->all('<div class="alert alert-danger">:message</div>')) !!}
 @endif
 
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped table-hover">
             <thead>
-                <tr>
+                <tr class="table-danger">
                     <th>Correo electrónico</th>
                     <th>Nombres</th>
                     <th>Apellidos</th>

@@ -1,5 +1,5 @@
 /*
-Template Name: Borex - Admin & Dashboard Template
+Template Name: SIGTG - SISTEMA INFORMÁTICO PARA LA GESTIÓN DE TRABAJOS DE GRADUACIÓN
 Author: Themesbrand
 Website: https://Themesbrand.com/
 Contact: Themesbrand@gmail.com

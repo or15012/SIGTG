@@ -6,7 +6,7 @@
 @section('content')
     @component('components.breadcrumb')
         @slot('li_1')
-            SIGTG-FIA
+            SIGTG - FIA
         @endslot
         @slot('title')
             Editar Preperfil

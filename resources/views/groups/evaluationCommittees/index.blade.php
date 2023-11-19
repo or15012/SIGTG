@@ -6,7 +6,7 @@
 @section('content')
     @component('components.breadcrumb')
         @slot('li_1')
-            SIGTG-FIA
+            SIGTG - FIA
         @endslot
         @slot('title')
         @endslot
@@ -38,9 +38,9 @@
             </div>
         @endif
         <h6>Lista de tribunal asignado a grupo</h6>
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped table-hover">
             <thead>
-                <tr>
+                <tr class="table-danger">
                     <th>Nombre completo</th>
                     <th>Rol</th>
                     <th>Contacto</th>

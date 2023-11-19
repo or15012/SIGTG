@@ -13,7 +13,7 @@
                         <a href="index" class="auth-logo">
                             <span class="logo-lg">
                                 <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22"> <span
-                                    class="logo-txt">SIGTG-FIA</span>
+                                    class="logo-txt">SIGTG - FIA</span>
                             </span>
                         </a>
                         <h3 class="mt-3">Site is Under Maintenance</h3>

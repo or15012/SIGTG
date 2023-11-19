@@ -362,7 +362,25 @@ class GroupController extends Controller
                 'path_agreement'    => $path
             ];
             $syncData[] = $userData;
+
+
+            // Enviar correo electrónico notificando la adición al comité de evaluación
+            try {
+            $user = User::find(intval($userId));
+            $committeeType = $request->type_committee == 0 ? "Asesor(a)" : "Jurado(a)";
+            $mailData = [
+                'user'      => $user,
+                'group'     => $group,
+                'committee' => $committeeType,
+            ];
+            Mail::to($user->email)->send(new SendMail('mail.committee-added', 'Notificación de Comité', $mailData));
+            } catch (\Throwable $th) {
+            // working...
+
+            }
+            //¿Y para notificar al asesor o jurado?
         }
+
         // Insertar los nuevos usuarios
         $group->teacherUsers()->attach($syncData);
         $text = $request->type_committee == 0 ? "Asesor(a)" : "Jurado(a)";

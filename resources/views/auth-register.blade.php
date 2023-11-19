@@ -13,7 +13,7 @@
 
                         <div class="text-center mb-4">
                             <a href="index">
-                                <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22"> <span class="logo-txt">SIGTG-FIA</span>
+                                <img src="{{ URL::asset('assets/images/logo-sm.svg') }}" alt="" height="22"> <span class="logo-txt">SIGTG - FIA</span>
                             </a>
                     </div>
 
@@ -21,7 +21,7 @@
                             <div class="card-body p-4">
                                 <div class="text-center mt-2">
                                     <h5 class="text-primary">Register Account</h5>
-                                    <p class="text-muted">Get your free SIGTG-FIA account now.</p>
+                                    <p class="text-muted">Get your free SIGTG - FIAaccount now.</p>
                                 </div>
                                 <div class="p-2 mt-4">
                                     <form action="index">
@@ -94,7 +94,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="text-center text-muted p-4">
-                            <p class="text-white-50">© <script>document.write(new Date().getFullYear())</script> SIGTG-FIA.</p>
+                            <p class="text-white-50">© <script>document.write(new Date().getFullYear())</script> SIGTG - FIA.</p>
                         </div>
                     </div>
                 </div>

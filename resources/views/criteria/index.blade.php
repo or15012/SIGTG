@@ -6,7 +6,7 @@
 @section('content')
     @component('components.breadcrumb')
         @slot('li_1')
-            SIGTG-FIA
+            SIGTG - FIA
         @endslot
         @slot('title')
             Welcome !
@@ -29,9 +29,9 @@
         <h1>Criterios de Evaluación</h1>
         <p>Para: {{$stage->name}}</p>
 
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped table-hover">
             <thead>
-                <tr>
+                <tr class="table-danger">
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Porcentaje</th>
