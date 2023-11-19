@@ -4,12 +4,11 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\Cycle;
 use App\Models\Protocol;
 use App\Models\School;
-use Illuminate\Http\Request;
 use App\Models\Stage;
-use PhpParser\Node\Stmt\TryCatch;
 
 class StageController extends Controller
 {
@@ -40,6 +39,8 @@ class StageController extends Controller
             'protocol'      => 'required|integer|min:1|exists:protocols,id',
             'cycle'         => 'required|integer|min:1|exists:cycles,id',
             'school'        => 'required|integer|min:1|exists:schools,id',
+            'sort'          => 'required|integer',
+            'percentage'    => 'required|integer|min:1|max:100',
         ]);
 
 
@@ -49,7 +50,10 @@ class StageController extends Controller
                 'protocol_id'   => $request['protocol'],
                 'cycle_id'      => $request['cycle'],
                 'school_id'     => $request['school'],
+                'sort'          => $request['sort'],
+                'percentage'    => $request['percentage'],
             ]);
+
             return redirect()->route('stages.index')->with('success', 'Etapa Evaluativa creada exitosamente.');
         } catch (\Exception $e) {
             return redirect()->route('stages.create')->with('error', 'La Etapa Evaluativa ya se encuentra registrada, revisar.');
@@ -72,6 +76,8 @@ class StageController extends Controller
             'protocol'      => 'required|integer|min:1|exists:protocols,id',
             'cycle'         => 'required|integer|min:1|exists:cycles,id',
             'school'        => 'required|integer|min:1|exists:schools,id',
+            'sort'          => 'required|integer',
+            'percentage'    => 'required|integer|min:1|max:100',
         ]);
 
         try {
@@ -80,9 +86,12 @@ class StageController extends Controller
                 'protocol_id'   => $request['protocol'],
                 'cycle_id'      => $request['cycle'],
                 'school_id'     => $request['school'],
+                'sort'          => $request['sort'],
+                'percentage'    => $request['percentage'],
             ]);
 
             return redirect()->route('stages.index')->with('success', 'Etapa Evaluativa actualizada exitosamente.');
+
         } catch (\Exception $e) {
             return redirect()->route('stages.edit', ['stage' => $stage])->with('error', 'La Etapa Evaluativa ya se encuentra registrada, revisar.');
         }

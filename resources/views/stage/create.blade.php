@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.Dashboard')
+    @lang('translation.Stages')
 @endsection
 
 @section('content')
@@ -37,6 +37,7 @@
                 <label for="name" class="form-label">Nombre de Etapa Evaluativa</label>
                 <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
             </div>
+
             <div class="mb-3">
                 <label for="cycle" class="form-label">Ciclo</label>
                 <select class="form-control" id="cycle" name="cycle">
@@ -46,6 +47,7 @@
                     @endforeach
                 </select>
             </div>
+
             <div class="mb-3">
                 <label for="protocol" class="form-label">Protocolo</label>
                 <select class="form-control" id="protocol" name="protocol">
@@ -55,6 +57,7 @@
                     @endforeach
                 </select>
             </div>
+
             <div class="mb-3">
                 <label for="school" class="form-label">Escuela</label>
                 <select class="form-control" id="school" name="school">
@@ -64,6 +67,17 @@
                     @endforeach
                 </select>
             </div>
+
+            <div class="mb-3">
+                <label for="sort" class="form-label">Orden</label>
+                <input type="number" class="form-control" id="sort" name="sort" value="{{ old('sort') }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="percentage" class="form-label">Porcentaje</label>
+                <input type="number" class="form-control" id="percentage" name="percentage" value="{{ old('percentage') }}" required>
+            </div>
+
             <button type="submit" class="btn btn-primary">Guardar</button>
         </form>
     </div>

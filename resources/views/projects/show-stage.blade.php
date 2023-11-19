@@ -45,11 +45,11 @@
                 <div class="card text-black  o-hidden h-100">
                     <div class="card-body">
                         <div class="card-body-icon">
-                            <i class="fas fa-file-alt"></i>
+                            <i class="far fa-list-alt"></i>
                         </div>
                         <div class="mr-5">Cargar notas</div>
                     </div>
-                    @if ($evaluationStages->status == 0)
+                    @if ($evaluationStages->status == 2)
                         <a class="card-footer text-black clearfix small z-1"
                             href="{{ route('grades.create',[$project->id, $stage->id]) }}">
                             <span class="float-left">Realizar</span>

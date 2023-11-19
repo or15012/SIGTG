@@ -11,7 +11,12 @@ class Stage extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        "name","protocol_id","cycle_id","school_id",
+        'name',
+        'protocol_id',
+        'cycle_id',
+        'school_id',
+        'sort',
+        'percentage',
     ];
 
     // Relación con el modelo protocolo

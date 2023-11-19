@@ -45,8 +45,8 @@
                 <select class="form-control" name="cycle" id="cycle">
                     @foreach($cycles as $cycle)
                         @if($stage->cycle_id==$cycle->id)
-                        <option value="{{$cycle->id}}" selected> 
-                            {{$cycle->number}}-{{$cycle->year}} --actual--
+                        <option value="{{$cycle->id}}" selected>
+                            {{$cycle->number}}-{{$cycle->year}}
                         </option>
                         @else
                         <option value="{{$cycle->id}}">
@@ -62,8 +62,8 @@
                 <select class="form-control" name="protocol" id="protocol">
                     @foreach($protocols as $protocol)
                         @if($stage->protocol_id==$protocol->id)
-                        <option value="{{$protocol->id}}" selected> 
-                            {{$protocol->name}} --actual--
+                        <option value="{{$protocol->id}}" selected>
+                            {{$protocol->name}}
                         </option>
                         @else
                         <option value="{{$protocol->id}}">
@@ -79,8 +79,8 @@
                 <select class="form-control" name="school" id="school">
                     @foreach($schools as $school)
                         @if($stage->school_id==$school->id)
-                        <option value="{{$school->id}}" selected> 
-                            {{$school->name}} --actual--
+                        <option value="{{$school->id}}" selected>
+                            {{$school->name}}
                         </option>
                         @else
                         <option value="{{$school->id}}">
@@ -89,6 +89,18 @@
                         @endif
                     @endforeach
                 </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="sort" class="form-label">Orden</label>
+                <input type="text" class="form-control" id="sort" name="sort"
+                    value="{{ old('sort', $stage->sort) }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="percentage" class="form-label">Porcentaje</label>
+                <input type="text" class="form-control" id="percentage" name="percentage"
+                    value="{{ old('percentage', $stage->percentage) }}" required>
             </div>
 
             <button type="submit" class="btn btn-primary">Actualizar</button>
