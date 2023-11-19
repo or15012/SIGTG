@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('stages', function (Blueprint $table) {
-            $table->integer('percentage')->default(0);
+            $table->integer('sort')->default(0);
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('stages', function (Blueprint $table) {
-            $table->dropColumn('percentage');
+            $table->dropColumn('sort');
         });
     }
 };
