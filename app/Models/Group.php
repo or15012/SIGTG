@@ -49,4 +49,9 @@ class Group extends Model
     {
         return $this->hasMany(Project::class, 'group_id');
     }
+
+    public function profiles()
+    {
+        return $this->hasMany(Profile::class, 'group_id');
+    }
 }

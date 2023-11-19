@@ -167,7 +167,7 @@ class ProfileController extends Controller
 
             // Envío de correo electrónico de notificación
             try {
-                $user = Auth::user(); 
+                $user = Auth::user();
                 Mail::to($user->email)->send(new SendMail('mail.preprofile-updated', 'Actualización de preperfil', ['preprofile' => $preprofile]));
             } catch (\Throwable $th) {
                 //return redirect()->route('profiles.preprofile.index')->with('error', 'Hubo un error al enviar el correo electrónico de notificación. Por favor, inténtelo de nuevo.');
@@ -259,10 +259,21 @@ class ProfileController extends Controller
 
         // Envío de correo electrónico a cada estudiante del grupo
         foreach ($students as $student) {
+            $mailData = [
+                'user'          => $student,
+                'preprofile'    => $preprofile,
+            ];
             try {
-                Mail::to($student->email)->send(new SendMail('mail.preprofile-updated', 'Notificación de modificación de preperfil', ['preprofile' => $preprofile]));
+                Mail::to($student->email)->send(
+                    new SendMail(
+                        'mail.preprofile-updated',
+                        'Notificación de modificación de preperfil',
+                        $mailData
+                    )
+                );
             } catch (\Throwable $th) {
                 // Working..
+                dd($th);
             }
         }
 

@@ -17,7 +17,7 @@
 
             <div class="d-flex justify-content-end align-items-center">
                 <a class="btn btn-secondary"
-                    style="margin-right: 15px; href="{{ route('document.authorization.letter', $id) }}><i
+                    style="margin-right:15px;" href="{{ route('document.authorization.letter', $id) }}"><i
                         class="fa fa-file"></i>&nbsp;&nbsp;Carta de autorización</a>
 
                 @if ($group[0]->authorization_letter)

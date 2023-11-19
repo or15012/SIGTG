@@ -30,4 +30,10 @@ class Profile extends Model
     {
         return $this->hasMany(Observation::class);
     }
+
+
+    public function group()
+    {
+        return $this->belongsTo(Group::class, 'group_id');
+    }
 }
