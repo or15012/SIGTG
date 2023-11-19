@@ -6,7 +6,12 @@
 
 @section('content')
     <div class="container">
-        <h1 class="mb-5">Detalles del Perfil</h1>
+        <div class="contenedor">
+            <a href="{{ route('profiles.coordinator.index') }}" class="btn btn-danger regresar-button"><i
+                    class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
+        <h1 class="mb-5">Detalles del perfil</h1>
 
 
         <div class="row">
@@ -23,7 +28,8 @@
             <div class="mb-3 col-12 col-md-6">
                 <label for="path" class="form-label">Archivo preperfil:</label>
                 <p>
-                    <a href="{{ route('profiles.preprofile.download', [$profile->id, 'path']) }}" target="_blank">Ver
+                    <a href="{{ route('profiles.preprofile.download', [$profile->id, 'path']) }}" target="_blank"
+                        class="btn btn-secondary archivo">Ver
                         archivo </a>
                 </p>
             </div>
@@ -32,7 +38,7 @@
                 <label for="path" class="form-label">Archivo resumen:</label>
                 <p>
                     <a href="{{ route('profiles.preprofile.download', [$profile->id, 'summary_path']) }}"
-                        target="_blank">Ver archivo</a>
+                        target="_blank" class="btn btn-secondary archivo">Ver archivo</a>
                 </p>
             </div>
         </div>
@@ -40,7 +46,8 @@
             <div class="mb-3 col-12 col-md-6">
                 <label for="path" class="form-label">Archivo visión:</label>
                 <p>
-                    <a href="{{ route('profiles.preprofile.download', [$profile->id, 'vision_path']) }}" target="_blank">Ver
+                    <a href="{{ route('profiles.preprofile.download', [$profile->id, 'vision_path']) }}" target="_blank"
+                        class="btn btn-secondary archivo">Ver
                         archivo</a>
                 </p>
             </div>
@@ -48,7 +55,7 @@
                 <label for="path" class="form-label">Archivo calculo de tamaño:</label>
                 <p>
                     <a href="{{ route('profiles.preprofile.download', [$profile->id, 'size_calculation_path']) }}"
-                        target="_blank">Ver archivo</a>
+                        target="_blank" class="btn btn-secondary archivo">Ver archivo</a>
                 </p>
             </div>
         </div>

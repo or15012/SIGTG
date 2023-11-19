@@ -12,7 +12,7 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Lista de Perfiles</h1>
+        <h1>Lista de perfiles</h1>
 
         @if (session('success'))
             <div class="alert alert-success">
@@ -59,8 +59,8 @@
                             @endswitch
                         </td>
                         <td>
-                            <a href="{{ route('profiles.show', $profile->id) }}" class="btn btn-primary">Ver</a>
-                            <a href="{{ route('profiles.edit', $profile->id) }}" class="btn btn-warning">Editar</a>
+                            <a href="{{ route('profiles.show', $profile->id) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
+                            <a href="{{ route('profiles.edit', $profile->id) }}" class="btn btn-primary"><i class="fas fa-pen"></i></a>
                         </td>
                     </tr>
 

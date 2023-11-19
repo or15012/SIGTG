@@ -13,7 +13,7 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Agregar observación</h1>
+        <h1>Registrar observación</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">

@@ -22,11 +22,14 @@
             @csrf
             @method('PUT')
             <div class="mb-3">
-                 <label for="year" class="form-label">Año</label>
+                <label for="year" class="form-label">Año</label>
                 <select class="form-select" id="year" name="year" required>
-                    <option value="{{ date('Y') - 1}}" {{ $cycle->year == date('Y') - 1 ? 'selected' : '' }}>{{ date('Y') - 1 }}</option>
-                    <option value="{{ date('Y') }}" {{ $cycle->year == date('Y') ? 'selected' : '' }}>{{ date('Y') }}</option>
-                    <option value="{{ date('Y') + 1}}"  {{ $cycle->year == date('Y') + 1 ? 'selected' : '' }}>{{ date('Y') + 1 }}</option>
+                    <option value="{{ date('Y') - 1 }}" {{ $cycle->year == date('Y') - 1 ? 'selected' : '' }}>
+                        {{ date('Y') - 1 }}</option>
+                    <option value="{{ date('Y') }}" {{ $cycle->year == date('Y') ? 'selected' : '' }}>
+                        {{ date('Y') }}</option>
+                    <option value="{{ date('Y') + 1 }}" {{ $cycle->year == date('Y') + 1 ? 'selected' : '' }}>
+                        {{ date('Y') + 1 }}</option>
                 </select>
             </div>
             <div class="mb-3">

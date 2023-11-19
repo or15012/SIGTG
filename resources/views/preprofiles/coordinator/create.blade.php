@@ -25,14 +25,19 @@
             </div>
         @endif
 
-        <form action="{{ route('profiles.preprofile.coordinator.observation.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('profiles.preprofile.coordinator.observation.store') }}" method="POST"
+            enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="profile_id" value="{{ $preprofile->id }}">
             <div class="mb-3">
                 <label for="description" class="form-label">Descripción</label>
                 <textarea class="form-control" id="description" name="description" required>{{ old('description') }}</textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <div class="contenedor">
+                <div class="contenedor">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
         </form>
     </div>
 @endsection

@@ -12,7 +12,7 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Lista de Preperfiles</h1>
+        <h1>Lista de preperfiles</h1>
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -35,37 +35,38 @@
                     <tr>
                         <td>{{ $preprofile->number }}</td>
                         <td>{{ $preprofile->name }} </td>
-                        <td  style="width: 40%">{{  Illuminate\Support\Str::limit($preprofile->description, 100, '...') }}</td>
+                        <td style="width: 40%">{{ Illuminate\Support\Str::limit($preprofile->description, 100, '...') }}</td>
                         <td class="text-nowrap">{{ $preprofile->created_at->format('d-m-Y') }}</td>
                         <td>
                             @switch($preprofile->status)
                                 @case(0)
-                                        Pre perfil presentado.
+                                    Pre perfil presentado.
                                 @break
 
                                 @case(1)
-                                        Pre perfil aprobado.
+                                    Pre perfil aprobado.
                                 @break
 
                                 @case(2)
-                                        Pre perfil observado.
+                                    Pre perfil observado.
                                 @break
 
                                 @case(3)
-                                        Pre perfil rechazado.
+                                    Pre perfil rechazado.
                                 @break
 
                                 @default
-
                             @endswitch
                         </td>
                         <td>
-                            <a href="{{ route('profiles.preprofile.coordinator.show', $preprofile->id) }}" class="btn btn-primary m-1">Ver</a>
-                            <a href="{{ route('profiles.preprofile.coordinator.observation.list', $preprofile->id) }}" class="btn btn-primary m-1">Observaciones</a>
-                            <a href="{{ route('profiles.preprofile.coordinator.observation.create', $preprofile->id) }}" class="btn btn-primary m-1">Generar observación</a>
-                         </td>
+                            <a href="{{ route('profiles.preprofile.coordinator.show', $preprofile->id) }}"
+                                class="btn btn-primary m-1"><i class="fas fa-eye"></i></a>
+                            <a href="{{ route('profiles.preprofile.coordinator.observation.list', $preprofile->id) }}"
+                                class="btn btn-primary m-1">Observaciones</a>
+                            <a href="{{ route('profiles.preprofile.coordinator.observation.create', $preprofile->id) }}"
+                                class="btn btn-primary m-1">Generar observación</a>
+                        </td>
                     </tr>
-
                 @endforeach
             </tbody>
         </table>
@@ -73,5 +74,5 @@
 @endsection
 
 @section('script')
-     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+    <script src="{{ URL::asset('assets/js/app.js') }}"></script>
 @endsection

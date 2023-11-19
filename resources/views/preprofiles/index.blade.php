@@ -13,7 +13,7 @@
     @endcomponent
     <div class="container">
         <h1>Lista de preperfiles</h1>
-        <a href="{{ route('profiles.preprofile.create') }}" class="btn btn-primary mb-3">Agregar Preprefil</a>
+        <a href="{{ route('profiles.preprofile.create') }}" class="btn btn-primary mb-3">Nuevo preprefil</a>
 
 
         @if (session('success'))
@@ -63,12 +63,15 @@
                             @endswitch
                         </td>
                         <td>
-                            <a href="{{ route('profiles.preprofile.show', $preprofile->id) }}" class="btn btn-primary">Ver</a>
-                            <a href="{{ route('profiles.preprofile.edit', $preprofile->id) }}" class="btn btn-warning">Editar</a>
+                            <a href="{{ route('profiles.preprofile.show', $preprofile->id) }}" class="btn btn-primary"><i
+                                class="fas fa-eye"></i></a>
+                            <a href="{{ route('profiles.preprofile.edit', $preprofile->id) }}" class="btn btn-primary"><i
+                                class="fas fa-pen"></i></a>
                             <form action="{{ route('profiles.preprofile.destroy', $preprofile->id) }}" method="POST" style="display: inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                                <button type="submit" class="btn btn-danger buttonDelete"><i
+                                    class="fas fa-trash-alt"></i></button>
                             </form>
                         </td>
                     </tr>
