@@ -201,7 +201,7 @@ Route::group(['prefix' => 'evaluations_documents', 'as' => 'evaluations_document
     Route::get('/{evaluation_document}/edit', [EvaluationDocumentController::class, 'edit'])->name('edit');
     Route::put('/{evaluation_document}', [EvaluationDocumentController::class, 'update'])->name('update');
     Route::delete('/{evaluation_document}', [EvaluationDocumentController::class, 'destroy'])->name('destroy');
-    Route::get('/download/{evaluation_document}/{file}',[EvaluationDocumentController::class, 'evaluationsDownload'])->name('download');
+    Route::get('/download/{evaluation_document}/{file}', [EvaluationDocumentController::class, 'evaluationsDownload'])->name('download');
 });
 
 //Grupo para las rutas de notas.
@@ -215,9 +215,15 @@ Route::group(['prefix' => 'projects', 'as' => 'projects.'], function () {
     Route::get('/', [ProjectController::class, 'index'])->name('index');
     Route::get('/show-stage/{project}/{stage}', [ProjectController::class, 'showStage'])->name('show.stage');
     Route::put('/submit-stage/{evaluation_stage}', [ProjectController::class, 'submitStage'])->name('submit.stage');
+    Route::get('/finish/{project}', [ProjectController::class, 'finish'])->name('finish');
+    Route::get('/download/{project}/{file}', [ProjectController::class, 'download'])->name('download');
+    Route::get('/final-volume/{project}', [ProjectController::class, 'finalVolume'])->name('final.volume');
+    Route::post('/final-volume-store/{project}', [ProjectController::class, 'finalVolumeStore'])->name('final.volume.store');
+
     Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
         Route::get('/', [ProjectController::class, 'coordinatorIndex'])->name('index');
     });
+
 
     // rutas para adjuntar acta de aprobación
     Route::get('/modal-approvement-report', [ProjectController::class, 'modalApprovementReport'])->name('modal.approvement.report');

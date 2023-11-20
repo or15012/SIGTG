@@ -143,7 +143,7 @@
                 <li>
                     <a href="{{ route('consultings.index') }}">
                         <i class="bx bx-file icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-consultings">@lang('Consultings')</span>
+                        <span class="menu-item" data-key="t-consultings">@lang('translation.Consultings')</span>
                     </a>
                 </li>
 

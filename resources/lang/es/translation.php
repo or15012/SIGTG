@@ -1,5 +1,5 @@
 <?php
-   return [
+return [
     "SIGTG - FIA" => "SIGTG - FIA",
     "Dashboard" => "Tablero de mandos",
     "Apps" => "Aplicaciones",
@@ -152,8 +152,23 @@
     "User_Profile" => "Perfil del usuario",
     "Google_Maps" => "Mapas de Google",
     "Vector_Maps" => "Vector Maps",
-    "UserList"  => "Lista de usuarios",
-    "Group" => "Grupos"
+    "UserList"          => "Lista de usuarios",
+    "Group"             => "Grupo",
+    "Groups"            => "Grupos",
+    "Schools"           => "Escuelas",
+    "Protocols"         => "Protocolos",
+    "Cycles"            => "Ciclos",
+    "PreProfile"        => "Pre perfiles",
+    "Profiles"          => "Perfiles",
+    "ShowPreperfil"     => "Mostrar pre perfil",
+    "PreProfileAdviser" => "Pre prefil (coordinador)",
+    "ProfilesAdviser"   => "Perfil (coordinaror)",
+    "MyGroup"           => "Mi grupo",
+    "Users"             => "Usuarios",
+    "Stages"            => "Etapas (coordinador)",
+    "Projects"          => "Proyectos",
+    "ProjectsAdviser"   => "Proyectos (coordinador)",
+    "ShowPerfil"        => "Mostrar Perfil",
+    "Consultings"       => "Asesorias",
+    "EvaluationsDocuments"   => "Documentos de evaluación"
 ];
-
-?>

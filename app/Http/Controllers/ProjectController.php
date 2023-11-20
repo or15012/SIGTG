@@ -142,27 +142,69 @@ class ProjectController extends Controller
     }
 
 
-    public function modalApprovementReport(Request $request){
-        return view('projects.modal.attach_approvement_report', ['project_id'=>$request->project_id]);
+    public function modalApprovementReport(Request $request)
+    {
+        return view('projects.modal.attach_approvement_report', ['project_id' => $request->project_id]);
     }
 
-    public function storeApprovementReport(Request $request){
+    public function storeApprovementReport(Request $request)
+    {
         try {
             DB::beginTransaction();
             $project = Project::find($request->project_id);
             if ($request->hasFile('approvement_report')) {
-            if(is_file(storage_path('app/' . $project->approvement_report)))
-            {
-                Storage::delete($project->approvement_report);
+                if (is_file(storage_path('app/' . $project->approvement_report))) {
+                    Storage::delete($project->approvement_report);
+                }
+                $project->approvement_report = $request->file('approvement_report')->storeAs('projects', $project->id . '-' . $request->file('approvement_report')->getClientOriginalName());
+                $project->save();
+                DB::commit();
+                return redirect()->action([ProjectController::class, 'index'])->with('success', 'Acta de aprobación subida exitosamente.');
             }
-            $project->approvement_report = $request->file('approvement_report')->storeAs('projects', $project->id.'-'.$request->file('approvement_report')->getClientOriginalName());
-            $project->save();
-            DB::commit();
-            return redirect()->action([ProjectController::class, 'index'])->with('success', 'Acta de aprobación subida exitosamente.');
-        }
         } catch (\Throwable $th) {
             DB::rollBack();
             return redirect()->action([ProjectController::class, 'index'])->with('error', 'Algo salió mal. Intente nuevamente.');
         }
+    }
+
+    public function finish(Project $project)
+    {
+        return view('projects.show-finish', [
+            "project"               => $project
+        ]);
+    }
+
+    public function finalVolume(Project $project)
+    {
+        return view('projects.final-volume', [
+            "project"               => $project
+        ]);
+    }
+
+    public function finalVolumeStore(Request $request, Project $project)
+    {
+        $validatedData = $request->validate([
+            'summary' => 'required|string|max:255',
+            'path_final_volume' => 'required|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
+        ]);
+
+        $project->summary           = $request->summary;
+
+        if ($request->hasFile('path_final_volume')) {
+            $path_final_volume = $request->file('path_final_volume')->store('path_final_volume');
+            $project->path_final_volume = $path_final_volume;
+        }
+        $project->update();
+
+        return view('projects.final-volume', [
+            "project"               => $project
+        ]);
+    }
+
+    public function download(Project $project, $file)
+    {
+
+        $filePath = storage_path('app/' . $project->$file);
+        return response()->download($filePath);
     }
 }

@@ -26,15 +26,17 @@
                 <a class="btn btn-secondary" href="{{ route('document.approvement.report', $project->id) }}"><i
                         class="fa fa-file"></i>&nbsp;&nbsp;Acta de aprobación</a>
 
-                <a class="btn btn-info ajax-modal" style="margin-left: 5px" data-title="Acta de aprobación de proyecto" data-bs-toggle="tooltip" data-bs-title="Subir Acta de aprobación"
-                        href="{{route('projects.modal.approvement.report', ['project_id'=>$project->id])}}"><i
-                            class="fa fa-upload"></i></a>
+                <a class="btn btn-info ajax-modal" style="margin-left: 5px" data-title="Acta de aprobación de proyecto"
+                    data-bs-toggle="tooltip" data-bs-title="Subir Acta de aprobación"
+                    href="{{ route('projects.modal.approvement.report', ['project_id' => $project->id]) }}"><i
+                        class="fa fa-upload"></i></a>
                 @if ($project->approvement_report)
-                    <a class="btn btn-primary" style="margin-left: 5px" data-bs-toggle="tooltip" data-bs-title="Descargar Acta de aprobación"
+                    <a class="btn btn-primary" style="margin-left: 5px" data-bs-toggle="tooltip"
+                        data-bs-title="Descargar Acta de aprobación"
                         href="{{ route('download', ['file' => $project->approvement_report]) }}"><i
                             class="fa fa-download"></i></a>
                 @endif
-                @if($today >= $date_end_mod && $today <= $date_end)
+                @if ($today >= $date_end_mod && $today <= $date_end)
                     <a href="{{ route('extensions.index') }}" style="margin-left: 5px" class="btn btn-success float-end">
                         <i class="fa fa-plus"></i>&nbsp; Solicitar prórroga
                     </a>
@@ -132,8 +134,8 @@
                                 <div class="card-body-icon">
                                     <i class="fas fa-graduation-cap"></i>
                                 </div>
-                                <div class="mr-5 text-black">{{ $stage->name }}</div>
-                                <div class="mr-5 text-black">{{ $stage->percentage }}%</div>
+                                <div class="mr-5 w-50 text-black">{{ $stage->name }}</div>
+                                <div class="mr-5 w-50 text-black">{{ $stage->percentage }}%</div>
                             </div>
                             <a class="card-footer text-black clearfix small z-1"
                                 href="{{ route('projects.show.stage', [$project->id, $stage->id]) }}">
@@ -149,8 +151,8 @@
                         <div class="col-xl-3 col-sm-6 mb-3">
                             <div class="card text-black o-hidden h-100 bg-primary">
                                 <div class="card-body">
-                                    <div class="mr-5 text-white">{{ $stage->name }}</div>
-                                    <div class="mr-5 text-white">{{ $stage->percentage }}%</div>
+                                    <div class="mr-5 w-50 text-white">{{ $stage->name }}</div>
+                                    <div class="mr-5 w-50 text-white">{{ $stage->percentage }}%</div>
                                     <div class="card-body-icon">
                                         <i class="fas fa-graduation-cap"></i>
                                     </div>
@@ -172,14 +174,14 @@
                         <div class="col-xl-3 col-sm-6 mb-3">
                             <div class="card text-black o-hidden h-100">
                                 <div class="card-body">
-                                    <div class="mr-5 text-black">{{ $stage->name }}</div>
-                                    <div class="mr-5 text-black">{{ $stage->percentage }}%</div>
+                                    <div class="mr-5 w-50 text-black">{{ $stage->name }}</div>
+                                    <div class="mr-5 w-50 text-black">{{ $stage->percentage }}%</div>
                                     <div class="card-body-icon">
                                         <i class="fas fa-graduation-cap"></i>
                                     </div>
                                 </div>
                                 <a class="card-footer text-black clearfix small z-1"
-                                    href="{{ route('projects.show.stage', [$project->id, $stage->id]) }}">
+                                    href="{{ route('projects.finish', [$project->id]) }}">
                                     <span class="float-left">Ver detalles</span>
                                     <span class="float-right">
                                         <i class="fa fa-angle-right"></i>
@@ -195,8 +197,27 @@
                 </h3>
             @endforelse
 
+            @if ($stages->count() === $evaluationStages->count())
+                <div class="col-xl-3 col-sm-6 mb-3 red-student">
+                    <div class="card text-black o-hidden h-100 red-student">
+                        <div class="card-body">
+                            <div class="mr-5 w-50 text-black">Cierre de trabajo de grado</div>
+                            <div class="mr-5 w-50 text-black"></div>
+                            <div class="card-body-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                        </div>
+                        <a class="card-footer text-black clearfix small z-1 red-student"
+                            href="{{ route('projects.finish', [$project->id]) }}">
+                            <span class="float-left">Ver detalles</span>
+                            <span class="float-right">
+                                <i class="fa fa-angle-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            @endif
         </div>
-
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header bg-transparent border-bottom text-uppercase">
@@ -230,7 +251,8 @@
                                                     return $evaluationStagesNotes->user_id === $user->id && $evaluationStagesNotes->id === $item->id;
                                                 });
                                             @endphp
-                                            <label class="note" data-percentage="{{$item->percentage}}">{{ $existingGrade ? $existingGrade->note : 0 }}
+                                            <label class="note"
+                                                data-percentage="{{ $item->percentage }}">{{ $existingGrade ? $existingGrade->note : 0 }}
                                             </label>
                                         </td>
                                     @endforeach
