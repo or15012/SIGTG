@@ -241,7 +241,7 @@ Route::group(['prefix' => 'extensions', 'as' => 'extensions.'], function () {
 
 // Documentos
 Route::group(['prefix' => 'document', 'as' => 'document.'], function () {
-    Route::get('/authorization/letter/{group}', [DocumentController::class, 'authorization_letter'])->name('authorization.letter');
+    Route::get('/authorization/letter/{group}', [DocumentController::class, 'authorizationLetter'])->name('authorization.letter');
     Route::get('/approvement/report/{group}', [DocumentController::class, 'approvement_report'])->name('approvement.report');
     // Route::get('/create', [ExtensionController::class, 'create'])->name('create');
     // Route::post('/', [ExtensionController::class,  'store'])->name('store');

@@ -17,7 +17,7 @@ class DocumentController extends Controller
         $this->middleware('auth');
     }
 
-    public function authorization_letter($id)
+    public function authorizationLetter($id)
     {
         $grupo = Group::find($id);
         $phpWord = new \PhpOffice\PhpWord\PhpWord();
@@ -30,14 +30,14 @@ class DocumentController extends Controller
         $mes = date('n');
         $nuevoMes =  $meses[$mes-1];
         $anio = date('Y');
-       
+
         $section->addText("Ref: ".($school->acronym??'')."-".str_pad($grupo->number, 3, '0', STR_PAD_LEFT).'-'.$grupo->year,array('name' => 'New York', 'size' => 10),array('align'=>'right'));
         $section->addText(" ");
         $section->addText(" ");
 
         $section->addText("Ciudad Universitaria,".$dia." de ".$nuevoMes." de ".$anio.".",array('name' => 'New York', 'size' => 10),array('align'=>'left'));
         $section->addText(" ");
-      
+
 
         $section->addText("Señores",array('name' => 'New York', 'size' => 10),array('align'=>'left'));
         $section->addText("MIEMBROS DE LA JUNTA DIRECTIVA",array('name' => 'New York', 'size' => 10,'bold' => true),array('align'=>'left'));
@@ -46,11 +46,11 @@ class DocumentController extends Controller
         $section->addText(" ");
         $section->addText("Respetables Señores",array('name' => 'New York', 'size' => 10),array('align'=>'left'));
         $section->addText(" ");
-    
+
         $section->addText("Reciban un saludo afectuoso, deseándoles  éxitos en el desempeño de sus labores. ",array('name' => 'New York', 'size' => 10),array('align'=>'left'));
-        
-       
-        $section->addText(" "); 
+
+
+        $section->addText(" ");
 
         $cuerpo = "Para dar cumplimiento al artículo 193 de Reglamento de la Gestión Académico – Administrativa de la UES, solicito la autorización de los siguientes estudiantes como parte del grupo {$grupo->number} para Trabajos de Graduación de la ".($school->name??'').", y que han sido inscritos en el Ciclo {$grupo->cycle->number}-{$grupo->cycle->year}. Los estudiantes han sido conformados de esa forma, debido a la complejidad de los proyectos que van a desarrollar. Los estudiantes se detallan en la lista anexa.";
         $section->addText($cuerpo,array('name' => 'New York', 'size' => 10),array('align'=>'left'));
@@ -61,11 +61,11 @@ class DocumentController extends Controller
         $section->addText(" ");
 
         $section->addText('"HACIA LA LIBERTAD POR LA CULTURA"',array('name' => 'New York', 'size' => 10, 'bold' => true),array('align'=>'center'));
-    
+
         $section->addText(" ");
         $section->addText(" ");
         $section->addText(" ");
-     
+
         $section->addText($school->director??'', array('name' => 'New York', 'size' => 10, 'bold' => false),array('align'=>'center'));
         $section->addText('Director '.$school->name??'',array('name' => 'New York', 'size' => 10, 'bold' => false),array('align'=>'center'));
 
@@ -82,7 +82,7 @@ class DocumentController extends Controller
         foreach ($users as $user) {
             $section->addText('• '.$user->first_name.' '.$user->middle_name.' '.$user->last_name.' '.$user->second_last_name.' '.$user->carnet.' '.($user->pivot->is_leader==1?'(Líder)':'(Miembro)'), array('name' => 'New York', 'size' => 10),array('align'=>'left'));
         }
-        
+
         // $section->addText(" ");
         // $section->addText('Lista de grupos de cuatro y cinco estudiantes',array('name' => 'New York', 'size' => 10, 'bold' => false),array('align'=>'center'));
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
@@ -98,7 +98,7 @@ class DocumentController extends Controller
 
     public function approvement_report(Request $request){
     	$phpWord = new \PhpOffice\PhpWord\PhpWord();
-      
+
         $grupo= Group::find(1);
         // $estudiantesGrupo = $grupo->getDetalleGrupo(1);
 
@@ -126,10 +126,10 @@ class DocumentController extends Controller
         $tituloDatosGenerales = "DATOS GENERALES";
         $section->addText($tituloDatosGenerales,array('name' => 'Times New Roman', 'size' => 10, 'bold' => true),array('align'=>'center'));
 
-       $tableStyle = array('borderSize' => 6, 'borderColor' => '999999'); 
+       $tableStyle = array('borderSize' => 6, 'borderColor' => '999999');
        $phpWord->addTableStyle('Datos Generales', $tableStyle);
 
-      
+
        $table = $section->addTable('Datos Generales');
        $table->addRow();
        $cell = $table->addCell(10000);
@@ -163,7 +163,7 @@ class DocumentController extends Controller
        $section->addText(" ");
        $section->addText(" Habiendo sido subsanadas las observaciones se otorgar la nota de aprobación del trabajo de graduación de:",array('name' => 'Times New Roman', 'size' => 12, 'bold' => false),array('align'=>'left'));
 
-      $section->addText(" "); 
+      $section->addText(" ");
       $section->addText(" ");
       $table = $section->addTable('Detalle Grupo');
       $table->addRow();
@@ -195,7 +195,7 @@ class DocumentController extends Controller
       $cell->addText("PP10005 - FRANCISCO WILFREDO POLANCO PORTILLO",array('name' => 'Arial', 'size' => 11),array('align'=>'left'));
       $cell = $table->addCell(3000);
       $cell->addText("0.0",array('name' => 'Arial', 'size' => 11),array('align'=>'right'));
-      $section->addText(" "); 
+      $section->addText(" ");
       $section->addText(" ");
       $section->addText("Ciudad Universitaria, el día ".$dia." del mes de ".$nuevoMes." de ".$anio.".",array('name' => 'Times New Roman', 'size' => 12));
       $section->addText(" ");
