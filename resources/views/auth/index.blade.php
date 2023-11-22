@@ -44,9 +44,9 @@
     {!! implode('', $errors->all('<div class="alert alert-danger">:message</div>')) !!}
 @endif
 
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered table-striped table-hover table-border-custom table-rounded">
             <thead>
-                <tr class="table-danger">
+                <tr class="red-student">
                     <th>Correo electrónico</th>
                     <th>Nombres</th>
                     <th>Apellidos</th>
