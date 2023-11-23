@@ -14,12 +14,15 @@ use Exception;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use Illuminate\Support\Facades\Log;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class RegisterController extends Controller
 {
@@ -48,14 +51,22 @@ class RegisterController extends Controller
      *
      * @return void
      */
+    const PERMISSIONS = [
+        'index'    => 'user.index',
+    ];
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('permission:' . self::PERMISSIONS['index'])->only(['index','showRegistrationForm']);
     }
 
 
     public function index()
     {
+        // ver que roles tiene el usuario
+        //  dd( Auth::user()->roles);
+        //  dd( Auth::user()->roles);
         $users      = User::all(); // Obtén todos los registros de usuarios
         $userTypes  = User::TYPES;
         return view('auth.index', [
