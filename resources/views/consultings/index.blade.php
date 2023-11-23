@@ -13,9 +13,9 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Lista de Asesorias</h1>
+        <h1>Lista de asesorias</h1>
         @if ($userType === 1)
-            <a href="{{ route('consultings.create') }}" class="btn btn-primary mb-3">Agregar asesoria</a>
+            <a href="{{ route('consultings.create') }}" class="btn btn-primary mb-3">Registrar asesoria</a>
         @endif
 
         @if (session('success'))

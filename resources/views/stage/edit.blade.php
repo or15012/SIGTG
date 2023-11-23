@@ -13,7 +13,11 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Editar Etapa Evaluativa</h1>
+        <div class="contenedor">
+            <a href="{{ route('stages.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
+        <h1>Editar etapa evaluativa</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -25,7 +29,7 @@
             </div>
         @endif
 
-        @if(session('error'))
+        @if (session('error'))
             <div class="alert alert-danger">
                 {{ session('error') }}
             </div>
@@ -35,7 +39,7 @@
             @csrf
             @method('PUT')
             <div class="mb-3">
-                <label for="name" class="form-label">Nombre de la Etapa Evaluativa</label>
+                <label for="name" class="form-label">Nombre de la etapa evaluativa</label>
                 <input type="text" class="form-control" id="name" name="name"
                     value="{{ old('name', $stage->name) }}" required>
             </div>
@@ -43,15 +47,15 @@
             <div class="mb-3">
                 <label for="cycle" class="form-label">Ciclo</label>
                 <select class="form-control" name="cycle" id="cycle">
-                    @foreach($cycles as $cycle)
-                        @if($stage->cycle_id==$cycle->id)
-                        <option value="{{$cycle->id}}" selected>
-                            {{$cycle->number}}-{{$cycle->year}}
-                        </option>
+                    @foreach ($cycles as $cycle)
+                        @if ($stage->cycle_id == $cycle->id)
+                            <option value="{{ $cycle->id }}" selected>
+                                {{ $cycle->number }}-{{ $cycle->year }}
+                            </option>
                         @else
-                        <option value="{{$cycle->id}}">
-                            {{$cycle->number}}-{{$cycle->year}}
-                        </option>
+                            <option value="{{ $cycle->id }}">
+                                {{ $cycle->number }}-{{ $cycle->year }}
+                            </option>
                         @endif
                     @endforeach
                 </select>
@@ -60,15 +64,15 @@
             <div class="mb-3">
                 <label for="protocol" class="form-label">Protocolo</label>
                 <select class="form-control" name="protocol" id="protocol">
-                    @foreach($protocols as $protocol)
-                        @if($stage->protocol_id==$protocol->id)
-                        <option value="{{$protocol->id}}" selected>
-                            {{$protocol->name}}
-                        </option>
+                    @foreach ($protocols as $protocol)
+                        @if ($stage->protocol_id == $protocol->id)
+                            <option value="{{ $protocol->id }}" selected>
+                                {{ $protocol->name }}
+                            </option>
                         @else
-                        <option value="{{$protocol->id}}">
-                            {{$protocol->name}}
-                        </option>
+                            <option value="{{ $protocol->id }}">
+                                {{ $protocol->name }}
+                            </option>
                         @endif
                     @endforeach
                 </select>
@@ -77,15 +81,15 @@
             <div class="mb-3">
                 <label for="school" class="form-label">Escuela</label>
                 <select class="form-control" name="school" id="school">
-                    @foreach($schools as $school)
-                        @if($stage->school_id==$school->id)
-                        <option value="{{$school->id}}" selected>
-                            {{$school->name}}
-                        </option>
+                    @foreach ($schools as $school)
+                        @if ($stage->school_id == $school->id)
+                            <option value="{{ $school->id }}" selected>
+                                {{ $school->name }}
+                            </option>
                         @else
-                        <option value="{{$school->id}}">
-                            {{$school->name}}
-                        </option>
+                            <option value="{{ $school->id }}">
+                                {{ $school->name }}
+                            </option>
                         @endif
                     @endforeach
                 </select>
@@ -103,7 +107,10 @@
                     value="{{ old('percentage', $stage->percentage) }}" required>
             </div>
 
-            <button type="submit" class="btn btn-primary">Actualizar</button>
+            <div class="contenedor">
+                <a href="{{ route('stages.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Actualizar</button>
+            </div>
         </form>
     </div>
 @endsection

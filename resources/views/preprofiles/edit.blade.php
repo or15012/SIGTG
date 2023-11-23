@@ -18,7 +18,7 @@
                     class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
-        <h1>Editar Preperfil</h1>
+        <h1>Editar pre perfil</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">

@@ -10,7 +10,7 @@
             <a href="{{ route('profiles.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
-        <h1 class="mb-5">Detalles del perfil</h1>
+        <h1 class="mb-5">Consultar perfil</h1>
         <h2>Propuesta prioridad # <b> {{ $profile->proposal_priority }}</b></h2>
         <div class="row">
             <div class="mb-3 col-12 col-md-6">

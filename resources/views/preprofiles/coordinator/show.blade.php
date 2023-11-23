@@ -11,7 +11,7 @@
                     class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
-        <h1 class="mb-5">Detalles del preperfil</h1>
+        <h1 class="mb-5">Consultar pre perfil</h1>
 
         <div class="row">
             <div class="mb-3 col-12 col-md-6 col-lg-6">

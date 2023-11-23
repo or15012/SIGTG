@@ -12,8 +12,14 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Observaciones Preperfil: {{ $preprofile->name }}</h1>
-        <a href="{{ route('profiles.preprofile.coordinator.observation.create', $preprofile->id) }}" class="btn btn-primary m-1">Generar observación</a>
+        <div class="contenedor">
+            <a href="{{ route('profiles.preprofile.coordinator.index') }}" class="btn btn-danger regresar-button"><i
+                    class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
+        <h1>Observaciones pre perfil: {{ $preprofile->name }}</h1>
+        <a href="{{ route('profiles.preprofile.coordinator.observation.create', $preprofile->id) }}"
+            class="btn btn-primary m-1">Generar observación</a>
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -30,11 +36,11 @@
             <tbody>
                 @foreach ($preprofile->observations as $observation)
                     <tr>
-                        <td  style="width: 40%">{{  Illuminate\Support\Str::limit($observation->description, 100, '...') }}</td>
+                        <td style="width: 40%">{{ Illuminate\Support\Str::limit($observation->description, 100, '...') }}
+                        </td>
                         <td>{{ $observation->created_at->format('d-m-Y') }}</td>
 
                     </tr>
-
                 @endforeach
             </tbody>
         </table>
@@ -42,5 +48,5 @@
 @endsection
 
 @section('script')
-     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+    <script src="{{ URL::asset('assets/js/app.js') }}"></script>
 @endsection

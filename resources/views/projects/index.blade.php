@@ -26,7 +26,7 @@
                 <a class="btn btn-secondary" href="{{ route('document.approvement.report', $project->id) }}"><i
                         class="fa fa-file"></i>&nbsp;&nbsp;Acta de aprobación</a>
 
-                <a class="btn btn-info ajax-modal" style="margin-left: 5px" data-title="Acta de aprobación de proyecto"
+                <a class="btn btn-primary ajax-modal" style="margin-left: 5px" data-title="Acta de aprobación de proyecto"
                     data-bs-toggle="tooltip" data-bs-title="Subir Acta de aprobación"
                     href="{{ route('projects.modal.approvement.report', ['project_id' => $project->id]) }}"><i
                         class="fa fa-upload"></i></a>
@@ -37,10 +37,18 @@
                             class="fa fa-download"></i></a>
                 @endif
                 @if ($today >= $date_end_mod && $today <= $date_end)
-                    <a href="{{ route('extensions.index') }}" style="margin-left: 5px" class="btn btn-success float-end">
+                    <a href="{{ route('extensions.index') }}" style="margin-left: 5px" class="btn btn-primary float-end">
                         <i class="fa fa-plus"></i>&nbsp; Solicitar prórroga
                     </a>
                 @endif
+
+                <a href="{{ route('consultings.index', $project->id) }}" style="margin-left: 5px"
+                    class="btn btn-primary float-end"><i class="bx bx-file icon nav-icon"></i>Solicitar asesoria</a>
+
+                <a href="{{ route('home') }}" style="margin-left: 5px" class="btn btn-danger regresar-button"><i
+                        class="fas fa-arrow-left"></i>
+                    Regresar</a>
+
             </div>
         </div>
 

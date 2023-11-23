@@ -13,7 +13,7 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Agregar Asesoria</h1>
+        <h1>Registrar asesoria</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -27,23 +27,31 @@
 
         <form action="{{ route('consultings.store') }}" method="POST">
             @csrf
-        @if($userType === 1) <!-- Tipo de usuario estudiante -->
-            <div class="mb-3">
-                <label for="topics" class="form-label">Tema</label>
-                <input type="text" class="form-control" id="topics" name="topics" value="{{ old('topics') }}" required>
-            </div>
-            <div class="mb-3">
-                <label for="date" class="form-label">Fecha</label>
-                <input type="date" class="form-control" id="date" name="date" value="{{ old('date') }}" required>
-            </div>
-        @elseif($userType === 2) <!-- Tipo de usuario docente -->
-            <div class="mb-3">
-                <label for="summary" class="form-label">Resumen</label>
-                <input type="text" class="form-control" id="summary" name="summary" value="{{ old('summary') }}" required>
-            </div>
-        @endif
+            @if ($userType === 1)
+                <!-- Tipo de usuario estudiante -->
+                <div class="mb-3">
+                    <label for="topics" class="form-label">Tema</label>
+                    <input type="text" class="form-control" id="topics" name="topics" value="{{ old('topics') }}"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label for="date" class="form-label">Fecha</label>
+                    <input type="date" class="form-control" id="date" name="date" value="{{ old('date') }}"
+                        required>
+                </div>
+            @elseif($userType === 2)
+                <!-- Tipo de usuario docente -->
+                <div class="mb-3">
+                    <label for="summary" class="form-label">Resumen</label>
+                    <input type="text" class="form-control" id="summary" name="summary" value="{{ old('summary') }}"
+                        required>
+                </div>
+            @endif
 
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <div class="contenedor">
+                <a href="{{ route('consultings.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
+                <button type="submit" class="btn btn-primary ">Guardar</button>
+                <div>
         </form>
     </div>
 @endsection
