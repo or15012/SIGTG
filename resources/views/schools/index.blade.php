@@ -24,7 +24,7 @@
 
         <table class="table table-bordered table-striped table-hover">
             <thead>
-                <tr class="table-danger">
+                <tr class="red-student">
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Acciones</th>

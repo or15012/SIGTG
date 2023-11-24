@@ -28,4 +28,9 @@ class Project extends Model
     {
         return $this->belongsTo(Group::class, 'group_id');
     }
+    
+    public function user_project_note()
+    {
+        return $this->belongsToMany(User::class, 'user_project_note', 'project_id', 'user_id')->withPivot('note');
+    }
 }
