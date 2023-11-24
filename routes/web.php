@@ -48,6 +48,8 @@ Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
     Route::get('/download-template', [RegisterController::class, 'downloadTemplate'])->name('download.template');
     Route::post('/import', [RegisterController::class, 'import'])->name('import');
     Route::get('testCorreo', [RegisterController::class, 'testCorreo'])->name('test.correo');
+    Route::get('/assign-roles/{user}', [RegisterController::class, 'assignRoles'])->name('assign.roles');
+    Route::post('/assign-roles-store/{user}', [RegisterController::class, 'assignRolesStore'])->name('assign.roles.store');
 });
 
 Route::group(['prefix' => 'students', 'as' => 'students.'], function () {

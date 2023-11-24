@@ -56,6 +56,7 @@
                     <th>Carnet</th>
                     <th>Escuela</th>
                     <th>Tipo</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -67,6 +68,9 @@
                         <td>{{ $user->carnet }}</td>
                         <td>{{ $user->school->name }}</td>
                         <td>{{ $userTypes[$user->type] }}</td>
+                        <td>
+                            <a href="{{ route('users.assign.roles', $user->id) }}" class="btn btn-primary"><i class="fas fa-pen"></i></a>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

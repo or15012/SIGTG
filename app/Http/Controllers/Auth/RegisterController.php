@@ -77,16 +77,21 @@ class RegisterController extends Controller
 
     public function showRegistrationForm()
     {
-        $schools    = School::all(); // Obtener la lista de escuelas
-        $userTypes  = User::TYPES;
-        $protocols  = Protocol::all();
-        $modalities  = Modality::all();
+        $schools        = School::all(); // Obtener la lista de escuelas
+        $userTypes      = User::TYPES;
+        $protocols      = Protocol::all();
+        $modalities     = Modality::all();
+        $roles          = Role::all();
+        $user           = Auth::user();
+        $userRoles      = $user->roles;
 
         return view('auth.register', [
-            'schools'   => $schools,
-            'userTypes' => $userTypes,
-            'protocols' => $protocols,
-            'modalities' => $modalities,
+            'schools'       => $schools,
+            'userTypes'     => $userTypes,
+            'protocols'     => $protocols,
+            'modalities'    => $modalities,
+            'roles'         => $roles,
+            'userRoles'     => $userRoles,
         ]);
     }
 
@@ -114,7 +119,8 @@ class RegisterController extends Controller
             'school'            => ['required', 'exists:schools,id'], // Asegúrate de que exista una escuela con ese ID
             'password'          => ['required', 'string', 'min:8', 'confirmed'],
             'type'              => ['required'],
-            'modality_id'              => ['required'],
+            'modality_id'       => ['required'],
+            'roles'             => ['required', 'array'],
         ]);
     }
 
@@ -124,7 +130,7 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\Models\User
      */
-    protected function create(array $data)
+    public function create(array $data)
     {
 
         $user = User::create([
@@ -137,7 +143,7 @@ class RegisterController extends Controller
             'school_id'         => $data['school'], // Asumiendo que el campo se llama 'school_id' en tu modelo User
             'type'              => $data['type'],
             'password'          => Hash::make($data['password']),
-            'modality_id'       => $data['modality_id']
+            'modality_id'       => $data['modality_id'],
         ]);
 
 
@@ -152,9 +158,18 @@ class RegisterController extends Controller
 
         $user->password = $data['password'];
 
-        Mail::to($user->email)->send(new SendMail('mail.user-created', 'Creación de usuario', ['user'=>$user]));
+        if (isset($data['roles']) && is_array($data['roles'])) {
+            $roles = Role::whereIn('id', $data['roles'])->get(); // Obtener los roles seleccionados
+            $user->assignRole($roles); // Asignar los roles al usuario recién creado
+        }
 
+        try {
+            Mail::to($user->email)->send(new SendMail('mail.user-created', 'Creación de usuario', ['user'=>$user]));
+        } catch (\Exception $th) {
+            //throw $th;
+        }
         return $user;
+        // return redirect()->route('users.index')->with('success', 'Usuario creado correctamente.');
     }
 
 
@@ -285,5 +300,29 @@ class RegisterController extends Controller
 
         return Mail::to('eriklprdrgz1370566@gmail.com')->send(new SendMail('mail.notification', 'Notificacion de grupo', ['title'=>'Notificacion de grupo | UES', 'body'=>'Notificacion de grupo | UES', 'body'=>'Le informamos que su grupo ha sido aceptado.']));
         // return view('mail.notification', ['Info'=>['title'=>'Notificacion de grupo | UES', 'body'=>'Le informamos que su grupo ha sido aceptado.']]);
+    }
+
+    public function assignRoles(User $user)
+    {
+
+        $userRoles      = $user->roles;
+        $roles          = Role::all();
+
+        return view('auth.assign-roles', [
+            'user'          => $user,
+            'roles'         => $roles,
+            'userRoles'     => $userRoles,
+        ]);
+    }
+
+
+    public function assignRolesStore(Request $request, User $user)
+    {
+        if (isset($request->roles) && is_array($request->roles)) {
+            $roles = Role::whereIn('id', $request->roles)->get(); // Obtener los roles seleccionados
+            $user->assignRole($roles); // Asignar los roles al usuario recién creado
+        }
+
+        return redirect()->route('users.index')->with('success', 'Roles asignados con éxito');
     }
 }
