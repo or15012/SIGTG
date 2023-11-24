@@ -17,7 +17,7 @@
                     class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
-        <h1>Observaciones Perfil: {{ $profile->name }}</h1>
+        <h1>Observaciones perfil: {{ $profile->name }}</h1>
         <a href="{{ route('profiles.coordinator.observation.create', $profile->id) }}" class="btn btn-primary m-1">Generar
             observación</a>
         @if (session('success'))

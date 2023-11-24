@@ -12,8 +12,8 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Lista de preperfiles</h1>
-        <a href="{{ route('profiles.preprofile.create') }}" class="btn btn-primary mb-3">Nuevo preprefil</a>
+        <h1>Lista de pre perfiles</h1>
+        <a href="{{ route('profiles.preprofile.create') }}" class="btn btn-primary mb-3">Nuevo pre prefil</a>
 
 
         @if (session('success'))

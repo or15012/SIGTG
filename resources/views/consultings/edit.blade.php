@@ -44,7 +44,10 @@
                     value="{{ old('date', $consulting->date) }}" required>
             </div>
             <input type="hidden" name="group_id" value="{{ $consulting->group_id }}">
+            <div class="contenedor">
+                <a href="{{ route('consultings.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
             <button type="submit" class="btn btn-primary">Actualizar</button>
+            <div>
         </form>
     </div>
 @endsection

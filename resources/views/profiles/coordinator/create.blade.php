@@ -13,6 +13,11 @@
         @endslot
     @endcomponent
     <div class="container">
+        <div class="contenedor">
+            <a href="{{ route('profiles.coordinator.observation.list', $profile->id) }}"
+                class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
         <h1>Registrar observación</h1>
 
         @if ($errors->any())
@@ -32,7 +37,11 @@
                 <label for="description" class="form-label">Descripción</label>
                 <textarea class="form-control" id="description" name="description" required>{{ old('description') }}</textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <div class="contenedor">
+                <a href="{{ route('profiles.coordinator.observation.list', $profile->id) }}"
+                    class="btn btn-danger regresar-button">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
         </form>
     </div>
 @endsection

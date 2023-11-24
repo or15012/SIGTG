@@ -11,6 +11,7 @@
         @endslot
     @endcomponent
     <div class="container">
+
         <h1>Conformar grupos</h1>
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -87,7 +88,7 @@
                     @empty
                         <div class="col-12 col-md-6 col-lg-6 ">
                             <div class="card mb-4">
-                                <div style="background-color: #F2DEDE;" class="card-header">{{ $user->carnet }} -
+                                <div class="card-header red-student">{{ $user->carnet }} -
                                     {{ $user->first_name }}
                                     {{ $user->middle_name }}
                                     {{ $user->last_name }} {{ $user->second_last_name }}</div>

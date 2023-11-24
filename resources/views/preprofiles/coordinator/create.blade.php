@@ -13,7 +13,12 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Agregar observación</h1>
+        <div class="contenedor">
+            <a href="{{ route('profiles.preprofile.coordinator.observation.list', $preprofile->id) }}"
+                class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
+        <h1>Registrar observación</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -33,11 +38,11 @@
                 <label for="description" class="form-label">Descripción</label>
                 <textarea class="form-control" id="description" name="description" required>{{ old('description') }}</textarea>
             </div>
-            <div class="contenedor">
                 <div class="contenedor">
-                <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a href="{{ route('profiles.preprofile.coordinator.observation.list', $preprofile->id) }}"
+                        class="btn btn-danger regresar-button">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
                 </div>
-            </div>
         </form>
     </div>
 @endsection

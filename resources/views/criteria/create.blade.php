@@ -13,7 +13,7 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Agregar Criterio de Evaluación</h1>
+        <h1>Registrar criterio de evaluación</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -32,7 +32,7 @@
         @endif
 
         <div class="m-4">
-            <p>Etapa Evaluativa: {{$stage->name}}
+            <p>Etapa evaluativa: {{$stage->name}}
                 <br>
                 Porcentaje utilizado: {{$sumatory}}%
                 <br>
@@ -45,12 +45,12 @@
             </div>
         </div>
 
-        
+
 
         <form action="{{ route('criterias.store') }}" method="POST">
             @csrf
             <div class="mb-3">
-                <label for="name" class="form-label">Nombre del Criterio de Evaluación</label>
+                <label for="name" class="form-label">Nombre del criterio de evaluación</label>
                 <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
             </div>
 
@@ -60,14 +60,14 @@
             </div>
 
             <input type="text" class="form-control" id="stage" name="stage" value="{{$stage->id}}" hidden>
-    
+
             <div class="mb-3">
-                <label for="stage" class="form-label">Etapa Evaluativa</label>
+                <label for="stage" class="form-label">Etapa evaluativa</label>
                 <select class="form-control" id="stage" name="stage" disabled>
-                    <option value="{{$stage->id}}"> {{$stage->name}}</option>      
+                    <option value="{{$stage->id}}"> {{$stage->name}}</option>
                 </select>
             </div>
-            
+
 
             <button type="submit" class="btn btn-primary">Guardar</button>
         </form>

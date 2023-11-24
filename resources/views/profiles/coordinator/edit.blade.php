@@ -9,7 +9,7 @@
             SIGTG - FIA
         @endslot
         @slot('title')
-            Editar Preperfil
+            Editar perfil
         @endslot
     @endcomponent
     <div class="container">

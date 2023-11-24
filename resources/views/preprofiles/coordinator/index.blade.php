@@ -12,7 +12,7 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Lista de preperfiles</h1>
+        <h1>Lista de pre perfiles</h1>
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}

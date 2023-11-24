@@ -13,7 +13,11 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Detalles de la asesoria</h1>
+        <div class="contenedor">
+            <a href="{{ route('consultings.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
+        <h1>Consultar asesoria</h1>
         <dl class="row">
             <dt class="col-sm-3">ID:</dt>
             <dd class="col-sm-9">{{ $consulting->id }}</dd>
@@ -27,7 +31,6 @@
             <dt class="col-sm-3">Resumen:</dt>
             <dd class="col-sm-9">{{ $consulting->summary }}</dd>
         </dl>
-        <a href="{{ route('consultings.index') }}" class="btn btn-primary">Volver a la Lista</a>
     </div>
 @endsection
 

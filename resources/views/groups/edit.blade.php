@@ -16,18 +16,18 @@
 
 
             <div class="d-flex justify-content-end align-items-center">
-                <a class="btn btn-secondary"
-                    style="margin-right:15px;" href="{{ route('document.authorization.letter', $id) }}"><i
-                        class="fa fa-file"></i>&nbsp;&nbsp;Carta de autorización</a>
+                <a class="btn btn-secondary" style="margin-right:15px;"
+                    href="{{ route('document.authorization.letter', $id) }}"><i class="fa fa-file"></i>&nbsp;&nbsp;Carta de
+                    autorización</a>
 
                 @if ($group[0]->authorization_letter)
-                    <a class="btn btn-info" style="margin-left: 5px"
+                    <a class=" btn btn-secondary" style="margin-left: 5px"
                         href="{{ route('download', ['file' => $group[0]->authorization_letter]) }}"><i
                             class="fa fa-file"></i>&nbsp;&nbsp;Carta adjunta</a>
                 @endif
 
                 <div class="contenedor">
-                    <a href="{{ route('groups.index') }}" class="btn btn-danger regresar-button"><i
+                    <a href="{{ route('groups.index') }}" class="btn btn-danger regresar-button" style="margin-left:15px"><i
                             class="fas fa-arrow-left"></i>
                         Regresar</a>
                 </div>
@@ -62,7 +62,7 @@
                                 {{ $user->carnet }} - {{ $user->first_name }} {{ $user->middle_name }}
                                 {{ $user->last_name }} {{ $user->second_last_name }}
                                 @if ($user->is_leader === 1)
-                                    <label style="background-color: #f2f2f2;" class="px-2 rounded">LIDER</label>
+                                    <label class="px-2 rounded gray-project">LIDER</label>
                                 @endif
                             </div>
                         </div>
