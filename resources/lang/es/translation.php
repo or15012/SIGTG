@@ -170,5 +170,6 @@ return [
     "ProjectsAdviser"   => "Proyectos (coordinador)",
     "ShowPerfil"        => "Mostrar Perfil",
     "Consultings"       => "Asesorias",
-    "EvaluationsDocuments"   => "Documentos de evaluación"
+    "EvaluationsDocuments"   => "Documentos de evaluación",
+    "Roles"                  => "Roles"
 ];

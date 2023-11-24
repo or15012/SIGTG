@@ -13,10 +13,20 @@ use Illuminate\Support\Facades\Mail;
 
 class ProfileController extends Controller
 {
-    //
+    const PERMISSIONS = [
+        'index.student'    => 'Preprofiles.students',
+        'index.adviser'    => 'Preprofiles.advisers',
+        'index.student.profil'    => 'Profiles.students',
+        'index.adviser.profil'    => 'Profiles.advisers',
+    ];
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('permission:' . self::PERMISSIONS['index.student'])->only(['preProfileIndex']);
+        $this->middleware('permission:' . self::PERMISSIONS['index.adviser'])->only(['preProfileCoordinatorIndex']);
+        $this->middleware('permission:' . self::PERMISSIONS['index.student.profil'])->only(['profileIndex']);
+        $this->middleware('permission:' . self::PERMISSIONS['index.adviser.profil'])->only(['coordinatorIndex']);
     }
 
     /**

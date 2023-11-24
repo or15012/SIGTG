@@ -30,7 +30,8 @@
         @endif
 
         <div class="">
-            Bienvenido {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+            Bienvenido
+             {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
         </div>
     </div>
 @endsection

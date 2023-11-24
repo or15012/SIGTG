@@ -52,13 +52,13 @@ class RegisterController extends Controller
      * @return void
      */
     const PERMISSIONS = [
-        'index'    => 'user.index',
+        'index'    => 'Users',
     ];
 
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('permission:' . self::PERMISSIONS['index'])->only(['index','showRegistrationForm']);
+        $this->middleware('permission:' . self::PERMISSIONS['index'])->only(['index']);
     }
 
 

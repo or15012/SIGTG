@@ -8,9 +8,14 @@ use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
+    const PERMISSIONS = [
+        'index'    => 'Roles',
+    ];
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('permission:' . self::PERMISSIONS['index'])->only(['index']);
     }
 
     public function index()

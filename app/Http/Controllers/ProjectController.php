@@ -15,9 +15,17 @@ use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
+    const PERMISSIONS = [
+        'index.student.project'    => 'Projects.students',
+        'index.adviser.project'    => 'Projects.advisers'
+
+    ];
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('permission:' . self::PERMISSIONS['index.student.project'])->only(['index']);
+        $this->middleware('permission:' . self::PERMISSIONS['index.adviser.project'])->only(['coordinator.Index']);
     }
 
     public function index()

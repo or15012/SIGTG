@@ -7,10 +7,16 @@ use Illuminate\Http\Request;
 
 class SchoolController extends Controller
 {
+    const PERMISSIONS = [
+        'index'    => 'Schools',
+    ];
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('permission:' . self::PERMISSIONS['index'])->only(['index']);
     }
+
 
     public function index()
     {

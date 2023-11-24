@@ -7,10 +7,16 @@ use Illuminate\Http\Request;
 
 class ProtocolController extends Controller
 {
+    const PERMISSIONS = [
+        'index'    => 'Protocols',
+    ];
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('permission:' . self::PERMISSIONS['index'])->only(['index']);
     }
+
 
     public function index()
     {

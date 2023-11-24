@@ -9,10 +9,16 @@ use Illuminate\Http\Request;
 class CycleController extends Controller
 {
 
+    const PERMISSIONS = [
+        'index'    => 'Cycles',
+    ];
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('permission:' . self::PERMISSIONS['index'])->only(['index']);
     }
+
 
     public function index()
     {
