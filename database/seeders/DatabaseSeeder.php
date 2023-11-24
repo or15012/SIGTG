@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             CycleSeeder::class,
             ParameterSeeder::class,
             UserProtocolSeeder::class,
-            TypeExtensionSeeder::class
+            TypeExtensionSeeder::class,
+            RolAndPermissionSeeder::class
         ]);
     }
 }

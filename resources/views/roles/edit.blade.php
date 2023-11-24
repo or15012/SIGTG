@@ -13,7 +13,7 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Editar Rol</h1>
+        <h1>Editar rol</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -58,8 +58,10 @@
                     </div>
                 @endforeach
             </div>
-
-            <button type="submit" class="btn btn-primary">Actualizar</button>
+            <div class="contenedor">
+                <a href="{{ route('roles.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Actualizar</button>
+            </div>
         </form>
     </div>
 @endsection

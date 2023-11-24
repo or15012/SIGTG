@@ -45,9 +45,8 @@
                         <td>{{ \Carbon\Carbon::parse($consulting->date)->format('d-m-Y') }}</td>
                         <td>
                             <a href="{{ route('consultings.show', $consulting->id) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
-                            @can('consulting.update')
+
                             <a href="{{ route('consultings.edit', $consulting->id) }}" class="btn btn-primary"><i class="fas fa-pen"></i></a>
-                            @endcan
 
                             <form action="{{ route('consultings.destroy', $consulting->id) }}" method="POST"
                                 style="display: inline">

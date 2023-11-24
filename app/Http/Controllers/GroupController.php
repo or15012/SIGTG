@@ -19,10 +19,18 @@ use Illuminate\Support\Facades\Storage;
 
 class GroupController extends Controller
 {
+    const PERMISSIONS = [
+        'index'                => 'Groups.students',
+        'index.adviser'        => 'Groups.advisers',
+    ];
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('permission:' . self::PERMISSIONS['index'])->only(['initialize']);
+        $this->middleware('permission:' . self::PERMISSIONS['index.adviser'])->only(['index']);
     }
+
 
     public function index()
     {
@@ -96,26 +104,26 @@ class GroupController extends Controller
                 //voy a buscar grupo para actualizarlo
                 $group = Group::find($request->group_id);
             } else {
-            //recuperando el protocolo del estudiante que inicializar el grupo
-            $user = Auth::user();
-            $protocol = $user->protocols()
-                ->where('user_protocol.status', true)
-                ->first();
-            // dd($protocol->id);
-            $cycle_id = Cycle::where('status', 1)->first()->id??1;
-            // Crear un nuevo grupo
-            $group = Group::create([
-                'year'          => date("Y"),
-                'status'        => 0,
-                'state_id'      => 1,
-                'protocol_id'   => $protocol->id,
-                'cycle_id'      => $cycle_id
-            ]);
+                //recuperando el protocolo del estudiante que inicializar el grupo
+                $user = Auth::user();
+                $protocol = $user->protocols()
+                    ->where('user_protocol.status', true)
+                    ->first();
+                // dd($protocol->id);
+                $cycle_id = Cycle::where('status', 1)->first()->id ?? 1;
+                // Crear un nuevo grupo
+                $group = Group::create([
+                    'year'          => date("Y"),
+                    'status'        => 0,
+                    'state_id'      => 1,
+                    'protocol_id'   => $protocol->id,
+                    'cycle_id'      => $cycle_id
+                ]);
             }
             $existing_users_ids = $group->users()->pluck('user_group.user_id')->toArray();
             $existing_users = array_column($group->users->toArray(), 'pivot');
 
-            for ($i=0; $i < count($existing_users); $i++) {
+            for ($i = 0; $i < count($existing_users); $i++) {
                 $existing_users[$i]['created_at'] = Carbon::parse($existing_users[$i]['created_at'])->format('Y-m-d H:i:s');
                 $existing_users[$i]['updated_at'] = Carbon::parse($existing_users[$i]['created_at'])->format('Y-m-d H:i:s');
             }
@@ -137,7 +145,7 @@ class GroupController extends Controller
                 if (!in_array(intval($userId), $existing_users_ids) && $key > 0) {
                     try {
                         $user = User::find(intval($userId));
-                        Mail::to($user->email)->send(new SendMail('mail.user-invited-to-group', 'Invitación a grupo', ['user'=>$user, 'group'=>$group]));
+                        Mail::to($user->email)->send(new SendMail('mail.user-invited-to-group', 'Invitación a grupo', ['user' => $user, 'group' => $group]));
                     } catch (\Throwable $th) {
                         //throw $th;
                     }
@@ -218,9 +226,8 @@ class GroupController extends Controller
                 ];
 
                 foreach ($group->users as $user) {
-                    Mail::to($user->email)->send(new SendMail('mail.notification', 'Notificacion de grupo', ['title'=>"Notificacion del grupo $group->number", 'body'=>"Hola $user->first_name, te informamos que tu grupo ha sido <b>ACEPTADO</b>."]));
+                    Mail::to($user->email)->send(new SendMail('mail.notification', 'Notificacion de grupo', ['title' => "Notificacion del grupo $group->number", 'body' => "Hola $user->first_name, te informamos que tu grupo ha sido <b>ACEPTADO</b>."]));
                 }
-
             } else {
                 $data = [
                     'status'    => $request->decision,
@@ -228,7 +235,7 @@ class GroupController extends Controller
                 ];
 
                 foreach ($group->users as $user) {
-                    Mail::to($user->email)->send(new SendMail('mail.notification', 'Notificacion de grupo', ['title'=>"Notificacion del grupo $group->number", 'body'=>"Hola $user->first_name, lamentamos informarte que tu grupo ha sido <b>RECHAZADO</b>."]));
+                    Mail::to($user->email)->send(new SendMail('mail.notification', 'Notificacion de grupo', ['title' => "Notificacion del grupo $group->number", 'body' => "Hola $user->first_name, lamentamos informarte que tu grupo ha sido <b>RECHAZADO</b>."]));
                 }
             }
             $group->update($data);
@@ -314,10 +321,10 @@ class GroupController extends Controller
             ->where('u.type', 2)
             ->where('groups.id', $group->id)
             ->get();
-            // dd($groupCommittees);
+        // dd($groupCommittees);
         $teachers = User::where('type', 2)->get();
 
-        return view('groups.evaluationCommittees.index', compact('groupCommittees','teachers', 'group'));
+        return view('groups.evaluationCommittees.index', compact('groupCommittees', 'teachers', 'group'));
     }
 
 
@@ -357,7 +364,7 @@ class GroupController extends Controller
         foreach ($request->teachers as $key => $userId) {
             $userData = [
                 'user_id'           => intval($userId),
-                'status'            => 1 , // Establecer status = 1
+                'status'            => 1, // Establecer status = 1
                 'type'              => $request->type_committee, // Establecer asesor = 0 , jurados = 1
                 'path_agreement'    => $path
             ];
@@ -366,16 +373,16 @@ class GroupController extends Controller
 
             // Enviar correo electrónico notificando la adición al comité de evaluación
             try {
-            $user = User::find(intval($userId));
-            $committeeType = $request->type_committee == 0 ? "Asesor(a)" : "Jurado(a)";
-            $mailData = [
-                'user'      => $user,
-                'group'     => $group,
-                'committee' => $committeeType,
-            ];
-            Mail::to($user->email)->send(new SendMail('mail.committee-added', 'Notificación de Comité', $mailData));
+                $user = User::find(intval($userId));
+                $committeeType = $request->type_committee == 0 ? "Asesor(a)" : "Jurado(a)";
+                $mailData = [
+                    'user'      => $user,
+                    'group'     => $group,
+                    'committee' => $committeeType,
+                ];
+                Mail::to($user->email)->send(new SendMail('mail.committee-added', 'Notificación de Comité', $mailData));
             } catch (\Throwable $th) {
-            // working...
+                // working...
 
             }
             //¿Y para notificar al asesor o jurado?
@@ -388,31 +395,32 @@ class GroupController extends Controller
         return redirect()->back()->with('success', $text . "agregada con exito.");
     }
 
-    public function evaluatingCommitteeDestroy($user,$type, Group $group)
+    public function evaluatingCommitteeDestroy($user, $type, Group $group)
     {
         $group->teacherUsers()->wherePivot('type', $type)->detach($user);
 
         return redirect()->back()->with('success', "Jurado(a) eliminada con exito.");
     }
 
-    public function modalAuthorizationLetter(Request $request){
-        return view('groups.modal.attach_authorization_letter', ['group_id'=>$request->group_id]);
+    public function modalAuthorizationLetter(Request $request)
+    {
+        return view('groups.modal.attach_authorization_letter', ['group_id' => $request->group_id]);
     }
 
-    public function storeAuthorizationLetter(Request $request){
+    public function storeAuthorizationLetter(Request $request)
+    {
         try {
             DB::beginTransaction();
             $group = Group::find($request->group_id);
-        if ($request->hasFile('authorization_letter')) {
-            if(is_file(storage_path('app/' . $group->authorization_letter)))
-            {
-                Storage::delete($group->authorization_letter);
+            if ($request->hasFile('authorization_letter')) {
+                if (is_file(storage_path('app/' . $group->authorization_letter))) {
+                    Storage::delete($group->authorization_letter);
+                }
+                $group->authorization_letter = $request->file('authorization_letter')->storeAs('groups', $group->id . '-' . $request->file('authorization_letter')->getClientOriginalName());
+                $group->save();
+                DB::commit();
+                return redirect()->action([GroupController::class, 'index'])->with('success', 'Carta de autorización subida exitosamente.');
             }
-            $group->authorization_letter = $request->file('authorization_letter')->storeAs('groups', $group->id.'-'.$request->file('authorization_letter')->getClientOriginalName());
-            $group->save();
-            DB::commit();
-            return redirect()->action([GroupController::class, 'index'])->with('success', 'Carta de autorización subida exitosamente.');
-        }
         } catch (\Throwable $th) {
             DB::rollBack();
             return redirect()->action([GroupController::class, 'index'])->with('error', 'Algo salió mal. Intente nuevamente.');

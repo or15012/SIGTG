@@ -14,8 +14,8 @@
     @endcomponent
 
     <div class="container">
-        <h1>Lista de Roles</h1>
-        <a href="{{ route('roles.create') }}" class="btn btn-primary mb-3">Agregar Rol</a>
+        <h1>Lista de roles</h1>
+        <a href="{{ route('roles.create') }}" class="btn btn-primary mb-3">Registrar rol</a>
 
         @if (session('success'))
             <div class="alert alert-success">
@@ -39,11 +39,11 @@
                         <td>{{ $role->name }}</td>
                         <td>{{ $role->description }}</td>
                         <td>
-                            <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-warning">Editar</a>
+                            <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-primary"><i class="fas fa-pen"></i></a>
                             <form action="{{ route('roles.destroy', $role->id) }}" method="POST" style="display: inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                                <button type="submit" class="btn btn-danger buttonDelete"><i class="fas fa-trash-alt"></i></button>
                             </form>
                         </td>
                     </tr>

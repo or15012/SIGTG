@@ -12,17 +12,13 @@ use Illuminate\Support\Facades\Auth;
 class ConsultingController extends Controller
 {
     const PERMISSIONS = [
-        'create'    => 'consulting.create',
-        'index'     => 'consulting.index',
-        'update'    => 'consulting.update',
+        'index'     => 'Consultings',
     ];
 
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('permission:' . self::PERMISSIONS['create'])->only(['create','store']);
-        $this->middleware('permission:' . self::PERMISSIONS['index'])->only(['index']);
-        $this->middleware('permission:' . self::PERMISSIONS['update'])->only(['edit','update']);
+
     }
 
     public function index()

@@ -1,52 +1,74 @@
 [
     {
-        "name": "permission1",
+        "name": "Users",
         "guard_name": "web",
-        "description": "Descripción del Permiso 1"
+        "description": "Lista de usuarios"
     },
     {
-        "name": "permission2",
+        "name": "Roles",
         "guard_name": "web",
-        "description": "Descripción del Permiso 2"
+        "description": "Lista de roles"
+    },
+
+    {
+        "name": "Schools",
+        "guard_name": "web",
+        "description": "Lista de escuelas"
     },
     {
-        "name": "permission3",
+        "name": "Protocols",
         "guard_name": "web",
-        "description": "Descripción del Permiso 3"
+        "description": "Lista de protocolos"
     },
     {
-        "name": "permission4",
+        "name": "Cycles",
         "guard_name": "web",
-        "description": "Descripción del Permiso 4"
+        "description": "Lista de ciclos"
     },
     {
-        "name": "permission5",
+        "name": "Groups.students",
         "guard_name": "web",
-        "description": "Descripción del Permiso 5"
+        "description": "Conformación de grupos para estudiantes"
     },
     {
-        "name": "permission6",
+        "name": "Groups.advisers",
         "guard_name": "web",
-        "description": "Descripción del Permiso 6"
+        "description": "Mostrar grupos a coordinadores"
     },
     {
-        "name": "permission7",
+        "name": "Preprofiles.students",
         "guard_name": "web",
-        "description": "Descripción del Permiso 7"
+        "description": "Pre perfil de estudiante"
     },
     {
-        "name": "permission8",
+        "name": "Preprofiles.advisers",
         "guard_name": "web",
-        "description": "Descripción del Permiso 8"
+        "description": "Pre perfil para coordinador"
     },
     {
-        "name": "permission9",
+        "name": "Profiles.students",
         "guard_name": "web",
-        "description": "Descripción del Permiso 9"
+        "description": "Perfil de estudiante"
     },
     {
-        "name": "permission10",
+        "name": "Profiles.advisers",
         "guard_name": "web",
-        "description": "Descripción del Permiso 10"
+        "description": "Perfil para coordinator"
+    },
+    {
+        "name": "Stages",
+        "guard_name": "web",
+        "description": "Lista de etapas y sus crtiterios de evaluación"
+    },
+    {
+        "name": "Projects.students",
+        "guard_name": "web",
+        "description": "Proyecto para estudiantes"
+    },
+    {
+        "name": "Projects.advisers",
+        "guard_name": "web",
+        "description": "Proyecto para coordinadores"
     }
+
 ]
