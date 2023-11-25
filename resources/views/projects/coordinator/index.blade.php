@@ -49,6 +49,9 @@
                         <td>{{ $project->name }}</td>
 
                         <td>
+                            <a href="{{ route('projects.coordinator.show', $project->id) }}" class="btn btn-primary">
+                                <i class="fas fa-eye"></i>
+                            </a>
                         </td>
                     </tr>
                 @endforeach

@@ -8,6 +8,7 @@ use App\Models\Group;
 use App\Models\Project;
 use App\Models\School;
 use App\Models\Stage;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -231,6 +232,79 @@ class ProjectController extends Controller
 
         return view('projects.coordinator.index', [
             "projects"  => $projects
+        ]);
+    }
+
+    public function coordinatorShow(Project $project)
+    {
+        $group = Group::find($project->group_id);
+        $user = User::join('user_group as ug', 'ug.user_id', 'users.id')
+                        ->where('ug.group_id', $project->group_id)
+                        ->first();
+
+        if (!isset($project)) return redirect()->route('root')->with('error', 'No tienes un proyecto activo.');
+
+        $projectUsers = Project::join('profiles as p', 'projects.profile_id', 'p.id')
+            ->join('user_group as ug', 'ug.group_id', 'projects.group_id')
+            ->join('users as u', 'ug.user_id', 'u.id')
+            ->where('projects.group_id', $group->id)
+            ->get();
+
+
+
+        $stages = Stage::where("protocol_id", $group->protocol_id)
+            ->where('cycle_id', $group->cycle_id)
+            ->where('school_id', $user->school_id)
+            ->orderBy('stages.sort', 'asc')
+            ->get();
+
+        $evaluationStages = EvaluationStage::where('project_id', $project->id)
+            ->select('stg.id')
+            ->where('status', 1)
+            ->join('stages as stg', 'evaluation_stages.stage_id', 'stg.id')
+            ->get();
+
+        $evaluationStagesNotes = EvaluationStage::where('project_id', $project->id)
+            ->select('esn.user_id', 'esn.evaluation_stage_id', 'esn.note', 'stg.id')
+            ->join('stages as stg', 'evaluation_stages.stage_id', 'stg.id')
+            ->join('evaluation_stage_note as esn', 'evaluation_stages.id', 'esn.evaluation_stage_id')
+            ->get();
+
+        $groupCommittees = Group::select(
+            'groups.id',
+            'groups.number',
+            'u.first_name',
+            'u.middle_name',
+            'u.last_name',
+            'u.second_last_name',
+            'u.email',
+            'u.id',
+            'tg.type',
+        )
+            ->join('teacher_group as tg', 'groups.id', 'tg.group_id')
+            ->join('users as u', 'tg.user_id', 'u.id')
+            ->join('protocols as p', 'groups.protocol_id', 'p.id')
+            ->where('u.type', 2)
+            ->where('groups.id', $group->id)
+            ->get();
+
+        $totalStages = $stages->count(); // Total de etapas
+        $presentedStages = $evaluationStages->count(); // Etapas ya presentadas
+        if ($totalStages > 0) {
+            $progressPercentage = ($presentedStages / $totalStages) * 100;
+        } else {
+            $progressPercentage = 0; // En caso de que no haya etapas totales
+        }
+
+        return view('projects.index', [
+            'projectUsers'          => $projectUsers,
+            'project'               => $project,
+            'stages'                => $stages,
+            'evaluationStages'      => $evaluationStages,
+            'groupCommittees'       => $groupCommittees,
+            'progressPercentage'    => $progressPercentage,
+            'group'                 => $group,
+            'evaluationStagesNotes' => $evaluationStagesNotes,
         ]);
     }
 }

@@ -224,6 +224,7 @@ Route::group(['prefix' => 'projects', 'as' => 'projects.'], function () {
 
     Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
         Route::get('/', [ProjectController::class, 'coordinatorIndex'])->name('index');
+        Route::get('/show/{project}', [ProjectController::class, 'coordinatorShow'])->name('show');
     });
 
 
