@@ -2,11 +2,11 @@
 
 @section('content')
     <div style="padding: 20px;">
-        <h1 style="color: #333;">¡Preperfil Guardado con Éxito!</h1>
+        <h1 style="color: #333;">¡Preperfil Modificado con Éxito!</h1>
 
         <p>Hola {{ $Info['user']->name }},</p>
 
-        <p>Tu preperfil ha sido guardado con éxito. Aquí están los detalles:</p>
+        <p>Tu preperfil ha sido modificado con éxito. Aquí están los detalles:</p>
 
         <strong>Detalles del preperfil:</strong>
         <ul>
