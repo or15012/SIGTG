@@ -51,14 +51,22 @@
             </div>
 
             <h2>Parámetros</h2>
-            @foreach ($cycle->parameters as $parameter)
-                <div class="mb-3">
-                    <label for="parameter{{ $parameter->id }}"
-                        class="form-label">{{ $parameterNames[$parameter->name] }}</label>
-                    <input type="text" class="form-control" id="parameter{{ $parameter->id }}"
-                        name="parameters[{{ $parameter->name }}]" value="{{ $parameter->value }}" required>
-                </div>
-            @endforeach
+            @foreach ($parameterNames as $key => $name)
+            @php
+                $parameterValue = '';
+                foreach ($cycle->parameters as $parameter) {
+                    if ($parameter->name === $key) {
+                        $parameterValue = $parameter->value;
+                        break;
+                    }
+                }
+            @endphp
+            <div class="mb-3">
+                <label for="parameter{{ $key }}" class="form-label">{{ $name }}</label>
+                <input type="text" class="form-control" id="parameter{{ $key }}"
+                    name="parameters[{{ $key }}]" value="{{ $parameterValue }}" required>
+            </div>
+        @endforeach
             <div class="contenedor">
                 <a href="{{ route('cycles.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
                 <button type="submit" class="btn btn-primary">Actualizar</button>

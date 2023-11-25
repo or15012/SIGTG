@@ -13,6 +13,12 @@
     <div class="container">
 
         <h1>Conformar grupos</h1>
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -22,6 +28,7 @@
                 </ul>
             </div>
         @endif
+
         <form action="{{ route('groups.store') }}" method="POST">
             @csrf
             <div class="row mb-3">
@@ -100,7 +107,12 @@
                     @endforelse
                 </div>
                 <button type="submit" class="btn btn-primary @if (isset($group) && $group->status != 0) d-none @endif">
-                    Conformar grupo
+                    @if (isset($group))
+                        Actualizar grupo
+                    @else
+                        Conformar grupo
+                    @endif
+
                 </button>
             </form>
         </div>

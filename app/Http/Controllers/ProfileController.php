@@ -49,7 +49,7 @@ class ProfileController extends Controller
             ->first();
 
         if (!isset($group)) {
-            return redirect('home')->withErrors(['mensaje' => 'Debe tener un grupo activo.']);
+            return redirect('home')->withErrors(['mensaje' => 'No tienes un grupo activo.']);
         }
 
         $preprofiles = Profile::where('group_id', $group->id)
@@ -340,6 +340,8 @@ class ProfileController extends Controller
                 $query->where('users.id', $user->id);
             })
             ->first();
+
+        if (!isset($group)) return redirect()->route('root')->with('error', 'No tienes un grupo activo.');
 
         $profiles = Profile::where('group_id', $group->id)
             ->where('type', 1)

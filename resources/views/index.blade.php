@@ -1,17 +1,34 @@
 @extends('layouts.master')
-@section('title') @lang('translation.Dashboard') @endsection
+@section('title')
+    @lang('translation.Dashboard')
+@endsection
 
 @section('content')
     @component('components.breadcrumb')
-    @slot('li_1') SIGTG - FIA@endslot
-    @slot('title') Welcome ! @endslot
+        @slot('li_1')
+            SIGTG - FIA
+        @endslot
+        @slot('title')
+            Welcome !
+        @endslot
     @endcomponent
 
-    <div class="">
+    <div class="container">
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
         Bienvenido {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
     </div>
 
-            {{-- <div class="row">
+    {{-- <div class="row">
                 <div class="col-xl-4">
                     <div class="card bg-primary">
                         <div class="card-body">
@@ -1074,7 +1091,6 @@
                     </div>
                 </div>
             </div> --}}
-
 @endsection
 @section('script')
     <script src="{{ URL::asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>

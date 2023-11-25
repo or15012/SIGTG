@@ -42,6 +42,9 @@ class ProjectController extends Controller
             })
             ->first();
 
+        if (!isset($group)) return redirect()->route('root')->with('error', 'No tienes un grupo activo.');
+
+
         $project = Project::join('profiles as p', 'projects.profile_id', 'p.id')
             ->select('projects.id', 'projects.name', 'projects.approvement_report')
             ->where('projects.group_id', $group->id)
@@ -214,5 +217,18 @@ class ProjectController extends Controller
 
         $filePath = storage_path('app/' . $project->$file);
         return response()->download($filePath);
+    }
+
+    public function coordinatorIndex()
+    {
+        $user = Auth::user();
+        $projects = Project::join('groups as g', 'g.id', 'projects.group_id')
+                            ->join('teacher_group as tg', 'tg.group_id', 'g.id')
+                            ->where('tg.user_id', $user->id)
+                            ->get();
+
+        return view('projects.coordinator.index', [
+            "projects"  => $projects
+        ]);
     }
 }

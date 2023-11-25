@@ -153,6 +153,7 @@ class GroupController extends Controller
             }
             // Insertar los nuevos usuarios
             $group->users()->attach($syncData);
+
             return redirect()->back()->with('success', 'Grupo inicializado con éxito.');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Hubo un error intente de nuevo.');
