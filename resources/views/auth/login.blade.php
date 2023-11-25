@@ -57,7 +57,7 @@
                                             <label class="form-label" for="username">Usuario</label>
                                             <input name="email" type="email"
                                                 class="form-control @error('email') is-invalid @enderror" id="username"
-                                                value="{{ old('email', 'or15012@ues.edu.sv') }}" placeholder="Enter Email"
+                                                value="{{ old('email', 'av12013@ues.edu.sv') }}" placeholder="Enter Email"
                                                 autocomplete="email" autofocus>
                                             @error('email')
                                                 <span class="invalid-feedback" role="alert">
