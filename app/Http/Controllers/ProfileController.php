@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Mail;
 
 class ProfileController extends Controller
 {
+    
     const PERMISSIONS = [
         'index.student'    => 'Preprofiles.students',
         'index.adviser'    => 'Preprofiles.advisers',
@@ -120,13 +121,23 @@ class ProfileController extends Controller
         $profile->status                = 0;
         $profile->save();
 
-        // Enviar correo electrónico
-        try {
-            Mail::to($user->email)->send(new SendMail('mail.preprofile-saved', 'Preperfil enviado con éxito', ['user' => $user, 'profile' => $profile]));
-        } catch (\Throwable $th) {
-            //Working..
+         // Obtener estudiantes del grupo
+        $students = $group->users;
+
+        // Envío de correo electrónico a cada estudiante del grupo
+        foreach ($students as $student) {
+            try {
+                $emailData = [
+                    'user'       => $student,
+                    'group'      => $group,
+                    'preprofile' => $profile,
+                ];
+                Mail::to($student->email)->send(new SendMail('mail.preprofile-saved', 'Preperfil enviado con éxito', $emailData));
+            } catch (\Throwable $th) {
+                // Manejar la excepción
+            }
         }
-        return redirect()->route('profiles.preprofile.index')->with('success', 'El pre perfil se ha guardado correctamente');
+        return redirect()->route('profiles.preprofile.index')->with('success', 'El preperfil se ha guardado correctamente');
     }
 
     public function preProfileShow(Profile $preprofile)
@@ -175,15 +186,33 @@ class ProfileController extends Controller
             }
             $preprofile->update();
 
-            // Envío de correo electrónico de notificación
-            try {
-                $user = Auth::user();
-                Mail::to($user->email)->send(new SendMail('mail.preprofile-updated', 'Actualización de preperfil', ['preprofile' => $preprofile]));
-            } catch (\Throwable $th) {
-                //return redirect()->route('profiles.preprofile.index')->with('error', 'Hubo un error al enviar el correo electrónico de notificación. Por favor, inténtelo de nuevo.');
+            // Envío de correo electrónico a cada estudiante del grupo
+            $students = $preprofile->group->users;
+
+            foreach ($students as $student) {
+                $mailData = [
+                    'user' => $student,
+                    'preprofile' => $preprofile,
+                ];
+    
+                try {
+                    Mail::to($student->email)->send(
+                        new SendMail(
+                            'mail.preprofile-updated',
+                            'Actualización de preperfil',
+                            $mailData
+                        )
+                    );
+                } catch (\Throwable $th) {
+                    // Log de errores o manejo adicional
+                    //Log::error('Error al enviar correo electrónico: ' . $th->getMessage());
+                }
             }
+    
             return redirect()->route('profiles.preprofile.index')->with('success', 'El preperfil se ha actualizado correctamente');
         } catch (\Throwable $th) {
+            // Log de errores o manejo adicional
+            //Log::error('Error al actualizar el preperfil: ' . $th->getMessage());
             return redirect()->route('profiles.preprofile.index')->with('error', 'Hubo un error al actualizar el preperfil. Por favor, inténtelo de nuevo.');
         }
     }
