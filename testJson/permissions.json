@@ -76,7 +76,7 @@
         "description": "Permiso para"
     },
     {
-        "name": "Projects.add.notes",
+        "name": "Projects.aprove.stage",
         "guard_name": "web",
         "description": "Permiso para"
     }
