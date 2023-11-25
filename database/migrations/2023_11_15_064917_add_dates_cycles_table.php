@@ -29,7 +29,7 @@ return new class extends Migration
     public function down()
     {
         //
-        Schema::table('evaluation_stages', function (Blueprint $table) {
+        Schema::table('cycles', function (Blueprint $table) {
             $table->dropColumn('date_start');
             $table->dropColumn('date_end');
         });
