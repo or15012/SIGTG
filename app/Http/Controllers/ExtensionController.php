@@ -14,6 +14,9 @@ use App\Models\Stage;
 use App\Models\TypeExtension;
 use Illuminate\Support\Facades\Storage;
 use PhpParser\Node\Stmt\TryCatch;
+use App\Mail\SendMail;
+use Illuminate\Support\Facades\Mail;
+use App\Models\User;
 
 class ExtensionController extends Controller
 {
@@ -56,7 +59,7 @@ class ExtensionController extends Controller
             if ($request->hasFile('approval_letter_path')) {
                 $approval_letter_path = $request->file('approval_letter_path')->store('extensions'); // Define la carpeta de destino donde se guardará el archivo
             }
-            Extension::create([
+            $extension = Extension::create([
                 'project_id'          => $request['project_id'],
                 'type_extension_id'   => $request['type_extension_id'],
                 'description'      => $request['description'],
@@ -65,6 +68,27 @@ class ExtensionController extends Controller
                 'schedule_activities_path'     => $schedule_activities_path,
                 'approval_letter_path'     => $approval_letter_path,
             ]);
+
+             // Obtener información adicional para el correo electrónico
+            $project = Project::find($request['project_id']);
+
+            // Obtener usuarios asignados al proyecto
+            $recipients = $project->group->users;
+
+            // Envío de correo electrónico a cada destinatario
+            foreach ($recipients as $recipient) {
+                try {
+                    $emailData = [
+                        'user'      => $recipient,
+                        'extension' => $extension,
+                        'project'   => $project,
+                    ];
+                    Mail::to($recipient->email)->send(new SendMail('mail.extension-created', 'Nueva extensión creada', $emailData));
+                } catch (\Throwable $th) {
+                    // Manejar la excepción
+                }
+            }
+
             return redirect()->route('extensions.index')->with('success', 'Prórroga creada exitosamente.');
         } catch (\Exception $e) {
             return redirect()->route('extensions.create')->with('error', 'Algo salió mal. Intente nuevamente.');
@@ -119,6 +143,26 @@ class ExtensionController extends Controller
             }
 
             $extension->update($fields);
+
+            // Obtener información adicional para el correo electrónico
+            $project = Project::find($request['project_id']);
+
+            // Obtener usuarios asignados al proyecto
+            $recipients = $project->group->users;
+
+            // Envío de correo electrónico a cada destinatario
+            foreach ($recipients as $recipient) {
+                try {
+                    $emailData = [
+                        'user'      => $recipient,
+                        'extension' => $extension,
+                        'project'   => $project,
+                    ];
+                    Mail::to($recipient->email)->send(new SendMail('mail.extension-updated', 'Extensión actualizada', $emailData));
+                } catch (\Throwable $th) {
+                    // Manejar la excepción
+                }
+            }
 
             return redirect()->route('extensions.index')->with('success', 'Prórroga actualizada exitosamente.');
         } catch (\Exception $e) {
