@@ -18,13 +18,38 @@ class ConsultingController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-
     }
 
     public function index()
     {
         $userType = auth()->user()->type;
-        $consultings = Consulting::all();
+
+        if ($userType === 1) {
+            $consultings = Consulting::select(
+                'consultings.id',
+                'consultings.topics',
+                'consultings.number',
+                'consultings.summary',
+                'consultings.date'
+            )
+                ->join('groups as g', 'consultings.group_id', 'g.id')
+                ->join('user_group as ug', 'ug.group_id', 'g.id')
+                ->where('ug.user_id', auth()->user()->id)
+                ->get();
+        } else {
+            $consultings = Consulting::select(
+                'consultings.id',
+                'consultings.topics',
+                'consultings.number',
+                'consultings.summary',
+                'consultings.date'
+            )
+                ->join('groups as g', 'consultings.group_id', 'g.id')
+                ->join('teacher_group as tg', 'tg.group_id', 'g.id')
+                ->where('tg.user_id', auth()->user()->id)
+                ->get();
+        }
+
         return view('consultings.index', compact('consultings', 'userType'));
     }
 
@@ -94,24 +119,26 @@ class ConsultingController extends Controller
                 'summary'   => 'required',
                 'date'      => 'required|date', // Campo 'fecha' es obligatorio y debe ser una fecha válida'
             ]);
-        }
 
-        // Obtener el campo 'number' del request y sumarle 1
-        //dd($consulting);
-        if ($consulting->number === null) {
+            // Obtener el campo 'number' del request y sumarle 1
+            //dd($consulting);
+            if ($consulting->number === null) {
 
 
-            $consultingGroup = Consulting::where('group_id', $request->group_id)
-                ->where('number', '!=', null)
-                ->orderBy('id', 'desc')
-                ->first();
-            //dd($consultingGroup);
-            if (isset($consultingGroup)) {
-                $data['number'] = $consultingGroup->number + 1;
-            } else {
-                $data['number'] = 1;
+                $consultingGroup = Consulting::where('group_id', $request->group_id)
+                    ->where('number', '!=', null)
+                    ->orderBy('id', 'desc')
+                    ->first();
+                //dd($consultingGroup);
+                if (isset($consultingGroup)) {
+                    $data['number'] = $consultingGroup->number + 1;
+                } else {
+                    $data['number'] = 1;
+                }
             }
         }
+
+
 
         $consulting->update($data);
 

@@ -39,14 +39,18 @@ class CycleController extends Controller
             'number'        => 'required|integer',
             'year'          => 'required|integer',
             'status'        => 'required|boolean',
+            'date_start'    => 'required|date',
+            'date_end'      => 'required|date',
             'parameters'    => 'array', // Campo que contendrá los parámetros
         ]);
-        // dd($request);
+
         // Crear un nuevo ciclo
         $cycle = Cycle::create([
-            'number'    => $validatedData['number'],
-            'year'      => $validatedData['year'],
-            'status'    => $validatedData['status'],
+            'number'        => $validatedData['number'],
+            'year'          => $validatedData['year'],
+            'status'        => $validatedData['status'],
+            'date_start'    => date('Y-m-d', strtotime($validatedData['date_start'])),
+            'date_end'      => date('Y-m-d', strtotime($validatedData['date_end'])),
         ]);
 
         // Guardar los parámetros
@@ -82,6 +86,8 @@ class CycleController extends Controller
             'number'        => 'required|integer',
             'year'          => 'required|integer',
             'status'        => 'required|boolean',
+            'date_start'    => 'required|date',
+            'date_end'      => 'required|date',
             'parameters'    => 'array', // Campo que contendrá los parámetros
         ]);
 
@@ -93,6 +99,8 @@ class CycleController extends Controller
             'number'    => $validatedData['number'],
             'year'      => $validatedData['year'],
             'status'    => $validatedData['status'],
+            'date_start'    => date('Y-m-d', strtotime($validatedData['date_start'])),
+            'date_end'      => date('Y-m-d', strtotime($validatedData['date_end'])),
         ]);
         // dd($cycle);
         // Actualizar o crear los parámetros

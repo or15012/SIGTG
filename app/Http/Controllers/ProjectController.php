@@ -50,6 +50,8 @@ class ProjectController extends Controller
             ->where('projects.group_id', $group->id)
             ->first();
 
+        if (!isset($project)) return redirect()->route('root')->with('error', 'No tienes un proyecto activo.');
+
         $projectUsers = Project::join('profiles as p', 'projects.profile_id', 'p.id')
             ->join('user_group as ug', 'ug.group_id', 'projects.group_id')
             ->join('users as u', 'ug.user_id', 'u.id')
@@ -223,9 +225,9 @@ class ProjectController extends Controller
     {
         $user = Auth::user();
         $projects = Project::join('groups as g', 'g.id', 'projects.group_id')
-                            ->join('teacher_group as tg', 'tg.group_id', 'g.id')
-                            ->where('tg.user_id', $user->id)
-                            ->get();
+            ->join('teacher_group as tg', 'tg.group_id', 'g.id')
+            ->where('tg.user_id', $user->id)
+            ->get();
 
         return view('projects.coordinator.index', [
             "projects"  => $projects

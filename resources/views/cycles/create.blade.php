@@ -51,6 +51,20 @@
                 </div>
             </div>
 
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="status" class="form-label">Fecha de inicio</label>
+                    <input value="" type="date" class="form-control" id="date_start" name="date_start" required>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="status" class="form-label">Fecha de fin</label>
+                    <input value="" type="date" class="form-control" id="date_end" name="date_end" required>
+                </div>
+            </div>
+
             <div class="mt-3">
                 <h2>Parámetros</h2>
                 @foreach ($parameterNames as $key => $name)

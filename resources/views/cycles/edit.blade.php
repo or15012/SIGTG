@@ -50,23 +50,39 @@
                 </div>
             </div>
 
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="status" class="form-label">Fecha de inicio</label>
+                    <input type="date" value="{{ $cycle->date_start }}" class="form-control" id="date_start"
+                        name="date_start" required>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="status" class="form-label">Fecha de fin</label>
+                    <input type="date" value="{{ $cycle->date_end }}" class="form-control" id="date_end"
+                        name="date_end" required>
+                </div>
+            </div>
+
             <h2>Parámetros</h2>
             @foreach ($parameterNames as $key => $name)
-            @php
-                $parameterValue = '';
-                foreach ($cycle->parameters as $parameter) {
-                    if ($parameter->name === $key) {
-                        $parameterValue = $parameter->value;
-                        break;
+                @php
+                    $parameterValue = '';
+                    foreach ($cycle->parameters as $parameter) {
+                        if ($parameter->name === $key) {
+                            $parameterValue = $parameter->value;
+                            break;
+                        }
                     }
-                }
-            @endphp
-            <div class="mb-3">
-                <label for="parameter{{ $key }}" class="form-label">{{ $name }}</label>
-                <input type="text" class="form-control" id="parameter{{ $key }}"
-                    name="parameters[{{ $key }}]" value="{{ $parameterValue }}" required>
-            </div>
-        @endforeach
+                @endphp
+                <div class="mb-3">
+                    <label for="parameter{{ $key }}" class="form-label">{{ $name }}</label>
+                    <input type="text" class="form-control" id="parameter{{ $key }}"
+                        name="parameters[{{ $key }}]" value="{{ $parameterValue }}" required>
+                </div>
+            @endforeach
             <div class="contenedor">
                 <a href="{{ route('cycles.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
                 <button type="submit" class="btn btn-primary">Actualizar</button>
