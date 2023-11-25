@@ -69,6 +69,16 @@
         "name": "Projects.advisers",
         "guard_name": "web",
         "description": "Proyecto para coordinadores"
+    },
+    {
+        "name": "Projects.add.notes",
+        "guard_name": "web",
+        "description": "Permiso para"
+    },
+    {
+        "name": "Projects.add.notes",
+        "guard_name": "web",
+        "description": "Permiso para"
     }
 
 ]

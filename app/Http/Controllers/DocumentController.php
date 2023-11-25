@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Consulting;
 use App\Models\Group;
 use App\Models\Project;
-use App\Models\User;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\PhpWord;
 
 class DocumentController extends Controller
 {
@@ -21,7 +20,7 @@ class DocumentController extends Controller
     public function authorizationLetter($id)
     {
         $grupo = Group::find($id);
-        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+        $phpWord = new PhpWord();
         $users = $grupo->users()->wherePivot('status', 1)->get();
         $school = $users[0]->school;
         $section = $phpWord->addSection();
@@ -86,7 +85,7 @@ class DocumentController extends Controller
 
         // $section->addText(" ");
         // $section->addText('Lista de grupos de cuatro y cinco estudiantes',array('name' => 'New York', 'size' => 10, 'bold' => false),array('align'=>'center'));
-        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+        $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
         try {
             $objWriter->save(storage_path('frmt-autoriza-grupos-cuatro-cinco.docx'));
         } catch (Exception $e) {
@@ -98,14 +97,17 @@ class DocumentController extends Controller
 
 
     public function approvement_report($project_id){
-    	$phpWord = new \PhpOffice\PhpWord\PhpWord();
+        $phpWord = new PhpWord();
 
         $project = Project::find($project_id);
 
-        $advisers = $project->group->teacherUsers()->selectRaw("concat(first_name, ' ', ifnull(middle_name, ''), ' ', last_name, ifnull(second_last_name, '')) as name")->wherePivot('type', 0)->get();
+        $advisers = $project->group
+            ->teacherUsers()
+            ->selectRaw("concat(first_name, ' ', ifnull(middle_name, ''), ' ', last_name, ifnull(second_last_name, '')) as name")
+            ->wherePivot('type', 0)
+            ->get();
 
         $users = $project->user_project_note()->get();
-
         $school = $users[0]->school;
         $section = $phpWord->addSection();
         $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
@@ -201,7 +203,7 @@ class DocumentController extends Controller
       $section->addText($school->director??'', array('name' => 'Calibri', 'size' => 12, 'bold' => false),array('align'=>'center'));
       $section->addText($school->name??'', array('name' => 'Calibri', 'size' => 12, 'bold' => false),array('align'=>'center'));
 
-        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+        $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
         try {
             $objWriter->save(storage_path('frmt-acta-aprobacion-1.docx'));
         } catch (Exception $e) {

@@ -47,13 +47,13 @@
                         </div>
                         <div class="mr-5">Aprobar etapa</div>
                     </div>
-                    {{-- @if ($evaluationStages->status == 2)
-                        <form action="{{ route('projects.submit.stage', $evaluationStages->id) }}"
-                            id="form-evaluation-stage-confirm" method="POST">
+                    @if ($project->status == 2)
+                        <form action="{{ route('projects.coordinator.submit.final.stage', $project->id) }}"
+                            id="projects-approve-stage" method="POST">
                             @csrf
                             @method('PUT')
 
-                            <input type="hidden" id="decision" name="decision" value="1">
+                            <input type="hidden" id="decision" name="decision" value="3">
                             <button type="submit" class="btn btn-primery card-footer text-black clearfix small z-1">
                                 <span class="float-left">Realizar</span>
                                 <span class="float-right">
@@ -61,7 +61,7 @@
                                 </span>
                             </button>
                         </form>
-                    @endif --}}
+                    @endif
                 </div>
             </div>
 
@@ -73,9 +73,9 @@
                         </div>
                         <div class="mr-5">Entregar etapa</div>
                     </div>
-                    {{-- @if ($evaluationStages->status == 0)
-                        <form action="{{ route('projects.submit.stage', $evaluationStages->id) }}"
-                            id="form-evaluation-stage-confirm" method="POST">
+                    @if ($project->status == 1)
+                        <form action="{{ route('projects.coordinator.submit.final.stage', $project->id) }}"
+                            id="projects-submit-final-stage" method="POST">
                             @csrf
                             @method('PUT')
 
@@ -87,7 +87,7 @@
                                 </span>
                             </button>
                         </form>
-                    @endif --}}
+                    @endif
                 </div>
             </div>
         </div>
@@ -104,6 +104,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @if(isset($project->summary))
                     <tr>
                         <td>{{ $project->id }}</td>
                         <td>{{ $project->summary }}</td>
@@ -113,6 +114,7 @@
                             </a>
                         </td>
                     </tr>
+                    @endif
                 </tbody>
             </table>
         </div>

@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\EvaluationDocument;
 use App\Models\EvaluationStage;
+use App\Models\EvaluationStageNote;
 use App\Models\Group;
 use App\Models\Project;
 use App\Models\School;
 use App\Models\Stage;
 use App\Models\User;
+use App\Models\UserProjectNote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -149,6 +151,7 @@ class ProjectController extends Controller
         $evaluation_stage->status = $request->decision;
         $evaluation_stage->update();
 
+        //identificare si es la ultima etapa para cargar las notas finales
 
         return redirect()
             ->route('projects.show.stage', [$evaluation_stage->project_id, $evaluation_stage->stage_id])
@@ -239,8 +242,8 @@ class ProjectController extends Controller
     {
         $group = Group::find($project->group_id);
         $user = User::join('user_group as ug', 'ug.user_id', 'users.id')
-                        ->where('ug.group_id', $project->group_id)
-                        ->first();
+            ->where('ug.group_id', $project->group_id)
+            ->first();
 
         if (!isset($project)) return redirect()->route('root')->with('error', 'No tienes un proyecto activo.');
 
@@ -306,5 +309,62 @@ class ProjectController extends Controller
             'group'                 => $group,
             'evaluationStagesNotes' => $evaluationStagesNotes,
         ]);
+    }
+
+
+    public function coordinatorSubmitFinalStage(Request $request, Project $project)
+    {
+
+
+
+        $project->status = $request->decision;
+        $project->update();
+
+
+        if ($request->decision == 3) {
+            $group = $project->group;
+            $students = Group::join('user_group as ug', 'ug.group_id', 'groups.id')
+                ->where('groups.id', $group->id)
+                ->get();
+
+            foreach ($students as $student) {
+                // Obtener el ID del estudiante
+                $studentId = $student->user_id;
+
+                // Encuentra todas las notas de las etapas evaluativas para el estudiante dado
+                $evaluationNotes = EvaluationStageNote::where('user_id', $studentId)->get();
+
+                $totalFinalGrade = 0;
+
+                // Calcular la nota final ponderada para el estudiante actual
+                foreach ($evaluationNotes as $note) {
+                    // Obtén el porcentaje de la etapa evaluativa actual
+                    $evaluationStage = EvaluationStage::find($note->evaluation_stage_id);
+                    $stage = Stage::find($evaluationStage->stage_id);
+
+                    $stagePercentage = $stage->percentage;
+                    $stageGrade = $note->note;
+
+                    // Aplica el porcentaje de la etapa evaluativa a la nota y suma al total
+                    $totalFinalGrade += ($stageGrade * $stagePercentage) / 100;
+                }
+
+                // Realiza acciones con la $totalFinalGrade del estudiante si es necesario
+                // Por ejemplo, guardarla en la base de datos o realizar otras operaciones
+
+                // Puedes hacer algo como guardar la nota final en un campo del estudiante o en otra tabla
+                $userProjectNote = UserProjectNote::create([
+                    'user_id'       => $studentId,
+                    'project_id'    => $project->id,
+                    'note'          => $totalFinalGrade,
+
+                ]);
+            }
+        }
+        //identificare si es la ultima etapa para cargar las notas finales
+
+        return redirect()
+            ->route('projects.coordinator.show', [$project->id])
+            ->with('success', 'Proyecto actualizado correctamente.');
     }
 }

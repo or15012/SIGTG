@@ -225,6 +225,7 @@ Route::group(['prefix' => 'projects', 'as' => 'projects.'], function () {
     Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
         Route::get('/', [ProjectController::class, 'coordinatorIndex'])->name('index');
         Route::get('/show/{project}', [ProjectController::class, 'coordinatorShow'])->name('show');
+        Route::put('/subir-final-stage/{project}', [ProjectController::class, 'coordinatorSubmitFinalStage'])->name('submit.final.stage');
     });
 
 
@@ -246,10 +247,6 @@ Route::group(['prefix' => 'extensions', 'as' => 'extensions.'], function () {
 Route::group(['prefix' => 'document', 'as' => 'document.'], function () {
     Route::get('/authorization/letter/{group}', [DocumentController::class, 'authorizationLetter'])->name('authorization.letter');
     Route::get('/approvement/report/{project}', [DocumentController::class, 'approvement_report'])->name('approvement.report');
-    // Route::get('/create', [ExtensionController::class, 'create'])->name('create');
-    // Route::post('/', [ExtensionController::class,  'store'])->name('store');
-    // Route::get('/{extension}/edit', [ExtensionController::class, 'edit'])->name('edit');
-    // Route::put('/{extension}', [ExtensionController::class, 'update'])->name('update');
 });
 
 // download file

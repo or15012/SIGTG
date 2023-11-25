@@ -42,7 +42,9 @@ class Group extends Model
     }
 
     public function userGroups(){
-        return $this->belongsToMany(UserGroup::class,'group_id');
+        return $this->belongsToMany(UserGroup::class,'user_group')
+        ->withPivot(['status', 'is_leader']) // Esto permite acceder a la columna 'status' de la tabla intermedia
+        ->withTimestamps();;
     }
 
     public function projects()
