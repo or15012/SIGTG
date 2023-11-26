@@ -99,5 +99,5 @@
         "name": "Extensions.student.create",
         "guard_name": "web",
         "description": "Permiso para solucited de prorroga"
-    },
+    }
 ]
