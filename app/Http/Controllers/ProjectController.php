@@ -231,6 +231,7 @@ class ProjectController extends Controller
         $projects = Project::join('groups as g', 'g.id', 'projects.group_id')
             ->join('teacher_group as tg', 'tg.group_id', 'g.id')
             ->where('tg.user_id', $user->id)
+            ->select('projects.id','projects.name')
             ->get();
 
         return view('projects.coordinator.index', [
