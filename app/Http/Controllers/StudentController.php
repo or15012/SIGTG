@@ -29,7 +29,7 @@ class StudentController extends Controller
                 ->select("users.id", "users.carnet", "users.first_name", "users.middle_name", "users.last_name", "users.second_last_name")
                 ->where('users.id', "!=", Auth::id())
                 ->where('up.protocol_id', $protocol->id)
-                ->where('up.state', true)
+                ->where('up.status', true)
                 ->where('carnet', $carnet)
                 ->first();
 
