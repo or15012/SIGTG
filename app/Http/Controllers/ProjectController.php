@@ -213,9 +213,8 @@ class ProjectController extends Controller
         }
         $project->update();
 
-        return view('projects.final-volume', [
-            "project"               => $project
-        ]);
+        return redirect()->action([ProjectController::class, 'index'])->with('success', 'Tomo final guardado.');
+
     }
 
     public function download(Project $project, $file)
