@@ -98,6 +98,11 @@
     {
         "name": "Extensions.student.create",
         "guard_name": "web",
-        "description": "Permiso para solucited de prorroga"
+        "description": "Permiso para solucitud de prorroga"
+    },
+    {
+        "name": "Projects.manage.approvement.report",
+        "guard_name": "web",
+        "description": "Permiso para gestionar acta de aprobación"
     }
 ]
