@@ -49,7 +49,7 @@ class ProjectController extends Controller
 
 
         $project = Project::join('profiles as p', 'projects.profile_id', 'p.id')
-            ->select('projects.id', 'projects.name', 'projects.approvement_report')
+            ->select('projects.id', 'projects.name', 'projects.approvement_report', 'projects.status')
             ->where('projects.group_id', $group->id)
             ->first();
 
