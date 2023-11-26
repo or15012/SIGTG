@@ -40,15 +40,18 @@
                                 class="fa fa-download"></i></a>
                     @endif
                 @endif
-                @if ($today >= $date_end_mod && $today <= $date_end)
-                    <a href="{{ route('extensions.index') }}" style="margin-left: 5px" class="btn btn-primary float-end">
-                        <i class="fa fa-plus"></i>&nbsp; Solicitar prórroga
-                    </a>
-                @endif
+                @can('Extensions.student.create')
+                    @if ($today >= $date_end_mod && $today <= $date_end)
+                        <a href="{{ route('extensions.index') }}" style="margin-left: 5px" class="btn btn-primary float-end">
+                            <i class="fa fa-plus"></i>&nbsp; Solicitar prórroga
+                        </a>
+                    @endif
+                @endcan
 
+                @can('Consultings.student.create')
                 <a href="{{ route('consultings.index', $project->id) }}" style="margin-left: 5px"
                     class="btn btn-primary float-end"><i class="bx bx-file icon nav-icon"></i>Solicitar asesoria</a>
-
+                @endcan
                 <a href="{{ route('home') }}" style="margin-left: 5px" class="btn btn-danger regresar-button"><i
                         class="fas fa-arrow-left"></i>
                     Regresar</a>
