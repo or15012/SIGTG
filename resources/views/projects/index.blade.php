@@ -22,19 +22,23 @@
                 $date_end_mod->modify('-20 days');
             @endphp
 
-            <div class="d-flex justify-content-end align-items-center">
-                <a class="btn btn-secondary" href="{{ route('document.approvement.report', $project->id) }}"><i
-                        class="fa fa-file"></i>&nbsp;&nbsp;Acta de aprobación</a>
 
-                <a class="btn btn-primary ajax-modal" style="margin-left: 5px" data-title="Acta de aprobación de proyecto"
-                    data-bs-toggle="tooltip" data-bs-title="Subir Acta de aprobación"
-                    href="{{ route('projects.modal.approvement.report', ['project_id' => $project->id]) }}"><i
-                        class="fa fa-upload"></i></a>
-                @if ($project->approvement_report)
-                    <a class="btn btn-primary" style="margin-left: 5px" data-bs-toggle="tooltip"
-                        data-bs-title="Descargar Acta de aprobación"
-                        href="{{ route('download', ['file' => $project->approvement_report]) }}"><i
-                            class="fa fa-download"></i></a>
+            <div class="d-flex justify-content-end align-items-center">
+
+                @if ($project->status === 3)
+                    <a class="btn btn-secondary" href="{{ route('document.approvement.report', $project->id) }}"><i
+                            class="fa fa-file"></i>&nbsp;&nbsp;Acta de aprobación</a>
+
+                    <a class="btn btn-primary ajax-modal" style="margin-left: 5px" data-title="Acta de aprobación de proyecto"
+                        data-bs-toggle="tooltip" data-bs-title="Subir Acta de aprobación"
+                        href="{{ route('projects.modal.approvement.report', ['project_id' => $project->id]) }}"><i
+                            class="fa fa-upload"></i></a>
+                    @if ($project->approvement_report)
+                        <a class="btn btn-primary" style="margin-left: 5px" data-bs-toggle="tooltip"
+                            data-bs-title="Descargar Acta de aprobación"
+                            href="{{ route('download', ['file' => $project->approvement_report]) }}"><i
+                                class="fa fa-download"></i></a>
+                    @endif
                 @endif
                 @if ($today >= $date_end_mod && $today <= $date_end)
                     <a href="{{ route('extensions.index') }}" style="margin-left: 5px" class="btn btn-primary float-end">
@@ -189,7 +193,7 @@
                                     </div>
                                 </div>
                                 <a class="card-footer text-black clearfix small z-1"
-                                    href="{{ route('projects.finish', [$project->id]) }}">
+                                    href="{{ route('projects.show.stage', [$project->id, $stage->id]) }}">
                                     <span class="float-left">Ver detalles</span>
                                     <span class="float-right">
                                         <i class="fa fa-angle-right"></i>
