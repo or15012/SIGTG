@@ -129,25 +129,22 @@ class GroupController extends Controller
             }
 
             $group->users()->detach();
-            $users = $request->input('users');
+            $users = $request->users;
             // Preparar datos para la sincronización
-            // $syncData = $existing_users;
             foreach ($users as $key => $userId) {
-                if (!in_array(intval($userId), $existing_users_ids)) {
-                    $userData = [
-                        'user_id'   => intval($userId),
-                        'status'    => ($key === 0) ? 1 : 0, // Establecer status = 1 para el primer    usuario, 0 para los demás
-                        'is_leader' => ($key === 0) ? 1 : 0, // Establecer is_leader = 1 para el primer     usuario, 0 para los demás
-                    ];
-                    $syncData[] = $userData;
-                }
+                $userData = [
+                    'user_id'   => intval($userId),
+                    'status'    => ($key === 0) ? 1 : 0, // Establecer status = 1 para el primer    usuario, 0 para los demás
+                    'is_leader' => ($key === 0) ? 1 : 0, // Establecer is_leader = 1 para el primer     usuario, 0 para los demás
+                ];
+                $syncData[] = $userData;
 
                 if (!in_array(intval($userId), $existing_users_ids) && $key > 0) {
                     try {
                         $user = User::find(intval($userId));
                         Mail::to($user->email)->send(new SendMail('mail.user-invited-to-group', 'Invitación a grupo', ['user' => $user, 'group' => $group]));
-                    } catch (\Throwable $th) {
-                        //throw $th;
+                    } catch (Exception $e) {
+                        Log::info($e->getMessage());
                     }
                 }
             }
@@ -155,7 +152,9 @@ class GroupController extends Controller
             $group->users()->attach($syncData);
 
             return redirect()->back()->with('success', 'Grupo inicializado con éxito.');
-        } catch (\Throwable $th) {
+        } catch (Exception $e) {
+            Log::info('GroupController.store');
+            Log::info($e->getMessage());
             return redirect()->back()->with('error', 'Hubo un error intente de nuevo.');
         }
     }
@@ -180,8 +179,6 @@ class GroupController extends Controller
             ->where('groups.id', $id)
             ->where('ug.status', 1)
             ->get();
-
-        //dd($group);
 
         return view('groups.edit', compact('group', 'id'));
     }

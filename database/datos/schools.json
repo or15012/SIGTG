@@ -1,30 +1,30 @@
 [
     {
-        "name": "Escuela de Arquitectura",
+        "name": "Escuela de Ingeniería de Sistemas Informáticos",
         "id": 1
     },
     {
-        "name": "Escuela de Ingeniería Mecánica",
+        "name": "Escuela de Arquitectura",
         "id": 2
     },
     {
-        "name": "Escuela de Ingeniería Civil",
+        "name": "Escuela de Ingeniería Mecánica",
         "id": 3
     },
     {
-        "name": "Escuela de Ingeniería Eléctrica",
+        "name": "Escuela de Ingeniería Civil",
         "id": 4
     },
     {
-        "name": "Escuela de Ingeniería Industrial",
+        "name": "Escuela de Ingeniería Eléctrica",
         "id": 5
     },
     {
-        "name": "Escuela de Ingeniería Química y Alimentos",
+        "name": "Escuela de Ingeniería Industrial",
         "id": 6
     },
     {
-        "name": "Escuela de Ingeniería de Sistemas Informáticos",
+        "name": "Escuela de Ingeniería Química y Alimentos",
         "id": 7
     }
 ]

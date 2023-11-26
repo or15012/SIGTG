@@ -54,7 +54,7 @@
             </div>
 
             <div class="mb-3">
-                <label class "form-label" for="second_last_name">Secundo apellido</label>
+                <label clas="form-label" for="second_last_name">Segundo apellido</label>
                 <input type="text" class="form-control @error('second_last_name') is-invalid @enderror"
                     id="second_last_name" name="second_last_name" value="{{ old('second_last_name') }}"
                     placeholder="Ingrese segundo apellido" autofocus>
