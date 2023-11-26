@@ -6,7 +6,7 @@
 
     <div class="row p-2">
         <div class="form-group">
-            <input type="file" class="form-control" name="approvement_report" accept=".docx,.pdf,.PDF,.DOCX" required>
+            <input type="file" class="form-control" name="approvement_report" accept=".docx,.pdf,.PDF,.DOCX,.doc" required>
         </div>
 
         <div class="form-group mt-4">

@@ -26,7 +26,7 @@
             <a href="{{ route('users.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
-        <form method="POST" class="form-horizontal" action="{{ route('register') }}" enctype="multipart/form-data">
+        <form method="POST" class="form-horizontal" action="{{ route('users.store') }}" enctype="multipart/form-data">
             @csrf
 
             <div class="mb-3">

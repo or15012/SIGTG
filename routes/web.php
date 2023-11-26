@@ -45,6 +45,7 @@ Route::get('/home', [HomeController::class, 'home'])->name('home');
 
 Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
     Route::get('/', [RegisterController::class, 'index'])->name('index');
+    Route::post('/', [RegisterController::class, 'store'])->name('store');
     Route::get('/download-template', [RegisterController::class, 'downloadTemplate'])->name('download.template');
     Route::post('/import', [RegisterController::class, 'import'])->name('import');
     Route::get('testCorreo', [RegisterController::class, 'testCorreo'])->name('test.correo');
