@@ -104,5 +104,10 @@
         "name": "Projects.manage.approvement.report",
         "guard_name": "web",
         "description": "Permiso para gestionar acta de aprobación"
+    },
+    {
+        "name": "Projects.coordinator.extension",
+        "guard_name": "web",
+        "description": "Permiso para gestionar extensiones de prorroga"
     }
 ]

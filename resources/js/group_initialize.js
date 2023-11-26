@@ -40,7 +40,7 @@ $(document).ready(function () {
                     let stringHtml = `
                         <div class="col-12 col-md-6 col-lg-6 " id="user-${user.id}">
                             <div class="card mb-4">
-                                <div class="card-header">
+                                <div class="card-header red-student">
                                     ${user.carnet} - ${user.first_name} ${user.middle_name} ${user.last_name} ${user.second_last_name}
                                 </div>
                                 <div class="card-body">
