@@ -26,13 +26,15 @@
             <div class="d-flex justify-content-end align-items-center">
 
                 @if ($project->status === 3)
-                    <a class="btn btn-secondary" href="{{ route('document.approvement.report', $project->id) }}"><i
-                            class="fa fa-file"></i>&nbsp;&nbsp;Acta de aprobación</a>
+                    @can('Projects.manage.approvement.report')
+                        <a class="btn btn-secondary" href="{{ route('document.approvement.report', $project->id) }}"><i
+                                class="fa fa-file"></i>&nbsp;&nbsp;Acta de aprobación</a>
 
-                    <a class="btn btn-primary ajax-modal" style="margin-left: 5px" data-title="Acta de aprobación de proyecto"
-                        data-bs-toggle="tooltip" data-bs-title="Subir Acta de aprobación"
-                        href="{{ route('projects.modal.approvement.report', ['project_id' => $project->id]) }}"><i
-                            class="fa fa-upload"></i></a>
+                        <a class="btn btn-primary ajax-modal" style="margin-left: 5px" data-title="Acta de aprobación de proyecto"
+                            data-bs-toggle="tooltip" data-bs-title="Subir Acta de aprobación"
+                            href="{{ route('projects.modal.approvement.report', ['project_id' => $project->id]) }}"><i
+                                class="fa fa-upload"></i></a>
+                    @endcan
                     @if ($project->approvement_report)
                         <a class="btn btn-primary" style="margin-left: 5px" data-bs-toggle="tooltip"
                             data-bs-title="Descargar Acta de aprobación"
@@ -49,8 +51,8 @@
                 @endcan
 
                 @can('Consultings.student.create')
-                <a href="{{ route('consultings.index', $project->id) }}" style="margin-left: 5px"
-                    class="btn btn-primary float-end"><i class="bx bx-file icon nav-icon"></i>Solicitar asesoria</a>
+                    <a href="{{ route('consultings.index', $project->id) }}" style="margin-left: 5px"
+                        class="btn btn-primary float-end"><i class="bx bx-file icon nav-icon"></i>Solicitar asesoria</a>
                 @endcan
                 <a href="{{ route('home') }}" style="margin-left: 5px" class="btn btn-danger regresar-button"><i
                         class="fas fa-arrow-left"></i>
