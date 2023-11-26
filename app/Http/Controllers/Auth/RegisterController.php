@@ -357,9 +357,9 @@ class RegisterController extends Controller
 
 
         // Agregar un protocolo con status 1 y establecer status 0 para otros protocolos
-        if (!empty($data['protocol_id'])) {
+        if (!empty($request->protocol_id)) {
             $user->protocols()->attach([
-                $data['protocol_id'] => ['status' => 1]
+                $request->protocol_id => ['status' => 1]
             ]);
             // Establecer status 0 para otros protocolos
             $user->protocols()->where('user_id', '!=', $user->id)->update(['status' => 0]);
