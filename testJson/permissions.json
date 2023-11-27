@@ -2,73 +2,73 @@
     {
         "name": "Users",
         "guard_name": "web",
-        "description": "Lista de usuarios"
+        "description": "Permiso pare registrar usuarios"
     },
     {
         "name": "Roles",
         "guard_name": "web",
-        "description": "Lista de roles"
+        "description": "Permiso para registrar roles"
     },
 
     {
         "name": "Schools",
         "guard_name": "web",
-        "description": "Lista de escuelas"
+        "description": "Permiso para registrar escuelas"
     },
     {
         "name": "Protocols",
         "guard_name": "web",
-        "description": "Lista de protocolos"
+        "description": "Permiso para consultar protocolos"
     },
     {
         "name": "Cycles",
         "guard_name": "web",
-        "description": "Lista de ciclos"
+        "description": "Permiso para registrar ciclos"
     },
     {
         "name": "Groups.students",
         "guard_name": "web",
-        "description": "Conformación de grupos para estudiantes"
+        "description": "Permiso para conformar grupos"
     },
     {
         "name": "Groups.advisers",
         "guard_name": "web",
-        "description": "Mostrar grupos a coordinadores"
+        "description": "Permiso para aceptar o rechazar grupos"
     },
     {
         "name": "Preprofiles.students",
         "guard_name": "web",
-        "description": "Pre perfil de estudiante"
+        "description": "Permiso para registrar pre perfiles"
     },
     {
         "name": "Preprofiles.advisers",
         "guard_name": "web",
-        "description": "Pre perfil para coordinador"
+        "description": "Permiso para aprobar/rechazar pre perfiles"
     },
     {
         "name": "Profiles.students",
         "guard_name": "web",
-        "description": "Perfil de estudiante"
+        "description": "Permiso para registrar perfiles"
     },
     {
         "name": "Profiles.advisers",
         "guard_name": "web",
-        "description": "Perfil para coordinator"
+        "description": "Permiso para aprobar/rechazar perfiles"
     },
     {
         "name": "Stages",
         "guard_name": "web",
-        "description": "Lista de etapas y sus crtiterios de evaluación"
+        "description": "Permiso para agregar etapas y sus crtiterios de evaluación"
     },
     {
         "name": "Projects.students",
         "guard_name": "web",
-        "description": "Proyecto para estudiantes"
+        "description": "Permiso para visualizar proyectos - estudiantes"
     },
     {
         "name": "Projects.advisers",
         "guard_name": "web",
-        "description": "Proyecto para coordinadores"
+        "description": "Permiso para visualizar proyectos - docentes asesor"
     },
     {
         "name": "Projects.add.notes",
@@ -83,7 +83,7 @@
     {
         "name": "Projects.add.documents",
         "guard_name": "web",
-        "description": "Permiso para cargar documentos de etapas evaluativas."
+        "description": "Permiso para cargar documentos de etapas evaluativas"
     },
     {
         "name": "Projects.send.stages",
