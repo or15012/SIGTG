@@ -12,6 +12,7 @@
         <ul>
             <li><strong>Nombre:</strong> {{ $Info['preprofile']->name }}</li>
             <li><strong>Descripción:</strong> {{ $Info['preprofile']->description }}</li>
+            <li><strong>Estado:</strong> {{ $Info['preprofile']->status }}</li>
         </ul>
 
         <p>Gracias por enviar tu preperfil. Estamos procesando la información y te informaremos sobre cualquier actualización.</p>

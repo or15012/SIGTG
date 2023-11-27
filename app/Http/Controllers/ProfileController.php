@@ -301,6 +301,7 @@ class ProfileController extends Controller
             $mailData = [
                 'user'          => $student,
                 'preprofile'    => $preprofile,
+                'status'        => $preprofile->status,
             ];
             try {
                 Mail::to($student->email)->send(
@@ -401,31 +402,61 @@ class ProfileController extends Controller
             'size_calculation_path' => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
         ]);
 
-        // Actualizar los campos del perfil
-        $profiles->name = $request->input('name');
-        $profiles->description = $request->input('description');
+        try {
+          // Actualizar los campos del perfil
+            $profiles->name = $request->input('name');
+            $profiles->description = $request->input('description');
 
-        // Procesar y guardar el nuevo archivo si se proporciona
-        if ($request->hasFile('path')) {
-            $path = $request->file('path')->store('preprofiles');
-            $profiles->path = $path;
-        }
-        if ($request->hasFile('summary_path')) {
-            $summary_path = $request->file('summary_path')->store('preprofiles');
-            $profiles->summary_path = $summary_path;
-        }
-        if ($request->hasFile('vision_path')) {
-            $vision_path = $request->file('vision_path')->store('preprofiles');
-            $profiles->vision_path = $vision_path;
-        }
-        if ($request->hasFile('size_calculation_path')) {
-            $size_calculation_path = $request->file('size_calculation_path')->store('preprofiles');
-            $profiles->size_calculation_path = $size_calculation_path;
-        }
+            // Procesar y guardar el nuevo archivo si se proporciona
+            if ($request->hasFile('path')) {
+                $path = $request->file('path')->store('preprofiles');
+                $profiles->path = $path;
+            }
+            if ($request->hasFile('summary_path')) {
+                $summary_path = $request->file('summary_path')->store('preprofiles');
+                $profiles->summary_path = $summary_path;
+            }
+            if ($request->hasFile('vision_path')) {
+                $vision_path = $request->file('vision_path')->store('preprofiles');
+                $profiles->vision_path = $vision_path;
+            }
+            if ($request->hasFile('size_calculation_path')) {
+                $size_calculation_path = $request->file('size_calculation_path')->store('preprofiles');
+                $profiles->size_calculation_path = $size_calculation_path;
+            }
 
-        $profiles->update();
+            $profiles->update();
 
-        return redirect()->route('profiles.index')->with('success', 'El preperfil se ha actualizado correctamente');
+            // Envío de correo electrónico a cada estudiante del grupo
+            $students = $profiles->group->users;
+
+            foreach ($students as $student) {
+                $mailData = [
+                    'user' => $student,
+                    'profile' => $profiles,
+                    'status' => $profiles->status,
+                ];
+
+                try {
+                    Mail::to($student->email)->send(
+                        new SendMail(
+                            'mail.profile-updated',
+                            'Actualización de perfil',
+                            $mailData
+                        )
+                    );
+                } catch (\Throwable $th) {
+                    // Log de errores o manejo adicional
+                    // Log::error('Error al enviar correo electrónico: ' . $th->getMessage());
+                }
+            }
+
+            return redirect()->route('profiles.index')->with('success', 'El perfil se ha actualizado correctamente');
+        } catch (\Throwable $th) {
+            // Log de errores o manejo adicional
+            // Log::error('Error al actualizar el perfil: ' . $th->getMessage());
+            return redirect()->route('profiles.index')->with('error', 'Hubo un error al actualizar el perfil. Por favor, inténtelo de nuevo.');
+        }
     }
 
 
@@ -478,6 +509,30 @@ class ProfileController extends Controller
             $project->save();
         }
         $profile->update();
+
+        // Obtener estudiantes del grupo
+        $students = $profile->group->users;
+
+        // Envío de correo electrónico a cada estudiante del grupo
+        foreach ($students as $student) {
+            $mailData = [
+                'user'          => $student,
+                'preprofile'    => $profile,
+                'status'        => $profile->status,
+            ];
+            try { //REVISAR
+                Mail::to($student->email)->send(
+                    new SendMail(
+                        'mail.profile-updated',
+                        'Notificación de modificación de perfil',
+                        $mailData
+                    )
+                );
+            } catch (\Throwable $th) {
+                // Working..
+                //dd($th);
+            }
+        }
 
         return view('profiles.coordinator.show', compact('profile'));
     }
