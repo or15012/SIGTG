@@ -5,7 +5,7 @@
 
         <p>Hola, buen día {{ $Info['user']->name }},</p>
 
-        <p>Se le ha agregado al grupo {{ $Info['group']->name }}:</p>
+        <p>Se le ha agregado al grupo de trabajo {{ $Info['group']->name }}:</p>
         <ul>
             <li>Su responsabilidad será ser: <strong>{{ $Info['committee'] }}</strong> </li>
         </ul>

@@ -11,6 +11,7 @@
         <strong>Detalles de la prórroga:</strong>
         <ul>
             <li><strong>Descripción:</strong> {{ $Info['extension']->description }}</li>
+            <li><strong>Estatus:</strong> {{ $Info['status'] }}</li>
         </ul>
 
 

@@ -157,6 +157,7 @@ class ExtensionController extends Controller
                         'user'      => $recipient,
                         'extension' => $extension,
                         'project'   => $project,
+                        'status'    => $extension->status,
                     ];
                     Mail::to($recipient->email)->send(new SendMail('mail.extension-updated', 'Extensión actualizada', $emailData));
                 } catch (\Throwable $th) {
