@@ -73,12 +73,41 @@
     {
         "name": "Projects.add.notes",
         "guard_name": "web",
-        "description": "Permiso para"
+        "description": "Permiso para cargar notas de etapa evaluativa"
     },
     {
-        "name": "Projects.aprove.stage",
+        "name": "Projects.approve.stage",
         "guard_name": "web",
-        "description": "Permiso para"
+        "description": "Permiso para aprobar etapa evaluativa"
+    },
+    {
+        "name": "Projects.add.documents",
+        "guard_name": "web",
+        "description": "Permiso para cargar documentos de etapas evaluativas."
+    },
+    {
+        "name": "Projects.send.stages",
+        "guard_name": "web",
+        "description": "Permiso para entregar etapa evaluativa."
+    },
+    {
+        "name": "Consultings.student.create",
+        "guard_name": "web",
+        "description": "Permiso para crear solicitudes de asesorias"
+    },
+    {
+        "name": "Extensions.student.create",
+        "guard_name": "web",
+        "description": "Permiso para solucitud de prorroga"
+    },
+    {
+        "name": "Projects.manage.approvement.report",
+        "guard_name": "web",
+        "description": "Permiso para gestionar acta de aprobación"
+    },
+    {
+        "name": "Projects.coordinator.extension",
+        "guard_name": "web",
+        "description": "Permiso para gestionar extensiones de prorroga"
     }
-
 ]

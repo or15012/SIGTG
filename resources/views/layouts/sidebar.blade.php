@@ -146,29 +146,32 @@
                 @endcan
 
                 @can('Projects.students')
-                <li>
-                    <a href="{{ route('projects.index') }}">
-                        <i class="bx bx-code-block icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-projects">@lang('translation.Projects')</span>
-                    </a>
-                </li>
+                    <li>
+                        <a href="{{ route('projects.index') }}">
+                            <i class="bx bx-code-block icon nav-icon"></i>
+                            <span class="menu-item" data-key="t-projects">@lang('translation.Projects')</span>
+                        </a>
+                    </li>
                 @endcan
 
                 @can('Projects.advisers')
-                <li>
-                    <a href="{{ route('projects.coordinator.index') }}">
-                        <i class="bx bx-code-block icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-projectsadviser">@lang('translation.ProjectsAdviser')</span>
-                    </a>
-                </li>
+                    <li>
+                        <a href="{{ route('projects.coordinator.index') }}">
+                            <i class="bx bx-code-block icon nav-icon"></i>
+                            <span class="menu-item" data-key="t-projectsadviser">@lang('translation.ProjectsAdviser')</span>
+                        </a>
+                    </li>
                 @endcan
 
-                {{-- <li>
-                    <a href="{{ route('extensions.index') }}">
-                        <i class="bx bx-git-pull-request icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-extensions">@lang('Extensions')</span>
-                    </a>
-                </li> --}}
+                @can('Projects.coordinator.extension')
+                    <li>
+                        <a href="{{ route('extensions.index') }}">
+                            <i class="bx bx-git-pull-request icon nav-icon"></i>
+                            <span class="menu-item" data-key="t-extensions">@lang('Extensions')</span>
+                        </a>
+                    </li>
+                @endcan
+
                 <li>
                     <a href="{{ route('consultings.index') }}">
                         <i class="bx bx-file icon nav-icon"></i>

@@ -49,7 +49,7 @@ class ProjectController extends Controller
 
 
         $project = Project::join('profiles as p', 'projects.profile_id', 'p.id')
-            ->select('projects.id', 'projects.name', 'projects.approvement_report')
+            ->select('projects.id', 'projects.name', 'projects.approvement_report', 'projects.status')
             ->where('projects.group_id', $group->id)
             ->first();
 
@@ -176,7 +176,7 @@ class ProjectController extends Controller
                 $project->approvement_report = $request->file('approvement_report')->storeAs('projects', $project->id . '-' . $request->file('approvement_report')->getClientOriginalName());
                 $project->save();
                 DB::commit();
-                return redirect()->action([ProjectController::class, 'index'])->with('success', 'Acta de aprobación subida exitosamente.');
+                return redirect()->action([ProjectController::class, 'coordinatorShow'],$project->id)->with('success', 'Acta de aprobación subida exitosamente.');
             }
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -213,9 +213,8 @@ class ProjectController extends Controller
         }
         $project->update();
 
-        return view('projects.final-volume', [
-            "project"               => $project
-        ]);
+        return redirect()->action([ProjectController::class, 'index'])->with('success', 'Tomo final guardado.');
+
     }
 
     public function download(Project $project, $file)
@@ -231,6 +230,7 @@ class ProjectController extends Controller
         $projects = Project::join('groups as g', 'g.id', 'projects.group_id')
             ->join('teacher_group as tg', 'tg.group_id', 'g.id')
             ->where('tg.user_id', $user->id)
+            ->select('projects.id','projects.name')
             ->get();
 
         return view('projects.coordinator.index', [

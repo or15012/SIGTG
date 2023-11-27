@@ -13,11 +13,20 @@
         @endslot
     @endcomponent
     <div class="container">
+       @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="contenedor">
             <a href="{{ route('users.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
-        <form method="POST" class="form-horizontal" action="{{ route('register') }}" enctype="multipart/form-data">
+        <form method="POST" class="form-horizontal" action="{{ route('users.store') }}" enctype="multipart/form-data">
             @csrf
 
             <div class="mb-3">
@@ -54,7 +63,7 @@
             </div>
 
             <div class="mb-3">
-                <label class "form-label" for="second_last_name">Secundo apellido</label>
+                <label clas="form-label" for="second_last_name">Segundo apellido</label>
                 <input type="text" class="form-control @error('second_last_name') is-invalid @enderror"
                     id="second_last_name" name="second_last_name" value="{{ old('second_last_name') }}"
                     placeholder="Ingrese segundo apellido" autofocus>
@@ -98,7 +107,7 @@
                     <select class="form-select" name="school" required>
                         <option value="" disabled selected>Seleccione escuela</option>
                         @forelse ($schools as $school)
-                            <option value="{{ $school->id }}">{{ $school->name }}</option>
+                            <option value="{{ $school->id }}" @if (old('school') == $school->id) selected @endif>{{ $school->name }}</option>
                         @empty
                             <option value="" disabled>No hay escuelas disponibles</option>
                         @endforelse
@@ -113,7 +122,7 @@
                     <select class="form-select" name="type" required>
                         <option value="" disabled selected>Seleccione tipo</option>
                         @forelse ($userTypes as  $key => $type)
-                            <option value="{{ $key }}">{{ $type }}</option>
+                            <option value="{{ $key }}" @if (old('type') == $key) selected @endif>{{ $type }}</option>
                         @empty
                             <option value="" disabled>No hay tipos disponibles</option>
                         @endforelse
@@ -127,7 +136,7 @@
                     <select class="form-select" name="modality_id" required>
                         <option value="" disabled selected>Seleccione la modalidad</option>
                         @forelse ($modalities as  $key => $value)
-                            <option value="{{ $value->id }}">{{ $value->name }}</option>
+                            <option value="{{ $value->id }}"@if (old('modality_id') == $value->id) selected @endif>{{ $value->name }}</option>
                         @empty
                             <option value="" disabled>No hay modalidades disponibles</option>
                         @endforelse
@@ -141,7 +150,7 @@
                     <select class="form-select" name="protocol_id" required>
                         <option value="" disabled selected>Seleccione protocolo</option>
                         @forelse ($protocols as  $key => $protocol)
-                            <option value="{{ $protocol->id }}">{{ $protocol->name }}</option>
+                            <option value="{{ $protocol->id }}" @if (old('protocol_id') == $protocol->id) selected @endif>{{ $protocol->name }}</option>
                         @empty
                             <option value="" disabled>No hay protocolos disponibles</option>
                         @endforelse

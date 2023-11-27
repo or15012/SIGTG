@@ -27,7 +27,7 @@ class Extension extends Model
     {
         return $this->belongsTo(Project::class, 'project_id');
     }
-    
+
     public function type_extension()
     {
         return $this->belongsTo(TypeExtension::class, 'type_extension_id');
@@ -41,7 +41,7 @@ class Extension extends Model
             case 1:
                 return 'Aprobado';
                 break;
-            case 0:
+            case 2:
                 return 'Rechazado';
                 break;
             default:

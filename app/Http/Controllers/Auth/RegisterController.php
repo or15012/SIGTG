@@ -120,7 +120,7 @@ class RegisterController extends Controller
             'password'          => ['required', 'string', 'min:8', 'confirmed'],
             'type'              => ['required'],
             'modality_id'       => ['required'],
-            'roles'             => ['required', 'array'],
+            // 'roles'             => ['required', 'array'],
         ]);
     }
 
@@ -325,4 +325,59 @@ class RegisterController extends Controller
 
         return redirect()->route('users.index')->with('success', 'Roles asignados con éxito');
     }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'first_name'        => ['required', 'string', 'max:255'],
+            'middle_name'       => ['required', 'string', 'max:255'],
+            'last_name'         => ['required', 'string', 'max:255'],
+            'second_last_name'  => ['required', 'string', 'max:255'],
+            'carnet'            => ['required', 'string', 'max:7', 'unique:users'], // Asegúrate de ajustar la validación según tus necesidades
+            'email'             => ['required', 'string', 'max:255', 'unique:users', 'not_regex:/@/'],
+            'school'            => ['required', 'exists:schools,id'], // Asegúrate de que exista una escuela con ese ID
+            'password'          => ['required', 'string', 'min:8', 'confirmed'],
+            'type'              => ['required'],
+            'modality_id'       => ['required'],
+            // 'roles'             => ['required', 'array'],
+        ]);
+
+        $user = User::create([
+            'first_name'        => $data['first_name'],
+            'middle_name'       => $data['middle_name'],
+            'last_name'         => $data['last_name'],
+            'second_last_name'  => $data['second_last_name'],
+            'carnet'            => $data['carnet'],
+            'email'             => $data['email'].'@ues.edu.sv',
+            'school_id'         => $data['school'], // Asumiendo que el campo se llama 'school_id' en tu modelo User
+            'type'              => $data['type'],
+            'password'          => Hash::make($data['password']),
+            'modality_id'       => $data['modality_id'],
+        ]);
+
+
+        // Agregar un protocolo con status 1 y establecer status 0 para otros protocolos
+        if (!empty($request->protocol_id)) {
+            $user->protocols()->attach([
+                $request->protocol_id => ['status' => 1]
+            ]);
+            // Establecer status 0 para otros protocolos
+            $user->protocols()->where('user_id', '!=', $user->id)->update(['status' => 0]);
+        }
+
+        $user->password = $data['password'];
+
+        if (isset($data['roles']) && is_array($data['roles'])) {
+            $roles = Role::whereIn('id', $data['roles'])->get(); // Obtener los roles seleccionados
+            $user->assignRole($roles); // Asignar los roles al usuario recién creado
+        }
+
+        try {
+            Mail::to($user->email)->send(new SendMail('mail.user-created', 'Creación de usuario', ['user'=>$user]));
+        } catch (\Exception $th) {
+            //throw $th;
+        }
+        return redirect()->route('users.index')->with('success', 'Usuario creado con éxito');
+    }
+
 }
