@@ -383,7 +383,7 @@ class GroupController extends Controller
                 // working...
 
             }
-            //¿Y para notificar al asesor o jurado?
+            //¿Y para notificar al estudiante?
         }
 
         // Insertar los nuevos usuarios

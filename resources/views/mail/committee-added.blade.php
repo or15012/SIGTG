@@ -3,12 +3,11 @@
     <div style="padding: 20px;">
         <h1 style="color: #333;">Notificacion de comite</h1>
 
-        <p>Hola {{ $Info['user']->name }},</p>
+        <p>Hola, buen día {{ $Info['user']->name }},</p>
 
-        <strong>Se ha agregado al grupo {{ $Info['group']->name }}:</strong>
+        <p>Se le ha agregado al grupo {{ $Info['group']->name }}:</p>
         <ul>
-            <li><strong>Nombre del comité:</strong> {{ $Info['group']->name }}</li>
-            <li><strong>Tipo de comité:</strong> {{ $Info['committee'] }}</li>
+            <li>Su responsabilidad será ser: <strong>{{ $Info['committee'] }}</strong> </li>
         </ul>
 
         <p>¡Gracias y que tengas un buen día!</p>
