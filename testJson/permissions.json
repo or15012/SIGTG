@@ -83,7 +83,7 @@
     {
         "name": "Projects.add.documents",
         "guard_name": "web",
-        "description": "Permiso para cargar documentos de etapas evaluativas."
+        "description": "Permiso para cargar documentos de etapas evaluativas"
     },
     {
         "name": "Projects.send.stages",
