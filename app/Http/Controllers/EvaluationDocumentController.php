@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\EvaluationDocument;
 use App\Models\EvaluationStage;
-
-
+use App\Models\Project;
+use App\Models\Stage;
 use Illuminate\Http\Request;
 
 class EvaluationDocumentController extends Controller
@@ -26,7 +26,7 @@ class EvaluationDocumentController extends Controller
     public function create(EvaluationStage $evaluation_stage)
     {
         return view('evaluations_documents.create', [
-            "evaluation_stage" => $evaluation_stage
+            "evaluation_stage" => $evaluation_stage,
         ]);
     }
 
@@ -34,7 +34,7 @@ class EvaluationDocumentController extends Controller
     {
         $data = $request->validate([
             'name'                  => 'required|string|max:255',
-            'path'                  => 'required|mimes:pdf,rar,zip', // Esto valida que el archivo sea un PDF, rar o zip (puedes ajustar según tus necesidades)
+            'path'                  => 'required|mimes:pdf,rar,zip,docx', // Esto valida que el archivo sea un PDF, rar o zip (puedes ajustar según tus necesidades)
             'evaluation_stage_id'   => 'required|integer'
         ]);
 
