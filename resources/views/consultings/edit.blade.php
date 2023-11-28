@@ -13,7 +13,11 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Editar Asesoria</h1>
+          <div class="contenedor">
+            <a href="{{ route('consultings.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
+        <h1>Editar asesoria</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">

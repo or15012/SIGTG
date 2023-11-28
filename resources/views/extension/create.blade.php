@@ -13,7 +13,11 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Agregar extensión</h1>
+        <div class="contenedor">
+            <a href="{{ route('extensions.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
+        <h1>Registrar extensión</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -25,7 +29,7 @@
             </div>
         @endif
 
-        @if(session('error'))
+        @if (session('error'))
             <div class="alert alert-danger">
                 {{ session('error') }}
             </div>
@@ -36,31 +40,31 @@
             <div class="mb-3">
                 <label for="project_id" class="form-label">Proyecto</label>
                 <select class="form-control" id="project_id" name="project_id">
-                <option value=""> Seleccione un proyecto </option>
+                    <option value=""> Seleccione un proyecto </option>
                     @foreach ($projects as $project)
-                        <option value="{{$project->id}}"> {{$project->name}}</option>
+                        <option value="{{ $project->id }}"> {{ $project->name }}</option>
                     @endforeach
                 </select>
             </div>
             <div class="mb-3">
                 <label for="type_extension_id" class="form-label">Tipo de extensión</label>
                 <select class="form-control" id="type_extension_id" name="type_extension_id">
-                <option value=""> Seleccione un tipo de extensión</option>
+                    <option value=""> Seleccione un tipo de extensión</option>
                     @foreach ($type_extensions as $type_extension)
-                        <option value="{{$type_extension->id}}"> {{$type_extension->name}}</option>
+                        <option value="{{ $type_extension->id }}"> {{ $type_extension->name }}</option>
                     @endforeach
                 </select>
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Descripción</label>
-                <textarea class="form-control" name="description" id="description" rows="2" cols="1">{{old('description')}}</textarea>
+                <textarea class="form-control" name="description" id="description" rows="2" cols="1">{{ old('description') }}</textarea>
             </div>
             <div class="mb-3">
                 <label for="extension_status" class="form-label">Estado</label>
                 <select class="form-control" id="extension_status" name="status">
-                    <option value="0" @if(old('status')== 0) selected @endif>Presentada</option>
-                    <option value="1" @if(old('status')== 1) selected @endif>Aceptada</option>
-                    <option value="2" @if(old('status')== 2) selected @endif>Rechazada</option>
+                    <option value="0" @if (old('status') == 0) selected @endif>Presentada</option>
+                    <option value="1" @if (old('status') == 1) selected @endif>Aceptada</option>
+                    <option value="2" @if (old('status') == 2) selected @endif>Rechazada</option>
                 </select>
             </div>
 
@@ -76,8 +80,11 @@
                 <label for="approval_letter_path" class="form-label">Carta de aprobación de asesor</label>
                 <input type="file" class="form-control" id="approval_letter_path" name="approval_letter_path">
             </div>
-            <br/>
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <br />
+            <div class="contenedor">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a href="{{ route('extensions.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
+            </div>
         </form>
     </div>
 @endsection
