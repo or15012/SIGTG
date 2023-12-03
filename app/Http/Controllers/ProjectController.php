@@ -147,6 +147,7 @@ class ProjectController extends Controller
 
     public function submitStage(Request $request, EvaluationStage $evaluation_stage)
     {
+        //agregar correo electronico notificando
 
         $evaluation_stage->status = $request->decision;
         $evaluation_stage->update();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\SendMail;
 use App\Models\Group;
+use App\Models\User;
 use App\Models\Observation;
 use App\Models\Profile;
 use App\Models\Project;
@@ -121,6 +122,25 @@ class ProfileController extends Controller
         $profile->status                = 0;
         $profile->save();
 
+
+        $role = 'Coordinador';
+        $userRoles = User::role($role)->get(); //modificar para diferenciar por modalidades.
+
+        foreach ($userRoles as $coordinator) {
+            try {
+                $emailData = [
+                    'user'       => $coordinator,
+                    'group'      => $group,
+                    'preprofile' => $profile,
+                ];
+                //dd($emailData);
+
+                Mail::to($coordinator->email)->send(new SendMail('mail.preprofile-coordinator-saved', 'Notificación de pre-perfil enviado', $emailData));
+            } catch (\Throwable $th) {
+                // Manejar la excepción
+            }
+        }
+
          // Obtener estudiantes del grupo
         $students = $group->users;
 
@@ -132,7 +152,7 @@ class ProfileController extends Controller
                     'group'      => $group,
                     'preprofile' => $profile,
                 ];
-                Mail::to($student->email)->send(new SendMail('mail.preprofile-saved', 'Preperfil enviado con éxito', $emailData));
+                Mail::to($student->email)->send(new SendMail('mail.preprofile-saved', 'Pre-Perfil Enviado', $emailData));
             } catch (\Throwable $th) {
                 // Manejar la excepción
             }
@@ -199,7 +219,7 @@ class ProfileController extends Controller
                     Mail::to($student->email)->send(
                         new SendMail(
                             'mail.preprofile-updated',
-                            'Actualización de preperfil',
+                            'Actualización de Pre-Perfil',
                             $mailData
                         )
                     );
