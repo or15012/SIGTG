@@ -152,6 +152,7 @@ class ProjectController extends Controller
         $evaluation_stage->update();
 
         // Envía el correo electrónico al coordinador
+        //REVISAR 
         $role = 'Coordinador';
         $userRoles = User::role($role)->get();
 
@@ -161,7 +162,7 @@ class ProjectController extends Controller
                     'user'                  => $coordinator,
                     'evaluation_stage'      => $evaluation_stage,
                 ];
-
+                dd($emailData);
                 Mail::to($coordinator->email)->send(new SendMail('emails.stage-submitted', 'Notificación de etapa enviada', $emailData));
             } catch (\Throwable $th) {
                 // Manejar la excepción
@@ -327,9 +328,6 @@ class ProjectController extends Controller
     }
     public function coordinatorSubmitFinalStage(Request $request, Project $project)
     {
-
-
-
         $project->status = $request->decision;
         $project->update();
 
