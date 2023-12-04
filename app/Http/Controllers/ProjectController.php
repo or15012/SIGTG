@@ -15,6 +15,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMail;
+
 
 class ProjectController extends Controller
 {
@@ -117,7 +120,6 @@ class ProjectController extends Controller
         ]);
     }
 
-
     public function showStage(Project $project, Stage $stage)
     {
         $evaluationStages = EvaluationStage::where('project_id', $project->id)
@@ -144,21 +146,33 @@ class ProjectController extends Controller
         ]);
     }
 
-
     public function submitStage(Request $request, EvaluationStage $evaluation_stage)
     {
-        //agregar correo electronico notificando
-
         $evaluation_stage->status = $request->decision;
         $evaluation_stage->update();
 
-        //identificare si es la ultima etapa para cargar las notas finales
+        // Envía el correo electrónico al coordinador
+        $role = 'Coordinador';
+        $userRoles = User::role($role)->get();
 
+        foreach ($userRoles as $coordinator) {
+            try {
+                $emailData = [
+                    'user'                  => $coordinator,
+                    'evaluation_stage'      => $evaluation_stage,
+                ];
+
+                Mail::to($coordinator->email)->send(new SendMail('emails.stage-submitted', 'Notificación de etapa enviada', $emailData));
+            } catch (\Throwable $th) {
+                // Manejar la excepción
+            }
+        }
+
+        //identificare si es la ultima etapa para cargar las notas finales
         return redirect()
             ->route('projects.show.stage', [$evaluation_stage->project_id, $evaluation_stage->stage_id])
             ->with('success', 'Documento guardado correctamente.');
     }
-
 
     public function modalApprovementReport(Request $request)
     {
@@ -311,8 +325,6 @@ class ProjectController extends Controller
             'evaluationStagesNotes' => $evaluationStagesNotes,
         ]);
     }
-
-
     public function coordinatorSubmitFinalStage(Request $request, Project $project)
     {
 

@@ -170,7 +170,6 @@ class ExtensionController extends Controller
             return redirect()->route('extensions.edit', ['extension' => $extension])->with('error', 'Algo salió mal. Intente nuevamente.');
         }
     }
-
     public function destroy(Extension $extension)
     {
         // 
