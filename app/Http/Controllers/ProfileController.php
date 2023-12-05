@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Mail;
 
 class ProfileController extends Controller
 {
-    
+
     const PERMISSIONS = [
         'index.student'    => 'Preprofiles.students',
         'index.adviser'    => 'Preprofiles.advisers',
@@ -194,7 +194,7 @@ class ProfileController extends Controller
                     'user' => $student,
                     'preprofile' => $preprofile,
                 ];
-    
+
                 try {
                     Mail::to($student->email)->send(
                         new SendMail(
@@ -208,7 +208,7 @@ class ProfileController extends Controller
                     //Log::error('Error al enviar correo electrónico: ' . $th->getMessage());
                 }
             }
-    
+
             return redirect()->route('profiles.preprofile.index')->with('success', 'El preperfil se ha actualizado correctamente');
         } catch (\Throwable $th) {
             // Log de errores o manejo adicional
@@ -313,7 +313,7 @@ class ProfileController extends Controller
                 );
             } catch (\Throwable $th) {
                 // Working..
-                dd($th);
+               // dd($th);
             }
         }
 
