@@ -240,8 +240,11 @@ class ProjectController extends Controller
     }
     public function finish(Project $project)
     {
+        $status = $this->disableProject($project);
+
         return view('projects.show-finish', [
-            "project"               => $project
+            "project"               => $project,
+            "status"                => $status
         ]);
     }
 
