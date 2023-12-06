@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cycle;
 use App\Models\EvaluationDocument;
 use App\Models\EvaluationStage;
 use App\Models\EvaluationStageNote;
@@ -11,8 +12,10 @@ use App\Models\School;
 use App\Models\Stage;
 use App\Models\User;
 use App\Models\UserProjectNote;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
@@ -122,10 +125,14 @@ class ProjectController extends Controller
 
     public function showStage(Project $project, Stage $stage)
     {
+        $status = $this->disableProject($project);
+       // dd($status);
+
         $evaluationStages = EvaluationStage::where('project_id', $project->id)
             ->where('stage_id', $stage->id)
             ->first();
         $evaluationDocuments = array();
+
 
         if (isset($evaluationStages)) {
             $evaluationDocuments = EvaluationDocument::where('evaluation_stage_id', $evaluationStages->id)
@@ -141,8 +148,9 @@ class ProjectController extends Controller
         return view('projects.show-stage', [
             "stage"                 => $stage,
             "project"               => $project,
-            "evaluationStages"       => $evaluationStages,
+            "evaluationStages"      => $evaluationStages,
             "evaluationDocuments"   => $evaluationDocuments,
+            "status"                => $status
         ]);
     }
 
@@ -170,7 +178,7 @@ class ProjectController extends Controller
                     //dd($th);
                 }
             }
-        } 
+        }
         if ($evaluation_stage->status == 1){
             //Envio de correo a estudiantes.
             $group = EvaluationStage::join('projects', 'projects.id', 'evaluation_stages.project_id')
@@ -223,7 +231,7 @@ class ProjectController extends Controller
                 $project->approvement_report = $request->file('approvement_report')->storeAs('projects', $project->id . '-' . $request->file('approvement_report')->getClientOriginalName());
                 $project->save();
                 DB::commit();
-                return redirect()->action([ProjectController::class, 'coordinatorShow'],$project->id)->with('success', 'Acta de aprobación subida exitosamente.');
+                return redirect()->action([ProjectController::class, 'coordinatorShow'], $project->id)->with('success', 'Acta de aprobación subida exitosamente.');
             }
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -260,7 +268,6 @@ class ProjectController extends Controller
         $project->update();
 
         return redirect()->action([ProjectController::class, 'index'])->with('success', 'Tomo final guardado.');
-
     }
 
     public function download(Project $project, $file)
@@ -276,7 +283,7 @@ class ProjectController extends Controller
         $projects = Project::join('groups as g', 'g.id', 'projects.group_id')
             ->join('teacher_group as tg', 'tg.group_id', 'g.id')
             ->where('tg.user_id', $user->id)
-            ->select('projects.id','projects.name')
+            ->select('projects.id', 'projects.name')
             ->get();
 
         return view('projects.coordinator.index', [
@@ -358,6 +365,7 @@ class ProjectController extends Controller
     }
     public function coordinatorSubmitFinalStage(Request $request, Project $project)
     {
+
         $project->status = $request->decision;
         $project->update();
 
@@ -408,4 +416,21 @@ class ProjectController extends Controller
             ->route('projects.coordinator.show', [$project->id])
             ->with('success', 'Proyecto actualizado correctamente.');
     }
+
+    public function disableProject(Project $project)
+    {
+
+        // Obtener fecha actual
+        $today = new DateTime();
+        $deadline = new DateTime($project->deadline);
+
+        // Ver si fecha actual es menor o igual que la fecha de finalización de proyecto
+
+        if ($status= $today <= $deadline) {
+            $project->status = 0;
+        }
+
+        return $status;
+    }
+
 }
