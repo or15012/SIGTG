@@ -124,7 +124,7 @@ class ProjectController extends Controller
     public function showStage(Project $project, Stage $stage)
     {
         $status = $this->disableProject($project);
-       // dd($status);
+      // dd($status);
 
         $evaluationStages = EvaluationStage::where('project_id', $project->id)
             ->where('stage_id', $stage->id)
@@ -377,13 +377,16 @@ class ProjectController extends Controller
     {
 
         // Obtener fecha actual
+        $status = TRUE;
         $today = new DateTime();
+
         $deadline = new DateTime($project->deadline);
+        //dd($deadline);
 
         // Ver si fecha actual es menor o igual que la fecha de finalización de proyecto
 
-        if ($status= $today <= $deadline) {
-            $project->status = 0;
+        if ($today >= $deadline) {
+            $status = FALSE;
         }
 
         return $status;
