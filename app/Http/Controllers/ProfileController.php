@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\SendMail;
 use App\Models\Group;
+use App\Models\User;
 use App\Models\Observation;
 use App\Models\Profile;
 use App\Models\Project;
@@ -13,7 +14,6 @@ use Illuminate\Support\Facades\Mail;
 
 class ProfileController extends Controller
 {
-    
     const PERMISSIONS = [
         'index.student'    => 'Preprofiles.students',
         'index.adviser'    => 'Preprofiles.advisers',
@@ -34,7 +34,6 @@ class ProfileController extends Controller
      *
      * Metodos para estudiantes creación y edicion de preperfiles
      */
-
     public function preProfileIndex()
     {
         //obtener grupo actual del user logueado
@@ -63,8 +62,6 @@ class ProfileController extends Controller
     public function preProfileCreate()
     {
         //obtener grupo actual del user logueado
-
-
         return view('preprofiles.create', []);
     }
 
@@ -121,6 +118,25 @@ class ProfileController extends Controller
         $profile->status                = 0;
         $profile->save();
 
+        //Envio de correo a coordinador.
+        $role = 'Coordinador';
+        $userRoles = User::role($role)->get(); //modificar para diferenciar por modalidades.
+
+        foreach ($userRoles as $coordinator) {
+            try {
+                $emailData = [
+                    'user'       => $coordinator,
+                    'group'      => $group,
+                    'preprofile' => $profile,
+                ];
+                //dd($emailData);
+
+                Mail::to($coordinator->email)->send(new SendMail('mail.preprofile-coordinator-saved', 'Notificación de pre-perfil enviado', $emailData));
+            } catch (\Throwable $th) {
+                // Manejar la excepción
+            }
+        }
+
          // Obtener estudiantes del grupo
         $students = $group->users;
 
@@ -132,7 +148,7 @@ class ProfileController extends Controller
                     'group'      => $group,
                     'preprofile' => $profile,
                 ];
-                Mail::to($student->email)->send(new SendMail('mail.preprofile-saved', 'Preperfil enviado con éxito', $emailData));
+                Mail::to($student->email)->send(new SendMail('mail.preprofile-saved', 'Pre-Perfil Enviado', $emailData));
             } catch (\Throwable $th) {
                 // Manejar la excepción
             }
@@ -149,7 +165,6 @@ class ProfileController extends Controller
     {
         return view('preprofiles.edit', ['preprofile' => $preprofile]);
     }
-
 
     public function preProfileUpdate(Request $request, Profile $preprofile)
     {
@@ -199,7 +214,7 @@ class ProfileController extends Controller
                     Mail::to($student->email)->send(
                         new SendMail(
                             'mail.preprofile-updated',
-                            'Actualización de preperfil',
+                            'Actualización de Pre-Perfil',
                             $mailData
                         )
                     );
@@ -231,13 +246,10 @@ class ProfileController extends Controller
         return response()->download($filePath);
     }
 
-
-
     /**
      *
      * Metodos para coordinadores revision, cambio de estado y generacion de obseraciones de preperfiles
      */
-
     public function preProfileCoordinatorIndex()
     {
         //obtener grupo actual del user logueado
@@ -266,7 +278,6 @@ class ProfileController extends Controller
     {
         return view('preprofiles.coordinator.show', compact('preprofile'));
     }
-
 
     public function preProfileCoordinatorUpdate(Request $request, Profile $preprofile)
     {
@@ -320,18 +331,15 @@ class ProfileController extends Controller
         return view('preprofiles.coordinator.show', compact('preprofile'));
     }
 
-
     public function preProfileCoordinatorObservationsList(Profile $preprofile)
     {
         return view('preprofiles.coordinator.observations', ['preprofile' => $preprofile]);
     }
 
-
     public function preProfileCoordinatorObservationCreate(Profile $preprofile)
     {
         return view('preprofiles.coordinator.create', ['preprofile' => $preprofile]);
     }
-
 
     public function preProfileCoordinatorObservationStore(Request $request)
     {
@@ -350,13 +358,10 @@ class ProfileController extends Controller
         return redirect()->route('profiles.preprofile.coordinator.observation.list', [$request->profile_id])->with('success', 'La observación se ha guardado correctamente');
     }
 
-
-
     /**
      *
      * Metodos para estudiantes creación y edicion de preperfiles
      */
-
     public function profileIndex()
     {
         //obtener grupo actual del user logueado
@@ -389,7 +394,6 @@ class ProfileController extends Controller
     {
         return view('profiles.edit', ['profile' => $profile]);
     }
-
 
     public function profileUpdate(Request $request, Profile $profiles)
     {
@@ -429,7 +433,6 @@ class ProfileController extends Controller
 
             // Envío de correo electrónico a cada estudiante del grupo
             $students = $profiles->group->users;
-
             foreach ($students as $student) {
                 $mailData = [
                     'user' => $student,
@@ -459,12 +462,10 @@ class ProfileController extends Controller
         }
     }
 
-
     /**
      *
      * Metodos para coordinadores revision, cambio de estado y generacion de obseraciones de perfiles
      */
-
     public function coordinatorIndex()
     {
         //obtener grupo actual del user logueado

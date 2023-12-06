@@ -15,6 +15,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMail;
+
 
 class ProjectController extends Controller
 {
@@ -117,7 +120,6 @@ class ProjectController extends Controller
         ]);
     }
 
-
     public function showStage(Project $project, Stage $stage)
     {
         $evaluationStages = EvaluationStage::where('project_id', $project->id)
@@ -144,20 +146,65 @@ class ProjectController extends Controller
         ]);
     }
 
-
     public function submitStage(Request $request, EvaluationStage $evaluation_stage)
     {
-
         $evaluation_stage->status = $request->decision;
         $evaluation_stage->update();
 
-        //identificare si es la ultima etapa para cargar las notas finales
+        if ($evaluation_stage->status ==2) {
+        // Envía el correo electrónico al asesor.
+        // Le va a caer correo a todo el que tenga este rol.
+        // Cuando tenga número de grupo, se manda a llamar al teacher.
+        $role = 'Coordinador';
+        $userRoles = User::role($role)->get();
+            foreach ($userRoles as $coordinator) {
+                try {
+                    $emailData = [
+                        'user'                  => $coordinator,
+                        'evaluation_stage'      => $evaluation_stage,
+                    ];
+                    //dd($emailData);
+                    Mail::to($coordinator->email)->send(new SendMail('mail.stage-submitted', 'Notificación de etapa enviada', $emailData));
+                } catch (\Throwable $th) {
+                    // Manejar la excepción
+                    //dd($th);
+                }
+            }
+        } 
+        if ($evaluation_stage->status == 1){
+            //Envio de correo a estudiantes.
+            $group = EvaluationStage::join('projects', 'projects.id', 'evaluation_stages.project_id')
+                                        ->join('groups', 'groups.id', 'projects.group_id')
+                                        ->where('evaluation_stages.id', $evaluation_stage->id)
+                                        ->select('groups.*')
+                                        ->first();
 
+            $users = User::join('user_group as ug', 'ug.user_id', 'users.id')
+                        ->where('ug.group_id', $group->id)
+                        ->select('users.id', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.second_last_name', 'users.email')
+                        ->get();
+
+            foreach($users as  $students){
+                try {
+                    $emailData = [
+                        'user'                  => $students,
+                        'evaluation_stage'      => $evaluation_stage,
+                    ];
+                    //dd($emailData);
+                    Mail::to($students->email)->send(new SendMail('mail.stage-approved', 'Notificación de etapa aprobada', $emailData));
+                } catch (\Throwable $th) {
+                    // Manejar la excepción
+                    //dd($th);
+                }
+            }
+
+        }
+
+        //identificare si es la ultima etapa para cargar las notas finales
         return redirect()
             ->route('projects.show.stage', [$evaluation_stage->project_id, $evaluation_stage->stage_id])
             ->with('success', 'Documento guardado correctamente.');
     }
-
 
     public function modalApprovementReport(Request $request)
     {
@@ -183,7 +230,6 @@ class ProjectController extends Controller
             return redirect()->action([ProjectController::class, 'index'])->with('error', 'Algo salió mal. Intente nuevamente.');
         }
     }
-
     public function finish(Project $project)
     {
         return view('projects.show-finish', [
@@ -310,13 +356,8 @@ class ProjectController extends Controller
             'evaluationStagesNotes' => $evaluationStagesNotes,
         ]);
     }
-
-
     public function coordinatorSubmitFinalStage(Request $request, Project $project)
     {
-
-
-
         $project->status = $request->decision;
         $project->update();
 
