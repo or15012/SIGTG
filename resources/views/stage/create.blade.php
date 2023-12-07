@@ -65,10 +65,11 @@
 
             <div class="mb-3">
                 <label for="school" class="form-label">Escuela</label>
-                <select class="form-control" id="school" name="school">
+                <select class="form-control" id="school" name="school" disabled>
                     <option value="0"> Seleccione una escuela </option>
                     @foreach ($schools as $school)
-                        <option value="{{ $school->id }}"> {{ $school->name }}</option>
+                        <option value="{{ $school->id }}" @if ($school->id == session('school')['id']) selected @endif> {{ $school->name }}
+                        </option>
                     @endforeach
                 </select>
             </div>

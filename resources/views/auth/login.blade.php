@@ -7,9 +7,9 @@
 @section('content')
     <div class="navbar-header d-flex justify-content-end mr-5">
 
-        <a href="{{ route('register') }}" class="text-dark" style="margin-right: 15px;">
+        {{-- <a href="{{ route('register') }}" class="text-dark" style="margin-right: 15px;">
             <i class="fas fa-user-plus"></i> Registrarse
-        </a>
+        </a> --}}
         <a href="{{ route('login') }}" class="text-dark" style="margin-right: -40px;">
             <i class="fas fa-sign-in-alt"></i> Ingresar
         </a>

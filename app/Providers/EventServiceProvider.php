@@ -37,6 +37,8 @@ class EventServiceProvider extends ServiceProvider
             //que pasa sino tiene escuela asignada
 
             //tengo que revisar si esque no tiene o si posee todas segun el rol
+
+            //con escuela asignada guardare asi
             $schoolReturn = array(
                 "id"    => $school->id,
                 "name"  => $school->name,
