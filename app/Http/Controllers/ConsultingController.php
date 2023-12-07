@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Consulting;
 use App\Models\Group;
+use App\Models\Project;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Collection;
 
 class ConsultingController extends Controller
 {
@@ -50,12 +52,26 @@ class ConsultingController extends Controller
                 ->get();
         }
 
-        return view('consultings.index', compact('consultings', 'userType'));
+        // Creando una instancia del controlador Project
+        $projectController = new ProjectController();
+
+        //Obteniendo proyectos
+        $projects = Project::all();
+
+        //Llamando a la funcion disabaleProject
+        foreach ($projects as $project) {
+            $status = $projectController->disableProject($project);
+            //dd($status);
+        }
+
+        return view('consultings.index', compact('consultings', 'userType','status'));
     }
 
     public function create()
     {
-        $userType = auth()->user()->type; // Obtiene el tipo de usuario actual
+        // Obtiene el tipo de usuario actual
+        $userType = auth()->user()->type;
+
         return view('consultings.create', compact('userType'));
     }
 
