@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Protocol;
 use App\Models\School;
+use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -33,8 +35,10 @@ class EventServiceProvider extends ServiceProvider
             $user = $event->user;
 
             $school = School::find($user->school_id);
-
+            $protocols = $user->protocols;
             //que pasa sino tiene escuela asignada
+
+
 
             //tengo que revisar si esque no tiene o si posee todas segun el rol
 
@@ -44,8 +48,22 @@ class EventServiceProvider extends ServiceProvider
                 "name"  => $school->name,
             );
 
+            foreach($protocols as $key => $protocol){
+                if ($key === 0) {
+                    $protocol = array(
+                        "id"    => $protocol->id,
+                        "name"  =>$protocol->name
+                    );
+
+                }
+            }
+
             // Puedes asignar tu variable de sesión aquí.
-            session(['school' => $schoolReturn]);
+            session([
+                'school'        => $schoolReturn,
+                'protocols'     => $protocols,
+                'protocol'      => $protocol,
+            ]);
         });
     }
 }

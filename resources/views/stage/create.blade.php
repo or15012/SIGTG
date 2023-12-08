@@ -35,7 +35,7 @@
             </div>
         @endif
 
-        <form action="{{ route('stages.store') }}" method="POST">
+        <form action="{{ route('stages.store') }}" id="form-stage" method="POST">
             @csrf
             <div class="mb-3">
                 <label for="name" class="form-label">Nombre de etapa evaluativa</label>
@@ -55,10 +55,10 @@
 
             <div class="mb-3">
                 <label for="protocol" class="form-label">Protocolo</label>
-                <select class="form-control" id="protocol" name="protocol">
+                <select class="form-control" id="protocol" name="protocol" disabled>
                     <option value="0"> Seleccione un protocolo </option>
                     @foreach ($protocols as $protocol)
-                        <option value="{{ $protocol->id }}"> {{ $protocol->name }}</option>
+                        <option value="{{ $protocol->id }}" @if ($protocol->id == session('protocol')['id']) selected @endif> {{ $protocol->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -95,5 +95,7 @@
 @endsection
 
 @section('script')
+
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+    <script src="{{ URL::asset('js/stages.js') }}"></script>
 @endsection

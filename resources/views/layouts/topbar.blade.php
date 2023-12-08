@@ -52,6 +52,15 @@
                 </button>
             </div>
 
+            <div class="dropdown d-inline-block">
+                <button type="button" class="btn header-item" data-bs-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                @if ( session('protocol') != null)
+                        {{ session('protocol')['name'] }}
+                    @endif
+                </button>
+            </div>
+
             <div class="dropdown d-inline-block language-switch">
                 <button type="button" class="btn header-item" data-bs-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
