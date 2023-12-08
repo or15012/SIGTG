@@ -269,7 +269,7 @@ class GroupController extends Controller
             $usersGroup = UserGroup::where('group_id', $request->input('group_id'))->where('status', 1)->get();
 
             if ($parameterMaxGroup != null && count($usersGroup) >= $parameterMaxGroup->value) {
-                return redirect()->back()->withErrors(['mensaje' => 'Lo sentimos el grupo ya ha sido completado.']);
+                return redirect()->back()->withErrors(['message' => 'Lo sentimos el grupo ya ha sido completado.']);
             }
 
             //Obteniendo info de user logueado
@@ -286,7 +286,7 @@ class GroupController extends Controller
                     ->exists();
                 if ($isActiveInOtherGroup) {
                     // El usuario está activo en otro grupo este año
-                    return redirect()->back()->withErrors(['mensaje' => 'Ya te encuentras activo en otro grupo.']);
+                    return redirect()->back()->withErrors(['message' => 'Ya te encuentras activo en otro grupo.']);
                 }
             }
             $user->groups()
@@ -296,7 +296,7 @@ class GroupController extends Controller
             return redirect()->back()->with('success', 'Respuesta guardada con éxito');
         } catch (Exception $th) {
             Log::info($th->getMessage());
-            return redirect()->back()->withErrors(['mensaje' => 'Error al actualizar.']);
+            return redirect()->back()->withErrors(['message' => 'Error al actualizar.']);
         }
     }
 
