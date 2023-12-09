@@ -171,5 +171,6 @@ return [
     "ShowPerfil"        => "Mostrar Perfil",
     "Consultings"       => "Asesorias",
     "EvaluationsDocuments"   => "Documentos de evaluación",
-    "Roles"                  => "Roles"
+    "Roles"                  => "Roles",
+    "GroupsAssigned"  => "Grupos asignados"
 ];

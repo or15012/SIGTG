@@ -49,7 +49,7 @@
                         <td>{{ $consulting->summary }}</td>
                         <td>{{ \Carbon\Carbon::parse($consulting->date)->format('d-m-Y') }}</td>
                         <td>
-                            <a href="{{ route('consultings.show', $consulting->id) }}" class="btn btn-primary"><i
+                            <a href="{{ route('consultings.show', [$consulting->id, $project->id]) }}" class="btn btn-primary"><i
                                     class="fas fa-eye"></i></a>
 
                             @if ($status)

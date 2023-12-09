@@ -173,9 +173,9 @@
                 @endcan
 
                 <li>
-                    <a href="{{ route('consultings.index') }}">
+                    <a href="{{ route('groups.assigned') }}">
                         <i class="bx bx-file icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-consultings">@lang('translation.Consultings')</span>
+                        <span class="menu-item" data-key="t-groupsassigned">@lang('translation.GroupsAssigned')</span>
                     </a>
                 </li>
 

@@ -22,7 +22,7 @@ class ConsultingController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Project $project)
     {
         $userType = auth()->user()->type;
 
@@ -56,15 +56,15 @@ class ConsultingController extends Controller
         $projectController = new ProjectController();
 
         //Obteniendo proyectos
-        $projects = Project::all();
+
 
         //Llamando a la funcion disabaleProject
-        foreach ($projects as $project) {
+
             $status = $projectController->disableProject($project);
             //dd($status);
-        }
 
-        return view('consultings.index', compact('consultings', 'userType','status'));
+
+        return view('consultings.index', compact('consultings', 'userType','status', 'project'));
     }
 
     public function create()
@@ -161,11 +161,11 @@ class ConsultingController extends Controller
         return redirect()->route('consultings.index')->with('success', 'Asesoria actualizada correctamente.');
     }
 
-    public function show(Consulting $consulting)
+    public function show(Consulting $consulting, Project $project)
     {
 
         // Devuelve la vista 'consultings.show' pasando la asesoría como una variable compacta
-        return view('consultings.show', compact('consulting'));
+        return view('consultings.show', compact('consulting','project'));
     }
 
     public function destroy(Consulting $consulting)
