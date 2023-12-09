@@ -126,7 +126,8 @@ class ProjectController extends Controller
     public function showStage(Project $project, Stage $stage)
     {
         $status = $this->disableProject($project);
-       // dd($status);
+
+        //dd($status);
 
         $evaluationStages = EvaluationStage::where('project_id', $project->id)
             ->where('stage_id', $stage->id)
@@ -150,7 +151,8 @@ class ProjectController extends Controller
             "project"               => $project,
             "evaluationStages"      => $evaluationStages,
             "evaluationDocuments"   => $evaluationDocuments,
-            "status"                => $status
+            "status"                => $status,
+
         ]);
     }
 
@@ -159,12 +161,12 @@ class ProjectController extends Controller
         $evaluation_stage->status = $request->decision;
         $evaluation_stage->update();
 
-        if ($evaluation_stage->status ==2) {
-        // Envía el correo electrónico al asesor.
-        // Le va a caer correo a todo el que tenga este rol.
-        // Cuando tenga número de grupo, se manda a llamar al teacher.
-        $role = 'Coordinador';
-        $userRoles = User::role($role)->get();
+        if ($evaluation_stage->status == 2) {
+            // Envía el correo electrónico al asesor.
+            // Le va a caer correo a todo el que tenga este rol.
+            // Cuando tenga número de grupo, se manda a llamar al teacher.
+            $role = 'Coordinador';
+            $userRoles = User::role($role)->get();
             foreach ($userRoles as $coordinator) {
                 try {
                     $emailData = [
@@ -179,20 +181,20 @@ class ProjectController extends Controller
                 }
             }
         }
-        if ($evaluation_stage->status == 1){
+        if ($evaluation_stage->status == 1) {
             //Envio de correo a estudiantes.
             $group = EvaluationStage::join('projects', 'projects.id', 'evaluation_stages.project_id')
-                                        ->join('groups', 'groups.id', 'projects.group_id')
-                                        ->where('evaluation_stages.id', $evaluation_stage->id)
-                                        ->select('groups.*')
-                                        ->first();
+                ->join('groups', 'groups.id', 'projects.group_id')
+                ->where('evaluation_stages.id', $evaluation_stage->id)
+                ->select('groups.*')
+                ->first();
 
             $users = User::join('user_group as ug', 'ug.user_id', 'users.id')
-                        ->where('ug.group_id', $group->id)
-                        ->select('users.id', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.second_last_name', 'users.email')
-                        ->get();
+                ->where('ug.group_id', $group->id)
+                ->select('users.id', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.second_last_name', 'users.email')
+                ->get();
 
-            foreach($users as  $students){
+            foreach ($users as  $students) {
                 try {
                     $emailData = [
                         'user'                  => $students,
@@ -205,7 +207,6 @@ class ProjectController extends Controller
                     //dd($th);
                 }
             }
-
         }
 
         //identificare si es la ultima etapa para cargar las notas finales
@@ -240,8 +241,11 @@ class ProjectController extends Controller
     }
     public function finish(Project $project)
     {
+        $status = $this->disableProject($project);
+
         return view('projects.show-finish', [
-            "project"               => $project
+            "project"               => $project,
+            "status"                => $status
         ]);
     }
 
@@ -421,16 +425,18 @@ class ProjectController extends Controller
     {
 
         // Obtener fecha actual
+        $status = TRUE;
         $today = new DateTime();
+
         $deadline = new DateTime($project->deadline);
+        //dd($deadline);
 
         // Ver si fecha actual es menor o igual que la fecha de finalización de proyecto
 
-        if ($status= $today <= $deadline) {
-            $project->status = 0;
+        if ($today >= $deadline) {
+            $status = FALSE;
         }
 
         return $status;
     }
-
 }

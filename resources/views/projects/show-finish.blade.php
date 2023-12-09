@@ -22,7 +22,7 @@
 
 
         <div class="row">
-
+            @if ($status)
             @can('Projects.add.documents')
                 <div class="col-xl-3 col-sm-6 mb-3">
                     <div class="card text-black  o-hidden h-100">
@@ -97,6 +97,11 @@
                     </div>
                 </div>
             @endcan
+            @else
+        <div class="alert alert-info " role="alert">
+            Este proyecto ya no está activo.
+        </div>
+        @endif
         </div>
         <div class="row text-center">
             <h3>Tomo final</h3>

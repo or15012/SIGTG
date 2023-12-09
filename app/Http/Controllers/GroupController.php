@@ -463,4 +463,13 @@ class GroupController extends Controller
         return response()->stream($filePath);
     }
 
+    public function assignedGroup()
+    {
+        $groups = Group::select('groups.id', 'groups.number', 'groups.status','groups.protocol_id')
+        ->join('teacher_group as tg', 'groups.id', 'tg.group_id')
+        ->where('tg.user_id', auth()->user()->id)
+        ->get();
+//dd($groups);
+        return view('groups.assigned-group', compact('groups'));
+    }
 }

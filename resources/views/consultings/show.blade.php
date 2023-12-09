@@ -14,7 +14,7 @@
     @endcomponent
     <div class="container">
         <div class="contenedor">
-            <a href="{{ route('consultings.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+            <a href="{{ route('consultings.index',$project->id) }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
         <h1>Consultar asesoria</h1>

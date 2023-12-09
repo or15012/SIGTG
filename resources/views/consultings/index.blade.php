@@ -14,7 +14,12 @@
     @endcomponent
     <div class="container">
         <h1>Lista de asesorias</h1>
-        @if ($userType === 1)
+        @if (!$status)
+        <div class="alert alert-info mt-3">
+            No se puede registrar ni realizar cambios en asesorias. Proyecto inactivo.
+        </div>
+    @endif
+        @if ($userType === 1 && $status)
             <a href="{{ route('consultings.create') }}" class="btn btn-primary mb-3">Registrar asesoria</a>
         @endif
 
@@ -44,18 +49,23 @@
                         <td>{{ $consulting->summary }}</td>
                         <td>{{ \Carbon\Carbon::parse($consulting->date)->format('d-m-Y') }}</td>
                         <td>
-                            <a href="{{ route('consultings.show', $consulting->id) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
+                            <a href="{{ route('consultings.show', [$consulting->id, $project->id]) }}" class="btn btn-primary"><i
+                                    class="fas fa-eye"></i></a>
 
-                            <a href="{{ route('consultings.edit', $consulting->id) }}" class="btn btn-primary"><i class="fas fa-pen"></i></a>
+                            @if ($status)
+                                <a href="{{ route('consultings.edit', $consulting->id) }}" class="btn btn-primary"><i
+                                        class="fas fa-pen"></i></a>
 
-                            <form action="{{ route('consultings.destroy', $consulting->id) }}" method="POST"
-                                style="display: inline">
-                                @csrf
-                                @method('DELETE')
-                                @if ($consulting->number !== null)
-                                    <button type="submit" class="btn btn-danger buttonDelete"><i class="fas fa-trash-alt"></i></button>
-                                @endif
-                            </form>
+                                <form action="{{ route('consultings.destroy', $consulting->id) }}" method="POST"
+                                    style="display: inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    @if ($consulting->number !== null)
+                                        <button type="submit" class="btn btn-danger buttonDelete"><i
+                                                class="fas fa-trash-alt"></i></button>
+                                    @endif
+                                </form>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

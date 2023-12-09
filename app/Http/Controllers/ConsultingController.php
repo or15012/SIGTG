@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Consulting;
 use App\Models\Group;
+use App\Models\Project;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Collection;
 
 class ConsultingController extends Controller
 {
@@ -20,7 +22,7 @@ class ConsultingController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Project $project)
     {
         $userType = auth()->user()->type;
 
@@ -50,12 +52,26 @@ class ConsultingController extends Controller
                 ->get();
         }
 
-        return view('consultings.index', compact('consultings', 'userType'));
+        // Creando una instancia del controlador Project
+        $projectController = new ProjectController();
+
+        //Obteniendo proyectos
+
+
+        //Llamando a la funcion disabaleProject
+
+            $status = $projectController->disableProject($project);
+            //dd($status);
+
+
+        return view('consultings.index', compact('consultings', 'userType','status', 'project'));
     }
 
     public function create()
     {
-        $userType = auth()->user()->type; // Obtiene el tipo de usuario actual
+        // Obtiene el tipo de usuario actual
+        $userType = auth()->user()->type;
+
         return view('consultings.create', compact('userType'));
     }
 
@@ -145,11 +161,11 @@ class ConsultingController extends Controller
         return redirect()->route('consultings.index')->with('success', 'Asesoria actualizada correctamente.');
     }
 
-    public function show(Consulting $consulting)
+    public function show(Consulting $consulting, Project $project)
     {
 
         // Devuelve la vista 'consultings.show' pasando la asesoría como una variable compacta
-        return view('consultings.show', compact('consulting'));
+        return view('consultings.show', compact('consulting','project'));
     }
 
     public function destroy(Consulting $consulting)

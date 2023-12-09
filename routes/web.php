@@ -18,6 +18,7 @@ use App\Http\Controllers\EvaluationDocumentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ExtensionController;
 use App\Http\Controllers\StageController;
+use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -124,14 +125,16 @@ Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
     Route::post('/modal-authorization-agreement', [GroupController::class, 'storeAuthorizationAgreement'])->name('store.autorization.agreement');
 
     Route::get('/download/{teachergroup}/{file}', [GroupController::class, 'teacherGroupDownload'])->name('download');
+    //ruta para mostrar grupos asignados a docentes
+    Route::get('/assigned/group', [GroupController::class, 'assignedGroup'])->name('assigned');
 });
 
 //Grupo para las rutas de asesoria.
 Route::group(['prefix' => 'consultings', 'as' => 'consultings.'], function () {
-    Route::get('/', [ConsultingController::class, 'index'])->name('index');
+    Route::get('/index/{project}', [ConsultingController::class, 'index'])->name('index');
     Route::get('/create', [ConsultingController::class, 'create'])->name('create');
     Route::post('/', [ConsultingController::class,  'store'])->name('store');
-    Route::get('/{consulting}', [ConsultingController::class, 'show'])->name('show');
+    Route::get('/{consulting}/{project}', [ConsultingController::class, 'show'])->name('show');
     Route::get('/{consulting}/edit', [ConsultingController::class, 'edit'])->name('edit');
     Route::put('/{consulting}', [ConsultingController::class, 'update'])->name('update');
     Route::delete('/{consulting}', [ConsultingController::class, 'destroy'])->name('destroy');

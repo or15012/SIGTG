@@ -171,5 +171,7 @@
 "ProjectsAdviser"   => "Projects (adviser)",
 "ShowPerfil"        => "ShowPerfil",
 "Consultings"        => "Consultings",
-"EvaluationsDocuments"   => "Evaluations Documents"
+"EvaluationsDocuments"   => "Evaluations Documents",
+"GroupsAssigned"  => "Groups Assigned"
+
 ];
