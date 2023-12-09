@@ -6,6 +6,7 @@ use App\Mail\SendMail;
 use App\Models\Cycle;
 use App\Models\Group;
 use App\Models\Parameter;
+use App\Models\TeacherGroup;
 use App\Models\User;
 use App\Models\UserGroup;
 use Carbon\Carbon;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Exp;
 
 class GroupController extends Controller
 {
@@ -312,6 +314,7 @@ class GroupController extends Controller
             'u.email',
             'u.id',
             'tg.type',
+            'tg.id as tg_id'
         )
             ->join('teacher_group as tg', 'groups.id', 'tg.group_id')
             ->join('users as u', 'tg.user_id', 'u.id')
@@ -350,13 +353,13 @@ class GroupController extends Controller
         $validatedData = $request->validate([
             'teachers'          => 'array|required', // Campo que contendrá los parámetros
             'type_committee'    => 'required',
-            'agreement'         => 'required|mimes:pdf',
+            // 'agreement'         => 'required|mimes:pdf',
         ]);
 
         // Procesar y guardar el archivo
-        if ($request->hasFile('agreement')) {
-            $path = $request->file('agreement')->store('agreement'); // Define la carpeta de destino donde se guardará el archivo
-        }
+        // if ($request->hasFile('agreement')) {
+        //     $path = $request->file('agreement')->store('agreement'); // Define la carpeta de destino donde se guardará el archivo
+        // }
 
         $syncData = [];
         foreach ($request->teachers as $key => $userId) {
@@ -364,7 +367,7 @@ class GroupController extends Controller
                 'user_id'           => intval($userId),
                 'status'            => 1, // Establecer status = 1
                 'type'              => $request->type_committee, // Establecer asesor = 0 , jurados = 1
-                'path_agreement'    => $path
+                // 'path_agreement'    => $path
             ];
             $syncData[] = $userData;
 
@@ -424,4 +427,40 @@ class GroupController extends Controller
             return redirect()->action([GroupController::class, 'index'])->with('error', 'Algo salió mal. Intente nuevamente.');
         }
     }
+
+
+
+    public function modalAuthorizationAgreement(Request $request)
+    {
+        return view('groups.modal.attach_authorization_agreement', ['group_committee_id' => $request->group_committee_id]);
+    }
+
+
+    public function storeAuthorizationAgreement(Request $request)
+    {
+        try {
+            $group = TeacherGroup::find($request->group_committee_id);
+            if ($request->hasFile('path_agreement')) {
+                if (is_file(storage_path('app/' . $group->path_agreement))) {
+                    Storage::delete($group->path_agreement);
+                }
+                $group->path_agreement = $request->file('path_agreement')->storeAs('agreement', $group->id . '-' . $request->file('path_agreement')->getClientOriginalName());
+                $group->save();
+
+                return redirect()->action([GroupController::class, 'index'])->with('success', 'Carta de acuerdo subida exitosamente.');
+            }else{
+                return redirect()->back()->with('error', 'Algo salió mal. Intente nuevamente.');
+            }
+        } catch (Exception $th) {
+            return redirect()->action([GroupController::class, 'index'])->with('error', 'Algo salió mal. Intente nuevamente.');
+        }
+    }
+
+    public function teacherGroupDownload(TeacherGroup $teachergroup, $file)
+    {
+
+        $filePath = storage_path('app/' . $teachergroup->$file);
+        return response()->stream($filePath);
+    }
+
 }

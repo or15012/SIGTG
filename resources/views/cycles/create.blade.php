@@ -13,6 +13,22 @@
         @endslot
     @endcomponent
     <div class="container">
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="contenedor">
             <a href="{{ route('cycles.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
                 Regresar</a>
@@ -54,14 +70,14 @@
             <div class="row mb-3">
                 <div class="col-12">
                     <label for="status" class="form-label">Fecha de inicio</label>
-                    <input value="" type="date" class="form-control" id="date_start" name="date_start" required>
+                    <input value="{{ old('date_start') }}" type="date" class="form-control" id="date_start" name="date_start" required>
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-12">
                     <label for="status" class="form-label">Fecha de fin</label>
-                    <input value="" type="date" class="form-control" id="date_end" name="date_end" required>
+                    <input value="{{ old('date_end') }}" type="date" class="form-control" id="date_end" name="date_end" required>
                 </div>
             </div>
 
@@ -71,7 +87,7 @@
                     <div class="mb-3">
                         <label for="parameter{{ $key }}" class="form-label">{{ $name }}</label>
                         <input type="text" class="form-control" id="parameter{{ $key }}"
-                            name="parameters[{{ $key }}]" required>
+                          name="parameters[{{ $key }}]" required>
                     </div>
                 @endforeach
             </div>

@@ -118,6 +118,12 @@ Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
     // rutas para adjuntar carta de autorizacion
     Route::get('/modal-authorization-letter', [GroupController::class, 'modalAuthorizationLetter'])->name('modal.autorization.letter');
     Route::post('/modal-authorization-letter', [GroupController::class, 'storeAuthorizationLetter'])->name('store.autorization.letter');
+
+    //rutas para adjuntar acuerdo de asesores y jurados
+    Route::get('/modal-authorization-agreement', [GroupController::class, 'modalAuthorizationAgreement'])->name('modal.autorization.agreement');
+    Route::post('/modal-authorization-agreement', [GroupController::class, 'storeAuthorizationAgreement'])->name('store.autorization.agreement');
+
+    Route::get('/download/{teachergroup}/{file}', [GroupController::class, 'teacherGroupDownload'])->name('download');
 });
 
 //Grupo para las rutas de asesoria.

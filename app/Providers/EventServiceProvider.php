@@ -48,6 +48,7 @@ class EventServiceProvider extends ServiceProvider
                 "name"  => $school->name,
             );
 
+            $protocol = array();
             foreach($protocols as $key => $protocol){
                 if ($key === 0) {
                     $protocol = array(

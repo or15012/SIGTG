@@ -44,6 +44,7 @@
                     <th>Nombre completo</th>
                     <th>Rol</th>
                     <th>Contacto</th>
+                    <th>Acuerdo</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -60,6 +61,8 @@
                             @endif
                         </td>
                         <td>{{ $groupCommittee->email }}</td>
+                        <td><a href="{{ route('groups.download', [$groupCommittee->tg_id, 'path_agreement']) }}" target="_blank"
+                            class="btn btn-secondary archivo">Ver archivo</a></td>
                         <td>
                             <form
                                 action="{{ route('groups.evaluating.committee.destroy', [$groupCommittee->id, $groupCommittee->type, $group->id]) }}"
@@ -69,7 +72,10 @@
                                 <button type="submit" class="btn btn-danger buttonDelete"><i
                                         class="fas fa-trash-alt"></i></button>
                             </form>
-
+                            <button class="btn btn-secondary ajax-modal" data-title="Carta de acuerdo"
+                                href="{{ route('groups.modal.autorization.agreement', ['group_committee_id' => $groupCommittee->tg_id]) }}">
+                                <i class="fas fa-file"></i>
+                            </button>
                         </td>
                     </tr>
                 @endforeach
@@ -118,12 +124,12 @@
                     </div>
 
 
-                    <div class="row mb-3">
+                    {{-- <div class="row mb-3">
                         <label class="col-12 col-md-4 col-lg-4" for="agreement">Acuerdo:</label>
                         <div class="col-12 col-md-8 col-lg-8">
                             <input class="form-control" type="file" name="agreement" id="agreement">
                         </div>
-                    </div>
+                    </div> --}}
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <div class="contenedor">

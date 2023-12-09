@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Validator::extend('weeks_between', function ($attribute, $value, $parameters, $validator) {
+            $startDate = strtotime($validator->getData()['date_start']);
+            $endDate = strtotime($value);
+
+            $diffInWeeks = ceil(($endDate - $startDate) / 60 / 60 / 24 / 7);
+            $diffInWeeks = intval($diffInWeeks);
+            return $diffInWeeks === 16;
+        });
+
+        Validator::replacer('weeks_between', function ($message, $attribute, $rule, $parameters) {
+            return str_replace(':weeks', 16, $message);
+        });
     }
 }

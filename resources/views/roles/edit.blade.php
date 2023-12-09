@@ -42,7 +42,7 @@
                 @foreach ($permissions as $permission)
                     <div class="col-md-3">
                         <div class="card mb-4">
-                            <div class="card-header">{{ $permission->name }}</div>
+                            {{-- <div class="card-header">{{ $permission->name }}</div> --}}
                             <div class="card-body">
                                 <p>{{ $permission->description }}</p>
                                 <div class="form-check form-switch">

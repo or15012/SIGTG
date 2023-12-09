@@ -40,10 +40,11 @@ class CycleController extends Controller
             'year'          => 'required|integer',
             'status'        => 'required|boolean',
             'date_start'    => 'required|date',
-            'date_end'      => 'required|date',
+            'date_end'      => 'required|date|weeks_between',
             'parameters'    => 'array', // Campo que contendrá los parámetros
+        ], [
+            'date_end.weeks_between' => 'La diferencia entre date_start y date_end debe ser de :weeks semanas.',
         ]);
-
         // Crear un nuevo ciclo
         $cycle = Cycle::create([
             'number'        => $validatedData['number'],
