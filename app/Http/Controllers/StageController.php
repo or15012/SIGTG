@@ -25,7 +25,10 @@ class StageController extends Controller
     public function index()
     {
         $stages = [];
-        $stages = Stage::with('protocol', 'cycle', 'school')->get(); //Definición de métodos del modelo.
+        $stages = Stage::with('protocol', 'cycle', 'school')
+                ->where('protocol_id',session("protocol")['id'])
+                ->where('school_id', session("school",['id']))
+                ->get();
         return view('stage.index', compact('stages'));
     }
 

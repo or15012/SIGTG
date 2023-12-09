@@ -17,6 +17,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EvaluationDocumentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ExtensionController;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StageController;
 use App\Models\Group;
 use Illuminate\Http\Request;
@@ -44,6 +45,9 @@ Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class
 
 Route::get('/home', [HomeController::class, 'home'])->name('home');
 
+Route::group(['prefix' => 'sessions', 'as' => 'sessions.'], function () {
+    Route::get('/set-protocol/{protocol}', [SessionController::class, 'setProtocol'])->name('set.protocol');
+});
 Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
     Route::get('/', [RegisterController::class, 'index'])->name('index');
     Route::post('/', [RegisterController::class, 'store'])->name('store');

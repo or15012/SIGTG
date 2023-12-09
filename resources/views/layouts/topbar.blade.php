@@ -46,7 +46,7 @@
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item" data-bs-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
-                @if ( session('school') != null)
+                    @if (session('school') != null)
                         {{ session('school')['name'] }}
                     @endif
                 </button>
@@ -55,10 +55,27 @@
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item" data-bs-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
-                @if ( session('protocol') != null)
+                    @if (session('protocol') != null)
                         {{ session('protocol')['name'] }}
+                        @else
+                        Seleccione protocolo
                     @endif
                 </button>
+
+                @role('admin')
+                    <div class="dropdown-menu dropdown-menu-end">
+                        @if (session('allProtocols') != null)
+                            @forelse (session("allProtocols") as $protocol)
+                                <a href="{{ route('sessions.set.protocol', $protocol->id) }}"
+                                    class="dropdown-item notify-item" data-lang="eng">
+                                    <span class="align-middle">{{ $protocol->name }}</span>
+                                </a>
+                            @empty
+                            @endforelse
+                        @endif
+                    </div>
+                @endrole
+
             </div>
 
             <div class="dropdown d-inline-block language-switch">
