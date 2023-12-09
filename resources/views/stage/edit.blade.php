@@ -35,7 +35,7 @@
             </div>
         @endif
 
-        <form action="{{ route('stages.update', $stage->id) }}" method="POST">
+        <form action="{{ route('stages.update', $stage->id) }}" id="form-stage" method="POST">
             @csrf
             @method('PUT')
             <div class="mb-3">
@@ -63,7 +63,7 @@
 
             <div class="mb-3">
                 <label for="protocol" class="form-label">Protocolo</label>
-                <select class="form-control" name="protocol" id="protocol">
+                <select class="form-control" name="protocol" id="protocol" disabled>
                     @foreach ($protocols as $protocol)
                         @if ($stage->protocol_id == $protocol->id)
                             <option value="{{ $protocol->id }}" selected>
@@ -80,7 +80,7 @@
 
             <div class="mb-3">
                 <label for="school" class="form-label">Escuela</label>
-                <select class="form-control" name="school" id="school">
+                <select class="form-control" name="school" id="school" disabled>
                     @foreach ($schools as $school)
                         @if ($stage->school_id == $school->id)
                             <option value="{{ $school->id }}" selected>
@@ -117,4 +117,5 @@
 
 @section('script')
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+    <script src="{{ URL::asset('js/stages.js') }}"></script>
 @endsection

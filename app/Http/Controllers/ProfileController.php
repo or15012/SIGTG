@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Observation;
 use App\Models\Profile;
 use App\Models\Project;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -50,7 +51,7 @@ class ProfileController extends Controller
             ->first();
 
         if (!isset($group)) {
-            return redirect('home')->withErrors(['mensaje' => 'No tienes un grupo activo.']);
+            return redirect('home')->withErrors(['message' => 'No tienes un grupo activo.']);
         }
 
         $preprofiles = Profile::where('group_id', $group->id)
@@ -104,6 +105,16 @@ class ProfileController extends Controller
                 $query->where('users.id', $user->id);
             })
             ->first();
+        $validatedProposalPriority = Profile::where('group_id', $group->id)
+                                        ->where('proposal_priority', $request->input('proposal_priority'))
+                                        ->first();
+
+
+        if(isset($validatedProposalPriority)){
+            return redirect()->back()
+                ->withErrors(['message' => 'Ya posee un preperfil con el numero de prioridad asignado.'])
+                ->withInput();
+        }
 
         // Crear un nuevo perfil
         $profile                        = new Profile;
@@ -149,8 +160,8 @@ class ProfileController extends Controller
                     'group'      => $group,
                     'preprofile' => $profile,
                 ];
-                Mail::to($student->email)->send(new SendMail('mail.preprofile-saved', 'Pre-Perfil Enviado', $emailData));
-            } catch (\Throwable $th) {
+                Mail::to($student->email)->send(new SendMail('mail.preprofile-saved', 'Preperfil enviado con éxito', $emailData));
+            } catch (Exception $th) {
                 // Manejar la excepción
             }
         }

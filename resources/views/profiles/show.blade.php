@@ -62,7 +62,26 @@
         </div>
 
 
+        <h3>Observaciones perfil: {{ $profile->name }}</h3>
 
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr class="table-danger">
+                    <th style="width: 50%">Descripcion</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($profile->observations as $observation)
+                    <tr>
+                        <td style="width: 40%">{{ Illuminate\Support\Str::limit($observation->description, 100, '...') }}
+                        </td>
+                        <td>{{ $observation->created_at->format('d-m-Y') }}</td>
+
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
 
     </div>
 @endsection

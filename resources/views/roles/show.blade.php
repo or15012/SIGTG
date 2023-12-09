@@ -29,7 +29,7 @@
                 @if ($role->permissions->count() > 0)
                     <ul>
                         @foreach ($role->permissions as $permission)
-                            <li>{{ $permission->name }}</li>
+                            <li>{{ $permission->description }}</li>
                         @endforeach
                     </ul>
                 @else

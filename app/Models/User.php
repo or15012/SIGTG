@@ -71,6 +71,7 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Protocol::class, 'user_protocol')
             ->withPivot('status') // Esto permite acceder a la columna 'status' de la tabla intermedia
+            ->wherePivot('status', 1)
             ->withTimestamps();
     }
 

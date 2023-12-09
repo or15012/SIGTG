@@ -43,22 +43,22 @@
 
             <div class="mb-3">
                 <label for="path" class="form-label">Archivo preperfil</label>
-                <input type="file" class="form-control" id="path" name="path" required>
+                <input type="file" class="form-control" accept=".pdf,.PDF" id="path" name="path" required>
             </div>
 
             <div class="mb-3">
                 <label for="path" class="form-label">Resumen preperfil</label>
-                <input type="file" class="form-control" id="summary_path" name="summary_path" required>
+                <input type="file" class="form-control" accept=".pdf,.PDF" id="summary_path" name="summary_path" required>
             </div>
 
             <div class="mb-3">
                 <label for="path" class="form-label">Archivo visión</label>
-                <input type="file" class="form-control" id="vision_path" name="vision_path" required>
+                <input type="file" class="form-control" accept=".pdf,.PDF" id="vision_path" name="vision_path" required>
             </div>
 
             <div class="mb-3">
                 <label for="path" class="form-label">Archivo calculo de tamaño</label>
-                <input type="file" class="form-control" id="size_calculation_path" name="size_calculation_path" required>
+                <input type="file" class="form-control" accept=".pdf,.PDF" id="size_calculation_path" name="size_calculation_path" required>
             </div>
 
             <div class="mb-3">

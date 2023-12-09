@@ -7,9 +7,9 @@
 @section('content')
     <div class="navbar-header d-flex justify-content-end mr-5">
 
-        <a href="{{ route('register') }}" class="text-dark" style="margin-right: 15px;">
+        {{-- <a href="{{ route('register') }}" class="text-dark" style="margin-right: 15px;">
             <i class="fas fa-user-plus"></i> Registrarse
-        </a>
+        </a> --}}
         <a href="{{ route('login') }}" class="text-dark" style="margin-right: -40px;">
             <i class="fas fa-sign-in-alt"></i> Ingresar
         </a>
@@ -57,7 +57,7 @@
                                             <label class="form-label" for="username">Usuario</label>
                                             <input name="email" type="email"
                                                 class="form-control @error('email') is-invalid @enderror" id="username"
-                                                value="{{ old('email', 'av12013@ues.edu.sv') }}" placeholder="Enter Email"
+                                                value="{{ old('email', 'admin@ues.edu.sv') }}" placeholder="Enter Email"
                                                 autocomplete="email" autofocus>
                                             @error('email')
                                                 <span class="invalid-feedback" role="alert">
