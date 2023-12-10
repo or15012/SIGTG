@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AreaController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CriteriaStageController;
 use App\Http\Controllers\CycleController;
@@ -266,3 +267,15 @@ Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name
 //Language Translation
 Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+//Grupo para las rutas de areas
+Route::group(['prefix' => 'areas', 'as' => 'areas.'], function () {
+    Route::get('/', [AreaController::class, 'index'])->name('index');
+    Route::get('/create', [AreaController::class, 'create'])->name('create');
+    Route::post('/', [AreaController::class,  'store'])->name('store');
+    Route::get('/{stage}', [AreaController::class, 'show'])->name('show');
+    Route::get('/{area}/edit', [AreaController::class, 'edit'])->name('edit');
+    Route::put('/{area}', [AreaController::class, 'update'])->name('update');
+    Route::delete('/{area}', [AreaController::class, 'destroy'])->name('destroy');
+});

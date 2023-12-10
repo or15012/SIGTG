@@ -32,8 +32,6 @@ class GroupController extends Controller
         $this->middleware('permission:' . self::PERMISSIONS['index'])->only(['initialize']);
         $this->middleware('permission:' . self::PERMISSIONS['index.adviser'])->only(['index']);
     }
-
-
     public function index()
     {
         $year = date('Y');
@@ -88,13 +86,11 @@ class GroupController extends Controller
         //vere si el usuario tiene un grupo
         return view('groups.initialize', compact('user', 'group', 'groupUsers'));
     }
-
     public function create()
     {
         $parameterNames = Parameter::PARAMETERS;
         return view('groups.create', compact('parameterNames'));
     }
-
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -160,7 +156,6 @@ class GroupController extends Controller
             return redirect()->back()->with('error', 'Hubo un error intente de nuevo.');
         }
     }
-
     public function edit($id)
     {
         $group = Group::select(
@@ -184,7 +179,6 @@ class GroupController extends Controller
 
         return view('groups.edit', compact('group', 'id'));
     }
-
     public function update(Request $request, $id)
     {
         try {
@@ -225,6 +219,11 @@ class GroupController extends Controller
                     'number'    => $number
                 ];
 
+                // Establecer el deadline al final del ciclo activo
+                //Falta validarlo.
+                $cycleEndDate = Cycle::where('status', 1)->first()->end_date ?? now();
+                $data['deadline'] = $cycleEndDate;
+
                 foreach ($group->users as $user) {
                     Mail::to($user->email)->send(new SendMail('mail.notification', 'Notificacion de grupo', ['title' => "Notificacion del grupo $group->number", 'body' => "Hola $user->first_name, te informamos que tu grupo ha sido <b>ACEPTADO</b>."]));
                 }
@@ -247,7 +246,6 @@ class GroupController extends Controller
             return back()->withErrors(['¡Ups! Lo sentimos, algo salió mal.', $th->getMessage()]);
         }
     }
-
     public function destroy($id)
     {
         // Encontrar el ciclo que se desea eliminar
@@ -261,7 +259,6 @@ class GroupController extends Controller
 
         return redirect()->route('groups.index')->with('success', 'Ciclo eliminado con éxito');
     }
-
     public function confirmStore(Request $request)
     {
         try {
@@ -301,7 +298,6 @@ class GroupController extends Controller
             return redirect()->back()->withErrors(['message' => 'Error al actualizar.']);
         }
     }
-
     public function evaluatingCommitteeIndex(Group $group)
     {
         $groupCommittees = Group::select(
@@ -327,8 +323,6 @@ class GroupController extends Controller
 
         return view('groups.evaluationCommittees.index', compact('groupCommittees', 'teachers', 'group'));
     }
-
-
     public function evaluatingCommitteeGet(Request $request)
     {
         if (isset($request)) {
@@ -346,7 +340,6 @@ class GroupController extends Controller
 
         return response()->json($teachers);
     }
-
     public function evaluatingCommitteeUpdate(Request $request, Group $group)
     {
 
@@ -395,19 +388,16 @@ class GroupController extends Controller
 
         return redirect()->back()->with('success', $text . "agregada con exito.");
     }
-
     public function evaluatingCommitteeDestroy($user, $type, Group $group)
     {
         $group->teacherUsers()->wherePivot('type', $type)->detach($user);
 
         return redirect()->back()->with('success', "Jurado(a) eliminada con exito.");
     }
-
     public function modalAuthorizationLetter(Request $request)
     {
         return view('groups.modal.attach_authorization_letter', ['group_id' => $request->group_id]);
     }
-
     public function storeAuthorizationLetter(Request $request)
     {
         try {
@@ -427,15 +417,10 @@ class GroupController extends Controller
             return redirect()->action([GroupController::class, 'index'])->with('error', 'Algo salió mal. Intente nuevamente.');
         }
     }
-
-
-
     public function modalAuthorizationAgreement(Request $request)
     {
         return view('groups.modal.attach_authorization_agreement', ['group_committee_id' => $request->group_committee_id]);
     }
-
-
     public function storeAuthorizationAgreement(Request $request)
     {
         try {
@@ -455,14 +440,12 @@ class GroupController extends Controller
             return redirect()->action([GroupController::class, 'index'])->with('error', 'Algo salió mal. Intente nuevamente.');
         }
     }
-
     public function teacherGroupDownload(TeacherGroup $teachergroup, $file)
     {
 
         $filePath = storage_path('app/' . $teachergroup->$file);
         return response()->stream($filePath);
     }
-
     public function assignedGroup()
     {
         $groups = Group::select('groups.id', 'groups.number', 'groups.status','groups.protocol_id')
