@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class SubArea extends Model
 {
     use HasFactory;
+
+    protected $table = 'subarea';
+
+    public function area(){
+        return $this->belongsTo(Area::class, 'area_id');
+    }
+
+    
 }

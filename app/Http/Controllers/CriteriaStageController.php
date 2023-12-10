@@ -7,16 +7,10 @@ use App\Models\EvaluationCriteria;
 use App\Models\CriteriaStage;
 use App\Models\EvaluationStage;
 use App\Models\EvaluationStageNote;
-use App\Models\Group;
 use App\Models\Project;
 use App\Models\Stage;
-use App\Models\TeacherGroup;
 use App\Models\User;
-use App\Models\UserGroup;
-use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Validator;
 
 class CriteriaStageController extends Controller
 {
@@ -24,8 +18,6 @@ class CriteriaStageController extends Controller
     {
         $this->middleware('auth');
     }
-
-
     public function create(Project $project, Stage $stage)
     {
 
@@ -49,9 +41,6 @@ class CriteriaStageController extends Controller
             'evaluationStages'  => $evaluationStages
         ]);
     }
-
-
-
     public function store(Request $request)
     {
         $data = $request->validate([
