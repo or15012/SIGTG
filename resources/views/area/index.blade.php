@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.Stages')
+    @lang('translation.Areas')
 @endsection
 
 @section('content')
@@ -14,8 +14,8 @@
     @endcomponent
 
     <div class="container">
-        <h1>Lista de etapas evaluativas</h1>
-        <a href="{{ route('stages.create') }}" class="btn btn-primary mb-3">Nueva etapa evaluativa</a>
+        <h1>Lista de áreas evaluativas</h1>
+        <a href="{{ route('areas.create') }}" class="btn btn-primary mb-3">Nueva área evaluativa</a>
 
         @if (session('success'))
             <div class="alert alert-success">
@@ -38,31 +38,31 @@
                     <th>Protocolo</th>
                     <th>Escuela</th>
                     <th>Porcentaje</th>
-                    <th>Orden de etapa</th>
+                    <th>Orden de área</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($stages as $stage)
+                @foreach ($areas as $area)
                     <tr>
-                        <td>{{ $stage->id }}</td>
-                        <td>{{ $stage->name }}</td>
-                        <td>{{ $stage->cycle->number }}-{{ $stage->cycle->year }}</td>
-                        <td>{{ $stage->protocol->name }}</td>
-                        <td>{{ $stage->school->name }}</td>
-                        <td>{{ $stage->percentage }}</td>
-                        <td>{{ $stage->sort }}</td>
+                        <td>{{ $area->id }}</td>
+                        <td>{{ $area->name }}</td>
+                        <td>{{ $area->cycle->number }}-{{ $area->cycle->year }}</td>
+                        <td>{{ $area->protocol->name }}</td>
+                        <td>{{ $area->school->name }}</td>
+                        <td>{{ $area->percentage }}</td>
+                        <td>{{ $area->sort }}</td>
                         <td>
-                            <a href="{{ route('criterias.index', $stage->id) }}" class="btn btn-primary"><i
+                            <a href="{{ route('criterias.index', $area->id) }}" class="btn btn-primary"><i
                                     class="fas fa-eye"></i></a>
-                            <a href="{{ route('stages.edit', $stage->id) }}" class="btn btn-primary"><i
+                            <a href="{{ route('areas.edit', $area->id) }}" class="btn btn-primary"><i
                                     class="fas fa-pen"></i></a>
 
                             <button class="btn btn-danger buttonDelete"
-                                onclick="mostrarConfirmacion('{{ route('stages.destroy', $stage->id) }}', '{{ csrf_token() }}')">
+                                onclick="mostrarConfirmacion('{{ route('areas.destroy', $area->id) }}', '{{ csrf_token() }}')">
                                 <i class="fas fa-trash-alt"></i> </button>
 
-                            <a href="{{ route('criterias.create', $stage->id) }}" class="btn btn-primary"><i
+                            <a href="{{ route('criterias.create', $area->id) }}" class="btn btn-primary"><i
                                     class="fas fa-file-medical"></i></a>
                         </td>
                     </tr>
@@ -71,6 +71,7 @@
         </table>
     </div>
 @endsection
+
 
 @section('script')
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>

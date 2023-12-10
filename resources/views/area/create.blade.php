@@ -1,6 +1,8 @@
+
+
 @extends('layouts.master')
 @section('title')
-    @lang('translation.Stages')
+    @lang('translation.Areas') 
 @endsection
 
 @section('content')
@@ -14,10 +16,11 @@
     @endcomponent
     <div class="container">
         <div class="contenedor">
-            <a href="{{ route('stages.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+            <a href="{{ route('areas.index') }}" class="btn btn-danger regresar-button"><i
+                    class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
-        <h1>Registrar etapa evaluativa</h1>
+        <h1>Registrar área</h1> 
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -35,10 +38,10 @@
             </div>
         @endif
 
-        <form action="{{ route('stages.store') }}" id="form-stage" method="POST">
+        <form action="{{ route('areas.store') }}" id="form-area" method="POST">
             @csrf
             <div class="mb-3">
-                <label for="name" class="form-label">Nombre de etapa evaluativa</label>
+                <label for="name" class="form-label">Nombre de área</label>
                 <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}"
                     required>
             </div>
@@ -76,8 +79,8 @@
 
             <div class="mb-3">
                 <label for="sort" class="form-label">Orden</label>
-                <input type="number" class="form-control" id="sort" name="sort" value="{{ old('sort') }}"
-                    required>
+                <input type="number" class="form-control" id="sort" name="sort value="{{ old('sort') }}"
+                required>
             </div>
 
             <div class="mb-3">
@@ -87,7 +90,7 @@
             </div>
 
             <div class="contenedor">
-                <a href="{{ route('stages.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
+                <a href="{{ route('areas.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
                 <button type="submit" class="btn btn-primary">Guardar</button>
             </div>
         </form>
@@ -97,5 +100,5 @@
 @section('script')
 
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
-    <script src="{{ URL::asset('js/stages.js') }}"></script>
+    <script src="{{ URL::asset('js/areas.js') }}"></script> 
 @endsection
