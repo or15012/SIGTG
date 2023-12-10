@@ -53,16 +53,16 @@
                         <td>{{ $stage->percentage }}</td>
                         <td>{{ $stage->sort }}</td>
                         <td>
-                            <a href="{{ route('criterias.index', $stage->id) }}" class="btn btn-primary"><i
+                            <a href="{{ route('criterias.index', $stage->id) }}" class="btn btn-primary my-1"><i
                                     class="fas fa-eye"></i></a>
-                            <a href="{{ route('stages.edit', $stage->id) }}" class="btn btn-primary"><i
+                            <a href="{{ route('stages.edit', $stage->id) }}" class="btn btn-primary my-1"><i
                                     class="fas fa-pen"></i></a>
 
-                            <button class="btn btn-danger buttonDelete"
+                            <button class="btn btn-danger buttonDelete my-1"
                                 onclick="mostrarConfirmacion('{{ route('stages.destroy', $stage->id) }}', '{{ csrf_token() }}')">
                                 <i class="fas fa-trash-alt"></i> </button>
 
-                            <a href="{{ route('criterias.create', $stage->id) }}" class="btn btn-primary"><i
+                            <a href="{{ route('criterias.create', $stage->id) }}" class="btn btn-primary my-1"><i
                                     class="fas fa-file-medical"></i></a>
                         </td>
                     </tr>

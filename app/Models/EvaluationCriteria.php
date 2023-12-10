@@ -11,7 +11,10 @@ class EvaluationCriteria extends Model
     use HasFactory;
 
     protected $fillable = [
-        "name","percentage", "stage_id",
+        "name",
+        "description",
+        "percentage",
+        "stage_id",
     ];
 
     public function Stage()

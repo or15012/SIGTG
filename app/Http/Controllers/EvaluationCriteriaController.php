@@ -21,14 +21,14 @@ class EvaluationCriteriaController extends Controller
     {
         $stage     = Stage::findOrfail($id);
         $criterias = EvaluationCriteria::where('stage_id', $stage->id)->get();
-        
-        
+
+
         return view('criteria.index', compact('criterias', 'stage'));
     }
 
     public function create($id)
     {
-        
+
         $stage = Stage::findOrfail($id);
         $sumatory = DB::table('evaluation_criteria')->where('stage_id', $stage->id)->sum('percentage');
 
@@ -41,12 +41,13 @@ class EvaluationCriteriaController extends Controller
             'name'          => 'required|string|max:255',
             'percentage'    => 'required|integer|min:1|max:100',
             'stage'         => 'required|integer|min:1|exists:stages,id',
+            'description'   => 'required|string'
         ]);
 
         $stage_id   = $data['stage'];
         $percentage = $data['percentage'];
         $sumatory = DB::table('evaluation_criteria')->where('stage_id', $stage_id)->sum('percentage');
-        
+
         if ($sumatory + $percentage > 100) {
             return redirect()->route('stages.index')->with('error', 'No se pudo completar la acción. El porcentaje supera el 100%.');
         }
@@ -56,7 +57,9 @@ class EvaluationCriteriaController extends Controller
                     'name'          => $request['name'],
                     'percentage'    => $percentage,
                     'stage_id'      => $stage_id,
+                    'description'   => $request['description']
             ]);
+
             return redirect()->route('stages.index')->with('success', 'Se añadió el criterio de evaluación correctamente.');
         }
         catch (QueryException $e) {
@@ -77,20 +80,22 @@ class EvaluationCriteriaController extends Controller
             'name'          => 'required|string|max:255',
             'percentage'    => 'required|integer|min:1|max:100',
             'stage'         => 'required|integer|min:1|exists:stages,id',
+            'description'   => 'required|string',
         ]);
 
         $stage_id   = $data['stage'];
         $percentage = $data['percentage'];
         $sumatory = DB::table('evaluation_criteria')->where('stage_id', $stage_id)->where('id', '!=', $criteria->id)->sum('percentage');
-        
+
         if ($sumatory + $percentage > 100) {
             return redirect()->route('stages.index')->with('error', 'No se pudo completar la acción. El porcentaje supera el 100%.');
         }
 
         try {
             $criteria->update([
-                'name'           => $data['name'],
-                'percentage'     => $data['percentage'],
+                'name'          => $data['name'],
+                'percentage'    => $data['percentage'],
+                'description'   => $data['description'],
             ]);
 
             return redirect()->route('criterias.index', ['id'=>$criteria->stage_id])->with('success', 'Criterio de Evaluación actualizado exitosamente.');
