@@ -3,44 +3,43 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\EvaluationCriteria;
-use App\Models\CriteriaStage;
+use App\Models\Subarea;
+use App\Models\Area;
 use App\Models\EvaluationStage;
 use App\Models\EvaluationStageNote;
 use App\Models\Project;
-use App\Models\Stage;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class CriteriaStageController extends Controller
+class SubareaController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
     }
-    public function create(Project $project, Stage $stage)
+    public function create(Project $project, Area $area)
     {
-
         $group      = $project->group()->first();
-        $criteria   = EvaluationCriteria::where('stage_id', $stage->id)->get();
+        $subareas   = Subarea::where('area_id', $area->id)->get();
         $users      = User::join('user_group as ug', 'ug.user_id', 'users.id')
             ->where('ug.group_id', $group->id)
             ->select('users.id', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.second_last_name')
             ->get();
         $evaluationStages = EvaluationStage::where('project_id', $project->id)
-            ->where('stage_id', $stage->id)
+            ->where('area_id', $area->id)
             ->first();
-        $grades     = CriteriaStage::where('evaluation_stage_id', $evaluationStages->id)->get();
+        $grades     = Subarea::where('evaluation_stage_id', $evaluationStages->id)->get();
 
         return view('evaluation_stage.create', [
             'group'             => $group,
-            'criteria'          => $criteria,
-            'stage'             => $stage,
+            'subareas'          => $subareas,
+            'area'              => $area,
             'users'             => $users,
             'grades'            => $grades,
             'evaluationStages'  => $evaluationStages
         ]);
     }
+
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -51,20 +50,19 @@ class CriteriaStageController extends Controller
 
         try {
             foreach ($request->notes as $userId => $note) {
-                $totalGrade = 0; // Inicializar la nota final del estudiante
-                foreach ($note as $criteriaId => $value) {
+                $totalGrade = 0;
 
-                    $percentage = EvaluationCriteria::find($criteriaId)->percentage;
+                foreach ($note as $subareaId => $value) {
+                    $percentage = Subarea::find($subareaId)->percentage;
 
                     // Calcular la contribución de esta nota al total según el porcentaje del criterio
                     $totalGrade += ($value * $percentage) / 100;
 
-                    CriteriaStage::updateOrCreate(
+                    Subarea::updateOrCreate(
                         [
                             'user_id'                   => $userId,
-                            'evaluation_criteria_id'    => $criteriaId,
+                            'subarea_id'                => $subareaId,
                             'evaluation_stage_id'       => $request->evaluation_stage_id,
-
                         ],
                         [
                             'note'                      => $value
@@ -85,6 +83,7 @@ class CriteriaStageController extends Controller
                     ]
                 );
             }
+
             return back()->with('success', 'Notas guardadas exitosamente.');
         } catch (\Throwable $th) {
             return redirect()->route('grades.index')->with('error', $th->getMessage());
