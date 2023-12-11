@@ -14,12 +14,13 @@ use Illuminate\Database\Eloquent\Collection;
 class ConsultingController extends Controller
 {
     const PERMISSIONS = [
-        'index'     => 'Consultings',
+        'index'     => 'Consultings.student.create',
     ];
 
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('permission:' . self::PERMISSIONS['index'])->only(['index']);
     }
 
     public function index(Project $project)
