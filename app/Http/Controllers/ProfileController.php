@@ -272,7 +272,7 @@ class ProfileController extends Controller
         $protocolsWithStatus = $user->protocols()->wherePivot('status', 1)->first();
         $groups = Group::where('groups.year', $year)
             ->where('groups.status', 1)
-            ->where('protocol_id', $protocolsWithStatus->pivot->protocol_id)
+            ->where('protocol_id', session('protocol')['id'])
             ->get(['id']);
 
         $preprofiles = Profile::join('groups as g', 'g.id', 'profiles.group_id')
@@ -488,7 +488,7 @@ class ProfileController extends Controller
         $protocolsWithStatus = $user->protocols()->wherePivot('status', 1)->first();
         $groups = Group::where('groups.year', $year)
             ->where('groups.status', 1)
-            ->where('protocol_id', $protocolsWithStatus->pivot->protocol_id)
+            ->where('protocol_id', session('protocol')['id'])
             ->get(['id']);
 
         $preprofiles = Profile::join('groups as g', 'g.id', 'profiles.group_id')
