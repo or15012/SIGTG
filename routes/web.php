@@ -269,15 +269,6 @@ Route::group(['prefix' => 'document', 'as' => 'document.'], function () {
     Route::get('/approvement/report/{project}', [DocumentController::class, 'approvement_report'])->name('approvement.report');
 });
 
-// download file
-Route::middleware('auth')->get('download', [DocumentController::class, 'downloadDocument'])->name('download');
-
-Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
-//Language Translation
-Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
 //Grupo para las rutas de areas
 Route::group(['prefix' => 'areas', 'as' => 'areas.'], function () {
     Route::get('/', [AreaController::class, 'index'])->name('index');
@@ -298,3 +289,16 @@ Route::group(['prefix' => 'subareas', 'as' => 'subareas.'], function () {
     Route::put('/{subarea}', [SubareaController::class, 'update'])->name('update');
     Route::delete('/{subarea}', [SubareaController::class, 'destroy'])->name('destroy');
 });
+
+// download file
+Route::middleware('auth')->get('download', [DocumentController::class, 'downloadDocument'])->name('download');
+
+
+// Estas rutas dejarlas de ultimo
+Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+//Language Translation
+Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
