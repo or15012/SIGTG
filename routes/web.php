@@ -19,6 +19,7 @@ use App\Http\Controllers\EvaluationDocumentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ExtensionController;
 use App\Http\Controllers\StageController;
+use App\Http\Controllers\SubareaController;
 use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -278,4 +279,14 @@ Route::group(['prefix' => 'areas', 'as' => 'areas.'], function () {
     Route::get('/{area}/edit', [AreaController::class, 'edit'])->name('edit');
     Route::put('/{area}', [AreaController::class, 'update'])->name('update');
     Route::delete('/{area}', [AreaController::class, 'destroy'])->name('destroy');
+});
+
+// Grupo para las rutas de subarea
+Route::group(['prefix' => 'subareas', 'as' => 'subareas.'], function () {
+    Route::get('/{id}', [SubareaController::class, 'index'])->name('index');
+    Route::get('/create/{id}', [SubareaController::class, 'create'])->name('create');
+    Route::post('/store', [SubareaController::class, 'store'])->name('store');
+    Route::get('/{subarea}/edit', [SubareaController::class, 'edit'])->name('edit');
+    Route::put('/{subarea}', [SubareaController::class, 'update'])->name('update');
+    Route::delete('/{subarea}', [SubareaController::class, 'destroy'])->name('destroy');
 });

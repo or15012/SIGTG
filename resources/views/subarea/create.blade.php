@@ -9,67 +9,62 @@
             SIGTG - FIA
         @endslot
         @slot('title')
-            Welcome !
+            Welcome!
         @endslot
     @endcomponent
-
-
-
     <div class="container">
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
+        <h1>Registrar subárea de evaluación</h1>
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
         @endif
 
-        @if (session('error'))
+        @if(session('error'))
             <div class="alert alert-danger">
                 {{ session('error') }}
             </div>
         @endif
-        <h1>Registro de Notas</h1>
-        <form action="{{ route('grades.store') }}" method="post">
-            @csrf
-            <input type="hidden" name="evaluation_stage_id" value="{{ $evaluationStages->id }}">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Nombre de alumno</th>
-                        @foreach ($criteria as $item)
-                            <th>
-                                {{ $item->name }}
-                                <br>
-                                {{ $item->percentage }}%
-                            </th>
-                        @endforeach
-                        <td>Nota Final</td>
-                    </tr>
-                </thead>
-                <tbody>
 
-                    @foreach ($users as $user)
-                        <tr id="user-{{$user->id}}" data-value="{{$user->id}}">
-                            <td>{{ $user->first_name }} {{ $user->middle_name }} {{ $user->last_name }}  {{ $user->second_last_name }}</td>
-                            @foreach ($criteria as $item)
-                                <td>
-                                    @php
-                                        $existingGrade = $grades->first(function ($grade) use ($user, $item) {
-                                            return $grade->user_id === $user->id && $grade->evaluation_criteria_id === $item->id;
-                                        });
-                                    @endphp
-                                    <input id="note-{{$user->id}}-{{ $item->id }}" data-percentage="{{$item->percentage}}" class="note" min="0" max="10" step="0.01" type="number"
-                                        name="notes[{{ $user->id }}][{{ $item->id }}]"
-                                        value="{{ $existingGrade ? $existingGrade->note : 0 }}" required>
-                                </td>
-                            @endforeach
-                            <td class="final-grade">
-                                <input class="final-note-{{ $user->id }}" min="0" max="10" step="0.01" type="number"
-                                    name="finalnote[{{ $user->id }}]" value="" required readonly >
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+        <div class="m-4">
+            <p>Etapa evaluativa: {{$area->name}}
+                <br>
+                Porcentaje utilizado: {{$sumatory}}%
+                <br>
+                Porcentaje máximo: 100%
+            </p>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: {{$sumatory}}%" aria-valuenow="{{$sumatory}}" aria-valuemin="0" aria-valuemax="100">
+
+                </div>
+            </div>
+        </div>
+
+        <form action="{{ route('subareas.store') }}" method="POST">
+            @csrf
+            <div class="mb-3">
+                <label for="name" class="form-label">Nombre de la subárea de evaluación</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="percentage" class="form-label">Porcentaje</label>
+                <input type="text" class="form-control" id="percentage" name="percentage" value="{{ old('percentage') }}" required>
+            </div>
+
+            <input type="text" class="form-control" id="area" name="area" value="{{$area->id}}" hidden>
+
+            <div class="mb-3">
+                <label for="area" class="form-label">Área evaluativa</label>
+                <select class="form-control" id="area" name="area" disabled>
+                    <option value="{{$area->id}}"> {{$area->name}}</option>
+                </select>
+            </div>
 
             <button type="submit" class="btn btn-primary">Guardar</button>
         </form>
@@ -78,5 +73,4 @@
 
 @section('script')
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
-    <script src="{{ URL::asset('js/evaluation_stage_create.js') }}"></script>
 @endsection
