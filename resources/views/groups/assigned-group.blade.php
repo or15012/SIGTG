@@ -25,8 +25,9 @@
             <thead>
                 <tr class="red-student">
                     <th>ID</th>
-                    <th>Number</th>
+                    <th>Número</th>
                     <th>Estado</th>
+                    <th>Nombre proyecto</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -35,10 +36,11 @@
                     <tr>
                         <td>{{ $group->id }}</td>
                         <td>{{ $group->number }}</td>
-                        <td>{{ $group->status }}</td>
+                        <td>{{ $group->state_name}}</td>
+                        <td>{{ $group->name}}</td>
                         <td>
-                            <a href="{{ route('consultings.index', $group->id) }}" class="btn btn-primary">Asesorias<i
-                                    class="fas fa-eye"></i></a>
+                            <a href="{{ route('consultings.index', $group->id) }}" class="btn btn-primary">Asesorias <i
+                                    class="fas fa-list"></i></a>
                         </td>
                     </tr>
                 @endforeach

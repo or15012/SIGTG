@@ -24,6 +24,7 @@ class GroupController extends Controller
     const PERMISSIONS = [
         'index'                => 'Groups.students',
         'index.adviser'        => 'Groups.advisers',
+        'assigned.group'       => 'Assigned.groups',
     ];
 
     public function __construct()
@@ -31,6 +32,7 @@ class GroupController extends Controller
         $this->middleware('auth');
         $this->middleware('permission:' . self::PERMISSIONS['index'])->only(['initialize']);
         $this->middleware('permission:' . self::PERMISSIONS['index.adviser'])->only(['index']);
+        $this->middleware('permission:' . self::PERMISSIONS['assigned.group'])->only(['assignedGroup']);
     }
 
 
@@ -448,7 +450,7 @@ class GroupController extends Controller
                 $group->save();
 
                 return redirect()->action([GroupController::class, 'index'])->with('success', 'Carta de acuerdo subida exitosamente.');
-            }else{
+            } else {
                 return redirect()->back()->with('error', 'Algo salió mal. Intente nuevamente.');
             }
         } catch (Exception $th) {
@@ -465,11 +467,13 @@ class GroupController extends Controller
 
     public function assignedGroup()
     {
-        $groups = Group::select('groups.id', 'groups.number', 'groups.status','groups.protocol_id')
-        ->join('teacher_group as tg', 'groups.id', 'tg.group_id')
-        ->where('tg.user_id', auth()->user()->id)
-        ->get();
-//dd($groups);
+        $groups = Group::select('groups.id', 'groups.number', 'groups.status', 'st.name as state_name', 'pj.name')
+            ->join('teacher_group as tg', 'groups.id', 'tg.group_id')
+            ->join('projects as pj', 'groups.id', 'pj.group_id')
+            ->join('states as st', 'groups.state_id', 'st.id')
+            ->where('tg.user_id', auth()->user()->id)
+            ->get();
+        //dd($groups);
         return view('groups.assigned-group', compact('groups'));
     }
 }
