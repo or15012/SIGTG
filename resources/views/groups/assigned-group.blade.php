@@ -36,11 +36,13 @@
                     <tr>
                         <td>{{ $group->id }}</td>
                         <td>{{ $group->number }}</td>
-                        <td>{{ $group->state_name}}</td>
-                        <td>{{ $group->name}}</td>
+                        <td>{{ $group->state_name }}</td>
+                        <td>{{ $group->name }}</td>
                         <td>
-                            <a href="{{ route('consultings.index', $group->id) }}" class="btn btn-primary">Asesorias <i
-                                    class="fas fa-list"></i></a>
+                            @can('Consultings.student.create')
+                                <a href="{{ route('consultings.index', $group->id) }}" class="btn btn-primary">Asesorias <i
+                                        class="fas fa-list"></i></a>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach
