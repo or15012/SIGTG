@@ -109,5 +109,10 @@
         "name": "Projects.coordinator.extension",
         "guard_name": "web",
         "description": "Permiso para gestionar extensiones de prorroga"
+    },
+    {
+        "name": "Assigned.groups",
+        "guard_name": "web",
+        "description": "Permiso para visualizar grupos asignados - docente asesor"
     }
 ]

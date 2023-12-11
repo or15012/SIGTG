@@ -67,15 +67,15 @@ class ConsultingController extends Controller
         return view('consultings.index', compact('consultings', 'userType','status', 'project'));
     }
 
-    public function create()
+    public function create(Project $project)
     {
         // Obtiene el tipo de usuario actual
         $userType = auth()->user()->type;
 
-        return view('consultings.create', compact('userType'));
+        return view('consultings.create', compact('userType', 'project'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, Project $project)
     {
         $data = $request->validate([
             'topics'    => 'required',
@@ -109,18 +109,18 @@ class ConsultingController extends Controller
             $data['summary'] = $request->input('summary');
             $consulting = Consulting::create($data);
         }
-        return redirect()->route('consultings.index')->with('success', 'Asesoria creada correctamente.');
+        return redirect()->route('consultings.index', [$project->id])->with('success', 'Asesoria creada correctamente.');
     }
 
-    public function edit(Consulting $consulting)
+    public function edit(Consulting $consulting, Project $project)
     {
 
         $user = auth()->user();
         $consulting->date = Carbon::parse($consulting->date)->format('Y-m-d');
-        return view('consultings.edit', compact('consulting', 'user'));
+        return view('consultings.edit', compact('consulting', 'user', 'project'));
     }
 
-    public function update(Request $request, Consulting $consulting)
+    public function update(Request $request, Consulting $consulting, Project $project)
     {
         $user = auth()->user();
         if ($user->type === 1) {
@@ -158,7 +158,7 @@ class ConsultingController extends Controller
 
         $consulting->update($data);
 
-        return redirect()->route('consultings.index')->with('success', 'Asesoria actualizada correctamente.');
+        return redirect()->route('consultings.index', [$project->id])->with('success', 'Asesoria actualizada correctamente.');
     }
 
     public function show(Consulting $consulting, Project $project)
@@ -172,6 +172,6 @@ class ConsultingController extends Controller
     {
         $consulting->delete();
 
-        return redirect()->route('consultings.index')->with('success', 'Asesoria eliminada correctamente.');
+        return redirect()->back()->with('success', 'Asesoria eliminada correctamente.');
     }
 }

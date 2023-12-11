@@ -20,7 +20,7 @@
         </div>
     @endif
         @if ($userType === 1 && $status)
-            <a href="{{ route('consultings.create') }}" class="btn btn-primary mb-3">Registrar asesoria</a>
+            <a href="{{ route('consultings.create',$project->id) }}" class="btn btn-primary mb-3">Registrar asesoria</a>
         @endif
 
         @if (session('success'))
@@ -53,7 +53,7 @@
                                     class="fas fa-eye"></i></a>
 
                             @if ($status)
-                                <a href="{{ route('consultings.edit', $consulting->id) }}" class="btn btn-primary"><i
+                                <a href="{{ route('consultings.edit', [$consulting->id, $project->id]) }}" class="btn btn-primary"><i
                                         class="fas fa-pen"></i></a>
 
                                 <form action="{{ route('consultings.destroy', $consulting->id) }}" method="POST"
