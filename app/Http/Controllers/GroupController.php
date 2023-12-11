@@ -460,7 +460,7 @@ class GroupController extends Controller
     {
 
         $filePath = storage_path('app/' . $teachergroup->$file);
-        return response()->stream($filePath);
+        return response()->file($filePath);
     }
 
     public function assignedGroup()
