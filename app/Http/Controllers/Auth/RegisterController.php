@@ -137,7 +137,7 @@ class RegisterController extends Controller
             'last_name'         => $data['last_name'],
             'second_last_name'  => $data['second_last_name'],
             'carnet'            => $data['carnet'],
-            'email'             => $data['email'].'@ues.edu.sv',
+            'email'             => $data['email'] . '@ues.edu.sv',
             'school_id'         => $data['school'], // Asumiendo que el campo se llama 'school_id' en tu modelo User
             'type'              => $data['type'],
             'password'          => Hash::make($data['password']),
@@ -162,7 +162,7 @@ class RegisterController extends Controller
         }
 
         try {
-            Mail::to($user->email)->send(new SendMail('mail.user-created', 'Creación de usuario', ['user'=>$user]));
+            Mail::to($user->email)->send(new SendMail('mail.user-created', 'Creación de usuario', ['user' => $user]));
         } catch (\Exception $th) {
             //throw $th;
         }
@@ -171,16 +171,19 @@ class RegisterController extends Controller
     }
 
 
-    public function downloadTemplate() {
+    public function downloadTemplate()
+    {
         return response()->download(public_path('uploads/users/formato-importacion-usuarios.xlsx'));
     }
 
     public function import(Request $request)
     {
-        $validator = Validator::make($request->all(),
-        [
-            'excelFile.required' => 'Selecciona un archivo de tipo .xslx',
-        ]);
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'excelFile.required' => 'Selecciona un archivo de tipo .xslx',
+            ]
+        );
 
         if ($validator->fails()) {
             if ($request->ajax()) {
@@ -192,7 +195,7 @@ class RegisterController extends Controller
             }
         }
         try {
-            if(!is_dir(Storage::path('public/uploads/users'))) {
+            if (!is_dir(Storage::path('public/uploads/users'))) {
 
                 mkdir(Storage::path('public/uploads/users'), 0755, true);
             }
@@ -208,7 +211,7 @@ class RegisterController extends Controller
             DB::beginTransaction();
             $existen = false;
 
-            for ($i=1; $i < count($listado); $i++) {
+            for ($i = 1; $i < count($listado); $i++) {
                 if ($listado[$i][0] == null) {
                     continue;
                 }
@@ -224,16 +227,16 @@ class RegisterController extends Controller
                     'last_name'         => $listado[$i][2],
                     'second_last_name'  => $listado[$i][3],
                     'carnet'            => $listado[$i][4],
-                    'email'             => $listado[$i][4].'@ues.edu.sv',
-                    'school_id'         => School::where('name', trim(strval($listado[$i][7])))->first()->id??null, // Asumiendo que el campo se llama 'school_id' en tu modelo User
+                    'email'             => $listado[$i][4] . '@ues.edu.sv',
+                    'school_id'         => School::where('name', trim(strval($listado[$i][7])))->first()->id ?? null, // Asumiendo que el campo se llama 'school_id' en tu modelo User
                     'type'              => 1,
                     'password'          => Hash::make($pass),
-                    'modality_id'       => Modality::where('name', trim(strval($listado[$i][5])))->first()->id??null,
+                    'modality_id'       => Modality::where('name', trim(strval($listado[$i][5])))->first()->id ?? null,
                 ]);
 
                 if (!empty($listado[$i][6])) {
                     $user->protocols()->attach([
-                        Protocol::where('name', trim(strval($listado[$i][6])))->first()->id??null => ['status' => 1]
+                        Protocol::where('name', trim(strval($listado[$i][6])))->first()->id ?? null => ['status' => 1]
                     ]);
                     // Establecer status 0 para otros protocolos
                     $user->protocols()->where('user_id', '!=', $user->id)->update(['status' => 0]);
@@ -242,7 +245,7 @@ class RegisterController extends Controller
                 $user->password = $pass;
 
                 try {
-                    Mail::to($user->email)->send(new SendMail('mail.user-created', 'Creación de usuario', ['user'=>$user]));
+                    Mail::to($user->email)->send(new SendMail('mail.user-created', 'Creación de usuario', ['user' => $user]));
                 } catch (Exception $th) {
                     Log::info($th->getMessage());
                 }
@@ -257,22 +260,24 @@ class RegisterController extends Controller
             }
 
             return redirect()->route('users.index')
-                    ->with(['success'=>'Importación correcta.'])
-                    ->withInput();
+                ->with(['success' => 'Importación correcta.'])
+                ->withInput();
 
             Storage::disk('public')->delete('users/file.' . $extension);
 
             return redirect()->route('users.index')->with('success', 'Importación correcta.');
         } catch (Exception $e) {
+            DB::rollBack();
             return redirect()->route('users.index')
-                    ->withErrors(['Sorry, Error Occured !', 'Asegúrese que el archivo tenga el formato correcto.'])
-                    ->withInput();
+                ->withErrors(['Sorry, Error Occured !', 'Asegúrese que el archivo tenga el formato correcto.'])
+                ->withInput();
         }
     }
 
 
 
-    static function randomPassword() {
+    static function randomPassword()
+    {
         $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
         $pass = array(); //remember to declare $pass as an array
         $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
@@ -284,7 +289,8 @@ class RegisterController extends Controller
     }
 
 
-    public function testCorreo(){
+    public function testCorreo()
+    {
         // Mail::to('eriklprdrgz1370566@gmail.com')->send(new SendMail('mail.user-created', 'Reseteo de contraseña', []));
 
         $Info = [];
@@ -296,7 +302,7 @@ class RegisterController extends Controller
 
         $group = Group::find(1);
 
-        return Mail::to('eriklprdrgz1370566@gmail.com')->send(new SendMail('mail.notification', 'Notificacion de grupo', ['title'=>'Notificacion de grupo | UES', 'body'=>'Notificacion de grupo | UES', 'body'=>'Le informamos que su grupo ha sido aceptado.']));
+        return Mail::to('eriklprdrgz1370566@gmail.com')->send(new SendMail('mail.notification', 'Notificacion de grupo', ['title' => 'Notificacion de grupo | UES', 'body' => 'Notificacion de grupo | UES', 'body' => 'Le informamos que su grupo ha sido aceptado.']));
         // return view('mail.notification', ['Info'=>['title'=>'Notificacion de grupo | UES', 'body'=>'Le informamos que su grupo ha sido aceptado.']]);
     }
 
@@ -346,7 +352,7 @@ class RegisterController extends Controller
             'last_name'         => $data['last_name'],
             'second_last_name'  => $data['second_last_name'],
             'carnet'            => $data['carnet'],
-            'email'             => $data['email'].'@ues.edu.sv',
+            'email'             => $data['email'] . '@ues.edu.sv',
             'school_id'         => $data['school'], // Asumiendo que el campo se llama 'school_id' en tu modelo User
             'type'              => $data['type'],
             'password'          => Hash::make($data['password']),
@@ -371,11 +377,10 @@ class RegisterController extends Controller
         }
 
         try {
-            Mail::to($user->email)->send(new SendMail('mail.user-created', 'Creación de usuario', ['user'=>$user]));
+            Mail::to($user->email)->send(new SendMail('mail.user-created', 'Creación de usuario', ['user' => $user]));
         } catch (\Exception $th) {
             //throw $th;
         }
         return redirect()->route('users.index')->with('success', 'Usuario creado con éxito');
     }
-
 }
