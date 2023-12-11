@@ -60,7 +60,7 @@
                                 <i class="fas fa-cog"></i>
                             </a>
                             <button class="btn btn-secondary ajax-modal" data-title="Carta de autorización"
-                    href="{{route('groups.modal.autorization.letter', ['group_id'=>$group->id])}}">
+                                href="{{ route('groups.modal.autorization.letter', ['group_id' => $group->id]) }}">
                                 <i class="fas fa-file"></i>
                             </button>
                         </td>

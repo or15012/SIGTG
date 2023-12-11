@@ -20,12 +20,17 @@ class StageController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('permission:' . self::PERMISSIONS['index'])->only(['index']);
+        $this->middleware('check.protocol')->only(['index','create']);
+        $this->middleware('check.school')->only(['index','create']);
     }
 
     public function index()
     {
         $stages = [];
-        $stages = Stage::with('protocol', 'cycle', 'school')->get(); //Definición de métodos del modelo.
+        $stages = Stage::with('protocol', 'cycle', 'school')
+                ->where('protocol_id',session("protocol")['id'])
+                ->where('school_id', session("school",['id']))
+                ->get();
         return view('stage.index', compact('stages'));
     }
 
@@ -108,5 +113,19 @@ class StageController extends Controller
         $stage->delete();
 
         return redirect()->route('stages.index')->with('success', 'Etapa Evaluativa eliminada exitosamente.');
+    }
+
+    public function downloadTemplate() {
+        return response()->download(public_path('uploads/stages/formato-importacion-criterios.xlsx'));
+    }
+
+    public function modalLoadCriterias(Request $request)
+    {
+        return view('stage.modal.attach_load_criterias', ['stage_id' => $request->stage_id]);
+    }
+
+    public function storeLoadCriterias(Request $request)
+    {
+
     }
 }

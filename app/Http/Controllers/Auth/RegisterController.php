@@ -64,11 +64,9 @@ class RegisterController extends Controller
 
     public function index()
     {
-        // ver que roles tiene el usuario
-        //  dd( Auth::user()->roles);
-        //  dd( Auth::user()->roles);
         $users      = User::all(); // Obtén todos los registros de usuarios
         $userTypes  = User::TYPES;
+
         return view('auth.index', [
             'users'     => $users,
             'userTypes'  => $userTypes,

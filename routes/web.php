@@ -18,6 +18,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EvaluationDocumentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ExtensionController;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StageController;
 use App\Http\Controllers\SubareaController;
 use App\Models\Group;
@@ -46,6 +47,9 @@ Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class
 
 Route::get('/home', [HomeController::class, 'home'])->name('home');
 
+Route::group(['prefix' => 'sessions', 'as' => 'sessions.'], function () {
+    Route::get('/set-protocol/{protocol}', [SessionController::class, 'setProtocol'])->name('set.protocol');
+});
 Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
     Route::get('/', [RegisterController::class, 'index'])->name('index');
     Route::post('/', [RegisterController::class, 'store'])->name('store');
@@ -190,10 +194,14 @@ Route::group(['prefix' => 'stages', 'as' => 'stages.'], function () {
     Route::get('/', [StageController::class, 'index'])->name('index');
     Route::get('/create', [StageController::class, 'create'])->name('create');
     Route::post('/', [StageController::class,  'store'])->name('store');
-    Route::get('/{stage}', [StageController::class, 'show'])->name('show');
+    // Route::get('/{stage}', [StageController::class, 'show'])->name('show');
     Route::get('/{stage}/edit', [StageController::class, 'edit'])->name('edit');
     Route::put('/{stage}', [StageController::class, 'update'])->name('update');
     Route::delete('/{stage}', [StageController::class, 'destroy'])->name('destroy');
+    Route::get('/download-template', [StageController::class, 'downloadTemplate'])->name('download.template');
+
+    Route::get('/modal-load-criterias', [StageController::class, 'modalLoadCriterias'])->name('modal.load.criterias');
+    Route::post('/modal-load-criterias', [StageController::class, 'storeLoadCriterias'])->name('store.load.criterias');
 });
 
 //Grupo para las rutas de criterios de evaluación.

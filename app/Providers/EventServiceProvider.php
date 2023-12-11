@@ -32,10 +32,10 @@ class EventServiceProvider extends ServiceProvider
     {
         Event::listen(\Illuminate\Auth\Events\Login::class, function ($event) {
             // Este código se ejecutará después de que un usuario se haya autenticado.
-            $user = $event->user;
-
-            $school = School::find($user->school_id);
-            $protocols = $user->protocols;
+            $user           = $event->user;
+            $school         = School::find($user->school_id);
+            $protocols      = $user->protocols;
+            $allProtocols   = Protocol::all();
             //que pasa sino tiene escuela asignada
 
 
@@ -61,9 +61,11 @@ class EventServiceProvider extends ServiceProvider
 
             // Puedes asignar tu variable de sesión aquí.
             session([
+                //estaran globalmente como seleccionadas
                 'school'        => $schoolReturn,
-                'protocols'     => $protocols,
                 'protocol'      => $protocol,
+                'protocols'     => $protocols,
+                'allProtocols'  => $allProtocols,
             ]);
         });
     }
