@@ -49,7 +49,6 @@ class GroupController extends Controller
             ->where('ug.is_leader', 1)
             ->paginate(20);
 
-        //dd($groups);
         return view('groups.index', compact('groups'));
     }
 

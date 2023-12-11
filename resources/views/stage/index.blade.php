@@ -16,7 +16,11 @@
     <div class="container">
         <h1>Lista de etapas evaluativas</h1>
         <a href="{{ route('stages.create') }}" class="btn btn-primary mb-3">Nueva etapa evaluativa</a>
-
+        <div class="float-end d-flex justify-content-end align-items-center">
+            <a href="{{ route('stages.download.template') }}" class="btn btn-primary">Descargar plantilla para carga de
+                criterios
+            </a>
+        </div>
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -64,6 +68,11 @@
 
                             <a href="{{ route('criterias.create', $stage->id) }}" class="btn btn-primary my-1"><i
                                     class="fas fa-file-medical"></i></a>
+
+                            <button class="btn btn-secondary ajax-modal my-1" data-title="Carga de criterios" title="Cargar criterios"
+                                href="{{ route('stages.modal.load.criterias', ['stage_id' => $stage->id]) }}">
+                                <i class="fas fa-file"></i>
+                            </button>
                         </td>
                     </tr>
                 @endforeach

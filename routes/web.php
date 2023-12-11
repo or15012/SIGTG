@@ -192,10 +192,14 @@ Route::group(['prefix' => 'stages', 'as' => 'stages.'], function () {
     Route::get('/', [StageController::class, 'index'])->name('index');
     Route::get('/create', [StageController::class, 'create'])->name('create');
     Route::post('/', [StageController::class,  'store'])->name('store');
-    Route::get('/{stage}', [StageController::class, 'show'])->name('show');
+    // Route::get('/{stage}', [StageController::class, 'show'])->name('show');
     Route::get('/{stage}/edit', [StageController::class, 'edit'])->name('edit');
     Route::put('/{stage}', [StageController::class, 'update'])->name('update');
     Route::delete('/{stage}', [StageController::class, 'destroy'])->name('destroy');
+    Route::get('/download-template', [StageController::class, 'downloadTemplate'])->name('download.template');
+
+    Route::get('/modal-load-criterias', [StageController::class, 'modalLoadCriterias'])->name('modal.load.criterias');
+    Route::post('/modal-load-criterias', [StageController::class, 'storeLoadCriterias'])->name('store.load.criterias');
 });
 
 //Grupo para las rutas de criterios de evaluación.

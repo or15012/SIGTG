@@ -114,4 +114,18 @@ class StageController extends Controller
 
         return redirect()->route('stages.index')->with('success', 'Etapa Evaluativa eliminada exitosamente.');
     }
+
+    public function downloadTemplate() {
+        return response()->download(public_path('uploads/stages/formato-importacion-criterios.xlsx'));
+    }
+
+    public function modalLoadCriterias(Request $request)
+    {
+        return view('stage.modal.attach_load_criterias', ['stage_id' => $request->stage_id]);
+    }
+
+    public function storeLoadCriterias(Request $request)
+    {
+
+    }
 }
