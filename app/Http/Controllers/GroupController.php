@@ -37,11 +37,12 @@ class GroupController extends Controller
     public function index()
     {
         $year = date('Y');
-        $groups = Group::select('groups.id', 'groups.number', 'u.first_name', 'u.middle_name', 'u.last_name', 'u.second_last_name', 's.name')->addSelect([
-            'user_count' => UserGroup::selectRaw('COUNT(user_id)')
-                ->whereColumn('group_id', 'groups.id')
-                ->where('status', 1)
-        ])
+        $groups = Group::select('groups.id', 'groups.number', 'u.first_name', 'u.middle_name', 'u.last_name', 'u.second_last_name', 's.name')
+            ->addSelect([
+                'user_count' => UserGroup::selectRaw('COUNT(user_id)')
+                    ->whereColumn('group_id', 'groups.id')
+                    ->where('status', 1)
+            ])
             ->join('user_group as ug', 'groups.id', 'ug.group_id')
             ->join('users as u', 'ug.user_id', 'u.id')
             ->join('states as s', 'groups.state_id', 's.id')
@@ -87,11 +88,13 @@ class GroupController extends Controller
         //vere si el usuario tiene un grupo
         return view('groups.initialize', compact('user', 'group', 'groupUsers'));
     }
+
     public function create()
     {
         $parameterNames = Parameter::PARAMETERS;
         return view('groups.create', compact('parameterNames'));
     }
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -157,6 +160,7 @@ class GroupController extends Controller
             return redirect()->back()->with('error', 'Hubo un error intente de nuevo.');
         }
     }
+
     public function edit($id)
     {
         $group = Group::select(
@@ -169,7 +173,8 @@ class GroupController extends Controller
             'u.carnet',
             'ug.is_leader',
             'groups.authorization_letter',
-            'groups.status'
+            'groups.status',
+            'groups.authorization_letter_higher_members',
         )
             ->join('user_group as ug', 'groups.id', 'ug.group_id')
             ->join('users as u', 'ug.user_id', 'u.id')
@@ -180,6 +185,7 @@ class GroupController extends Controller
 
         return view('groups.edit', compact('group', 'id'));
     }
+
     public function update(Request $request, $id)
     {
         try {
@@ -247,6 +253,7 @@ class GroupController extends Controller
             return back()->withErrors(['¡Ups! Lo sentimos, algo salió mal.', $th->getMessage()]);
         }
     }
+
     public function destroy($id)
     {
         // Encontrar el ciclo que se desea eliminar
@@ -260,6 +267,7 @@ class GroupController extends Controller
 
         return redirect()->route('groups.index')->with('success', 'Ciclo eliminado con éxito');
     }
+
     public function confirmStore(Request $request)
     {
         try {
@@ -299,6 +307,7 @@ class GroupController extends Controller
             return redirect()->back()->withErrors(['message' => 'Error al actualizar.']);
         }
     }
+
     public function evaluatingCommitteeIndex(Group $group)
     {
         $groupCommittees = Group::select(
@@ -324,6 +333,7 @@ class GroupController extends Controller
 
         return view('groups.evaluationCommittees.index', compact('groupCommittees', 'teachers', 'group'));
     }
+
     public function evaluatingCommitteeGet(Request $request)
     {
         if (isset($request)) {
@@ -341,6 +351,7 @@ class GroupController extends Controller
 
         return response()->json($teachers);
     }
+
     public function evaluatingCommitteeUpdate(Request $request, Group $group)
     {
 
@@ -389,39 +400,62 @@ class GroupController extends Controller
 
         return redirect()->back()->with('success', $text . "agregada con exito.");
     }
+
     public function evaluatingCommitteeDestroy($user, $type, Group $group)
     {
         $group->teacherUsers()->wherePivot('type', $type)->detach($user);
 
         return redirect()->back()->with('success', "Jurado(a) eliminada con exito.");
     }
+
     public function modalAuthorizationLetter(Request $request)
     {
-        return view('groups.modal.attach_authorization_letter', ['group_id' => $request->group_id]);
+
+        $countUserGroup = Group::find($request->group_id)
+            ->users()
+            ->wherePivot('status', 1)
+            ->count();
+
+        return view(
+            'groups.modal.attach_authorization_letter',
+            [
+                'group_id'          => $request->group_id,
+                'countUserGroup'    => $countUserGroup
+            ]
+        );
     }
+
     public function storeAuthorizationLetter(Request $request)
     {
         try {
-            DB::beginTransaction();
             $group = Group::find($request->group_id);
             if ($request->hasFile('authorization_letter')) {
                 if (is_file(storage_path('app/' . $group->authorization_letter))) {
                     Storage::delete($group->authorization_letter);
                 }
                 $group->authorization_letter = $request->file('authorization_letter')->storeAs('groups', $group->id . '-' . $request->file('authorization_letter')->getClientOriginalName());
-                $group->save();
-                DB::commit();
-                return redirect()->action([GroupController::class, 'index'])->with('success', 'Carta de autorización subida exitosamente.');
             }
+
+            if ($request->hasFile('authorization_letter_higher_members')) {
+                if (is_file(storage_path('app/' . $group->authorization_letter_higher_members))) {
+                    Storage::delete($group->authorization_letter_higher_members);
+                }
+                $group->authorization_letter_higher_members = $request->file('authorization_letter_higher_members')->storeAs('groups_authorization', $group->id . '-' . $request->file('authorization_letter_higher_members')->getClientOriginalName());
+            }
+            $group->save();
+            return redirect()->action([GroupController::class, 'index'])->with('success', 'Carta de autorización subida exitosamente.');
+
         } catch (\Throwable $th) {
-            DB::rollBack();
+
             return redirect()->action([GroupController::class, 'index'])->with('error', 'Algo salió mal. Intente nuevamente.');
         }
     }
+
     public function modalAuthorizationAgreement(Request $request)
     {
         return view('groups.modal.attach_authorization_agreement', ['group_committee_id' => $request->group_committee_id]);
     }
+
     public function storeAuthorizationAgreement(Request $request)
     {
         try {
@@ -431,22 +465,23 @@ class GroupController extends Controller
                     Storage::delete($group->path_agreement);
                 }
                 $group->path_agreement = $request->file('path_agreement')->storeAs('agreement', $group->id . '-' . $request->file('path_agreement')->getClientOriginalName());
+
                 $group->save();
 
                 return redirect()->action([GroupController::class, 'index'])->with('success', 'Carta de acuerdo subida exitosamente.');
-            } else {
-                return redirect()->back()->with('error', 'Algo salió mal. Intente nuevamente.');
             }
         } catch (Exception $th) {
             return redirect()->action([GroupController::class, 'index'])->with('error', 'Algo salió mal. Intente nuevamente.');
         }
     }
+
     public function teacherGroupDownload(TeacherGroup $teachergroup, $file)
     {
 
         $filePath = storage_path('app/' . $teachergroup->$file);
         return response()->file($filePath);
     }
+
     public function assignedGroup()
     {
         $groups = Group::select('groups.id', 'groups.number', 'groups.status', 'st.name as state_name', 'pj.name')
@@ -455,7 +490,7 @@ class GroupController extends Controller
             ->join('states as st', 'groups.state_id', 'st.id')
             ->where('tg.user_id', auth()->user()->id)
             ->get();
-        //dd($groups);
+
         return view('groups.assigned-group', compact('groups'));
     }
 }

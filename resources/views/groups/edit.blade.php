@@ -16,16 +16,6 @@
 
 
             <div class="d-flex justify-content-end align-items-center">
-                <a class="btn btn-secondary" style="margin-right:15px;"
-                    href="{{ route('document.authorization.letter', $id) }}"><i class="fa fa-file"></i>&nbsp;&nbsp;Carta de
-                    autorización</a>
-
-                @if ($group[0]->authorization_letter)
-                    <a class=" btn btn-secondary" style="margin-left: 5px"
-                        href="{{ route('download', ['file' => $group[0]->authorization_letter]) }}"><i
-                            class="fa fa-file"></i>&nbsp;&nbsp;Carta adjunta</a>
-                @endif
-
                 <div class="contenedor">
                     <a href="{{ route('groups.index') }}" class="btn btn-danger regresar-button" style="margin-left:15px"><i
                             class="fas fa-arrow-left"></i>
@@ -42,6 +32,25 @@
                 </ul>
             </div>
         @endif
+        <div class="d-flex justify-content-end">
+            <a class="btn btn-secondary mx-1"
+                href="{{ route('document.authorization.letter', $id) }}">
+                <i class="fa fa-file"></i>&nbsp;&nbsp;Plantilla carta de autorización
+            </a>
+
+            @if ($group[0]->authorization_letter)
+                <a class=" btn btn-secondary mx-1"
+                    href="{{ route('download', ['file' => $group[0]->authorization_letter]) }}"><i
+                        class="fa fa-file"></i>&nbsp;&nbsp;Carta adjunta</a>
+            @endif
+
+            @if ($group[0]->authorization_letter_higher_members)
+                <a class=" btn btn-secondary mx-1"
+                    href="{{ route('download', ['file' => $group[0]->authorization_letter_higher_members]) }}"><i
+                        class="fa fa-file"></i>&nbsp;&nbsp;Carta grupo mayor a 5 integrantes</a>
+            @endif
+
+        </div>
         <form action="{{ route('groups.update', $id) }}" method="POST" id="form-group-confirm">
             @csrf
             @method('PUT')

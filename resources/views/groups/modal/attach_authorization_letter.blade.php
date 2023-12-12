@@ -2,12 +2,29 @@
     enctype="multipart/form-data">
     {{ csrf_field() }}
 
-    <input type="hidden" name="group_id" value="{{ $group_id }}"/>
+    <input type="hidden" name="group_id" value="{{ $group_id }}" />
 
     <div class="row p-2">
-        <div class="form-group">
-            <input type="file" class="form-control" name="authorization_letter" accept=".docx,.pdf,.PDF,.DOCX" required>
+
+        <div class="mb-3">
+            <label for="carta autorizacion">Carta de autorización</label>
+
+            <input type="file" class="form-control" name="authorization_letter" accept=".docx,.pdf,.PDF,.DOCX"
+                required>
+
         </div>
+
+        @if ($countUserGroup > 5)
+            <div class="mb-3">
+                <label for="carta grupos">Carta de autorización para grupos mayores a 5 integrantes</label>
+
+                <input type="file" class="form-control" name="authorization_letter_higher_members"
+                    accept=".docx,.pdf,.PDF,.DOCX" required>
+
+            </div>
+        @endif
+
+
 
         <div class="form-group mt-4">
             <div class="col-md-12 text-end">
