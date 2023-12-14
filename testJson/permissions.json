@@ -91,7 +91,7 @@
         "description": "Permiso para entregar etapa evaluativa."
     },
     {
-        "name": "Consultings",
+        "name": "Consultings.student.create",
         "guard_name": "web",
         "description": "Permiso para gestionar solicitudes de asesorias"
     },
@@ -114,7 +114,7 @@
         "name": "Assigned.groups",
         "guard_name": "web",
         "description": "Permiso para visualizar grupos asignados - docente asesor"
-    }
+    },
 
     {
         "name": "Areas",
