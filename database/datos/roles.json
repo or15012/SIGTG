@@ -1,0 +1,18 @@
+[
+    {
+        "id": "2",
+        "name": "Estudiante",
+        "guard_name": "web"
+    },
+    {
+        "id": "3",
+        "name": "Coordinador",
+        "guard_name": "web"
+    },
+    {
+        "id": "4",
+        "name": "Docente asesor",
+        "guard_name": "web"
+    }
+
+]
