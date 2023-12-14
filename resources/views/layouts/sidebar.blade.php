@@ -181,6 +181,15 @@
                 </li>
                 @endcan
 
+                {{-- @can('Projects.coordinator.notifications') --}}
+                    <li>
+                        <a href="{{ route('notifications.index') }}">
+                            <i class="bx bx-git-pull-request icon nav-icon"></i>
+                            <span class="menu-item" data-key="t-notifications">@lang('Notifications')</span>
+                        </a>
+                    </li>
+                {{-- @endcan --}}
+
 
                 {{-- <li>
                     <a href="{{ route('evaluations_documents.index') }}">

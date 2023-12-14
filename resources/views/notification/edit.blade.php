@@ -17,7 +17,7 @@
             <a href="{{ route('extensions.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
-        <h1>Crear notificación</h1>
+        <h1>Editar prórroga</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -35,14 +35,16 @@
             </div>
         @endif
 
-        <form action="{{ route('extensions.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('extensions.update', $extension->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
+            @method('PUT')
             <div class="mb-3">
                 <label for="project_id" class="form-label">Proyecto</label>
                 <select class="form-control" id="project_id" name="project_id">
                     <option value=""> Seleccione un proyecto </option>
                     @foreach ($projects as $project)
-                        <option value="{{ $project->id }}"> {{ $project->name }}</option>
+                        <option value="{{ $project->id }}" @if ($project->id == $extension->project_id) selected @endif>
+                            {{ $project->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -51,38 +53,41 @@
                 <select class="form-control" id="type_extension_id" name="type_extension_id">
                     <option value=""> Seleccione un tipo de extensión</option>
                     @foreach ($type_extensions as $type_extension)
-                        <option value="{{ $type_extension->id }}"> {{ $type_extension->name }}</option>
+                        <option value="{{ $type_extension->id }}" @if ($type_extension->id == $extension->type_extension_id) selected @endif>
+                            {{ $type_extension->name }}</option>
                     @endforeach
                 </select>
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Descripción</label>
-                <textarea class="form-control" name="description" id="description" rows="2" cols="1">{{ old('description') }}</textarea>
+                <textarea class="form-control" name="description" id="description" rows="2" cols="1">{{ old('description', $extension->description) }}</textarea>
             </div>
             <div class="mb-3">
                 <label for="extension_status" class="form-label">Estado</label>
                 <select class="form-control" id="extension_status" name="status">
-                    <option value="0" @if (old('status') == 0) selected @endif>Presentada</option>
-                    <option value="1" @if (old('status') == 1) selected @endif>Aceptada</option>
-                    <option value="2" @if (old('status') == 2) selected @endif>Rechazada</option>
+                    <option value="0" @if (old('status', $extension->status) == 0) selected @endif>Presentada</option>
+                    <option value="1" @if (old('status', $extension->status) == 1) selected @endif>Aceptada</option>
+                    <option value="2" @if (old('status', $extension->status) == 2) selected @endif>Rechazada</option>
                 </select>
             </div>
 
             <div class="mb-3">
-                <label for="extension_request_path" class="form-label">Solicitud de prórroga</label>
+                <label for="extension_request_path" class="form-label">Solicitud de prórroga <a
+                        href="{{ route('download', ['file' => $extension->extension_request_path]) }}"  class="btn btn-secondary archivo">Ver archivo</a></label>
                 <input type="file" class="form-control" id="extension_request_path" name="extension_request_path">
             </div>
             <div class="mb-3">
-                <label for="schedule_activities_path" class="form-label">Cronograma de actividades</label>
+                <label for="schedule_activities_path" class="form-label">Cronograma de actividades <a
+                        href="{{ route('download', ['file' => $extension->schedule_activities_path]) }}" class="btn btn-secondary archivo">Ver archivo</a></label>
                 <input type="file" class="form-control" id="schedule_activities_path" name="schedule_activities_path">
             </div>
             <div class="mb-3">
-                <label for="approval_letter_path" class="form-label">Carta de aprobación de asesor</label>
+                <label for="approval_letter_path" class="form-label">Carta de aprobación de asesor <a
+                        href="{{ route('download', ['file' => $extension->approval_letter_path]) }}" class="btn btn-secondary archivo">Ver achivo</a></label>
                 <input type="file" class="form-control" id="approval_letter_path" name="approval_letter_path">
             </div>
-            <br />
             <div class="contenedor">
-                <button type="submit" class="btn btn-primary">Guardar</button>
+                <button type="submit" class="btn btn-primary">Actualizar</button>
                 <a href="{{ route('extensions.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
             </div>
         </form>
