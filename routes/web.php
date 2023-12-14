@@ -18,6 +18,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EvaluationDocumentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ExtensionController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StageController;
 use App\Http\Controllers\SubareaController;
@@ -287,6 +288,14 @@ Route::group(['prefix' => 'subareas', 'as' => 'subareas.'], function () {
     Route::get('/{subarea}/edit', [SubareaController::class, 'edit'])->name('edit');
     Route::put('/{subarea}', [SubareaController::class, 'update'])->name('update');
     Route::delete('/{subarea}', [SubareaController::class, 'destroy'])->name('destroy');
+});
+
+//Grupo para las rutas de notificaciones
+Route::group(['prefix' => 'notifications', 'as' => 'notifications.'], function () {
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('index');
+    Route::get('/create', [NotificationController::class, 'create'])->name('create');
+    Route::post('/store', [NotificationController::class, 'store'])->name('store');
+    Route::get('/mark-as-read', [NotificationController::class, 'markAsRead'])->name('mark.as.read');
 });
 
 // download file
