@@ -138,7 +138,7 @@ Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
 Route::group(['prefix' => 'consultings', 'as' => 'consultings.'], function () {
     Route::get('/index/{project}', [ConsultingController::class, 'index'])->name('index');
     Route::get('/create/{project}', [ConsultingController::class, 'create'])->name('create');
-    Route::post('/', [ConsultingController::class,  'store'])->name('store');
+    Route::post('/{project}', [ConsultingController::class,  'store'])->name('store');
     Route::get('/{consulting}/{project}', [ConsultingController::class, 'show'])->name('show');
     Route::get('/{consulting}/edit/{project}', [ConsultingController::class, 'edit'])->name('edit');
     Route::put('/{consulting}/{project}', [ConsultingController::class, 'update'])->name('update');

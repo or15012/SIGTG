@@ -30,7 +30,7 @@
             </div>
         @endif
 
-        <form action="{{ route('consultings.store') }}" method="POST">
+        <form action="{{ route('consultings.store', $project->id) }}" method="POST">
             @csrf
             @if ($userType === 1)
                 <!-- Tipo de usuario estudiante -->

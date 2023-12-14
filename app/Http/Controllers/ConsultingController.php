@@ -156,7 +156,6 @@ class ConsultingController extends Controller
         }
 
 
-
         $consulting->update($data);
 
         return redirect()->route('consultings.index', [$project->id])->with('success', 'Asesoria actualizada correctamente.');
