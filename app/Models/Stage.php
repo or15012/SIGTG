@@ -20,10 +20,10 @@ class Stage extends Model
     ];
 
     // Relación con el modelo protocolo
-     public function protocol()
-     {
-         return $this->belongsTo(Protocol::class, 'protocol_id');
-     }
+    public function protocol()
+    {
+        return $this->belongsTo(Protocol::class, 'protocol_id');
+    }
 
     // Relación con el modelo ciclos
     public function cycle()
@@ -40,5 +40,10 @@ class Stage extends Model
     public function criterias()
     {
         return $this->hasMany(EvaluationCriteria::class);
+    }
+
+    public function phases()
+    {
+        return $this->belongsToMany(Phase::class, 'phase_stage')->withTimestamps();
     }
 }
