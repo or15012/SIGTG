@@ -288,24 +288,6 @@ class RegisterController extends Controller
         return implode($pass); //turn the array into a string
     }
 
-
-    public function testCorreo()
-    {
-        // Mail::to('eriklprdrgz1370566@gmail.com')->send(new SendMail('mail.user-created', 'Reseteo de contraseña', []));
-
-        $Info = [];
-        $Info['first_name'] = 'Erik Neemías';
-        $Info['last_name'] = 'López Rodríguez';
-        $Info['UsuarioMail'] = '7ericklopez7@gmail.com';
-        $Info['UsuarioPassword'] = '12314321';
-        $Info['EntidadNombre'] = 'Universidad de El Salvador';
-
-        $group = Group::find(1);
-
-        return Mail::to('eriklprdrgz1370566@gmail.com')->send(new SendMail('mail.notification', 'Notificacion de grupo', ['title' => 'Notificacion de grupo | UES', 'body' => 'Notificacion de grupo | UES', 'body' => 'Le informamos que su grupo ha sido aceptado.']));
-        // return view('mail.notification', ['Info'=>['title'=>'Notificacion de grupo | UES', 'body'=>'Le informamos que su grupo ha sido aceptado.']]);
-    }
-
     public function assignRoles(User $user)
     {
 
@@ -322,9 +304,10 @@ class RegisterController extends Controller
 
     public function assignRolesStore(Request $request, User $user)
     {
+        $user->roles()->detach();
         if (isset($request->roles) && is_array($request->roles)) {
             $roles = Role::whereIn('id', $request->roles)->get(); // Obtener los roles seleccionados
-            $user->assignRole($roles); // Asignar los roles al usuario recién creado
+            $user->syncRoles($roles->pluck('name')->toArray()); // Eliminar roles existentes y asignar los nuevos
         }
 
         return redirect()->route('users.index')->with('success', 'Roles asignados con éxito');
