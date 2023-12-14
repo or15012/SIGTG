@@ -417,12 +417,33 @@ class ProjectController extends Controller
 
                 ]);
             }
+        } elseif ($request->decision == 1) {
+            // Grupo aceptado, actualiza la fecha de vencimiento
+            $this->handleGroupAcceptance($project);
         }
+        
         //identificare si es la ultima etapa para cargar las notas finales
 
         return redirect()
             ->route('projects.coordinator.show', [$project->id])
             ->with('success', 'Proyecto actualizado correctamente.');
+    }
+
+    private function handleGroupAcceptance(Project $project)
+    {
+        $group = $project->group;
+
+        if ($group) {
+            $cycle = $group->cycle;
+
+            if ($cycle) {
+                // Ajusta la fecha de vencimiento a la fecha de finalización del ciclo activo
+                $newDeadline = $cycle->end_date;
+                
+                // Actualiza la fecha de vencimiento del proyecto
+                $project->update(['deadline' => $newDeadline]);
+            }
+        }
     }
 
     private function handleProrrogaAcceptance(Project $project)
