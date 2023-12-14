@@ -375,6 +375,10 @@ class ProjectController extends Controller
 
 
         if ($request->decision == 3) {
+            // Prorroga aceptada, actualiza la fecha de vencimiento
+            $this->handleProrrogaAcceptance($project);
+
+
             $group = $project->group;
             $students = Group::join('user_group as ug', 'ug.group_id', 'groups.id')
                 ->where('groups.id', $group->id)
@@ -419,6 +423,19 @@ class ProjectController extends Controller
         return redirect()
             ->route('projects.coordinator.show', [$project->id])
             ->with('success', 'Proyecto actualizado correctamente.');
+    }
+
+    private function handleProrrogaAcceptance(Project $project)
+    {
+        $evaluationStage = $project->evaluationStages()->latest()->first();
+
+        if ($evaluationStage) {
+            // Ajusta la fecha de vencimiento sumando 3 meses a partir de la fecha actual
+            $newDeadline = now()->addMonths(3);
+            
+            // Actualiza la fecha de vencimiento del proyecto
+            $project->update(['deadline' => $newDeadline]);
+            }
     }
 
     public function disableProject(Project $project)
