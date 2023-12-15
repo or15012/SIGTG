@@ -148,12 +148,3 @@ $(document).on("click", ".ajax-modal", function () {
 
     return false;
 });
-jQuery(function(){
-    // console.log($('.select2').select2());
-    // console.log($('.select2').length);
-    // console.log($('.select2')[0]);
-
-    $('.select2').select2({
-        placeholder: $(this).data('placeholder')
-    });
-});
