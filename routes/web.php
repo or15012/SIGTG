@@ -56,7 +56,6 @@ Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
     Route::post('/', [RegisterController::class, 'store'])->name('store');
     Route::get('/download-template', [RegisterController::class, 'downloadTemplate'])->name('download.template');
     Route::post('/import', [RegisterController::class, 'import'])->name('import');
-    Route::get('testCorreo', [RegisterController::class, 'testCorreo'])->name('test.correo');
     Route::get('/assign-roles/{user}', [RegisterController::class, 'assignRoles'])->name('assign.roles');
     Route::post('/assign-roles-store/{user}', [RegisterController::class, 'assignRolesStore'])->name('assign.roles.store');
 });
@@ -140,7 +139,7 @@ Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
 Route::group(['prefix' => 'consultings', 'as' => 'consultings.'], function () {
     Route::get('/index/{project}', [ConsultingController::class, 'index'])->name('index');
     Route::get('/create/{project}', [ConsultingController::class, 'create'])->name('create');
-    Route::post('/', [ConsultingController::class,  'store'])->name('store');
+    Route::post('/{project}', [ConsultingController::class,  'store'])->name('store');
     Route::get('/{consulting}/{project}', [ConsultingController::class, 'show'])->name('show');
     Route::get('/{consulting}/edit/{project}', [ConsultingController::class, 'edit'])->name('edit');
     Route::put('/{consulting}/{project}', [ConsultingController::class, 'update'])->name('update');

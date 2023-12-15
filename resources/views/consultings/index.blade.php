@@ -20,7 +20,7 @@
         </div>
     @endif
         @if ($userType === 1 && $status)
-            <a href="{{ route('consultings.create',$project->id) }}" class="btn btn-primary mb-3">Registrar asesoria</a>
+            <a href="{{ route('consultings.create', $project->id) }}" class="btn btn-primary mb-3">Registrar asesoria</a>
         @endif
 
         @if (session('success'))
