@@ -15,8 +15,11 @@ use App\Models\TypeExtension;
 use Illuminate\Support\Facades\Storage;
 use PhpParser\Node\Stmt\TryCatch;
 use App\Mail\SendMail;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
+use App\Models\UserNotification;
+use Illuminate\Support\Facades\Auth;
 
 class ExtensionController extends Controller
 {
@@ -75,6 +78,7 @@ class ExtensionController extends Controller
             // Obtener usuarios asignados al proyecto
             $recipients = $project->group->users;
 
+            $notification = Notification::create(['title'=>'Alerta', 'message'=>'Nueva extensión creada', 'user_id'=>Auth::user()->id]);
             // Envío de correo electrónico a cada destinatario
             foreach ($recipients as $recipient) {
                 try {
@@ -84,6 +88,8 @@ class ExtensionController extends Controller
                         'project'   => $project,
                     ];
                     Mail::to($recipient->email)->send(new SendMail('mail.extension-created', 'Nueva extensión creada', $emailData));
+                    
+                    UserNotification::create(['user_id'=>$recipient->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
                 } catch (\Throwable $th) {
                     // Manejar la excepción
                 }
@@ -91,6 +97,7 @@ class ExtensionController extends Controller
 
             return redirect()->route('extensions.index')->with('success', 'Prórroga creada exitosamente.');
         } catch (\Exception $e) {
+            return $e;
             return redirect()->route('extensions.create')->with('error', 'Algo salió mal. Intente nuevamente.');
         }
     }
@@ -150,6 +157,7 @@ class ExtensionController extends Controller
             // Obtener usuarios asignados al proyecto
             $recipients = $project->group->users;
 
+            $notification = Notification::create(['title'=>'Alerta', 'message'=>'Extensión actualizada. La extensión '.$extension->description.' ha sido actualizada.', 'user_id'=>Auth::user()->id]);
             // Envío de correo electrónico a cada destinatario
             foreach ($recipients as $recipient) {
                 try {
@@ -160,6 +168,7 @@ class ExtensionController extends Controller
                         'status'    => $extension->status,
                     ];
                     Mail::to($recipient->email)->send(new SendMail('mail.extension-updated', 'Extensión actualizada', $emailData));
+                    UserNotification::create(['user_id'=>$recipient->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
                 } catch (\Throwable $th) {
                     // Manejar la excepción
                 }

@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Mail\SendMail;
 use App\Models\Cycle;
 use App\Models\Group;
+use App\Models\Notification;
 use App\Models\Parameter;
 use App\Models\TeacherGroup;
 use App\Models\User;
 use App\Models\UserGroup;
+use App\Models\UserNotification;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -132,6 +134,7 @@ class GroupController extends Controller
 
             $group->users()->detach();
             $users = $request->users;
+            $notification = Notification::create(['title'=>'Alerta', 'message'=>'Has sido invitado al grupo '.$group->number.' por '.Auth::user()->first_name, 'user_id'=>Auth::user()->id]);
             // Preparar datos para la sincronización
             foreach ($users as $key => $userId) {
                 $userData = [
@@ -145,6 +148,7 @@ class GroupController extends Controller
                     try {
                         $user = User::find(intval($userId));
                         Mail::to($user->email)->send(new SendMail('mail.user-invited-to-group', 'Invitación a grupo', ['user' => $user, 'group' => $group]));
+                        UserNotification::create(['user_id'=>$user->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
                     } catch (Exception $e) {
                         Log::info($e->getMessage());
                     }
@@ -231,8 +235,11 @@ class GroupController extends Controller
                 $cycleEndDate = Cycle::where('status', 1)->first()->end_date ?? now();
                 $data['deadline'] = $cycleEndDate;
 
+                $notification = Notification::create(['title'=>'Alerta de grupo', 'message'=>"Te informamos que tu grupo ha sido: ACEPTADO", 'user_id'=>Auth::user()->id]);
+
                 foreach ($group->users as $user) {
                     Mail::to($user->email)->send(new SendMail('mail.notification', 'Notificacion de grupo', ['title' => "Notificacion del grupo $group->number", 'body' => "Hola $user->first_name, te informamos que tu grupo ha sido <b>ACEPTADO</b>."]));
+                    UserNotification::create(['user_id'=>$user->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
                 }
             } else {
                 $data = [
@@ -240,8 +247,11 @@ class GroupController extends Controller
                     'state_id'  => $stateId,
                 ];
 
+                $notification = Notification::create(['title'=>'Alerta de grupo', 'message'=>"Lamentamos informarte que tu grupo ha sido: RECHAZADO", 'user_id'=>Auth::user()->id]);
+
                 foreach ($group->users as $user) {
                     Mail::to($user->email)->send(new SendMail('mail.notification', 'Notificacion de grupo', ['title' => "Notificacion del grupo $group->number", 'body' => "Hola $user->first_name, lamentamos informarte que tu grupo ha sido <b>RECHAZADO</b>."]));
+                    UserNotification::create(['user_id'=>$user->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
                 }
             }
             $group->update($data);
@@ -367,6 +377,7 @@ class GroupController extends Controller
         // }
 
         $syncData = [];
+        $notification = Notification::create(['title'=>'Alerta de comité', 'message'=>"Te informamos que has sido agregado/a al comité de evaluación", 'user_id'=>Auth::user()->id]);
         foreach ($request->teachers as $key => $userId) {
             $userData = [
                 'user_id'           => intval($userId),
@@ -387,6 +398,7 @@ class GroupController extends Controller
                     'committee' => $committeeType,
                 ];
                 Mail::to($user->email)->send(new SendMail('mail.committee-added', 'Notificación de Comité', $mailData));
+                UserNotification::create(['user_id'=>$user->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
             } catch (\Throwable $th) {
                 // working...
 

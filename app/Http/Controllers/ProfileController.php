@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Mail\SendMail;
 use App\Models\Group;
+use App\Models\Notification;
 use App\Models\User;
 use App\Models\Observation;
 use App\Models\Profile;
 use App\Models\Project;
+use App\Models\UserNotification;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -134,6 +136,7 @@ class ProfileController extends Controller
         $role = 'Coordinador';
         $userRoles = User::role($role)->get(); //modificar para diferenciar por modalidades.
 
+        $notification = Notification::create(['title'=>'Alerta de pre-perfil', 'message'=>"Su pre-perfil ha sido enviado, y está pendiente de revisión", 'user_id'=>Auth::user()->id]);
         foreach ($userRoles as $coordinator) {
             try {
                 $emailData = [
@@ -144,6 +147,7 @@ class ProfileController extends Controller
                 //dd($emailData);
 
                 Mail::to($coordinator->email)->send(new SendMail('mail.preprofile-coordinator-saved', 'Notificación de pre-perfil enviado', $emailData));
+                UserNotification::create(['user_id'=>$coordinator->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
             } catch (\Throwable $th) {
                 // Manejar la excepción
             }
@@ -161,6 +165,7 @@ class ProfileController extends Controller
                     'preprofile' => $profile,
                 ];
                 Mail::to($student->email)->send(new SendMail('mail.preprofile-saved', 'Preperfil enviado con éxito', $emailData));
+                UserNotification::create(['user_id'=>$student->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
             } catch (Exception $th) {
                 // Manejar la excepción
             }
@@ -216,6 +221,9 @@ class ProfileController extends Controller
             // Envío de correo electrónico a cada estudiante del grupo
             $students = $preprofile->group->users;
 
+
+            $notification = Notification::create(['title'=>'Alerta de pre-perfil', 'message'=>"Te informamos que tu pre-perfil se ha actualizado.", 'user_id'=>Auth::user()->id]);
+
             foreach ($students as $student) {
                 $mailData = [
                     'user' => $student,
@@ -230,6 +238,7 @@ class ProfileController extends Controller
                             $mailData
                         )
                     );
+                    UserNotification::create(['user_id'=>$student->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
                 } catch (\Throwable $th) {
                     // Log de errores o manejo adicional
                     //Log::error('Error al enviar correo electrónico: ' . $th->getMessage());
@@ -319,6 +328,8 @@ class ProfileController extends Controller
         // Obtener estudiantes del grupo
         $students = $preprofile->group->users;
 
+        $notification = Notification::create(['title'=>'Alerta de pre-perfil', 'message'=>"Te informamos que tu pre-perfil se ha actualizado", 'user_id'=>Auth::user()->id]);
+
         // Envío de correo electrónico a cada estudiante del grupo
         foreach ($students as $student) {
             $mailData = [
@@ -334,6 +345,7 @@ class ProfileController extends Controller
                         $mailData
                     )
                 );
+                UserNotification::create(['user_id'=>$student->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
             } catch (\Throwable $th) {
                 // Working..
                // dd($th);
@@ -443,6 +455,7 @@ class ProfileController extends Controller
 
             $profiles->update();
 
+            $notification = Notification::create(['title'=>'Alerta de perfil', 'message'=>"Te informamos que tu perfil se ha actualizado", 'user_id'=>Auth::user()->id]);
             // Envío de correo electrónico a cada estudiante del grupo
             $students = $profiles->group->users;
             foreach ($students as $student) {
@@ -460,6 +473,7 @@ class ProfileController extends Controller
                             $mailData
                         )
                     );
+                    UserNotification::create(['user_id'=>$student->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
                 } catch (\Throwable $th) {
                     // Log de errores o manejo adicional
                     // Log::error('Error al enviar correo electrónico: ' . $th->getMessage());
@@ -526,6 +540,7 @@ class ProfileController extends Controller
         // Obtener estudiantes del grupo
         $students = $profile->group->users;
 
+        $notification = Notification::create(['title'=>'Alerta de perfil', 'message'=>"Te informamos que tu perfil se ha actualizado", 'user_id'=>Auth::user()->id]);
         // Envío de correo electrónico a cada estudiante del grupo
         foreach ($students as $student) {
             $mailData = [
@@ -541,6 +556,7 @@ class ProfileController extends Controller
                         $mailData
                     )
                 );
+                UserNotification::create(['user_id'=>$student->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
             } catch (\Throwable $th) {
                 // Working..
                 //dd($th);

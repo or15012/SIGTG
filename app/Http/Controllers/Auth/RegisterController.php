@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Mail\SendMail;
 use App\Models\Group;
 use App\Models\Modality;
+use App\Models\Notification;
 use App\Models\Protocol;
 use App\Models\School;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\UserNotification;
 use Exception;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -161,8 +163,10 @@ class RegisterController extends Controller
             $user->assignRole($roles); // Asignar los roles al usuario recién creado
         }
 
+        $notification = Notification::create(['title'=>'Alerta de usuario', 'message'=>"Tu usuario ha sido creado exitosamente.", 'user_id'=>Auth::user()->id]);
         try {
             Mail::to($user->email)->send(new SendMail('mail.user-created', 'Creación de usuario', ['user' => $user]));
+            UserNotification::create(['user_id'=>$user->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
         } catch (\Exception $th) {
             //throw $th;
         }
@@ -211,6 +215,7 @@ class RegisterController extends Controller
             DB::beginTransaction();
             $existen = false;
 
+            $notification = Notification::create(['title'=>'Alerta de usuario', 'message'=>"Tu usuario ha sido creado exitosamente.", 'user_id'=>Auth::user()->id]);
             for ($i = 1; $i < count($listado); $i++) {
                 if ($listado[$i][0] == null) {
                     continue;
@@ -246,6 +251,7 @@ class RegisterController extends Controller
 
                 try {
                     Mail::to($user->email)->send(new SendMail('mail.user-created', 'Creación de usuario', ['user' => $user]));
+                    UserNotification::create(['user_id'=>$user->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
                 } catch (Exception $th) {
                     Log::info($th->getMessage());
                 }
@@ -359,8 +365,11 @@ class RegisterController extends Controller
             $user->assignRole($roles); // Asignar los roles al usuario recién creado
         }
 
+        $notification = Notification::create(['title'=>'Alerta de usuario', 'message'=>"Tu usuario ha sido creado exitosamente.", 'user_id'=>Auth::user()->id]);
+
         try {
             Mail::to($user->email)->send(new SendMail('mail.user-created', 'Creación de usuario', ['user' => $user]));
+            UserNotification::create(['user_id'=>$user->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
         } catch (\Exception $th) {
             //throw $th;
         }

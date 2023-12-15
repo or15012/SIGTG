@@ -20,7 +20,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMail;
-
+use App\Models\Notification;
+use App\Models\UserNotification;
 
 class ProjectController extends Controller
 {
@@ -167,6 +168,7 @@ class ProjectController extends Controller
             // Cuando tenga número de grupo, se manda a llamar al teacher.
             $role = 'Coordinador';
             $userRoles = User::role($role)->get();
+            $notification = Notification::create(['title'=>'Alerta de etapa', 'message'=>"Te informamos que tu etapa ha sido enviada.", 'user_id'=>Auth::user()->id]);
             foreach ($userRoles as $coordinator) {
                 try {
                     $emailData = [
@@ -175,6 +177,7 @@ class ProjectController extends Controller
                     ];
                     //dd($emailData);
                     Mail::to($coordinator->email)->send(new SendMail('mail.stage-submitted', 'Notificación de etapa enviada', $emailData));
+                    UserNotification::create(['user_id'=>$coordinator->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
                 } catch (\Throwable $th) {
                     // Manejar la excepción
                     //dd($th);
@@ -194,6 +197,7 @@ class ProjectController extends Controller
                 ->select('users.id', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.second_last_name', 'users.email')
                 ->get();
 
+            $notificationAproved = Notification::create(['title'=>'Alerta de etapa', 'message'=>"Te informamos que tu etapa ha sido APROBADA.", 'user_id'=>Auth::user()->id]);
             foreach ($users as  $students) {
                 try {
                     $emailData = [
@@ -202,6 +206,7 @@ class ProjectController extends Controller
                     ];
                     //dd($emailData);
                     Mail::to($students->email)->send(new SendMail('mail.stage-approved', 'Notificación de etapa aprobada', $emailData));
+                    UserNotification::create(['user_id'=>$students->id, 'notification_id'=>$notificationAproved->id, 'is_read'=>0]);
                 } catch (\Throwable $th) {
                     // Manejar la excepción
                     //dd($th);
