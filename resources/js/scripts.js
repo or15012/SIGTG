@@ -10,7 +10,7 @@ $(document).on("click", ".ajax-modal", function () {
     var title = $(this).data("title");
     var fullscreen = $(this).data("fullscreen");
     var reload = $(this).data("reload");
-    target_select = $(this).parent().find(".select2-ajax");
+    var target_select = $(this).parent().find(".select2-ajax");
 
     $.ajax({
         url: link,
@@ -93,7 +93,7 @@ $(document).on("click", ".ajax-modal", function () {
             //         if (typeof $(this).data('display2') !== "undefined") {
             //             display2 = "&display2=" + $(this).data('display2');
             //         }
-                    
+
             //         if (typeof $(this).data('where') !== "undefined") {
             //             where = "&where=" + $(this).data('where');
             //         }
