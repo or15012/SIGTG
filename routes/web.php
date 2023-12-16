@@ -256,10 +256,10 @@ Route::group(['prefix' => 'projects', 'as' => 'projects.'], function () {
 
 // Prórrogas (extensions).
 Route::group(['prefix' => 'extensions', 'as' => 'extensions.'], function () {
-    Route::get('/', [ExtensionController::class, 'index'])->name('index');
-    Route::get('/create', [ExtensionController::class, 'create'])->name('create');
+    Route::get('/index/{project}', [ExtensionController::class, 'index'])->name('index');
+    Route::get('/create/{project}', [ExtensionController::class, 'create'])->name('create');
     Route::post('/', [ExtensionController::class,  'store'])->name('store');
-    Route::get('/{extension}/edit', [ExtensionController::class, 'edit'])->name('edit');
+    Route::get('/{extension}/edit/{project}', [ExtensionController::class, 'edit'])->name('edit');
     Route::put('/{extension}', [ExtensionController::class, 'update'])->name('update');
 });
 
