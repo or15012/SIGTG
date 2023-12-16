@@ -108,7 +108,7 @@ Route::group(['prefix' => 'cycles', 'as' => 'cycles.'], function () {
 
 //Grupo para las rutas de grupo
 Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
-    Route::get('/', [GroupController::class, 'index'])->name('index');
+    Route::get('/index/{project', [GroupController::class, 'index'])->name('index');
     Route::get('create', [GroupController::class, 'create'])->name('create');
     Route::post('/', [GroupController::class, 'store'])->name('store');
     Route::get('/initialize', [GroupController::class, 'initialize'])->name('initialize');
