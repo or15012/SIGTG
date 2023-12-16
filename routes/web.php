@@ -298,8 +298,20 @@ Route::group(['prefix' => 'notifications', 'as' => 'notifications.'], function (
     Route::get('/mark-as-read', [NotificationController::class, 'markAsRead'])->name('mark.as.read');
 });
 
+
 // download file
 Route::middleware('auth')->get('download', [DocumentController::class, 'downloadDocument'])->name('download');
+
+//Grupo para las rutas de criterios de evaluación.
+Route::group(['prefix' => 'phases', 'as' => 'phases.'], function () {
+    Route::get('/{id}', [EvaluationCriteriaController::class, 'index'])->name('index');
+    Route::get('/create/{id}', [EvaluationCriteriaController::class, 'create'])->name('create');
+    Route::post('/store', [EvaluationCriteriaController::class,  'store'])->name('store');
+    Route::get('/{criteria}/edit', [EvaluationCriteriaController::class, 'edit'])->name('edit');
+    Route::put('/{criteria}', [EvaluationCriteriaController::class, 'update'])->name('update');
+    Route::delete('/{criteria}', [EvaluationCriteriaController::class, 'destroy'])->name('destroy');
+});
+
 
 
 // Estas rutas dejarlas de ultimo
