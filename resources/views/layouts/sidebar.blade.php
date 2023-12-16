@@ -162,7 +162,7 @@
                         </a>
                     </li>
                 @endcan
-
+                {{-- <li>
                 @can('Projects.coordinator.extension')
                     <li>
                         <a href="{{ route('extensions.index') }}">
@@ -171,14 +171,15 @@
                         </a>
                     </li>
                 @endcan
+                       </li> --}}
 
                 @can('Assigned.groups')
-                <li>
-                    <a href="{{ route('groups.assigned') }}">
-                        <i class="bx bx-file icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-groupsassigned">@lang('translation.GroupsAssigned')</span>
-                    </a>
-                </li>
+                    <li>
+                        <a href="{{ route('groups.assigned') }}">
+                            <i class="bx bx-file icon nav-icon"></i>
+                            <span class="menu-item" data-key="t-groupsassigned">@lang('translation.GroupsAssigned')</span>
+                        </a>
+                    </li>
                 @endcan
 
 

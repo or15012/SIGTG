@@ -24,19 +24,31 @@ class ExtensionController extends Controller
     {
         $this->middleware('auth');
     }
-    public function index()
+    public function index(Project $project)
     {
+
         $extensions = [];
         $extensions = Extension::get();
-        return view('extension.index', compact('extensions'));
+
+          // Creando una instancia del controlador Project
+          $projectController = new ProjectController();
+
+          //Llamando a la funcion disableProject
+
+          $status = $projectController->disableProject($project);
+          //dd($status);
+
+        return view('extension.index', compact('extensions', 'project', 'status'));
+
+
     }
 
-    public function create()
+    public function create(Project $project)
     {
-        $projects = Project::all();
+
         $type_extensions = TypeExtension::all();
 
-        return view('extension.create') ->with(compact('projects','type_extensions'));
+        return view('extension.create') ->with(compact('project','type_extensions'));
     }
 
     public function store(Request $request)
@@ -89,18 +101,18 @@ class ExtensionController extends Controller
                 }
             }
 
-            return redirect()->route('extensions.index')->with('success', 'Prórroga creada exitosamente.');
+            return redirect()->route('extensions.index', $request['project_id'])->with('success', 'Prórroga creada exitosamente.');
         } catch (\Exception $e) {
-            return redirect()->route('extensions.create')->with('error', 'Algo salió mal. Intente nuevamente.');
+            return redirect()->back()->with('error', 'Algo salió mal. Intente nuevamente.');
         }
     }
 
-    public function edit(Extension $extension)
+    public function edit(Extension $extension, Project $project)
     {
-        $projects = Project::all();
+
         $type_extensions = TypeExtension::all();
 
-        return view('extension.edit') ->with(compact('extension','projects','type_extensions'));
+        return view('extension.edit') ->with(compact('extension','project','type_extensions'));
     }
 
     public function update(Request $request, Extension $extension)
@@ -165,13 +177,13 @@ class ExtensionController extends Controller
                 }
             }
 
-            return redirect()->route('extensions.index')->with('success', 'Prórroga actualizada exitosamente.');
+            return redirect()->route('extensions.index', $request['project_id'])->with('success', 'Prórroga actualizada exitosamente.');
         } catch (\Exception $e) {
-            return redirect()->route('extensions.edit', ['extension' => $extension])->with('error', 'Algo salió mal. Intente nuevamente.');
+            return redirect()->back()->with('error', 'Algo salió mal. Intente nuevamente.');
         }
     }
     public function destroy(Extension $extension)
     {
-        // 
+        //
     }
 }
