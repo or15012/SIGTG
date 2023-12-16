@@ -19,6 +19,7 @@ use App\Http\Controllers\EvaluationDocumentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ExtensionController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PhaseController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StageController;
 use App\Http\Controllers\SubareaController;
@@ -302,14 +303,15 @@ Route::group(['prefix' => 'notifications', 'as' => 'notifications.'], function (
 // download file
 Route::middleware('auth')->get('download', [DocumentController::class, 'downloadDocument'])->name('download');
 
-//Grupo para las rutas de criterios de evaluación.
+
+//Grupo para las rutas de fases.
 Route::group(['prefix' => 'phases', 'as' => 'phases.'], function () {
-    Route::get('/{id}', [EvaluationCriteriaController::class, 'index'])->name('index');
-    Route::get('/create/{id}', [EvaluationCriteriaController::class, 'create'])->name('create');
-    Route::post('/store', [EvaluationCriteriaController::class,  'store'])->name('store');
-    Route::get('/{criteria}/edit', [EvaluationCriteriaController::class, 'edit'])->name('edit');
-    Route::put('/{criteria}', [EvaluationCriteriaController::class, 'update'])->name('update');
-    Route::delete('/{criteria}', [EvaluationCriteriaController::class, 'destroy'])->name('destroy');
+    Route::get('/', [PhaseController::class, 'index'])->name('index');
+    Route::get('/create', [PhaseController::class, 'create'])->name('create');
+    Route::post('/store', [PhaseController::class,  'store'])->name('store');
+    Route::get('/{phase}/edit', [PhaseController::class, 'edit'])->name('edit');
+    Route::put('/{phase}', [PhaseController::class, 'update'])->name('update');
+    Route::delete('/{phase}', [PhaseController::class, 'destroy'])->name('destroy');
 });
 
 

@@ -25,4 +25,14 @@ class Phase extends Model
         return $this->belongsToMany(Stage::class, 'phase_stage')->withTimestamps();
     }
 
+    public function cycle()
+    {
+        return $this->belongsTo(Cycle::class);
+    }
+
+    public function school()
+    {
+        return $this->belongsTo(School::class);
+    }
+
 }

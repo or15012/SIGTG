@@ -25,4 +25,9 @@ class Cycle extends Model
     {
         return $this->hasMany(Parameter::class);
     }
+
+    public function phases()
+    {
+        return $this->hasMany(Phase::class);
+    }
 }

@@ -43,26 +43,20 @@
             <tbody>
                 @foreach ($phases as $phase)
                     <tr>
-                        <td>{{ $stage->id }}</td>
-                        <td>{{ $stage->name }}</td>
-                        <td>{{ $stage->cycle->number }}-{{ $stage->cycle->year }}</td>
-                        <td>{{ $stage->school->name }}</td>
+                        <td>{{ $phase->id }}</td>
+                        <td>{{ $phase->name }}</td>
+                        <td>{{ $phase->description }}</td>
+                        <td>{{ $phase->cycle->number }}-{{ $phase->cycle->year }}</td>
+                        <td>{{ $phase->school->name }}</td>
                         <td>
-                            {{-- <a href="{{ route('criterias.index', $stage->id) }}" class="btn btn-primary my-1"><i
-                                    class="fas fa-eye"></i></a> --}}
-                            <a href="{{ route('phases.edit', $stage->id) }}" class="btn btn-primary my-1"><i
+                            <a href="{{ route('phases.edit', $phase->id) }}" class="btn btn-primary my-1"><i
                                     class="fas fa-pen"></i></a>
 
                             <button class="btn btn-danger buttonDelete my-1"
-                                onclick="mostrarConfirmacion('{{ route('stages.destroy', $stage->id) }}', '{{ csrf_token() }}')">
+                                onclick="mostrarConfirmacion('{{ route('phases.destroy', $phase->id) }}', '{{ csrf_token() }}')">
                                 <i class="fas fa-trash-alt"></i> </button>
 
-                            {{-- <a href="{{ route('criterias.create', $stage->id) }}" class="btn btn-primary my-1"><i
-                                    class="fas fa-file-medical"></i></a>
 
-                            <button class="btn btn-secondary ajax-modal my-1" data-title="Carga de criterios" title="Cargar criterios"
-                                href="{{ route('stages.modal.load.criterias', ['stage_id' => $stage->id]) }}">
-                                <i class="fas fa-file"></i> --}}
                             </button>
                         </td>
                     </tr>
