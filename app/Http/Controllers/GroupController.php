@@ -55,6 +55,12 @@ class GroupController extends Controller
         return view('groups.index', compact('groups'));
     }
 
+    private function canStartGraduationWork($group) //Para validar el protocolo.
+    {
+        // Verificar las condiciones necesarias para iniciar el trabajo de graduación
+        return $group->protocol->name === 'examen' && $group->status === 0; // Falta ajustar.
+    }
+
     /**
      * Vista para inicializar grupo.
      *
@@ -79,16 +85,20 @@ class GroupController extends Controller
             foreach ($groupUsers as $item) {
                 if ($item->id === $user->id) {
                     if ($item->pivot->is_leader === 1) {
-                        return view('groups.initialize', compact('user', 'group', 'groupUsers'));
+                        return view('groups.initialize', compact('user', 'group', 'groupUsers', 'year'))
+                            ->with('canStartGraduationWork', $this->canStartGraduationWork($group));
                     } else {
                         return view('groups.confirm', compact('user', 'group', 'groupUsers'));
-                    }
                 }
             }
         }
 
         //vere si el usuario tiene un grupo
-        return view('groups.initialize', compact('user', 'group', 'groupUsers'));
+        //return view('groups.initialize', compact('user', 'group', 'groupUsers'));
+
+        // Verificar si el usuario puede iniciar el trabajo de graduación
+        return view('groups.initialize', compact('user', 'group', 'groupUsers', 'year'))
+            ->with('canStartGraduationWork', $this->canStartGraduationWork($group));
     }
 
     public function create()
