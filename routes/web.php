@@ -22,6 +22,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StageController;
 use App\Http\Controllers\SubareaController;
+use App\Http\Controllers\PlanningController;
 use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -312,7 +313,14 @@ Route::group(['prefix' => 'phases', 'as' => 'phases.'], function () {
     Route::delete('/{criteria}', [EvaluationCriteriaController::class, 'destroy'])->name('destroy');
 });
 
+//Grupo para las rutas de planificación
 
+//Grupo para las rutas de asesoria.
+Route::group(['prefix' => 'plannings', 'as' => 'plannings.'], function () {
+    Route::get('/', [PlanningController::class, 'index'])->name('index');
+    Route::get('/create', [PlanningController::class, 'create'])->name('create');
+    Route::post('/store', [PlanningController::class,  'store'])->name('store');
+});
 
 // Estas rutas dejarlas de ultimo
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
