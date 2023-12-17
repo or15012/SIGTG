@@ -312,6 +312,8 @@ Route::group(['prefix' => 'phases', 'as' => 'phases.'], function () {
     Route::get('/{phase}/edit', [PhaseController::class, 'edit'])->name('edit');
     Route::put('/{phase}', [PhaseController::class, 'update'])->name('update');
     Route::delete('/{phase}', [PhaseController::class, 'destroy'])->name('destroy');
+    Route::get('/assign-stages/{phase}', [PhaseController::class, 'assignStages'])->name('assig.stages');
+    Route::post('/store-assign-stages/{phase}', [PhaseController::class, 'storeAssignStages'])->name('store.assig.stages');
 });
 
 

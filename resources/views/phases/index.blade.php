@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.Stages')
+    @lang('translation.Phases')
 @endsection
 
 @section('content')
@@ -51,6 +51,9 @@
                         <td>
                             <a href="{{ route('phases.edit', $phase->id) }}" class="btn btn-primary my-1"><i
                                     class="fas fa-pen"></i></a>
+
+                            <a href="{{ route('phases.assig.stages', $phase->id) }}" class="btn btn-primary my-1"><i
+                                    class="fas fa-exchange-alt"></i></a>
 
                             <button class="btn btn-danger buttonDelete my-1"
                                 onclick="mostrarConfirmacion('{{ route('phases.destroy', $phase->id) }}', '{{ csrf_token() }}')">

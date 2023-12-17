@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cycle;
 use App\Models\Parameter;
 use App\Models\Phase;
+use App\Models\Stage;
 use Illuminate\Http\Request;
 
 class PhaseController extends Controller
@@ -46,6 +47,7 @@ class PhaseController extends Controller
             'description'   => 'required|string',
             'school_id'     => 'required|integer',
         ]);
+
         // Crear un nuevo ciclo
         $phase = Phase::create([
             'cycle_id'      => $validatedData['cycle_id'],
@@ -54,7 +56,7 @@ class PhaseController extends Controller
             'school_id'     => $validatedData['school_id'],
         ]);
 
-        return redirect()->back()->with('success', 'Fase creada con éxito');
+        return redirect()->route('phases.index')->with('success', 'Fase creada con éxito');
     }
 
     public function show($id)
@@ -92,4 +94,28 @@ class PhaseController extends Controller
 
         return redirect()->route('phases.index')->with('success', 'Fase eliminada con éxito');
     }
+
+    public function assignStages(Phase $phase)
+    {
+        $stages = Stage::where('protocol_id', 5)
+                        ->where('school_id',session('school', ['id']) )
+                        ->whereNotIn('id', $phase->stages->pluck('id'))
+                        ->get();
+
+        $stagesAssigned = $phase->stages;
+
+        return view('phases.assign-stages', compact('phase', 'stagesAssigned','stages'));
+    }
+
+
+    public function storeAssignStages(Request $request, Phase $phase)
+    {
+        // Validación de los datos del ciclo y los parámetros
+
+     dd($request);
+        return redirect()->route('phases.index')->with('success', 'Fase actualizada con éxito');
+    }
+
+
+
 }
