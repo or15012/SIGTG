@@ -7,6 +7,7 @@ use App\Models\Cycle;
 use App\Models\Group;
 use App\Models\Notification;
 use App\Models\Parameter;
+use App\Models\Protocol;
 use App\Models\TeacherGroup;
 use App\Models\User;
 use App\Models\UserGroup;
@@ -55,11 +56,7 @@ class GroupController extends Controller
         return view('groups.index', compact('groups'));
     }
 
-    private function canStartGraduationWork($group) //Para validar el protocolo.
-    {
-        // Verificar las condiciones necesarias para iniciar el trabajo de graduación
-        return $group->protocol->name === 'examen' && $group->status === 0; // Falta ajustar.
-    }
+
 
     /**
      * Vista para inicializar grupo.
@@ -79,26 +76,28 @@ class GroupController extends Controller
             ->first();
         $groupUsers = array();
 
+        $protocols = $user->protocol()
+        ->wherePivot('status', 1)
+        ->pluck('name');
+
+        //dd($protocols);
+
         if ($group) {
             // Obtener la información de los usuarios relacionados al grupo
             $groupUsers = $group->users;
             foreach ($groupUsers as $item) {
                 if ($item->id === $user->id) {
                     if ($item->pivot->is_leader === 1) {
-                        return view('groups.initialize', compact('user', 'group', 'groupUsers', 'year'))
-                            ->with('canStartGraduationWork', $this->canStartGraduationWork($group));
+                        return view('groups.initialize', compact('user', 'group', 'groupUsers', 'protocols'));
                     } else {
-                        return view('groups.confirm', compact('user', 'group', 'groupUsers'));
+                        return view('groups.confirm', compact('user', 'group', 'groupUsers', 'protocols'));
+                    }
                 }
             }
         }
 
         //vere si el usuario tiene un grupo
-        //return view('groups.initialize', compact('user', 'group', 'groupUsers'));
-
-        // Verificar si el usuario puede iniciar el trabajo de graduación
-        return view('groups.initialize', compact('user', 'group', 'groupUsers', 'year'))
-            ->with('canStartGraduationWork', $this->canStartGraduationWork($group));
+        return view('groups.initialize', compact('user', 'group', 'groupUsers', 'protocols'));
     }
 
     public function create()
@@ -167,12 +166,49 @@ class GroupController extends Controller
             // Insertar los nuevos usuarios
             $group->users()->attach($syncData);
 
-            return redirect()->back()->with('success', 'Grupo inicializado con éxito.');
+            $protocols = $user->protocol()
+            ->wherePivot('status', 1)
+            ->pluck('name');
+
+            return redirect()->back()->with(['success'=>'Grupo inicializado con éxito.', $protocols]);
         } catch (Exception $e) {
             Log::info('GroupController.store');
             Log::info($e->getMessage());
-            return redirect()->back()->with('error', 'Hubo un error intente de nuevo.');
+            return redirect()->back()->with(['error'=>'Hubo un error intente de nuevo.', $protocols]);
         }
+    }
+
+    public function storeExg(Request $request)
+    {
+        $data = $request->validate([
+            'protocol'      => 'required|string|exists:protocols,name'
+        ]);
+
+        $user = Auth::user();
+        $actual_date= Carbon::now();
+        $cycle_id = Cycle::where('year', $actual_date->year)->where('status', 1)->first()->id ?? 1;
+        $protocols = Protocol::where('name', $data['protocol'])->first();
+
+        //dd($protocols);
+
+        $group = Group::create([
+            'year'          => $actual_date->year,
+            'status'        => 1,
+            'state_id'      => 3,
+            'protocol_id'   => $protocols->id,
+            'cycle_id'      => $cycle_id
+        ]);
+
+        $user_group = UserGroup::create([
+            'status'        => 1,
+            'is_leader'     => 1,
+            'user_id'       => $user->id,
+            'group_id'      => $group->id
+
+        ]);
+
+        return redirect()->back()->with(['success'=>'Trabajo inicializado con éxito.', $protocols]);
+
     }
 
     public function edit($id)

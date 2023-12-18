@@ -75,6 +75,12 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    public function protocol()
+    {
+        return $this->belongsToMany(Protocol::class, 'user_protocol', 'user_id', 'protocol_id')
+            ->withPivot('status');
+    }
+
     public function groups()
     {
         return $this->belongsToMany(Group::class, 'user_group')
