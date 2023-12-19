@@ -14,7 +14,8 @@
     @endcomponent
     <div class="container">
         <div class="contenedor">
-            <a href="{{ route('extensions.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+            <a href="{{ route('extensions.index', $project->id) }}" class="btn btn-danger regresar-button"><i
+                    class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
         <h1>Crear notificación</h1>
@@ -38,13 +39,14 @@
         <form action="{{ route('extensions.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
-                <label for="project_id" class="form-label">Proyecto</label>
-                <select class="form-control" id="project_id" name="project_id">
+                <label for="project_id" class="form-label">Proyecto: {{$project->name}} </label>
+                {{-- <select class="form-control" id="project_id" name="project_id">
                     <option value=""> Seleccione un proyecto </option>
                     @foreach ($projects as $project)
                         <option value="{{ $project->id }}"> {{ $project->name }}</option>
                     @endforeach
-                </select>
+                </select> --}}
+               <input type="hidden" name="project_id" value="{{$project->id}}">
             </div>
             <div class="mb-3">
                 <label for="type_extension_id" class="form-label">Tipo de extensión</label>
@@ -83,7 +85,7 @@
             <br />
             <div class="contenedor">
                 <button type="submit" class="btn btn-primary">Guardar</button>
-                <a href="{{ route('extensions.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
+                <a href="{{ route('extensions.index', $project->id) }}" class="btn btn-danger regresar-button">Cancelar</a>
             </div>
         </form>
     </div>

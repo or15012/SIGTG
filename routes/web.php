@@ -258,10 +258,10 @@ Route::group(['prefix' => 'projects', 'as' => 'projects.'], function () {
 
 // Prórrogas (extensions).
 Route::group(['prefix' => 'extensions', 'as' => 'extensions.'], function () {
-    Route::get('/', [ExtensionController::class, 'index'])->name('index');
-    Route::get('/create', [ExtensionController::class, 'create'])->name('create');
+    Route::get('/index/{project}', [ExtensionController::class, 'index'])->name('index');
+    Route::get('/create/{project}', [ExtensionController::class, 'create'])->name('create');
     Route::post('/', [ExtensionController::class,  'store'])->name('store');
-    Route::get('/{extension}/edit', [ExtensionController::class, 'edit'])->name('edit');
+    Route::get('/{extension}/edit/{project}', [ExtensionController::class, 'edit'])->name('edit');
     Route::put('/{extension}', [ExtensionController::class, 'update'])->name('update');
 });
 
@@ -300,8 +300,20 @@ Route::group(['prefix' => 'notifications', 'as' => 'notifications.'], function (
     Route::get('/mark-as-read', [NotificationController::class, 'markAsRead'])->name('mark.as.read');
 });
 
+
 // download file
 Route::middleware('auth')->get('download', [DocumentController::class, 'downloadDocument'])->name('download');
+
+//Grupo para las rutas de criterios de evaluación.
+Route::group(['prefix' => 'phases', 'as' => 'phases.'], function () {
+    Route::get('/{id}', [EvaluationCriteriaController::class, 'index'])->name('index');
+    Route::get('/create/{id}', [EvaluationCriteriaController::class, 'create'])->name('create');
+    Route::post('/store', [EvaluationCriteriaController::class,  'store'])->name('store');
+    Route::get('/{criteria}/edit', [EvaluationCriteriaController::class, 'edit'])->name('edit');
+    Route::put('/{criteria}', [EvaluationCriteriaController::class, 'update'])->name('update');
+    Route::delete('/{criteria}', [EvaluationCriteriaController::class, 'destroy'])->name('destroy');
+});
+
 
 
 // Estas rutas dejarlas de ultimo

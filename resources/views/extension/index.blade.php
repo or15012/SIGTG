@@ -16,7 +16,13 @@
     <div class="container">
 
         <h1>Lista de prórrogas</h1>
-        <a href="{{ route('extensions.create') }}" class="btn btn-primary mb-3">Registrar prórroga</a>
+        @if ($status)
+            <a href="{{ route('extensions.create', $project->id) }}" class="btn btn-primary mb-3">Registrar prórroga</a>
+        @else
+            <div class="alert alert-info mt-3">
+                No se puede registrar ni realizar cambios en asesorias. Proyecto inactivo.
+            </div>
+        @endif
 
         @if (session('success'))
             <div class="alert alert-success">
@@ -50,8 +56,10 @@
                         <td>{{ $extension->description }}</td>
                         <td>{{ $extension->status() }}</td>
                         <td>
-                            <a href="{{ route('extensions.edit', $extension->id) }}" class="btn btn-primary"><i
-                                    class="fas fa-pen"></i></a>
+                            @if ($status)
+                                <a href="{{ route('extensions.edit', [$extension->id, $project->id]) }}" class="btn btn-primary"><i
+                                        class="fas fa-pen"></i></a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

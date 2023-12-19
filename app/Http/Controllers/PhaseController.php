@@ -24,14 +24,16 @@ class PhaseController extends Controller
     public function index()
     {
         $phases = Phase::where('school_id', session('school', ['id']))
-                ->paginate(20);
+                    ->paginate(20);
+
         return view('phases.index', compact('phases'));
     }
 
     public function create()
     {
-        $parameterNames = Parameter::PARAMETERS;
-        return view('cycles.create', compact('parameterNames'));
+        return view('phases.create', [
+
+        ]);
     }
 
     public function store(Request $request)

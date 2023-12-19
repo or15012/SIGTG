@@ -14,13 +14,9 @@
     @endcomponent
 
     <div class="container">
-        <h1>Lista de etapas evaluativas</h1>
-        <a href="{{ route('stages.create') }}" class="btn btn-primary mb-3">Nueva etapa evaluativa</a>
-        <div class="float-end d-flex justify-content-end align-items-center">
-            <a href="{{ route('stages.download.template') }}" class="btn btn-primary">Descargar plantilla para carga de
-                criterios
-            </a>
-        </div>
+        <h1>Lista de fases</h1>
+        <a href="{{ route('phases.create') }}" class="btn btn-primary mb-3">Nueva fase</a>
+
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -38,40 +34,35 @@
                 <tr class="table-danger">
                     <th>ID</th>
                     <th>Nombre</th>
+                    <th>Descripción</th>
                     <th>Ciclo</th>
-                    <th>Protocolo</th>
                     <th>Escuela</th>
-                    <th>Porcentaje</th>
-                    <th>Orden de etapa</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($stages as $stage)
+                @foreach ($phases as $phase)
                     <tr>
                         <td>{{ $stage->id }}</td>
                         <td>{{ $stage->name }}</td>
                         <td>{{ $stage->cycle->number }}-{{ $stage->cycle->year }}</td>
-                        <td>{{ $stage->protocol->name }}</td>
                         <td>{{ $stage->school->name }}</td>
-                        <td>{{ $stage->percentage }}</td>
-                        <td>{{ $stage->sort }}</td>
                         <td>
-                            <a href="{{ route('criterias.index', $stage->id) }}" class="btn btn-primary my-1"><i
-                                    class="fas fa-eye"></i></a>
-                            <a href="{{ route('stages.edit', $stage->id) }}" class="btn btn-primary my-1"><i
+                            {{-- <a href="{{ route('criterias.index', $stage->id) }}" class="btn btn-primary my-1"><i
+                                    class="fas fa-eye"></i></a> --}}
+                            <a href="{{ route('phases.edit', $stage->id) }}" class="btn btn-primary my-1"><i
                                     class="fas fa-pen"></i></a>
 
                             <button class="btn btn-danger buttonDelete my-1"
                                 onclick="mostrarConfirmacion('{{ route('stages.destroy', $stage->id) }}', '{{ csrf_token() }}')">
                                 <i class="fas fa-trash-alt"></i> </button>
 
-                            <a href="{{ route('criterias.create', $stage->id) }}" class="btn btn-primary my-1"><i
+                            {{-- <a href="{{ route('criterias.create', $stage->id) }}" class="btn btn-primary my-1"><i
                                     class="fas fa-file-medical"></i></a>
 
                             <button class="btn btn-secondary ajax-modal my-1" data-title="Carga de criterios" title="Cargar criterios"
                                 href="{{ route('stages.modal.load.criterias', ['stage_id' => $stage->id]) }}">
-                                <i class="fas fa-file"></i>
+                                <i class="fas fa-file"></i> --}}
                             </button>
                         </td>
                     </tr>

@@ -56,16 +56,13 @@ class ConsultingController extends Controller
         // Creando una instancia del controlador Project
         $projectController = new ProjectController();
 
-        //Obteniendo proyectos
-
-
         //Llamando a la funcion disabaleProject
 
-            $status = $projectController->disableProject($project);
-            //dd($status);
+        $status = $projectController->disableProject($project);
+        //dd($status);
 
 
-        return view('consultings.index', compact('consultings', 'userType','status', 'project'));
+        return view('consultings.index', compact('consultings', 'userType', 'status', 'project'));
     }
 
     public function create(Project $project)
@@ -165,7 +162,7 @@ class ConsultingController extends Controller
     {
 
         // Devuelve la vista 'consultings.show' pasando la asesoría como una variable compacta
-        return view('consultings.show', compact('consulting','project'));
+        return view('consultings.show', compact('consulting', 'project'));
     }
 
     public function destroy(Consulting $consulting)

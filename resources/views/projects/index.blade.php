@@ -44,7 +44,7 @@
                 @endif
                 @can('Extensions.student.create')
                     @if ($today >= $date_end_mod && $today <= $date_end)
-                        <a href="{{ route('extensions.index') }}" style="margin-left: 5px" class="btn btn-primary float-end">
+                        <a href="{{ route('extensions.index', $project->id) }}" style="margin-left: 5px" class="btn btn-primary float-end">
                             <i class="fa fa-plus"></i>&nbsp; Solicitar prórroga
                         </a>
                     @endif
