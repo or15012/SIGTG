@@ -49,7 +49,7 @@
                 @can('Roles')
                     <li>
                         <a href="{{ route('roles.index') }}">
-                            <i class="bx bx-user-plus icon nav-icon"></i>
+                            <i class="bx bxs-user-detail icon nav-icon"></i>
                             <span class="menu-item" data-key="t-roles">@lang('translation.Roles')</span>
                         </a>
                     </li>

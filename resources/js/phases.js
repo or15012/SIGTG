@@ -41,11 +41,11 @@ sortableStagesList.option('onEnd', function (evt) {
 function updateAssignedStagesInputs() {
     var container = $('#input-container');
     container.empty();
-    $("#assign-stages li").each(function (index) {
+    $("#assign-stages li").each(function (index, element) {
         var dataIdValue = $(this).data('id');
         var newInput = $('<input>').attr({
             type: 'hidden',
-            name: 'stages[]',
+            name: `stages[${index}]`,
             value: dataIdValue
         });
         console.log(newInput);
