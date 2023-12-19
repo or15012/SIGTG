@@ -69,11 +69,13 @@
                         <td>{{ $userTypes[$user->type] }}</td>
                         <td>
                             <a href="{{ route('users.assign.roles', $user->id) }}" class="btn btn-primary"><i class="fas fa-pen"></i></a>
+                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-secondary"><i class="fas fa-user-edit"></i></a>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
+        {!! $users->withQueryString()->links('pagination::bootstrap-5') !!}
     </div>
 @endsection
 

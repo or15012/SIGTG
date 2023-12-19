@@ -58,6 +58,8 @@ Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
     Route::post('/import', [RegisterController::class, 'import'])->name('import');
     Route::get('/assign-roles/{user}', [RegisterController::class, 'assignRoles'])->name('assign.roles');
     Route::post('/assign-roles-store/{user}', [RegisterController::class, 'assignRolesStore'])->name('assign.roles.store');
+    Route::get('/{id}/edit', [RegisterController::class, 'showEditForm'])->name('edit');
+    Route::put('/{id}/update', [RegisterController::class, 'update'])->name('update');
 });
 
 Route::group(['prefix' => 'students', 'as' => 'students.'], function () {
