@@ -78,6 +78,7 @@
                 @endforeach
             </tbody>
         </table>
+         {!! $stages->withQueryString()->links('pagination::bootstrap-5') !!}
     </div>
 @endsection
 

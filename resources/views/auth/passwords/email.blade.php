@@ -20,12 +20,12 @@
                     <div class="card">
                         <div class="card-body p-4">
                             <div class="text-center mt-2">
-                                <h5 class="text-primary">Reset Password</h5>
-                                <p class="text-muted">Reset Password with SIGTG - FIA.</p>
+                                <h5 class="text-primary">Restablecer contraseña</h5>
+                                <p class="text-muted">Restablecer contraseña con SIGTG - FIA.</p>
                             </div>
                             <div class="p-2 mt-4">
                                 <div class="alert alert-success text-center small mb-4" role="alert">
-                                    Enter your Email and instructions will be sent to you!
+                                    Ingresa tu email para mandarte las instrucciones:
                                 </div>
                                 @if (session('status'))
                                         <div class="alert alert-success text-center mb-4" role="alert">
@@ -36,7 +36,7 @@
                                             @csrf
                                             <div class="mb-3">
                                                 <label for="useremail" class="form-label">Email</label>
-                                                <input type="email" class="form-control @error('email') is-invalid @enderror" id="useremail" name="email" placeholder="Enter email" value="{{ old('email') }}" id="email">
+                                                <input type="email" class="form-control @error('email') is-invalid @enderror" id="useremail" name="email" placeholder="Ingresa tu correo" value="{{ old('email') }}" id="email">
                                                 @error('email')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -45,14 +45,14 @@
                                             </div>
 
                                             <div class="mt-3 text-end">
-                                                <button class="btn btn-primary w-sm waves-effect waves-light" type="submit">Reset</button>
+                                                <button class="btn btn-primary w-sm waves-effect waves-light" type="submit">Restablecer</button>
                                             </div>
 
                                         </form>
 
 
                                     <div class="mt-4 text-center">
-                                        <p class="mb-0">Remember It ? <a href="{{ url('login') }}" class="fw-medium text-primary"> Sign in </a></p>
+                                        <p class="mb-0">¿Recuerdas tu contraseña? <a href="{{ url('login') }}" class="fw-medium text-primary"> Iniciar sesión </a></p>
                                     </div>
                                 </form>
                             </div>

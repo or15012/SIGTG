@@ -50,7 +50,7 @@ class GroupController extends Controller
             ->join('states as s', 'groups.state_id', 's.id')
             ->where('groups.year', $year)
             ->where('ug.is_leader', 1)
-            ->paginate(20);
+            ->paginate(30);
 
         return view('groups.index', compact('groups'));
     }

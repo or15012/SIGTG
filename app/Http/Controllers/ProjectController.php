@@ -293,7 +293,7 @@ class ProjectController extends Controller
             ->join('teacher_group as tg', 'tg.group_id', 'g.id')
             ->where('tg.user_id', $user->id)
             ->select('projects.id', 'projects.name')
-            ->get();
+            ->paginate(30);
 
         return view('projects.coordinator.index', [
             "projects"  => $projects

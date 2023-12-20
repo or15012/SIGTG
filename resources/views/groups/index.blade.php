@@ -68,6 +68,7 @@
                 @endforeach
             </tbody>
         </table>
+        {!! $groups->withQueryString()->links('pagination::bootstrap-5') !!}
     </div>
 @endsection
 

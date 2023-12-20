@@ -207,14 +207,32 @@
                     </li>
                 @endcan
 
-                {{-- @can('Projects.coordinator.notifications') --}}
-                <li>
-                    <a href="{{ route('notifications.index') }}">
-                        <i class="bx bx-mail-send icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-notifications">@lang('Notifications')</span>
-                    </a>
-                </li>
-                {{-- @endcan --}}
+                @can('Notifications')
+                    <li>
+                        <a href="{{ route('notifications.index') }}">
+                            <i class="bx bx-git-pull-request icon nav-icon"></i>
+                            <span class="menu-item" data-key="t-notifications">@lang('Notifications')</span>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('Courses')
+                    <li>
+                        <a href="{{ route('courses.index') }}">
+                            <i class="bx bx-git-pull-request icon nav-icon"></i>
+                            <span class="menu-item" data-key="t-notifications">@lang('Courses')</span>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('Entities')
+                    <li>
+                        <a href="{{ route('entities.index') }}">
+                            <i class="bx bx-git-pull-request icon nav-icon"></i>
+                            <span class="menu-item" data-key="t-notifications">@lang('Entities')</span>
+                        </a>
+                    </li>
+                @endcan
 
 
                 {{-- <li>
