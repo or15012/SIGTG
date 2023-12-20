@@ -120,5 +120,20 @@
         "name": "Areas",
         "guard_name": "web",
         "description": "Permiso para gestionar areas y sub areas"
+    },
+    {
+        "name": "Notifications",
+        "guard_name": "web",
+        "description": "Permiso para registrar notificaciones"
+    },
+    {
+        "name": "Courses",
+        "guard_name": "web",
+        "description": "Permiso para registrar cursos"
+    },
+    {
+        "name": "Entities",
+        "guard_name": "web",
+        "description": "Permiso para registrar entidades"
     }
 ]

@@ -94,4 +94,11 @@ class User extends Authenticatable
         return $this->belongsTo(Modality::class, 'modality_id');
     }
 
+    public function teacher_courses()
+    {
+        return $this->belongsToMany(Course::class, 'teacher_courses')
+            ->withPivot(['id'])
+            ->withTimestamps();
+    }
+
 }
