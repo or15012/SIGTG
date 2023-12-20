@@ -173,5 +173,6 @@ return [
     "EvaluationsDocuments"   => "Documentos de evaluación",
     "Roles"                  => "Roles",
     "GroupsAssigned"         => "Grupos asignados",
-    "Phases"                 => "Fases",
+    "Phases"                 => "Fases (coordinador)",
+    "Evaluations"            => "Evaluaciones",
 ];

@@ -172,6 +172,7 @@
 "ShowPerfil"        => "ShowPerfil",
 "Consultings"        => "Consultings",
 "EvaluationsDocuments"   => "Evaluations Documents",
-"GroupsAssigned"  => "Groups Assigned"
+"GroupsAssigned"  => "Groups Assigned",
+"Evaluations"            => "Evaluations",
 
 ];

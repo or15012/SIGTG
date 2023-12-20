@@ -110,7 +110,7 @@ class PhaseController extends Controller
 
     public function storeAssignStages(Request $request, Phase $phase)
     {
-        // Validación de los datos del ciclo y los parámetros
+        // Asignas stages a phases con orden
         $stages_id = array();
         if(isset($request->stages)){
             foreach ($request->stages as $key => $value) {
