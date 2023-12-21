@@ -175,4 +175,9 @@ return [
     "GroupsAssigned"         => "Grupos asignados",
     "Phases"                 => "Fases (coordinador)",
     "Evaluations"            => "Evaluaciones",
+    "Notifications"   => "Notificaciones",
+    "Entities"   => "Entidades",
+    "Courses"   => "Cursos",
+    "ListNotifications"   => "Lista de notificaciones",
+    "CreateNotification"   => "Nueva notificación",
 ];

@@ -39,34 +39,37 @@
             <div class="row mb-3">
                 <div class="col-12">
                     <label for="status" class="form-label">Estado</label>
-                    <select class="form-select select2" id="status" name="status" required>
+                    <select class="form-select select2" id="status" name="status" required style="width: 100%">
                         <option value="1" @if(old('status', $entity->status) == 1) selected @endif>Activo</option>
                         <option value="0" @if(old('status', $entity->status) == 0) selected @endif>Inactivo</option>
                     </select>
                 </div>
             </div>
 
-
-            <h2>Contacto</h2>
-
-            <div class="row mb-3">
-                <div class="col-12">
-                    <label for="contact_name" class="form-label">Nombre del contacto</label>
-                    <input value="{{ old('contact_name', $contact->name) }}" type="text" class="form-control" id="contact_name" name="contact_name" >
-                </div>
+            <div class="d-flex justify-content-between">
+                <h2>Contactos</h2>
+                <button class="btn btn-secondary" type="button" onclick="addContact()"><i class="fas fa-plus"></i></button>
             </div>
-            <div class="row mb-3">
-                <div class="col-12">
-                    <label for="contact_phone_number" class="form-label">Teléfono del contacto</label>
-                    <input value="{{ old('contact_phone_number', $contact->phone_number) }}" type="text" class="form-control" id="contact_phone_number" name="contact_phone_number">
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-12">
-                    <label for="contact_position" class="form-label">Cargo/Puesto del contacto</label>
-                    <input value="{{ old('contact_position', $contact->position) }}" type="text" class="form-control" id="contact_position" name="contact_position">
-                </div>
-            </div>
+            <table class="table table-bordered table-striped" id="table-contacts">
+                <thead>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Cargo</th>
+                    <th>Acción</th>
+                </thead>
+                <tbody>
+                    @foreach($entity->entity_contacts as $contact)
+                        <tr>
+                            <td><input type="text" name="contact_name[]" class="form-control" required value="{{$contact->name}}"/></td>
+                            <td><input type="text" name="contact_phone_number[]" required class="form-control" value="{{$contact->phone_number}}"/></td>
+                            <td><input type="text" name="contact_email[]" class="form-control" value="{{$contact->email}}"/></td>
+                            <td><input type="text" name="contact_position[]" class="form-control" value="{{$contact->position}}"/></td>
+                            <td><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)"><i class="fas fa-trash"></i></button></td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
 
             <div class="contenedor">
                 <a href="{{ route('entities.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
@@ -78,4 +81,5 @@
 
 @section('script')
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+    <script src="{{ URL::asset('js/entities.js') }}"></script>
 @endsection
