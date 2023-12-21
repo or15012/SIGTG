@@ -137,7 +137,7 @@
                 @endcan
 
                 @can('Stages')
-                    @if (session('protocol') !== null)
+                    @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
                             @case(1)
                                 <li>
