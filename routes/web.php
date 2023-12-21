@@ -122,6 +122,7 @@ Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
     Route::get('{id}/edit', [GroupController::class, 'edit'])->name('edit');
     Route::put('{id}', [GroupController::class, 'update'])->name('update');
     Route::delete('{id}', [GroupController::class, 'destroy'])->name('destroy');
+    Route::post('/store', [GroupController::class, 'storeExg'])->name('exg');
 
     //Rutas para actualiza comite evaluador y asesor.
     Route::get('/evaluating-committee-index/{group}', [GroupController::class, 'evaluatingCommitteeIndex'])->name('evaluating.committee.index');
@@ -178,6 +179,7 @@ Route::group(['prefix' => 'profiles', 'as' => 'profiles.'], function () {
         Route::get('/show/{preprofile}', [ProfileController::class, 'preProfileShow'])->name('show');
         Route::get('/create', [ProfileController::class, 'preProfileCreate'])->name('create');
         Route::post('/store', [ProfileController::class, 'preProfileStore'])->name('store');
+        Route::post('/storeExg', [ProfileController::class, 'preProfileStoreExg'])->name('exg');
         Route::get('/edit/{preprofile}', [ProfileController::class, 'preProfileEdit'])->name('edit');
         Route::put('/update/{preprofile}', [ProfileController::class, 'preProfileUpdate'])->name('update');
         Route::delete('/destroy/{preprofile}', [ProfileController::class, 'preProfileDestroy'])->name('destroy');
