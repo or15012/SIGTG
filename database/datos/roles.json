@@ -6,12 +6,17 @@
     },
     {
         "id": "3",
-        "name": "Coordinador",
+        "name": "Coordinador General",
         "guard_name": "web"
     },
     {
         "id": "4",
         "name": "Docente asesor",
+        "guard_name": "web"
+    },
+    {
+        "id": "5",
+        "name": "Coordinador de protocolo",
         "guard_name": "web"
     }
 
