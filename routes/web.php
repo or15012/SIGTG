@@ -25,6 +25,7 @@ use App\Http\Controllers\PhaseController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StageController;
 use App\Http\Controllers\SubareaController;
+use App\Http\Controllers\PlanningController;
 use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -113,7 +114,7 @@ Route::group(['prefix' => 'cycles', 'as' => 'cycles.'], function () {
 
 //Grupo para las rutas de grupo
 Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
-    Route::get('/', [GroupController::class, 'index'])->name('index');
+    Route::get('/index/{project', [GroupController::class, 'index'])->name('index');
     Route::get('create', [GroupController::class, 'create'])->name('create');
     Route::post('/', [GroupController::class, 'store'])->name('store');
     Route::get('/initialize', [GroupController::class, 'initialize'])->name('initialize');
@@ -320,29 +321,17 @@ Route::group(['prefix' => 'phases', 'as' => 'phases.'], function () {
     Route::post('/store-assign-stages/{phase}', [PhaseController::class, 'storeAssignStages'])->name('store.assig.stages');
 });
 
-
-//Grupo para las rutas de cursos
-Route::group(['prefix' => 'courses', 'as' => 'courses.'], function () {
-    Route::get('/', [CourseController::class, 'index'])->name('index');
-    Route::get('create', [CourseController::class, 'create'])->name('create');
-    Route::post('/', [CourseController::class, 'store'])->name('store');
-    Route::get('{id}', [CourseController::class, 'show'])->name('show');
-    Route::get('{id}/edit', [CourseController::class, 'edit'])->name('edit');
-    Route::put('{id}', [CourseController::class, 'update'])->name('update');
-    Route::delete('{id}', [CourseController::class, 'destroy'])->name('destroy');
+//Grupo para las rutas de planificación
+Route::group(['prefix' => 'plannings', 'as' => 'plannings.'], function () {
+    Route::get('/', [PlanningController::class, 'index'])->name('index');
+    Route::get('/create', [PlanningController::class, 'create'])->name('create');
+    Route::post('/store', [PlanningController::class,  'store'])->name('store');
+    Route::get('/show/{planning}', [PlanningController::class, 'show'])->name('show');
+    Route::get('/edit/{planning}', [PlanningController::class, 'edit'])->name('edit');
+    Route::put('/update/{planning}', [PlanningController::class, 'update'])->name('update');
+    Route::get('/download/{planning}/{file}', [PlanningController::class, 'planningDownload'])->name('download');
+    Route::delete('/destroy/{planning}', [PlanningController::class, 'destroy'])->name('destroy');
 });
-
-//Grupo para las rutas de entidades
-Route::group(['prefix' => 'entities', 'as' => 'entities.'], function () {
-    Route::get('/', [EntityController::class, 'index'])->name('index');
-    Route::get('create', [EntityController::class, 'create'])->name('create');
-    Route::post('/', [EntityController::class, 'store'])->name('store');
-    Route::get('{id}', [EntityController::class, 'show'])->name('show');
-    Route::get('{id}/edit', [EntityController::class, 'edit'])->name('edit');
-    Route::put('{id}', [EntityController::class, 'update'])->name('update');
-    Route::delete('{id}', [EntityController::class, 'destroy'])->name('destroy');
-});
-
 
 // Estas rutas dejarlas de ultimo
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
