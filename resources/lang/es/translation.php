@@ -172,5 +172,10 @@ return [
     "Consultings"       => "Asesorias",
     "EvaluationsDocuments"   => "Documentos de evaluación",
     "Roles"                  => "Roles",
-    "GroupsAssigned"  => "Grupos asignados"
+    "GroupsAssigned"  => "Grupos asignados",
+    "Notifications"   => "Notificaciones",
+    "Entities"   => "Entidades",
+    "Courses"   => "Cursos",
+    "ListNotifications"   => "Lista de notificaciones",
+    "CreateNotification"   => "Nueva notificación",
 ];

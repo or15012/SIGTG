@@ -53,10 +53,10 @@ class EntityController extends Controller
             'address'          => $validatedData['address'],
             'status'        => $validatedData['status'],
         ]);
-        // foreach ($request->teachers as $user_id) {
-        //     TeacherCourse::create(['course_id'=>$entity->id, 'user_id'=>$user_id]);
-        // }
-        EntityContact::create(['entity_id'=>$entity->id, 'name'=>$request->contact_name, 'phone_number'=>$request->contact_phone_number, 'position'=>$request->contact_position]);
+
+        for ($i=0; $i < count($request->contact_name); $i++) { 
+            EntityContact::create(['entity_id'=>$entity->id, 'name'=>$request->contact_name[$i], 'phone_number'=>$request->contact_phone_number[$i], 'email'=>$request->contact_email[$i], 'position'=>$request->contact_position[$i]]);
+        }
 
         DB::commit();
 
@@ -91,15 +91,10 @@ class EntityController extends Controller
         $entity->status      = $request->status;
         $entity->save();
 
-        // DB::table('teacher_courses')->where('course_id', $id)->delete();
-        // foreach ($request->teachers as $user_id) {
-        //     TeacherCourse::create(['course_id'=>$entity->id, 'user_id'=>$user_id]);
-        // }
-        $contact = EntityContact::where('entity_id', $id)->first();
-        $contact->name = $request->contact_name;
-        $contact->phone_number = $request->contact_phone_number;
-        $contact->position = $request->contact_position;        
-        $contact->save();
+        EntityContact::where('entity_id', $id)->delete();
+        for ($i=0; $i < count($request->contact_name); $i++) { 
+            EntityContact::create(['entity_id'=>$id, 'name'=>$request->contact_name[$i], 'phone_number'=>$request->contact_phone_number[$i], 'email'=>$request->contact_email[$i], 'position'=>$request->contact_position[$i]]);
+        }
 
         DB::commit();
         return redirect()->route('entities.index')->with('success', 'Entidad actualizada con éxito');
