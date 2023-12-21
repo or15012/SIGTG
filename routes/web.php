@@ -173,6 +173,7 @@ Route::group(['prefix' => 'profiles', 'as' => 'profiles.'], function () {
         Route::get('/show/{preprofile}', [ProfileController::class, 'preProfileShow'])->name('show');
         Route::get('/create', [ProfileController::class, 'preProfileCreate'])->name('create');
         Route::post('/store', [ProfileController::class, 'preProfileStore'])->name('store');
+        Route::post('/storeExg', [ProfileController::class, 'preProfileStoreExg'])->name('exg');
         Route::get('/edit/{preprofile}', [ProfileController::class, 'preProfileEdit'])->name('edit');
         Route::put('/update/{preprofile}', [ProfileController::class, 'preProfileUpdate'])->name('update');
         Route::delete('/destroy/{preprofile}', [ProfileController::class, 'preProfileDestroy'])->name('destroy');
