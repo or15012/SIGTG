@@ -60,11 +60,11 @@
                             @endswitch
                         </td>
                         <td>
-                            <a href="{{ route('profiles.preprofile.show', $planning->id) }}" class="btn btn-primary"><i
+                            <a href="{{ route('plannings.show', $planning->id) }}" class="btn btn-primary"><i
                                     class="fas fa-eye"></i></a>
-                            <a href="{{ route('profiles.preprofile.edit', $planning->id) }}" class="btn btn-primary"><i
+                            <a href="{{ route('plannings.edit', $planning->id) }}" class="btn btn-primary"><i
                                     class="fas fa-pen"></i></a>
-                            <form action="{{ route('profiles.preprofile.destroy', $planning->id) }}" method="POST"
+                            <form action="{{ route('plannings.destroy', $planning->id) }}" method="POST"
                                 style="display: inline">
                                 @csrf
                                 @method('DELETE')

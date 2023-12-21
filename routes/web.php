@@ -314,12 +314,15 @@ Route::group(['prefix' => 'phases', 'as' => 'phases.'], function () {
 });
 
 //Grupo para las rutas de planificación
-
-//Grupo para las rutas de asesoria.
 Route::group(['prefix' => 'plannings', 'as' => 'plannings.'], function () {
     Route::get('/', [PlanningController::class, 'index'])->name('index');
     Route::get('/create', [PlanningController::class, 'create'])->name('create');
     Route::post('/store', [PlanningController::class,  'store'])->name('store');
+    Route::get('/show/{planning}', [PlanningController::class, 'show'])->name('show');
+    Route::get('/edit/{planning}', [PlanningController::class, 'edit'])->name('edit');
+    Route::put('/update/{planning}', [PlanningController::class, 'update'])->name('update');
+    Route::get('/download/{planning}/{file}', [PlanningController::class, 'planningDownload'])->name('download');
+    Route::delete('/destroy/{planning}', [PlanningController::class, 'destroy'])->name('destroy');
 });
 
 // Estas rutas dejarlas de ultimo

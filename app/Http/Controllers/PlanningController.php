@@ -48,7 +48,7 @@ class PlanningController extends Controller
         $validatedData = $request->validate([
             'name'                  => 'required|string|max:255',
             'description'           => 'required|string',
-            'path'                  => 'required|mimes:pdf,xlsx,xls', // Esto valida que el archivo sea un PDF (puedes ajustar según tus necesidades)
+            'path'                  => 'required|mimes:pdf,xlsx,xls', // Esto valida que el archivo sea un PDF o excel (puedes ajustar según tus necesidades)
         ]);
 
         // Procesar y guardar el archivo
@@ -85,5 +85,60 @@ class PlanningController extends Controller
         $planning->save();
 
         return redirect()->route('plannings.index')->with('success', 'La planificación se ha guardado correctamente');
+    }
+
+    public function show(Profile $planning)
+    {
+        return view('plannings.show', compact('planning'));
+    }
+
+    public function edit(Profile $planning)
+    {
+
+        return view('plannings.edit', ['planning' => $planning]);
+    }
+
+    public function update(Request $request, Profile $planning)
+    {
+
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'path' => 'nullable|mimes:pdf,xlsx,xls', // Esto valida que el nuevo archivo sea un PDF o excel (puedes ajustar según tus necesidades)
+
+        ]);
+        try {
+            // Actualizar los campos del perfil
+            $planning->name               = $request->input('name');
+            $planning->description        = $request->input('description');
+            // Procesar y guardar el nuevo archivo si se proporciona
+            if ($request->hasFile('path')) {
+                $path = $request->file('path')->store('plannings');
+                $planning->path = $path;
+            }
+
+            $planning->update();
+
+            return redirect()->route('plannings.index')->with('success', 'La planificación se ha actualizado correctamente');
+        } catch (\Throwable $th) {
+            // Log de errores o manejo adicional
+            //Log::error('Error al actualizar el preperfil: ' . $th->getMessage());
+            return redirect()->route('plannings.index')->with('error', 'Hubo un error al actualizar la planificación. Por favor, inténtelo de nuevo.');
+        }
+    }
+
+
+    public function planningDownload(Profile $planning, $file)
+    {
+
+        $filePath = storage_path('app/' . $planning->$file);
+        return response()->download($filePath);
+
+    }
+    public function destroy(Profile $planning)
+    {
+        $planning->delete();
+
+        return redirect()->route('plannings.index')->with('success', 'Planificación eliminado correctamente.');
     }
 }
