@@ -82,6 +82,18 @@ class ProfileController extends Controller
             'proposal_priority'     => 'required|integer',
         ]);
 
+        // Validación adicional para permitir subir la planificación solo si el protocolo es "examen"
+        if ($request->hasFile('planning_path') && $group->protocol->name == 'examen') {
+            $planning_path = $request->file('planning_path')->store('preprofiles'); // Define la carpeta de destino donde se guardará el archivo
+
+            // Agregar la ruta de la planificación al modelo Profile
+            $profile->planning_path = $planning_path;
+            $profile->save();
+
+            // Redireccionar a una vista específica para el protocolo "examen"
+            return redirect()->route('group-examen')->with('success', 'El preperfil se ha guardado correctamente'); //Ruta pendiente
+        }
+
         // Procesar y guardar el archivo
         if ($request->hasFile('path')) {
             $path = $request->file('path')->store('preprofiles'); // Define la carpeta de destino donde se guardará el archivo
@@ -199,6 +211,17 @@ class ProfileController extends Controller
             $preprofile->name               = $request->input('name');
             $preprofile->description        = $request->input('description');
             $preprofile->proposal_priority  = $request->input('proposal_priority');
+
+            // Validación adicional para permitir actualizar la planificación solo si el protocolo es "examen"
+            if ($request->hasFile('planning_path') && $preprofile->group->protocol->name == 'examen') {
+                $planning_path = $request->file('planning_path')->store('preprofiles'); // Define la carpeta de destino donde se guardará el archivo
+                $preprofile->planning_path = $planning_path;
+                $preprofile->save();
+
+                // Redireccionar a una vista específica para el protocolo "examen"
+                return redirect()->route('nombre_de_la_ruta_para_examen')->with('success', 'El preperfil se ha actualizado correctamente'); //Ruta pendiente
+            }
+
             // Procesar y guardar el nuevo archivo si se proporciona
             if ($request->hasFile('path')) {
                 $path = $request->file('path')->store('preprofiles');
