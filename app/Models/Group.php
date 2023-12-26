@@ -26,7 +26,7 @@ class Group extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'user_group')
-            ->withPivot(['status','is_leader']) // Esto permite acceder a la columna 'status' de la tabla intermedia
+            ->withPivot(['status', 'is_leader']) // Esto permite acceder a la columna 'status' de la tabla intermedia
             ->withTimestamps();
     }
 
@@ -37,14 +37,16 @@ class Group extends Model
             ->withTimestamps();
     }
 
-    public function cycle(){
+    public function cycle()
+    {
         return $this->belongsTo(Cycle::class, 'cycle_id');
     }
 
-    public function userGroups(){
-        return $this->belongsToMany(UserGroup::class,'user_group')
-        ->withPivot(['status', 'is_leader']) // Esto permite acceder a la columna 'status' de la tabla intermedia
-        ->withTimestamps();;
+    public function userGroups()
+    {
+        return $this->belongsToMany(UserGroup::class, 'user_group')
+            ->withPivot(['status', 'is_leader']) // Esto permite acceder a la columna 'status' de la tabla intermedia
+            ->withTimestamps();;
     }
 
     public function projects()
@@ -55,5 +57,10 @@ class Group extends Model
     public function profiles()
     {
         return $this->hasMany(Profile::class, 'group_id');
+    }
+
+    public function activities()
+    {
+        return $this->hasMany(Activity::class, 'group_id');
     }
 }

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ActivityControlador;
+use App\Http\Controllers\ActivityControllador;
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CriteriaStageController;
@@ -334,6 +337,18 @@ Route::group(['prefix' => 'plannings', 'as' => 'plannings.'], function () {
     Route::delete('/destroy/{planning}', [PlanningController::class, 'destroy'])->name('destroy');
 });
 
+//Grupo para las rutas de actividad
+Route::group(['prefix' => 'activities', 'as' => 'activities.'], function () {
+    Route::get('/', [ActivityController::class, 'index'])->name('index');
+    Route::get('/create', [ActivityController::class, 'create'])->name('create');
+    Route::post('/store', [ActivityController::class,  'store'])->name('store');
+    Route::get('/download-template', [ActivityController::class, 'downloadTemplate'])->name('download.template');
+    Route::post('/import', [ActivityController::class, 'import'])->name('import');
+    Route::get('/show/{activity}', [ActivityController::class, 'show'])->name('show');
+    Route::get('/{activity}/edit', [ActivityController::class, 'edit'])->name('edit');
+    Route::put('/update/{activity}', [ActivityController::class, 'update'])->name('update');
+    Route::delete('/destroy/{activity}', [ActivityController::class, 'destroy'])->name('destroy');
+});
 // Estas rutas dejarlas de ultimo
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 //Language Translation
