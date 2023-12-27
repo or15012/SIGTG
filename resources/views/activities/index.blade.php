@@ -19,9 +19,9 @@
 
 
         <div class="float-end d-flex justify-content-end align-items-center">
-            <a href="{{ route('activities.download.template') }}" class="btn btn-primary">Descargar plantilla</a>
+            <a href="{{ route('activities.download.template') }}" class="btn btn-primary me-2">Descargar plantilla</a>
 
-            <form style="margin-left: 5px;" class="d-flex justify-content-end align-items-end" method="POST"
+            {{-- <form style="margin-left: 5px;" class="d-flex justify-content-end align-items-end" method="POST"
                 action="{{ route('activities.import') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group mr-2 d-none">
@@ -35,7 +35,12 @@
                     <button type="submit" class="btn btn-secondary" id="btnCargar"><i class="fa-solid fa-file-import"></i>
                         Cargar archivo</button>
                 </div>
-            </form>
+            </form> --}}
+
+            <button class="btn btn-secondary ajax-modal my-1" data-title="Carga de actividades" title="Cargar de actividades"
+            href="{{ route('activities.modal.load.activities') }}">
+            <i class="fas fa-file"></i> Importar actividades
+        </button>
         </div>
 
         @if (session('success'))

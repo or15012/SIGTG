@@ -29,6 +29,7 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StageController;
 use App\Http\Controllers\SubareaController;
 use App\Http\Controllers\PlanningController;
+use App\Models\Activity;
 use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -344,6 +345,7 @@ Route::group(['prefix' => 'activities', 'as' => 'activities.'], function () {
     Route::post('/store', [ActivityController::class,  'store'])->name('store');
     Route::get('/download-template', [ActivityController::class, 'downloadTemplate'])->name('download.template');
     Route::post('/import', [ActivityController::class, 'import'])->name('import');
+    Route::get('/modal-load', [ActivityController::class, 'modalLoadActivities'])->name('modal.load.activities');
     Route::get('/show/{activity}', [ActivityController::class, 'show'])->name('show');
     Route::get('/{activity}/edit', [ActivityController::class, 'edit'])->name('edit');
     Route::put('/update/{activity}', [ActivityController::class, 'update'])->name('update');
