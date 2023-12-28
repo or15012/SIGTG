@@ -53,13 +53,21 @@
                         <td>{{ $group->user_count }}</td>
                         <td>{{ $group->name }}</td>
                         <td>
-                            <a href="{{ route('groups.evaluating.committee.index', $group->id) }}" title="Asignar docentes" class="btn btn-primary">
+                            <a href="{{ route('groups.evaluating.committee.index', $group->id) }}" title="Asignar docentes"
+                                class="btn btn-primary">
                                 <i class="fas fa-balance-scale"></i>
                             </a>
-                            <a href="{{ route('groups.edit', $group->id) }}" title="Ajustes de grupo" class="btn btn-primary">
+                            <a href="{{ route('groups.edit', $group->id) }}" title="Ajustes de grupo"
+                                class="btn btn-primary">
                                 <i class="fas fa-cog"></i>
                             </a>
-                            <button class="btn btn-secondary ajax-modal" title="Cargar cartas de autorización" data-title="Carta de autorización"
+
+                            <a href="{{ route('extensions.index', $group->id) }}" title="Extensiones de grupo"
+                                class="btn btn-primary">
+                                <i class="fas fa-project-diagram"></i>
+                            </a>
+                            <button class="btn btn-secondary ajax-modal" title="Cargar cartas de autorización"
+                                data-title="Carta de autorización"
                                 href="{{ route('groups.modal.autorization.letter', ['group_id' => $group->id]) }}">
                                 <i class="fas fa-file"></i>
                             </button>
@@ -68,6 +76,7 @@
                 @endforeach
             </tbody>
         </table>
+        {!! $groups->withQueryString()->links('pagination::bootstrap-5') !!}
     </div>
 @endsection
 

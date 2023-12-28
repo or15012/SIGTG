@@ -20,8 +20,8 @@
                             <div class="card">
                                 <div class="card-body p-4">
                                     <div class="text-center mt-2">
-                                        <h5 class="text-primary">Welcome Back !</h5>
-                                        <p class="text-muted">Reset Password.</p>
+                                        <h5 class="text-primary">Bienvenido de nuevo!</h5>
+                                        <p class="text-muted">@lang('auth.throttle')</p>
                                     </div>
                                     <div class="p-2 mt-4">
 
@@ -46,7 +46,7 @@
                                             </div>
 
                                             <div class="mb-3">
-                                                <label class="form-label" for="userpassword">New Password</label>
+                                                <label class="form-label" for="userpassword">Nueva contraseña</label>
                                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password"  placeholder="Enter New Password"  autocomplete="new-password">
                                                     @error('password')
                                                         <span class="invalid-feedback" role="alert">
@@ -56,7 +56,7 @@
                                             </div>
 
                                             <div class="mb-3">
-                                                <label class="form-label" for="password-confirm">Confirm Password</label>
+                                                <label class="form-label" for="password-confirm">Confirmar contraseña</label>
                                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation"  autocomplete="new-password" placeholder="Enter Confirm Password">
                                                     @error('password')
                                                         <span class="invalid-feedback" role="alert">
@@ -66,7 +66,7 @@
                                             </div>
 
                                             <div class="mt-3 text-end">
-                                                <button class="btn btn-primary w-sm waves-effect waves-light" type="submit">Reset Password</button>
+                                                <button class="btn btn-primary w-sm waves-effect waves-light" type="submit">Restablecer contraseña</button>
                                             </div>
                                         </form>
                                     </div>

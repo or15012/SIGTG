@@ -67,6 +67,8 @@
                 @endforeach
             </tbody>
         </table>
+
+        {!! $profiles->withQueryString()->links('pagination::bootstrap-5') !!}
     </div>
 @endsection
 

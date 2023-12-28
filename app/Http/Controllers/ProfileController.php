@@ -59,7 +59,7 @@ class ProfileController extends Controller
 
         $preprofiles = Profile::where('group_id', $group->id)
             ->where('type', 0)
-            ->paginate(10);
+            ->paginate(30);
 
         return view('preprofiles.index', compact('preprofiles'));
     }
@@ -503,7 +503,7 @@ class ProfileController extends Controller
 
         $profiles = Profile::where('group_id', $group->id)
             ->where('type', 1)
-            ->paginate(10);
+            ->paginate(30);
 
         return view('profiles.index', compact('profiles'));
     }

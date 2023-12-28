@@ -66,7 +66,7 @@ class RegisterController extends Controller
 
     public function index()
     {
-        $users      = User::all(); // Obtén todos los registros de usuarios
+        $users      = User::paginate(10); // Obtén todos los registros de usuarios
         $userTypes  = User::TYPES;
 
         return view('auth.index', [
@@ -374,5 +374,96 @@ class RegisterController extends Controller
             //throw $th;
         }
         return redirect()->route('users.index')->with('success', 'Usuario creado con éxito');
+    }
+
+
+    public function showEditForm($id, Request $request)
+    {
+        $schools        = School::all(); // Obtener la lista de escuelas
+        $userTypes      = User::TYPES;
+        $protocols      = Protocol::all();
+        $modalities     = Modality::all();
+        $roles          = Role::all();
+        // $user           = Auth::user();
+        // $userRoles      = $user->roles;
+
+        $user = User::find($id);
+
+        $user->email = explode('@', $user->email)[0]??'';
+
+        return view('auth.edit', [
+            'schools'       => $schools,
+            'userTypes'     => $userTypes,
+            'protocols'     => $protocols,
+            'modalities'    => $modalities,
+            'roles'         => $roles,
+            // 'userRoles'     => $userRoles,
+            'user'          => $user,
+            'id'            => $id
+        ]);
+    }
+
+    public function update($id, Request $request)
+    {
+        $request->validate([
+            'first_name'        => ['required', 'string', 'max:255'],
+            'middle_name'       => ['required', 'string', 'max:255'],
+            'last_name'         => ['required', 'string', 'max:255'],
+            'second_last_name'  => ['required', 'string', 'max:255'],
+            'carnet'            => ['required', 'string', 'max:7'],
+            'email'             => ['required', 'string', 'max:255', 'not_regex:/@/'],
+            'school'            => ['required', 'exists:schools,id'], // Asegúrate de que exista una escuela con ese ID
+            // 'password'          => ['string', 'min:8', 'confirmed'],
+            'type'              => ['required'],
+            'modality_id'       => ['required'],
+        ]);
+        $user = User::find($id);
+        // $user->id =  $id;
+        $user->first_name =  $request['first_name'];
+        $user->middle_name =  $request['middle_name'];
+        $user->last_name =  $request['last_name'];
+        $user->second_last_name =  $request['second_last_name'];
+        $user->carnet =  $request['carnet'];
+        $user->email =  $request['email'] . '@ues.edu.sv';
+        $user->school_id =  $request['school'];
+        $user->type =  $request['type'];
+        $user->modality_id =  $request['modality_id'];
+
+        if (trim($request->password) != '') {
+            $request->validate(['password'=> ['string', 'min:8', 'confirmed']]);
+            $user->password = Hash::make($request['password']);
+        }
+
+        // $user = User::edit($dataEdit);
+
+
+        // Agregar un protocolo con status 1 y establecer status 0 para otros protocolos
+        if (!empty($request['protocol_id'])) {
+            $user->protocols()->detach();
+            $user->protocols()->attach([
+                $request['protocol_id'] => ['status' => 1]
+            ]);
+            // Establecer status 0 para otros protocolos
+            $user->protocols()->where('user_id', '!=', $user->id)->update(['status' => 0]);
+        }
+
+        // $user->password = $request['password'];
+
+        $user->save();
+
+        // if (isset($request['roles']) && is_array($request['roles'])) {
+        //     $roles = Role::whereIn('id', $request['roles'])->get(); // Obtener los roles seleccionados
+        //     $user->assignRole($roles); // Asignar los roles al usuario recién creado
+        // }
+
+        $notification = Notification::create(['title'=>'Alerta de usuario', 'message'=>"Tu usuario ha sido modificado exitosamente.", 'user_id'=>Auth::user()->id]);
+        try {
+            Mail::to($user->email)->send(new SendMail('mail.user-created', 'Modificación de usuario', ['user' => $user]));
+            UserNotification::create(['user_id'=>$user->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
+        } catch (\Exception $th) {
+            //throw $th;
+        }
+        // return $user;
+        return redirect()->route('users.index')->with('success', 'Usuario actualizado correctamente.');
     }
 }

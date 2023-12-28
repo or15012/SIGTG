@@ -49,7 +49,7 @@
                 @can('Roles')
                     <li>
                         <a href="{{ route('roles.index') }}">
-                            <i class="bx bx-user-plus icon nav-icon"></i>
+                            <i class="bx bxs-user-detail icon nav-icon"></i>
                             <span class="menu-item" data-key="t-roles">@lang('translation.Roles')</span>
                         </a>
                     </li>
@@ -137,12 +137,37 @@
                 @endcan
 
                 @can('Stages')
-                    <li>
-                        <a href="{{ route('stages.index') }}">
-                            <i class="bx bx-git-pull-request icon nav-icon"></i>
-                            <span class="menu-item" data-key="t-schools">@lang('translation.Stages')</span>
-                        </a>
-                    </li>
+                    @if (session('protocol') != null)
+                        @switch(session('protocol')['id'])
+                            @case(1)
+                                <li>
+                                    <a href="{{ route('stages.index') }}">
+                                        <i class="bx bx-git-pull-request icon nav-icon"></i>
+                                        <span class="menu-item" data-key="t-stages">@lang('translation.Stages')</span>
+                                    </a>
+                                </li>
+                            @break
+
+                            @case(5)
+                                <li>
+                                    <a href="javascript: void(0);" class="has-arrow">
+                                        <i class="bx bx-list-ol icon nav-icon"></i>
+                                        <span class="menu-item" data-key="t-evaluations">@lang('translation.Evaluations')</span>
+                                    </a>
+                                    <ul class="sub-menu" aria-expanded="false">
+                                        <li><a href="{{ route('phases.index') }}" data-key="t-phases">@lang('translation.Phases')</a></li>
+                                        <li><a href="{{ route('stages.index') }}" data-key="t-stages">@lang('translation.Stages')</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+
+                                </li>
+                            @break
+
+
+                            @default
+                        @endswitch
+                    @endif
                 @endcan
 
                 @can('Projects.students')
@@ -182,14 +207,32 @@
                     </li>
                 @endcan
 
-                {{-- @can('Projects.coordinator.notifications') --}}
+                @can('Notifications')
                     <li>
                         <a href="{{ route('notifications.index') }}">
-                            <i class="bx bx-git-pull-request icon nav-icon"></i>
-                            <span class="menu-item" data-key="t-notifications">@lang('Notifications')</span>
+                            <i class="bx bx-bell icon nav-icon"></i>
+                            <span class="menu-item" data-key="t-notifications">@lang('translation.Notifications')</span>
                         </a>
                     </li>
-                {{-- @endcan --}}
+                @endcan
+
+                @can('Courses')
+                    <li>
+                        <a href="{{ route('courses.index') }}">
+                            <i class="bx bx-book-reader icon nav-icon"></i>
+                            <span class="menu-item" data-key="t-courses">@lang('translation.Courses')</span>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('Entities')
+                    <li>
+                        <a href="{{ route('entities.index') }}">
+                            <i class="bx bx-building-house icon nav-icon"></i>
+                            <span class="menu-item" data-key="t-entities">@lang('translation.Entities')</span>
+                        </a>
+                    </li>
+                @endcan
 
 
                 {{-- <li>

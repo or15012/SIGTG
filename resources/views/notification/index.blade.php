@@ -15,8 +15,8 @@
 
     <div class="container">
 
-        <h1>Lista de notificicaciones</h1>
-        <a href="{{ route('notifications.create') }}" class="btn btn-primary mb-3">Crear notificacion</a>
+        <h1>@lang('translation.ListNotifications')</h1>
+        <a href="{{ route('notifications.create') }}" class="btn btn-primary mb-3">@lang('translation.CreateNotification')</a>
 
         @if (session('success'))
             <div class="alert alert-success">

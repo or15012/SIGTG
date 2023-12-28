@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cycle;
 use App\Models\Parameter;
 use App\Models\Phase;
+use App\Models\Stage;
 use Illuminate\Http\Request;
 
 class PhaseController extends Controller
@@ -23,16 +24,17 @@ class PhaseController extends Controller
 
     public function index()
     {
-        $phases = Phase::where('school_id', session('school', ['id']))
-                    ->paginate(20);
+        $phases = Phase::where('school_id', session('school', ['id']))->with(['cycle', 'school'])
+            ->paginate(20);
 
         return view('phases.index', compact('phases'));
     }
 
     public function create()
     {
+        $cycle = Cycle::where('status', 1)->first();
         return view('phases.create', [
-
+            'cycle' => $cycle
         ]);
     }
 
@@ -40,107 +42,88 @@ class PhaseController extends Controller
     {
         // Validación de los datos del ciclo y los parámetros
         $validatedData = $request->validate([
-            'number'        => 'required|integer',
-            'year'          => 'required|integer',
-            'status'        => 'required|boolean',
-            'date_start'    => 'required|date',
-            'date_end'      => 'required|date|weeks_between',
-            'parameters'    => 'array', // Campo que contendrá los parámetros
-        ], [
-            'date_end.weeks_between' => 'La diferencia entre date_start y date_end debe ser de :weeks semanas.',
+            'cycle_id'      => 'required|integer',
+            'name'          => 'required|string',
+            'description'   => 'required|string',
+            'school_id'     => 'required|integer',
         ]);
+
         // Crear un nuevo ciclo
-        $cycle = Cycle::create([
-            'number'        => $validatedData['number'],
-            'year'          => $validatedData['year'],
-            'status'        => $validatedData['status'],
-            'date_start'    => date('Y-m-d', strtotime($validatedData['date_start'])),
-            'date_end'      => date('Y-m-d', strtotime($validatedData['date_end'])),
+        $phase = Phase::create([
+            'cycle_id'      => $validatedData['cycle_id'],
+            'name'          => $validatedData['name'],
+            'description'   => $validatedData['description'],
+            'school_id'     => $validatedData['school_id'],
         ]);
 
-        // Guardar los parámetros
-        foreach ($validatedData['parameters'] as $key => $value) {
-            Parameter::create([
-                'name'      => $key,
-                'value'     => $value,
-                'cycle_id'  => $cycle->id,
-            ]);
-        }
-
-        return redirect()->route('cycles.index')->with('success', 'Ciclo creado con éxito');
+        return redirect()->route('phases.index')->with('success', 'Fase creada con éxito');
     }
 
     public function show($id)
     {
-        $cycle = Cycle::findOrFail($id);
+
         return view('cycles.show', compact('cycle'));
     }
 
-    public function edit($id)
+    public function edit(Phase $phase)
     {
-        $cycle = Cycle::findOrFail($id);
-        $parameterNames = Parameter::PARAMETERS;
-        return view('cycles.edit', compact('cycle', 'parameterNames'));
+        return view('phases.edit', compact('phase'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Phase $phase)
     {
         // Validación de los datos del ciclo y los parámetros
 
         $validatedData = $request->validate([
-            'number'        => 'required|integer',
-            'year'          => 'required|integer',
-            'status'        => 'required|boolean',
-            'date_start'    => 'required|date',
-            'date_end'      => 'required|date',
-            'parameters'    => 'array', // Campo que contendrá los parámetros
+            'name'          => 'required|string',
+            'description'   => 'required|string',
         ]);
 
-        // Encontrar el ciclo que se desea actualizar
-        $cycle = Cycle::findOrFail($id);
-
-        // Actualizar los datos del ciclo
-        $cycle->update([
-            'number'    => $validatedData['number'],
-            'year'      => $validatedData['year'],
-            'status'    => $validatedData['status'],
-            'date_start'    => date('Y-m-d', strtotime($validatedData['date_start'])),
-            'date_end'      => date('Y-m-d', strtotime($validatedData['date_end'])),
+        $phase->update([
+            'name'          => $validatedData['name'],
+            'description'   => $validatedData['description'],
         ]);
-        // dd($cycle);
-        // Actualizar o crear los parámetros
-        $parameterNames = Parameter::PARAMETERS; // Obtén el array de nombres de parámetros
 
-        foreach ($parameterNames as $key => $name) {
-            // Encuentra el parámetro por su nombre
-            $parameter = $cycle->parameters()->where('name', $key)->first();
-
-            // Si el parámetro existe, actualízalo
-            if ($parameter) {
-                $parameter->update(['value' => $validatedData['parameters'][$key]]);
-            } else {
-                // Si no existe, crea un nuevo parámetro
-                Parameter::create([
-                    'name'      => $key,
-                    'value'     => $validatedData['parameters'][$key],
-                    'cycle_id'  => $cycle->id,
-                ]);
-            }
-        }
-        return redirect()->route('cycles.index')->with('success', 'Ciclo actualizado con éxito');
+        return redirect()->route('phases.index')->with('success', 'Fase actualizada con éxito');
     }
 
-    public function destroy($id)
+    public function destroy(Phase $phase)
     {
-        // Encontrar el ciclo que se desea eliminar
-        $cycle = Cycle::findOrFail($id);
-
-        // Eliminar los parámetros asociados al ciclo
-        $cycle->parameters()->delete();
-
         // Eliminar el ciclo
-        $cycle->delete();
+        $phase->delete();
 
-        return redirect()->route('cycles.index')->with('success', 'Ciclo eliminado con éxito');
+        return redirect()->route('phases.index')->with('success', 'Fase eliminada con éxito');
     }
+
+    public function assignStages(Phase $phase)
+    {
+        $stages = Stage::where('protocol_id', 5)
+                        ->where('school_id',session('school', ['id']) )
+                        ->whereNotIn('id', $phase->stages->pluck('id'))
+                        ->get();
+
+        $stagesAssigned = $phase->stages;
+
+        return view('phases.assign-stages', compact('phase', 'stagesAssigned','stages'));
+    }
+
+
+    public function storeAssignStages(Request $request, Phase $phase)
+    {
+        // Asignas stages a phases con orden
+        $stages_id = array();
+        if(isset($request->stages)){
+            foreach ($request->stages as $key => $value) {
+               $stages_id[$value] = ['order' => $key];
+            }
+            $phase->stages()->sync($stages_id);
+        }else{
+            $phase->stages()->detach();
+        }
+
+        return redirect()->back()->with('success', 'Fase actualizada con éxito');
+    }
+
+
+
 }

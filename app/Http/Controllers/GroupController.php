@@ -12,6 +12,7 @@ use App\Models\TeacherGroup;
 use App\Models\User;
 use App\Models\UserGroup;
 use App\Models\UserNotification;
+use App\Models\Project;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -37,8 +38,9 @@ class GroupController extends Controller
         $this->middleware('permission:' . self::PERMISSIONS['index.adviser'])->only(['index']);
         $this->middleware('permission:' . self::PERMISSIONS['assigned.group'])->only(['assignedGroup']);
     }
-    public function index()
+    public function index(Project $project)
     {
+       // dd($project);
         $year = date('Y');
         $groups = Group::select('groups.id', 'groups.number', 'u.first_name', 'u.middle_name', 'u.last_name', 'u.second_last_name', 's.name')
             ->addSelect([
@@ -51,9 +53,9 @@ class GroupController extends Controller
             ->join('states as s', 'groups.state_id', 's.id')
             ->where('groups.year', $year)
             ->where('ug.is_leader', 1)
-            ->paginate(20);
+            ->paginate(30);
 
-        return view('groups.index', compact('groups'));
+        return view('groups.index', compact('groups','project'));
     }
 
 

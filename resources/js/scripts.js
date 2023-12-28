@@ -152,4 +152,54 @@ jQuery(function(){
     $('select.select2').select2({
         placeholder: $(this).data('placeholder')
     });
+    setSelect2Ajax();
 });
+
+
+function setSelect2Ajax(){
+	if ($(".select2-ajax").length) {
+		$('.select2-ajax').each(function (i, obj) {
+			let params = '';
+            let parent = null;
+			let route = '';
+
+            if (typeof $(this).data('route') !== "undefined") {
+				route = $(this).data('route');
+                $(this).removeData('route');
+			}
+
+            let keys = Object.keys(this.dataset);
+			let values = Object.values(this.dataset);
+
+			for (let i = 0; i < keys.length; i++) {
+				if (i > 0) {
+					params += '&';
+				}
+				params += keys[i]+'='+values[i];
+			}
+			
+
+			if($(this).closest('[role="dialog"]')[0] != undefined){
+				parent = $(this).closest('[role="dialog"] .modal-content');
+			}
+
+			$(this).select2({
+				dropdownParent: parent,
+				language: "es",
+				ajax: {
+					url: '/'+route + params,
+					delay: 250,
+					dataType: 'json',
+					data: function (params) {
+						return {
+							term: params.term || '',
+							page: params.page || 1,
+							results: params
+						}
+					},
+					cache: true
+				}
+			});
+		});
+	}
+}

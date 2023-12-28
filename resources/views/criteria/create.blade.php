@@ -13,7 +13,20 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Registrar criterio de evaluación</h1>
+        @if (session('protocol') !== null)
+            @switch(session('protocol')['id'])
+                @case(1)
+                    <h1>Registrar criterio de evaluación</h1>
+                @break
+
+                @case(5)
+                    <h1>Registrar subáreas</h1>
+                @break
+
+                @default
+            @endswitch
+        @endif
+
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -32,7 +45,21 @@
         @endif
 
         <div class="m-4">
-            <p>Etapa evaluativa: {{ $stage->name }}
+            <p>
+                @if (session('protocol') !== null)
+                    @switch(session('protocol')['id'])
+                        @case(1)
+                            Etapa evaluativa:
+                        @break
+
+                        @case(5)
+                            Área:
+                        @break
+
+                        @default
+                    @endswitch
+                @endif
+                {{ $stage->name }}
                 <br>
                 Porcentaje utilizado: {{ $sumatory }}%
                 <br>
@@ -52,7 +79,7 @@
         <form action="{{ route('criterias.store') }}" method="POST">
             @csrf
             <div class="mb-3">
-                <label for="name" class="form-label">Nombre del criterio de evaluación</label>
+                <label for="name" class="form-label">Nombre</label>
                 <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}"
                     required>
             </div>
@@ -71,7 +98,21 @@
             <input type="text" class="form-control" id="stage" name="stage" value="{{ $stage->id }}" hidden>
 
             <div class="mb-3">
-                <label for="stage" class="form-label">Etapa evaluativa</label>
+                <label for="stage" class="form-label">
+                    @if (session('protocol') !== null)
+                        @switch(session('protocol')['id'])
+                            @case(1)
+                                Etapa evaluativa:
+                            @break
+
+                            @case(5)
+                                Área:
+                            @break
+
+                            @default
+                        @endswitch
+                    @endif
+                </label>
                 <select class="form-control" id="stage" name="stage" disabled>
                     <option value="{{ $stage->id }}"> {{ $stage->name }}</option>
                 </select>

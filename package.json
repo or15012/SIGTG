@@ -66,6 +66,7 @@
         "save": "^2.4.0",
         "select2": "^4.1.0-rc.0",
         "simplebar": "^4.2.3",
+        "sortablejs": "^1.15.1",
         "source-map": "^0.7.4",
         "sweetalert2": "^11.9.0",
         "swiper": "^6.5.6",

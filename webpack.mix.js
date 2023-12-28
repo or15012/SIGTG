@@ -268,6 +268,8 @@ mix.js('resources/js/evaluation_stage_create.js', 'public/js/evaluation_stage_cr
 mix.js('resources/js/scripts.js', 'public/js/scripts.js');
 mix.js('resources/js/project_index.js', 'public/js/project_index.js');
 mix.js('resources/js/stages.js', 'public/js/stages.js');
+mix.js('resources/js/phases.js', 'public/js/phases.js');
+mix.js('resources/js/entities.js', 'public/js/entities.js');
 
 
 
@@ -280,3 +282,4 @@ mix.combine('resources/js/app.js', folder.dist_assets + "js/app.js");
 
 mix.autoload({jquery: ['$', 'window.jQuery', 'jQuery'],});
 require('select2');
+const Sortable = require('sortablejs');
