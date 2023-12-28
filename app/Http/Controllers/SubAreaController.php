@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Subarea;
 use App\Models\Area;
+use App\Models\EvaluationCriteria;
 use App\Models\EvaluationStage;
 use App\Models\EvaluationStageNote;
 use App\Models\Project;
+use App\Models\SubareaCriteria;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -17,6 +19,7 @@ class SubareaController extends Controller
     {
         $this->middleware('auth');
     }
+
     public function create(Project $project, Area $area)
     {
         $group      = $project->group()->first();
@@ -89,4 +92,15 @@ class SubareaController extends Controller
             return redirect()->route('grades.index')->with('error', $th->getMessage());
         }
     }
+
+    public function criteriasCreate($id)
+    {
+
+        $stage = EvaluationCriteria::findOrfail($id);
+        $sumatory = SubareaCriteria::where('evaluation_criteria_id', $stage->id)->sum('percentage');
+
+        return view('criteria.create', compact('stage', 'sumatory'));
+    }
+
+
 }

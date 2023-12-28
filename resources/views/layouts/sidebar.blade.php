@@ -156,14 +156,10 @@
                                     </a>
                                     <ul class="sub-menu" aria-expanded="false">
                                         <li><a href="{{ route('phases.index') }}" data-key="t-phases">@lang('translation.Phases')</a></li>
-                                        <li><a href="{{ route('stages.index') }}" data-key="t-stages">@lang('translation.Stages')</a></li>
+                                        <li><a href="{{ route('stages.index') }}" data-key="t-stages">@lang('translation.Areas')</a></li>
                                     </ul>
                                 </li>
-                                <li>
-
-                                </li>
                             @break
-
 
                             @default
                         @endswitch
@@ -171,12 +167,29 @@
                 @endcan
 
                 @can('Projects.students')
-                    <li>
-                        <a href="{{ route('projects.index') }}">
-                            <i class="bx bx-code-block icon nav-icon"></i>
-                            <span class="menu-item" data-key="t-projects">@lang('translation.Projects')</span>
-                        </a>
-                    </li>
+                    @if (session('protocol') != null)
+                        @switch(session('protocol')['id'])
+                            @case(1)
+                                <li>
+                                    <a href="{{ route('projects.index') }}">
+                                        <i class="bx bx-code-block icon nav-icon"></i>
+                                        <span class="menu-item" data-key="t-projects">@lang('translation.Projects')</span>
+                                    </a>
+                                </li>
+                            @break
+
+                            @case(5)
+                                <li>
+                                    <a href="{{ route('evaluations.index') }}">
+                                        <i class="bx bx-code-block icon nav-icon"></i>
+                                        <span class="menu-item" data-key="t-projects">@lang('translation.Projects')</span>
+                                    </a>
+                                </li>
+                            @break
+
+                            @default
+                        @endswitch
+                    @endif
                 @endcan
 
                 @can('Projects.advisers')
