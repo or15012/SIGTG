@@ -344,8 +344,10 @@ Route::group(['prefix' => 'activities', 'as' => 'activities.'], function () {
     Route::get('/create', [ActivityController::class, 'create'])->name('create');
     Route::post('/store', [ActivityController::class,  'store'])->name('store');
     Route::get('/download-template', [ActivityController::class, 'downloadTemplate'])->name('download.template');
-    Route::post('/import', [ActivityController::class, 'import'])->name('import');
     Route::get('/modal-load', [ActivityController::class, 'modalLoadActivities'])->name('modal.load.activities');
+    Route::post('/import', [ActivityController::class, 'import'])->name('import');
+    Route::get('/{activity}/change-status', [ActivityController::class, 'modalStatus'])->name('modal.status.activities');
+    Route::put('/status/{activity}', [ActivityController::class, 'changeStatus'])->name('status');
     Route::get('/show/{activity}', [ActivityController::class, 'show'])->name('show');
     Route::get('/{activity}/edit', [ActivityController::class, 'edit'])->name('edit');
     Route::put('/update/{activity}', [ActivityController::class, 'update'])->name('update');

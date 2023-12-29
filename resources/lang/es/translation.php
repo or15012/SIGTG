@@ -180,4 +180,5 @@ return [
     "Courses"   => "Cursos",
     "ListNotifications"   => "Lista de notificaciones",
     "CreateNotification"   => "Nueva notificación",
+    "Plannings"   => "Planificaciones",
 ];

@@ -213,4 +213,24 @@ class ActivityController extends Controller
         }
     }
 
+    public function modalStatus(Activity $activity)
+    {
+        return view('activities.modal.change_status',compact('activity'));
+    }
+
+    public function changeStatus(Request $request, Activity $activity)
+    {
+        // Validación de los datos de la solicitud
+
+        // Validación de los datos de la actividad
+        $validatedData = $request->validate([
+            'status'        => 'required',
+        ]);
+
+        // Actualizar actividad
+        $activity->update($validatedData);
+
+
+        return redirect()->route('activities.index')->with('success', 'Estado de la actividad cambiado con éxito');
+    }
 }

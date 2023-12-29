@@ -38,9 +38,9 @@
             </form> --}}
 
             <button class="btn btn-secondary ajax-modal my-1" data-title="Carga de actividades" title="Cargar de actividades"
-            href="{{ route('activities.modal.load.activities') }}">
-            <i class="fas fa-file"></i> Importar actividades
-        </button>
+                href="{{ route('activities.modal.load.activities') }}">
+                <i class="fas fa-file"></i> Importar actividades
+            </button>
         </div>
 
         @if (session('success'))
@@ -77,13 +77,17 @@
                                     class="fas fa-eye"></i></a>
                             <a href="{{ route('activities.edit', $activity->id) }}" class="btn btn-primary"><i
                                     class="fas fa-pen"></i></a>
+                            <button class="btn btn-secondary ajax-modal my-1" data-title="Cambio de estado"
+                                href="{{ route('activities.modal.status.activities', $activity->id) }}">
+                                <i class="fas fa-exchange-alt"></i>
+                            </button>
 
                             <form action="{{ route('activities.destroy', $activity->id) }}" method="POST"
                                 style="display: inline">
                                 @csrf
                                 @method('DELETE')
-                                    <button type="submit" class="btn btn-danger buttonDelete"><i
-                                            class="fas fa-trash-alt"></i></button>
+                                <button type="submit" class="btn btn-danger buttonDelete"><i
+                                        class="fas fa-trash-alt"></i></button>
                             </form>
                         </td>
                     </tr>
