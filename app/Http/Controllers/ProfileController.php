@@ -180,87 +180,6 @@ class ProfileController extends Controller
                 ->with('protocols', $protocols);
     }
 
-    public function preProfileStoreExg(Request $request)
-    {
-        // Validación de los datos del formulario
-        $validatedData = $request->validate([
-            'name'                  => 'required|string|max:255',
-            'description'           => 'required|string',
-            'path'                  => 'required|mimes:pdf', // Esto valida que el archivo sea un PDF (puedes ajustar según tus necesidades)
-        ]);
-
-        // Procesar y guardar el archivo
-        if ($request->hasFile('path')) {
-            $path = $request->file('path')->store('preprofiles'); // Define la carpeta de destino donde se guardará el archivo
-        }
-
-        $user = Auth::user();
-        $year = date('Y');
-        $group = Group::where('groups.year', $year)
-            ->where('groups.status', 1)
-            ->whereHas('users', function ($query) use ($user) {
-                $query->where('users.id', $user->id);
-            })
-            ->first();
-
-        $protocols = $user->protocol()
-            ->wherePivot('status', 1)
-            ->pluck('name');
-
-        // Crear un nuevo perfil
-        $profile                        = new Profile;
-        $profile->name                  = $request->input('name');
-        $profile->description           = $request->input('description');
-        $profile->path                  = $path; // Asigna el nombre del archivo (o null si no se cargó un archivo)
-        $profile->type                  = 0;
-        $profile->group_id              = $group->id;
-        $profile->status                = 0;
-        $profile->save();
-
-        //Envio de correo a coordinador.
-        $role = 'Coordinador';
-        $userRoles = User::role($role)->get(); //modificar para diferenciar por modalidades.
-
-        $notification = Notification::create(['title'=>'Alerta de pre-perfil', 'message'=>"Su planificación ha sido enviada, y está pendiente de revisión", 'user_id'=>Auth::user()->id]);
-        foreach ($userRoles as $coordinator) {
-            try {
-                $emailData = [
-                    'user'       => $coordinator,
-                    'group'      => $group,
-                    'preprofile' => $profile,
-                ];
-                //dd($emailData);
-
-                Mail::to($coordinator->email)->send(new SendMail('mail.preprofile-coordinator-saved', 'Notificación de planificación enviada', $emailData));
-                UserNotification::create(['user_id'=>$coordinator->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
-            } catch (\Throwable $th) {
-                // Manejar la excepción
-            }
-        }
-
-         // Obtener estudiantes del grupo
-        $students = $group->users;
-
-        // Envío de correo electrónico a cada estudiante del grupo
-        foreach ($students as $student) {
-            try {
-                $emailData = [
-                    'user'       => $student,
-                    'group'      => $group,
-                    'preprofile' => $profile,
-                ];
-                Mail::to($student->email)->send(new SendMail('mail.preprofile-saved', 'Planificación enviada con éxito', $emailData));
-                UserNotification::create(['user_id'=>$student->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
-            } catch (Exception $th) {
-                // Manejar la excepción
-            }
-        }
-        return redirect()
-                ->route('profiles.preprofile.index')
-                ->with('success', 'La planificación se ha guardado correctamente')
-                ->with('protocols', $protocols);
-    }
-
     public function preProfileShow(Profile $preprofile)
     {
         return view('preprofiles.show', compact('preprofile'));
@@ -388,15 +307,26 @@ class ProfileController extends Controller
             ->where('type', 0)
             ->select('profiles.status', 'profiles.name', 'profiles.description', 'profiles.created_at', 'g.number', 'profiles.id')
             ->paginate(10);
+        
+        $protocols = $user->protocol()
+            ->wherePivot('status', 1)
+            ->pluck('protocols.id');
 
 
 
-        return view('preprofiles.coordinator.index', compact('preprofiles'));
+        return view('preprofiles.coordinator.index', compact('preprofiles', 'protocols'));
     }
 
     public function preProfileCoordinatorShow(Profile $preprofile)
     {
-        return view('preprofiles.coordinator.show', compact('preprofile'));
+        //obtener grupo actual del user logueado
+        $user = Auth::user();
+        
+        $protocols = $user->protocol()
+            ->wherePivot('status', 1)
+            ->pluck('protocols.id');
+
+        return view('preprofiles.coordinator.show', compact('preprofile', 'protocols'));
     }
 
     public function preProfileCoordinatorUpdate(Request $request, Profile $preprofile)
@@ -456,12 +386,28 @@ class ProfileController extends Controller
 
     public function preProfileCoordinatorObservationsList(Profile $preprofile)
     {
-        return view('preprofiles.coordinator.observations', ['preprofile' => $preprofile]);
+         //obtener grupo actual del user logueado
+         $user = Auth::user();
+        
+         $protocols = $user->protocol()
+             ->wherePivot('status', 1)
+             ->pluck('protocols.id');
+
+        return view('preprofiles.coordinator.observations', ['preprofile' => $preprofile, 'protocols' => $protocols]);
     }
 
     public function preProfileCoordinatorObservationCreate(Profile $preprofile)
     {
-        return view('preprofiles.coordinator.create', ['preprofile' => $preprofile]);
+        //obtener grupo actual del user logueado
+        $user = Auth::user();
+        
+        $protocols = $user->protocol()
+            ->wherePivot('status', 1)
+            ->pluck('protocols.id');
+
+            //dd($preprofile);
+
+        return view('preprofiles.coordinator.create', ['preprofile' => $preprofile, 'protocols' => $protocols]);
     }
 
     public function preProfileCoordinatorObservationStore(Request $request)

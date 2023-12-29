@@ -17,9 +17,11 @@
                     class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
-        <h1>Observaciones pre perfil: {{ $preprofile->name }}</h1>
+
+        <h1 class="mb-5">{{$protocols[0]== 5 ? 'Observaciones de planificación: ':'Observaciones pre perfil: '}} {{$preprofile->name}}</h1>
+
         <a href="{{ route('profiles.preprofile.coordinator.observation.create', $preprofile->id) }}"
-            class="btn btn-primary m-1">Generar observación</a>
+            class="btn btn-primary m-1 mb-4">Generar observación</a>
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}

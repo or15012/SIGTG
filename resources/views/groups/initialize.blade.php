@@ -13,7 +13,7 @@
     <div class="container">
 
 
-        <h1>{{$protocols[0]=='Examen General Técnico Profesional' ? 'Iniciar Trabajo de Graduación':'Conformar grupos'}}</h1>
+        <h1>{{$protocols[0]== 5 ? 'Iniciar Trabajo de Graduación':'Conformar grupos'}}</h1>
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -30,7 +30,7 @@
             </div>
         @endif
 
-        @if($protocols[0]=='Examen General Técnico Profesional')
+        @if($protocols[0]== 5)
             <div class="col-12 col-md-6 col-lg-6" id="user-{{ $user->id }}">
                 <div class="card mb-4">
                     <div class="card-header red-student">
