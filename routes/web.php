@@ -226,6 +226,15 @@ Route::group(['prefix' => 'criterias', 'as' => 'criterias.'], function () {
     Route::get('/{criteria}/edit', [EvaluationCriteriaController::class, 'edit'])->name('edit');
     Route::put('/{criteria}', [EvaluationCriteriaController::class, 'update'])->name('update');
     Route::delete('/{criteria}', [EvaluationCriteriaController::class, 'destroy'])->name('destroy');
+
+    Route::group(['prefix' => 'subareas', 'as' => 'subareas.'], function () {
+        Route::get('/{id}', [SubareaController::class, 'criteriasIndex'])->name('index');
+        Route::get('/{criteria}/edit', [SubareaController::class, 'criteriasEdit'])->name('edit');
+        Route::put('/{criteria}', [SubareaController::class, 'criteriasUpdate'])->name('update');
+        Route::delete('/{criteria}', [SubareaController::class, 'criteriasDestroy'])->name('destroy');
+
+    });
+
 });
 
 //Grupo para los documentos
@@ -326,8 +335,11 @@ Route::group(['prefix' => 'subareas', 'as' => 'subareas.'], function () {
     Route::get('/{subarea}/edit', [SubareaController::class, 'edit'])->name('edit');
     Route::put('/{subarea}', [SubareaController::class, 'update'])->name('update');
     Route::delete('/{subarea}', [SubareaController::class, 'destroy'])->name('destroy');
-    Route::get('/criterias/create/{id}', [SubareaController::class, 'criteriasCreate'])->name('criterias.create');
 
+    Route::group(['prefix' => 'criterias', 'as' => 'criterias.'], function () {
+        Route::get('/create/{id}', [SubareaController::class, 'criteriasCreate'])->name('create');
+        Route::post('/store', [SubareaController::class,  'criteriasStore'])->name('store');
+    });
 });
 
 //Grupo para las rutas de notificaciones
@@ -372,6 +384,3 @@ Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name
 //Language Translation
 Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
-

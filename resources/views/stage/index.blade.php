@@ -22,7 +22,7 @@
                     @break
 
                     @case(5)
-                        Lista de sub áreas
+                        Lista de áreas
                     @break
 
                     @default
@@ -38,7 +38,7 @@
                     @break
 
                     @case(5)
-                        Nueva area
+                        Nueva área
                     @break
 
                     @default
@@ -55,7 +55,7 @@
                         @break
 
                         @case(5)
-                            Descargar plantilla para carga de sub áreas
+                            Descargar plantilla para carga de áreas
                         @break
 
                         @default
