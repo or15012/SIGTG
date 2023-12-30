@@ -14,11 +14,53 @@
     @endcomponent
 
     <div class="container">
-        <h1>Lista de etapas evaluativas</h1>
-        <a href="{{ route('stages.create') }}" class="btn btn-primary mb-3">Nueva etapa evaluativa</a>
+        <h1>
+            @if (session('protocol') != null)
+                @switch(session('protocol')['id'])
+                    @case(1)
+                        Lista de etapas evaluativas
+                    @break
+
+                    @case(5)
+                        Lista de áreas
+                    @break
+
+                    @default
+                @endswitch
+            @endif
+        </h1>
+        <a href="{{ route('stages.create') }}" class="btn btn-primary mb-3">
+
+            @if (session('protocol') != null)
+                @switch(session('protocol')['id'])
+                    @case(1)
+                        Nueva etapa evaluativa
+                    @break
+
+                    @case(5)
+                        Nueva área
+                    @break
+
+                    @default
+                @endswitch
+            @endif
+        </a>
         <div class="float-end d-flex justify-content-end align-items-center">
-            <a href="{{ route('stages.download.template') }}" class="btn btn-primary">Descargar plantilla para carga de
-                criterios
+            <a href="{{ route('stages.download.template') }}" class="btn btn-primary">
+
+                @if (session('protocol') != null)
+                    @switch(session('protocol')['id'])
+                        @case(1)
+                            Descargar plantilla para carga de criterios
+                        @break
+
+                        @case(5)
+                            Descargar plantilla para carga de áreas
+                        @break
+
+                        @default
+                    @endswitch
+                @endif
             </a>
         </div>
         @if (session('success'))
@@ -42,7 +84,21 @@
                     <th>Protocolo</th>
                     <th>Escuela</th>
                     <th>Porcentaje</th>
-                    <th>Orden de etapa</th>
+                    <th>
+                        @if (session('protocol') != null)
+                            @switch(session('protocol')['id'])
+                                @case(1)
+                                    Orden de etapa
+                                @break
+
+                                @case(5)
+                                    Orden de área
+                                @break
+
+                                @default
+                            @endswitch
+                        @endif
+                    </th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -69,7 +125,8 @@
                             <a href="{{ route('criterias.create', $stage->id) }}" class="btn btn-primary my-1"><i
                                     class="fas fa-file-medical"></i></a>
 
-                            <button class="btn btn-secondary ajax-modal my-1" data-title="Carga de criterios" title="Cargar criterios"
+                            <button class="btn btn-secondary ajax-modal my-1" data-title="Carga de criterios"
+                                title="Cargar criterios"
                                 href="{{ route('stages.modal.load.criterias', ['stage_id' => $stage->id]) }}">
                                 <i class="fas fa-file"></i>
                             </button>
@@ -78,7 +135,7 @@
                 @endforeach
             </tbody>
         </table>
-         {!! $stages->withQueryString()->links('pagination::bootstrap-5') !!}
+        {!! $stages->withQueryString()->links('pagination::bootstrap-5') !!}
     </div>
 @endsection
 

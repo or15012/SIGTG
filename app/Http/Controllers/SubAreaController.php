@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Subarea;
 use App\Models\Area;
+use App\Models\EvaluationCriteria;
 use App\Models\EvaluationStage;
 use App\Models\EvaluationStageNote;
 use App\Models\Project;
+use App\Models\SubareaCriteria;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 
 class SubareaController extends Controller
@@ -17,6 +20,7 @@ class SubareaController extends Controller
     {
         $this->middleware('auth');
     }
+
     public function create(Project $project, Area $area)
     {
         $group      = $project->group()->first();
@@ -88,5 +92,103 @@ class SubareaController extends Controller
         } catch (\Throwable $th) {
             return redirect()->route('grades.index')->with('error', $th->getMessage());
         }
+    }
+
+    public function criteriasCreate($id)
+    {
+
+        $stage = EvaluationCriteria::findOrfail($id);
+        $sumatory = SubareaCriteria::where('evaluation_criteria_id', $stage->id)->sum('percentage');
+
+        return view('subareas.criteria-create', compact('stage', 'sumatory'));
+    }
+
+
+    public function criteriasStore(Request $request)
+    {
+        $data = $request->validate([
+            'name'          => 'required|string|max:255',
+            'percentage'    => 'required|integer|min:1|max:100',
+            'stage'         => 'required|integer|min:1',
+            'description'   => 'required|string'
+        ]);
+
+        $stage_id   = $request->stage;
+        $percentage = $request->percentage;
+
+        $sumatory = SubareaCriteria::where('evaluation_criteria_id', $stage_id)->sum('percentage');
+        if ($sumatory + $percentage > 100) {
+            return redirect()->route('stages.index')->with('error', 'No se pudo completar la acción. El porcentaje supera el 100%.');
+        }
+
+        try {
+            $criteria = SubareaCriteria::create([
+                'name'                      => $request->name,
+                'percentage'                => $percentage,
+                'evaluation_criteria_id'    => $stage_id,
+                'description'               => $request->description
+            ]);
+
+            return redirect()->route('stages.index')->with('success', 'Se añadió el criterio de evaluación correctamente.');
+        } catch (Exception $e) {
+            dd($e);
+            return redirect()->route('stages.index')->with('error', 'El criterio de evaluacion está duplicado.');
+        }
+    }
+
+
+    public function criteriasIndex($id)
+    {
+        $stage     = EvaluationCriteria::findOrfail($id);
+        $criterias = SubareaCriteria::where('evaluation_criteria_id', $stage->id)->get();
+
+
+        return view('subareas.criteria-index', compact('criterias', 'stage'));
+    }
+
+    public function criteriasEdit(SubareaCriteria $criteria)
+    {
+
+        $stage = EvaluationCriteria::findOrfail($criteria->evaluation_criteria_id);
+
+        return view('subareas.criteria-edit')->with(compact('criteria', 'stage'));
+    }
+
+    public function criteriasUpdate(Request $request, SubareaCriteria $criteria)
+    {
+        $data = $request->validate([
+            'name'          => 'required|string|max:255',
+            'percentage'    => 'required|integer|min:1|max:100',
+            'stage'         => 'required|integer|min:1',
+            'description'   => 'required|string',
+        ]);
+
+        $stage_id   = $data['stage'];
+        $percentage = $data['percentage'];
+        $sumatory = SubareaCriteria::where('evaluation_criteria_id', $stage_id)->where('id', '!=', $criteria->id)->sum('percentage');
+
+        if ($sumatory + $percentage > 100) {
+            return redirect()->route('stages.index')->with('error', 'No se pudo completar la acción. El porcentaje supera el 100%.');
+        }
+
+        try {
+            $criteria->update([
+                'name'          => $data['name'],
+                'percentage'    => $data['percentage'],
+                'description'   => $data['description'],
+            ]);
+
+            return redirect()->route('criterias.subareas.index', ['id' => $criteria->evaluation_criteria_id])->with('success', 'Criterio de Evaluación actualizado exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->route('criterias.subareas.edit', ['criteria' => $criteria])->with('error', 'El criterio de evaluación ya se encuentra registrado, revisar.');
+        }
+    }
+
+
+    public function criteriasDestroy(SubareaCriteria $criteria)
+    {
+        $criteria->delete();
+
+        return redirect()->route('criterias.subareas.index', ['id'=>$criteria->evaluation_criteria_id])->with('success', 'Criterio de Evaluación eliminada exitosamente.');
     }
 }

@@ -21,4 +21,9 @@ class EvaluationCriteria extends Model
      {
          return $this->belongsTo(Stage::class, 'stage_id');
      }
+
+     public function subareas()
+     {
+         return $this->belongsTo(SubareaCriteria::class, 'evaluation_criteria_id');
+     }
 }

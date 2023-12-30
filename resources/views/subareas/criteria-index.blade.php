@@ -2,12 +2,8 @@
 @section('title')
     @if (session('protocol') != null)
         @switch(session('protocol')['id'])
-            @case(1)
-                Criterios
-            @break
-
             @case(5)
-                Sub áreas
+                Criterios de sub áreas
             @break
 
             @default
@@ -41,12 +37,9 @@
         <h1>
             @if (session('protocol') != null)
                 @switch(session('protocol')['id'])
-                    @case(1)
-                        Criterios de evaluación
-                    @break
 
                     @case(5)
-                        Sub áreas
+                    Criterios de sub áreas
                     @break
 
                     @default
@@ -71,7 +64,7 @@
                         <td>{{ $criteria->name }}</td>
                         <td>{{ $criteria->percentage }}</td>
                         <td>
-                            <a href="{{ route('criterias.edit', $criteria->id) }}" class="btn btn-primary">
+                            <a href="{{ route('criterias.subareas.edit', $criteria->id) }}" class="btn btn-primary">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-pencil-fill" viewBox="0 0 16 16">
                                     <path
@@ -79,24 +72,9 @@
                                 </svg>
                             </a>
 
-                            @if (session('protocol') != null)
-                                @switch(session('protocol')['id'])
-                                    @case(5)
-                                        <a href="{{ route('criterias.subareas.index', $criteria->id) }}" class="btn btn-primary my-1"><i
-                                                class="fas fa-eye"></i></a>
-                                        <a href="{{ route('subareas.criterias.create', $criteria->id) }}"
-                                            class="btn btn-primary my-1" title="Registrar criterio">
-                                            <i class="fas fa-file-medical"></i>
-                                        </a>
-                                    @break
-
-                                    @default
-                                @endswitch
-                            @endif
-
 
                             <button class="btn btn-danger buttonDelete"
-                                onclick="mostrarConfirmacion('{{ route('criterias.destroy', $criteria->id) }}', '{{ csrf_token() }}')">
+                                onclick="mostrarConfirmacion('{{ route('criterias.subareas.destroy', $criteria->id) }}', '{{ csrf_token() }}')">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-trash-fill" viewBox="0 0 16 16">
                                     <path

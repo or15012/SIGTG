@@ -17,6 +17,7 @@ use App\Http\Controllers\ConsultingController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EntityController;
+use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\EvaluationDocumentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ExtensionController;
@@ -179,6 +180,7 @@ Route::group(['prefix' => 'profiles', 'as' => 'profiles.'], function () {
         Route::get('/show/{preprofile}', [ProfileController::class, 'preProfileShow'])->name('show');
         Route::get('/create', [ProfileController::class, 'preProfileCreate'])->name('create');
         Route::post('/store', [ProfileController::class, 'preProfileStore'])->name('store');
+        Route::post('/storeExg', [ProfileController::class, 'preProfileStoreExg'])->name('exg');
         Route::get('/edit/{preprofile}', [ProfileController::class, 'preProfileEdit'])->name('edit');
         Route::put('/update/{preprofile}', [ProfileController::class, 'preProfileUpdate'])->name('update');
         Route::delete('/destroy/{preprofile}', [ProfileController::class, 'preProfileDestroy'])->name('destroy');
@@ -209,6 +211,11 @@ Route::group(['prefix' => 'stages', 'as' => 'stages.'], function () {
 
     Route::get('/modal-load-criterias', [StageController::class, 'modalLoadCriterias'])->name('modal.load.criterias');
     Route::post('/modal-load-criterias', [StageController::class, 'storeLoadCriterias'])->name('store.load.criterias');
+
+
+    /**
+     * rutas para examen tecnico profesional
+     */
 });
 
 //Grupo para las rutas de criterios de evaluación.
@@ -219,6 +226,15 @@ Route::group(['prefix' => 'criterias', 'as' => 'criterias.'], function () {
     Route::get('/{criteria}/edit', [EvaluationCriteriaController::class, 'edit'])->name('edit');
     Route::put('/{criteria}', [EvaluationCriteriaController::class, 'update'])->name('update');
     Route::delete('/{criteria}', [EvaluationCriteriaController::class, 'destroy'])->name('destroy');
+
+    Route::group(['prefix' => 'subareas', 'as' => 'subareas.'], function () {
+        Route::get('/{id}', [SubareaController::class, 'criteriasIndex'])->name('index');
+        Route::get('/{criteria}/edit', [SubareaController::class, 'criteriasEdit'])->name('edit');
+        Route::put('/{criteria}', [SubareaController::class, 'criteriasUpdate'])->name('update');
+        Route::delete('/{criteria}', [SubareaController::class, 'criteriasDestroy'])->name('destroy');
+
+    });
+
 });
 
 //Grupo para los documentos
@@ -261,6 +277,30 @@ Route::group(['prefix' => 'projects', 'as' => 'projects.'], function () {
     Route::post('/modal-approvement-report', [ProjectController::class, 'storeApprovementReport'])->name('store.approvement.report');
 });
 
+//Grupo para las rutas de evaluación de examen
+Route::group(['prefix' => 'evaluations', 'as' => 'evaluations.'], function () {
+    Route::get('/', [EvaluationController::class, 'index'])->name('index');
+    // Route::get('/', [ProjectController::class, 'index'])->name('index');
+
+    // Route::get('/show-stage/{project}/{stage}', [ProjectController::class, 'showStage'])->name('show.stage');
+    // Route::put('/submit-stage/{evaluation_stage}', [ProjectController::class, 'submitStage'])->name('submit.stage');
+    // Route::get('/finish/{project}', [ProjectController::class, 'finish'])->name('finish');
+    // Route::get('/download/{project}/{file}', [ProjectController::class, 'download'])->name('download');
+    // Route::get('/final-volume/{project}', [ProjectController::class, 'finalVolume'])->name('final.volume');
+    // Route::post('/final-volume-store/{project}', [ProjectController::class, 'finalVolumeStore'])->name('final.volume.store');
+
+    // Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
+    //     Route::get('/', [ProjectController::class, 'coordinatorIndex'])->name('index');
+    //     Route::get('/show/{project}', [ProjectController::class, 'coordinatorShow'])->name('show');
+    //     Route::put('/subir-final-stage/{project}', [ProjectController::class, 'coordinatorSubmitFinalStage'])->name('submit.final.stage');
+    // });
+
+
+    // // rutas para adjuntar acta de aprobación
+    // Route::get('/modal-approvement-report', [ProjectController::class, 'modalApprovementReport'])->name('modal.approvement.report');
+    // Route::post('/modal-approvement-report', [ProjectController::class, 'storeApprovementReport'])->name('store.approvement.report');
+});
+
 // Prórrogas (extensions).
 Route::group(['prefix' => 'extensions', 'as' => 'extensions.'], function () {
     Route::get('/index/{project}', [ExtensionController::class, 'index'])->name('index');
@@ -295,6 +335,11 @@ Route::group(['prefix' => 'subareas', 'as' => 'subareas.'], function () {
     Route::get('/{subarea}/edit', [SubareaController::class, 'edit'])->name('edit');
     Route::put('/{subarea}', [SubareaController::class, 'update'])->name('update');
     Route::delete('/{subarea}', [SubareaController::class, 'destroy'])->name('destroy');
+
+    Route::group(['prefix' => 'criterias', 'as' => 'criterias.'], function () {
+        Route::get('/create/{id}', [SubareaController::class, 'criteriasCreate'])->name('create');
+        Route::post('/store', [SubareaController::class,  'criteriasStore'])->name('store');
+    });
 });
 
 //Grupo para las rutas de notificaciones
@@ -339,6 +384,3 @@ Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name
 //Language Translation
 Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
-

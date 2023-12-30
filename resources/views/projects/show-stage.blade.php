@@ -14,7 +14,23 @@
     @endcomponent
     <div class="container">
 
-        <h1>{{ $stage->name }}</h1>
+
+        <h1>
+            @if (session('protocol') != null)
+                @switch(session('protocol')['id'])
+                    @case(1)
+                        Etapa:
+                    @break
+
+                    @case(5)
+                        Área:
+                    @break
+
+                    @default
+                @endswitch
+            @endif
+            {{ $stage->name }}
+        </h1>
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
