@@ -101,14 +101,56 @@
                 @endcan
 
                 @can('Preprofiles.students')
-                    <li>
-                        <a href="{{ route('profiles.preprofile.index') }}">
-                            <i class="bx bx-file-blank icon nav-icon"></i>
-                            <span class="menu-item" data-key="t-preprofile">@lang('translation.PreProfile')</span>
-                        </a>
-                    </li>
+                    @if (session('protocol') != null)
+                        @switch(session('protocol')['id'])
+                            @case(1)
+                                <li>
+                                    <a href="{{ route('profiles.preprofile.index') }}">
+                                        <i class="bx bx-file-blank icon nav-icon"></i>
+                                        <span class="menu-item" data-key="t-preprofile">@lang('translation.PreProfile')</span>
+                                    </a>
+                                </li>
+                            @break
+
+                            @case(5)
+                                <li>
+                                    <a href="{{ route('plannings.index') }}">
+                                        <i class="far fa-list-alt"></i>
+                                        <span class="menu-item" data-key="t-planing">@lang('translation.Plannings')</span>
+                                    </a>
+                                </li>
+                            @break
+
+                            @default
+                        @endswitch
+                    @endif
                 @endcan
 
+                @can('Projects.students')
+                    @if (session('protocol') != null)
+                        @switch(session('protocol')['id'])
+                            @case(1)
+                                <li>
+                                    <a href="{{ route('projects.index') }}">
+                                        <i class="bx bx-code-block icon nav-icon"></i>
+                                        <span class="menu-item" data-key="t-projects">@lang('translation.Projects')</span>
+                                    </a>
+                                </li>
+                            @break
+
+                            @case(5)
+                                <li>
+                                    <a href="{{ route('evaluations.index') }}">
+                                        <i class="bx bx-code-block icon nav-icon"></i>
+                                        <span class="menu-item" data-key="t-projects">@lang('translation.Projects')</span>
+                                    </a>
+                                </li>
+                            @break
+
+                            @default
+                        @endswitch
+                    @endif
+                @endcan
                 @can('Preprofiles.advisers')
                     <li>
                         <a href="{{ route('profiles.preprofile.coordinator.index') }}">
@@ -155,9 +197,14 @@
                                         <span class="menu-item" data-key="t-evaluations">@lang('translation.Evaluations')</span>
                                     </a>
                                     <ul class="sub-menu" aria-expanded="false">
-                                        <li><a href="{{ route('phases.index') }}" data-key="t-phases">@lang('translation.Phases')</a></li>
-                                        <li><a href="{{ route('stages.index') }}" data-key="t-stages">@lang('translation.Areas')</a></li>
+                                        <li><a href="{{ route('phases.index') }}" data-key="t-phases">@lang('translation.Phases')</a>
+                                        </li>
+                                        <li><a href="{{ route('stages.index') }}" data-key="t-stages">@lang('translation.Stages')</a>
+                                        </li>
                                     </ul>
+                                </li>
+                                <li>
+
                                 </li>
                             @break
 
@@ -167,29 +214,12 @@
                 @endcan
 
                 @can('Projects.students')
-                    @if (session('protocol') != null)
-                        @switch(session('protocol')['id'])
-                            @case(1)
-                                <li>
-                                    <a href="{{ route('projects.index') }}">
-                                        <i class="bx bx-code-block icon nav-icon"></i>
-                                        <span class="menu-item" data-key="t-projects">@lang('translation.Projects')</span>
-                                    </a>
-                                </li>
-                            @break
-
-                            @case(5)
-                                <li>
-                                    <a href="{{ route('evaluations.index') }}">
-                                        <i class="bx bx-code-block icon nav-icon"></i>
-                                        <span class="menu-item" data-key="t-projects">@lang('translation.Projects')</span>
-                                    </a>
-                                </li>
-                            @break
-
-                            @default
-                        @endswitch
-                    @endif
+                    <li>
+                        <a href="{{ route('projects.index') }}">
+                            <i class="bx bx-code-block icon nav-icon"></i>
+                            <span class="menu-item" data-key="t-projects">@lang('translation.Projects')</span>
+                        </a>
+                    </li>
                 @endcan
 
                 @can('Projects.advisers')
@@ -229,7 +259,7 @@
                     </li>
                 @endcan
 
-                @can('Courses')
+                {{-- @can('Courses')
                     <li>
                         <a href="{{ route('courses.index') }}">
                             <i class="bx bx-book-reader icon nav-icon"></i>
@@ -246,7 +276,7 @@
                         </a>
                     </li>
                 @endcan
-
+ --}}
 
                 {{-- <li>
                     <a href="{{ route('evaluations_documents.index') }}">

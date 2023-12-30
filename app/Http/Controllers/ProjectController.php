@@ -166,7 +166,7 @@ class ProjectController extends Controller
             // Envía el correo electrónico al asesor.
             // Le va a caer correo a todo el que tenga este rol.
             // Cuando tenga número de grupo, se manda a llamar al teacher.
-            $role = 'Coordinador';
+            $role = 'Coordinador General';
             $userRoles = User::role($role)->get();
             $notification = Notification::create(['title'=>'Alerta de etapa', 'message'=>"Te informamos que tu etapa ha sido enviada.", 'user_id'=>Auth::user()->id]);
             foreach ($userRoles as $coordinator) {
@@ -426,7 +426,7 @@ class ProjectController extends Controller
             // Grupo aceptado, actualiza la fecha de vencimiento
             $this->handleGroupAcceptance($project);
         }
-        
+
         //identificare si es la ultima etapa para cargar las notas finales
 
         return redirect()
@@ -444,7 +444,7 @@ class ProjectController extends Controller
             if ($cycle) {
                 // Ajusta la fecha de vencimiento a la fecha de finalización del ciclo activo
                 $newDeadline = $cycle->end_date;
-                
+
                 // Actualiza la fecha de vencimiento del proyecto
                 $project->update(['deadline' => $newDeadline]);
             }
@@ -458,7 +458,7 @@ class ProjectController extends Controller
         if ($evaluationStage) {
             // Ajusta la fecha de vencimiento sumando 3 meses a partir de la fecha actual
             $newDeadline = now()->addMonths(3);
-            
+
             // Actualiza la fecha de vencimiento del proyecto
             $project->update(['deadline' => $newDeadline]);
             }
