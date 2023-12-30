@@ -80,7 +80,7 @@ class GroupController extends Controller
 
         $protocols = $user->protocol()
         ->wherePivot('status', 1)
-        ->pluck('name');
+        ->pluck('protocols.id');
 
         //dd($protocols);
 
