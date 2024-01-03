@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EvaluationCriteria;
+use App\Models\EvaluationDocument;
 use App\Models\EvaluationStage;
+use App\Models\EvaluationSubarea;
 use App\Models\Group;
 use App\Models\Project;
 use App\Models\Stage;
+use App\Models\SubArea;
+use App\Models\SubareaDocument;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -113,5 +119,69 @@ class EvaluationController extends Controller
             'group'                 => $group,
             'evaluationStagesNotes' => $evaluationStagesNotes,
         ]);
+    }
+
+    public function showSubareas(Project $project, Stage $area)
+    {
+        $status = $this->disableProject($project);
+        $evaluationSubareas = EvaluationCriteria::where('stage_id', $area->id)->get();
+
+        return view('evaluations.subareas.show-list', [
+            "area"                  => $area,
+            "project"               => $project,
+            "evaluationSubareas"    => $evaluationSubareas,
+            "status"                => $status,
+
+        ]);
+    }
+
+    public function disableProject(Project $project)
+    {
+
+        // Obtener fecha actual
+        $status = TRUE;
+        $today = new DateTime();
+
+        $deadline = new DateTime($project->deadline);
+        //dd($deadline);
+
+        // Ver si fecha actual es menor o igual que la fecha de finalización de proyecto
+
+        if ($today >= $deadline) {
+            $status = FALSE;
+        }
+
+        return $status;
+    }
+
+
+    public function showSubarea(Project $project, EvaluationCriteria $subarea)
+    {
+        $status = $this->disableProject($project);
+        $evaluationStages = EvaluationSubarea::where('project_id', $project->id)
+            ->where('evaluation_criteria_id', $subarea->id)
+            ->first();
+
+            $evaluationDocuments = array();
+
+
+            if (isset($evaluationStages)) {
+                $evaluationDocuments = SubareaDocument::where('evaluation_subarea_id', $evaluationStages->id)
+                    ->get();
+            } else {
+                $evaluationStages                           = new EvaluationSubarea();
+                $evaluationStages->project_id               = $project->id;
+                $evaluationStages->evaluation_criteria_id   = $subarea->id;
+                $evaluationStages->save();
+            }
+
+            return view('evaluations.subareas.show', [
+                "stage"                 => $subarea,
+                "project"               => $project,
+                "evaluationStages"      => $evaluationStages,
+                "evaluationDocuments"   => $evaluationDocuments,
+                "status"                => $status,
+
+            ]);
     }
 }

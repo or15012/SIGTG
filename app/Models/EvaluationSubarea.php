@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class EvaluationStage extends Model
+class EvaluationSubarea extends Model
 {
     use HasFactory, SoftDeletes;
     protected $fillable = [
-        "stage_id",
+        "evaluation_criteria_id",
+        "project_id",
+        "date",
     ];
-
 }

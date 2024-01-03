@@ -213,14 +213,6 @@
                     @endif
                 @endcan
 
-                @can('Projects.students')
-                    <li>
-                        <a href="{{ route('projects.index') }}">
-                            <i class="bx bx-code-block icon nav-icon"></i>
-                            <span class="menu-item" data-key="t-projects">@lang('translation.Projects')</span>
-                        </a>
-                    </li>
-                @endcan
 
                 @can('Projects.advisers')
                     <li>

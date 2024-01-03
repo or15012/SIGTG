@@ -155,7 +155,7 @@
                                 <div class="mr-5 w-50 text-black">{{ $stage->percentage }}%</div>
                             </div>
                             <a class="card-footer text-black clearfix small z-1"
-                                href="{{ route('projects.show.stage', [$project->id, $stage->id]) }}">
+                                href="{{ route('evaluations.show.subareas', [$project->id, $stage->id]) }}">
                                 <span class="float-left">Ver detalles</span>
                                 <span class="float-right">
                                     <i class="fa fa-angle-right"></i>
@@ -176,7 +176,7 @@
 
                                 </div>
                                 <a class="card-footer text-black clearfix small z-1 bg-primary"
-                                    href="{{ route('projects.show.stage', [$project->id, $stage->id]) }}">
+                                    href="{{ route('evaluations.show.subareas', [$project->id, $stage->id]) }}">
                                     <span class="float-left text-white ">Ver Detalles</span>
                                     <span class="float-right text-white">
                                         <i class="fa fa-angle-right"></i>
@@ -198,7 +198,7 @@
                                     </div>
                                 </div>
                                 <a class="card-footer text-black clearfix small z-1"
-                                    href="{{ route('projects.show.stage', [$project->id, $stage->id]) }}">
+                                    href="{{ route('evaluations.show.subareas', [$project->id, $stage->id]) }}">
                                     <span class="float-left">Ver detalles</span>
                                     <span class="float-right">
                                         <i class="fa fa-angle-right"></i>
@@ -214,7 +214,7 @@
                 </h3>
             @endforelse
 
-            @if ($stages->count() === $evaluationStages->count())
+            {{-- @if ($stages->count() === $evaluationStages->count())
                 <div class="col-xl-3 col-sm-6 mb-3 red-student">
                     <div class="card text-black o-hidden h-100 red-student">
                         <div class="card-body">
@@ -233,7 +233,7 @@
                         </a>
                     </div>
                 </div>
-            @endif
+            @endif --}}
         </div>
         <div class="col-lg-12">
             <div class="card">

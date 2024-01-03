@@ -251,6 +251,10 @@ Route::group(['prefix' => 'evaluations_documents', 'as' => 'evaluations_document
     Route::put('/{evaluation_document}', [EvaluationDocumentController::class, 'update'])->name('update');
     Route::delete('/{evaluation_document}', [EvaluationDocumentController::class, 'destroy'])->name('destroy');
     Route::get('/download/{evaluation_document}/{file}', [EvaluationDocumentController::class, 'evaluationsDownload'])->name('download');
+
+
+
+    //para documentos de subareas
 });
 
 //Grupo para las rutas de notas.
@@ -286,7 +290,8 @@ Route::group(['prefix' => 'evaluations', 'as' => 'evaluations.'], function () {
     Route::get('/', [EvaluationController::class, 'index'])->name('index');
     // Route::get('/', [ProjectController::class, 'index'])->name('index');
 
-    // Route::get('/show-stage/{project}/{stage}', [ProjectController::class, 'showStage'])->name('show.stage');
+    Route::get('/show-subareas/{project}/{area}', [EvaluationController::class, 'showSubareas'])->name('show.subareas');
+    Route::get('/show-subarea/{project}/{subarea}', [EvaluationController::class, 'showSubarea'])->name('show.subarea');
     // Route::put('/submit-stage/{evaluation_stage}', [ProjectController::class, 'submitStage'])->name('submit.stage');
     // Route::get('/finish/{project}', [ProjectController::class, 'finish'])->name('finish');
     // Route::get('/download/{project}/{file}', [ProjectController::class, 'download'])->name('download');
