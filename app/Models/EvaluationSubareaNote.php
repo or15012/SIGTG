@@ -5,16 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SubareaDocument extends Model
+class EvaluationSubareaNote extends Model
 {
     use HasFactory;
 
+    protected $table = 'evaluation_subarea_note';
     protected $fillable = [
-        'name',
-        'path',
-        'evaluation_subarea_id',
-        'created_at',
-        'updated_at',
-        'deleted_at',
+        "evaluation_subarea_id",
+        "user_id",
+        "note",
     ];
 }

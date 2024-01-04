@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\EvaluationDocument;
 use App\Models\EvaluationStage;
+use App\Models\EvaluationSubarea;
 use App\Models\Project;
 use App\Models\Stage;
+use App\Models\SubareaDocument;
 use Illuminate\Http\Request;
 
 class EvaluationDocumentController extends Controller
@@ -103,4 +105,53 @@ class EvaluationDocumentController extends Controller
 
         return redirect()->route('evaluations_documents.index')->with('success', 'Documento de etapa eliminado correctamente.');
     }
+
+
+    public function subareaIndex()
+    {
+        $evaluations_documents = SubareaDocument::all();
+        return view('evaluations_documents.subareas.index', compact('evaluations_documents'));
+    }
+
+    public function subareaCreate(EvaluationSubarea $evaluation_subarea)
+    {
+        return view('evaluations_documents.subareas.create', [
+            "evaluation_stage" => $evaluation_subarea,
+        ]);
+    }
+
+    public function subareaStore(Request $request)
+    {
+        $data = $request->validate([
+            'name'                  => 'required|string|max:255',
+            'path'                  => 'required|mimes:pdf,rar,zip,docx', // Esto valida que el archivo sea un PDF, rar o zip (puedes ajustar según tus necesidades)
+            'evaluation_stage_id'   => 'required|integer'
+        ]);
+
+        // Procesar y guardar el archivo
+        if ($request->hasFile('path')) {
+            $path = $request->file('path')->store('subarea_documents'); // Define la carpeta de destino donde se guardará el archivo
+        }
+
+        $evaluations_documents = SubareaDocument::create([
+            'name'                      => $request['name'],
+            'evaluation_subarea_id'     => $request['evaluation_stage_id'],
+            'path'                      => $path
+        ]);
+
+        $evaluation_stage = EvaluationSubarea::find($request['evaluation_stage_id']);
+
+        return redirect()
+            ->route('evaluations.show.subarea', [$evaluation_stage->project_id, $evaluation_stage->evaluation_criteria_id])
+            ->with('success', 'Documento guardado correctamente.');
+    }
+
+
+    public function subareaEvaluationsDownload(SubareaDocument $evaluation_document, $file)
+    {
+
+        $filePath = storage_path('app/' . $evaluation_document->$file);
+        return response()->download($filePath);
+    }
+
 }

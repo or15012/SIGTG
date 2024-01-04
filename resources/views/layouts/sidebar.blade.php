@@ -215,12 +215,31 @@
 
 
                 @can('Projects.advisers')
-                    <li>
-                        <a href="{{ route('projects.coordinator.index') }}">
-                            <i class="bx bx-code-block icon nav-icon"></i>
-                            <span class="menu-item" data-key="t-projectsadviser">@lang('translation.ProjectsAdviser')</span>
-                        </a>
-                    </li>
+
+
+                    @if (session('protocol') != null)
+                    @switch(session('protocol')['id'])
+                        @case(1)
+                        <li>
+                            <a href="{{ route('projects.coordinator.index') }}">
+                                <i class="bx bx-code-block icon nav-icon"></i>
+                                <span class="menu-item" data-key="t-projectsadviser">@lang('translation.ProjectsAdviser')</span>
+                            </a>
+                        </li>
+                        @break
+
+                        @case(5)
+                        <li>
+                            <a href="{{ route('evaluations.coordinator.index') }}">
+                                <i class="bx bx-code-block icon nav-icon"></i>
+                                <span class="menu-item" data-key="t-projectsadviser">@lang('translation.ProjectsAdviser')</span>
+                            </a>
+                        </li>
+                        @break
+
+                        @default
+                    @endswitch
+                @endif
                 @endcan
                 {{-- <li>
                 @can('Projects.coordinator.extension')

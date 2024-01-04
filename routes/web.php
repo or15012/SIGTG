@@ -236,9 +236,7 @@ Route::group(['prefix' => 'criterias', 'as' => 'criterias.'], function () {
         Route::get('/{criteria}/edit', [SubareaController::class, 'criteriasEdit'])->name('edit');
         Route::put('/{criteria}', [SubareaController::class, 'criteriasUpdate'])->name('update');
         Route::delete('/{criteria}', [SubareaController::class, 'criteriasDestroy'])->name('destroy');
-
     });
-
 });
 
 //Grupo para los documentos
@@ -255,12 +253,28 @@ Route::group(['prefix' => 'evaluations_documents', 'as' => 'evaluations_document
 
 
     //para documentos de subareas
+    Route::group(['prefix' => 'subareas', 'as' => 'subareas.'], function () {
+        Route::get('/', [EvaluationDocumentController::class, 'subareaIndex'])->name('index');
+        Route::get('/create/{evaluation_subarea}', [EvaluationDocumentController::class, 'subareaCreate'])->name('create');
+        Route::post('/', [EvaluationDocumentController::class,  'subareaStore'])->name('store');
+        Route::get('/{evaluation_document}', [EvaluationDocumentController::class, 'subareaShow'])->name('show');
+        Route::get('/{evaluation_document}/edit', [EvaluationDocumentController::class, 'subareaEdit'])->name('edit');
+        Route::put('/{evaluation_document}', [EvaluationDocumentController::class, 'subareaUpdate'])->name('update');
+        Route::delete('/{evaluation_document}', [EvaluationDocumentController::class, 'subareaDestroy'])->name('destroy');
+        Route::get('/download/{evaluation_document}/{file}', [EvaluationDocumentController::class, 'subareaEvaluationsDownload'])->name('download');
+    });
+
 });
 
 //Grupo para las rutas de notas.
 Route::group(['prefix' => 'grades', 'as' => 'grades.'], function () {
     Route::get('/create/{project}/{stage}', [CriteriaStageController::class, 'create'])->name('create');
     Route::post('/store', [CriteriaStageController::class, 'store'])->name('store');
+
+    Route::group(['prefix' => 'subareas', 'as' => 'subareas.'], function () {
+        Route::get('/create/{project}/{stage}', [CriteriaStageController::class, 'subareaCreate'])->name('create');
+        Route::post('/store', [CriteriaStageController::class, 'subareaStore'])->name('store');
+    });
 });
 
 //Grupo para las rutas de proyectos
@@ -292,17 +306,22 @@ Route::group(['prefix' => 'evaluations', 'as' => 'evaluations.'], function () {
 
     Route::get('/show-subareas/{project}/{area}', [EvaluationController::class, 'showSubareas'])->name('show.subareas');
     Route::get('/show-subarea/{project}/{subarea}', [EvaluationController::class, 'showSubarea'])->name('show.subarea');
+
     // Route::put('/submit-stage/{evaluation_stage}', [ProjectController::class, 'submitStage'])->name('submit.stage');
+    Route::put('/submit-stage/{evaluation_stage}', [EvaluationController::class, 'submitSubarea'])->name('submit.subarea');
+
     // Route::get('/finish/{project}', [ProjectController::class, 'finish'])->name('finish');
     // Route::get('/download/{project}/{file}', [ProjectController::class, 'download'])->name('download');
     // Route::get('/final-volume/{project}', [ProjectController::class, 'finalVolume'])->name('final.volume');
     // Route::post('/final-volume-store/{project}', [ProjectController::class, 'finalVolumeStore'])->name('final.volume.store');
 
-    // Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
-    //     Route::get('/', [ProjectController::class, 'coordinatorIndex'])->name('index');
-    //     Route::get('/show/{project}', [ProjectController::class, 'coordinatorShow'])->name('show');
-    //     Route::put('/subir-final-stage/{project}', [ProjectController::class, 'coordinatorSubmitFinalStage'])->name('submit.final.stage');
-    // });
+    Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
+        Route::get('/', [EvaluationController::class, 'coordinatorIndex'])->name('index');
+        // Route::get('/', [ProjectController::class, 'coordinatorIndex'])->name('index');
+
+        Route::get('/show/{project}', [EvaluationController::class, 'coordinatorShow'])->name('show');
+        // Route::put('/subir-final-stage/{project}', [ProjectController::class, 'coordinatorSubmitFinalStage'])->name('submit.final.stage');
+    });
 
 
     // // rutas para adjuntar acta de aprobación

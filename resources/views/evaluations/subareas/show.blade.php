@@ -51,7 +51,7 @@
                             </div>
                             @if ($evaluationStages->status == 0)
                                 <a class="card-footer text-black clearfix small z-1"
-                                    href="{{ route('evaluations_documents.create', $evaluationStages->id) }}">
+                                    href="{{ route('evaluations_documents.subareas.create', $evaluationStages->id) }}">
                                     <span class="float-left">Subir Documentos</span>
                                     <span class="float-right">
                                         <i class="fa fa-angle-right"></i>
@@ -71,7 +71,7 @@
                                 <div class="mr-5">Entregar etapa</div>
                             </div>
                             @if ($evaluationStages->status == 0)
-                                <form action="{{ route('projects.submit.stage', $evaluationStages->id) }}"
+                                <form action="{{ route('evaluations.submit.subarea', $evaluationStages->id) }}"
                                     id="form-evaluation-stage-confirm" method="POST">
                                     @csrf
                                     @method('PUT')
@@ -100,7 +100,7 @@
                     </div>
                     @if ($evaluationStages->status == 2)
                         <a class="card-footer text-black clearfix small z-1"
-                            href="{{ route('grades.create', [$project->id, $stage->id]) }}">
+                            href="{{ route('grades.subareas.create', [$project->id, $stage->id]) }}">
                             <span class="float-left">Realizar</span>
                             <span class="float-right">
                                 <i class="fa fa-angle-right"></i>
@@ -164,7 +164,7 @@
                         <td>{{ $evaluation_document->name }}</td>
                         <td>{{ $evaluation_document->created_at->format('d-m-Y') }}</td>
                         <td>
-                            <a href="{{ route('evaluations_documents.download', [$evaluation_document->id, 'path']) }}"
+                            <a href="{{ route('evaluations_documents.subareas.download', [$evaluation_document->id, 'path']) }}"
                                 target="_blank">
                                 <i class="fas fa-cloud-download-alt"></i>
                             </a>
