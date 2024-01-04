@@ -183,13 +183,13 @@ class GroupController extends Controller
     public function storeExg(Request $request)
     {
         $data = $request->validate([
-            'protocol'      => 'required|string|exists:protocols,name'
+            'protocol'      => 'required|string|exists:protocols,id'
         ]);
 
         $user = Auth::user();
         $actual_date= Carbon::now();
         $cycle_id = Cycle::where('year', $actual_date->year)->where('status', 1)->first()->id ?? 1;
-        $protocols = Protocol::where('name', $data['protocol'])->first();
+        $protocols = Protocol::where('id', $data['protocol'])->first();
 
         //dd($protocols);
 
