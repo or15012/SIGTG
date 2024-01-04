@@ -61,7 +61,7 @@
             </div>
         </div>
 
-        <h5>Nombre: {{ $project->name }}</h5>
+        <h5>Nombre: {{ $project->number }}</h5>
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}

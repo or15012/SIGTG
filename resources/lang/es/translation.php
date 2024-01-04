@@ -182,4 +182,5 @@ return [
     "CreateNotification"   => "Nueva notificación",
     "Plannings"   => "Planificaciones",
     "Areas"                  => "Áreas",
+    "Activities"                  => "Actividades",
 ];

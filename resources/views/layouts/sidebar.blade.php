@@ -115,8 +115,25 @@
                             @case(5)
                                 <li>
                                     <a href="{{ route('plannings.index') }}">
-                                        <i class="far fa-list-alt"></i>
+                                        <i class="far fa-calendar-alt"></i>
                                         <span class="menu-item" data-key="t-planing">@lang('translation.Plannings')</span>
+                                    </a>
+                                </li>
+                            @break
+
+                            @default
+                        @endswitch
+                    @endif
+                @endcan
+
+                @can('Activities.students')
+                    @if (session('protocol') != null)
+                        @switch(session('protocol')['id'])
+                            @case(5)
+                                <li>
+                                    <a href="{{ route('activities.index') }}">
+                                        <i class="far fa-calendar-check"></i>
+                                        <span class="menu-item" data-key="t-activities">@lang('translation.Activities')</span>
                                     </a>
                                 </li>
                             @break
@@ -178,6 +195,23 @@
                     </li>
                 @endcan
 
+                @can('Activities.advisers')
+                    @if (session('protocol') != null)
+                        @switch(session('protocol')['id'])
+                            @case(5)
+                            <li>
+                                <a href="{{ route('activities.coordinator.index.groups') }}">
+                                    <i class="far fa-calendar-check"></i>
+                                    <span class="menu-item" data-key="t-activities">@lang('translation.Activities')</span>
+                                </a>
+                            </li>
+                        @break
+
+                        @default
+                    @endswitch
+                @endif
+            @endcan
+
                 @can('Stages')
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
@@ -211,15 +245,6 @@
                             @default
                         @endswitch
                     @endif
-                @endcan
-
-                @can('Projects.students')
-                    <li>
-                        <a href="{{ route('projects.index') }}">
-                            <i class="bx bx-code-block icon nav-icon"></i>
-                            <span class="menu-item" data-key="t-projects">@lang('translation.Projects')</span>
-                        </a>
-                    </li>
                 @endcan
 
                 @can('Projects.advisers')

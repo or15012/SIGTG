@@ -135,5 +135,17 @@
         "name": "Entities",
         "guard_name": "web",
         "description": "Permiso para registrar entidades"
+    },
+    {
+        "name": "Activities.students",
+        "guard_name": "web",
+        "description": "Permiso para registrar actividades"
+    },
+
+    {
+        "name": "Activities.advisers",
+        "guard_name": "web",
+        "description": "Permiso para ver las actividades"
     }
+
 ]
