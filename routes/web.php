@@ -47,6 +47,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+require __DIR__ . '/web-course.php';
+
 //HOME ROUTE
 Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('root');
 
