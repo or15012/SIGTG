@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string("name");
             $table->mediumText("description")->nullable()->default(null);
             $table->string("path")->nullable()->default(null);;
-            $table->integer("cant_est");
+            $table->integer("amount_student");
             $table->foreignId('entity_id')->constrained('entities')->onDelete('restrict');
             $table->timestamps();
             $table->softDeletes();
