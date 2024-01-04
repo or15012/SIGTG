@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Group;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
@@ -126,7 +128,14 @@ class HomeController extends Controller
 
     public function home()
     {
-        return view('general.home');
+        $alreadyPreregistered = DB::select("SELECT count(*) count FROM groups g join cycles cyc on g.cycle_id = cyc.id join user_group ug on g.id = ug.group_id join courses c on g.cycle_id = c.cycle_id join course_preregistrations cp on c.id = cp.course_id where cyc.status = 1 and ug.user_id = ?", [Auth::user()->id])[0]->count;
+        $existsCoursesCurrentCycle = DB::select("select count(*) count FROM groups g join cycles cyc on g.cycle_id = cyc.id join user_group ug on g.id = ug.group_id join courses c on g.cycle_id = c.cycle_id where cyc.status = 1 and ug.user_id = ?", [Auth::user()->id])[0]->count;
+
+        $showLinkCourses = false;
+        if ($alreadyPreregistered == 0 && $existsCoursesCurrentCycle > 0) {
+            $showLinkCourses = true;
+        }
+        return view('general.home', compact('showLinkCourses'));
     }
 
 }
