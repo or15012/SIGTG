@@ -26,4 +26,11 @@ class Course extends Model
     public function school(){
         return $this->belongsTo(School::class, 'school_id')->withDefault();
     }
+
+    public function preregistrations()
+    {
+        return $this->belongsToMany(User::class, 'course_preregistrations')
+            ->withPivot(['id'])
+            ->withTimestamps();
+    }
 }

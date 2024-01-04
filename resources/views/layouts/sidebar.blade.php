@@ -270,7 +270,7 @@
                     </li>
                 @endcan
 
-                {{-- @can('Courses')
+                @can('Courses')
                     <li>
                         <a href="{{ route('courses.index') }}">
                             <i class="bx bx-book-reader icon nav-icon"></i>
@@ -287,7 +287,7 @@
                         </a>
                     </li>
                 @endcan
- --}}
+
 
                 {{-- <li>
                     <a href="{{ route('evaluations_documents.index') }}">
