@@ -270,6 +270,7 @@ mix.js('resources/js/project_index.js', 'public/js/project_index.js');
 mix.js('resources/js/stages.js', 'public/js/stages.js');
 mix.js('resources/js/phases.js', 'public/js/phases.js');
 mix.js('resources/js/entities.js', 'public/js/entities.js');
+mix.js('resources/js/course_preregistration.js', 'public/js/course_preregistration.js');
 
 
 
