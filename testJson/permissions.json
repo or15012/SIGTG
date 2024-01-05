@@ -140,5 +140,16 @@
         "name": "Proposal",
         "guard_name": "web",
         "description": "Permiso para registrar propuestas"
+    },
+    {
+        "name": "Activities.students",
+        "guard_name": "web",
+        "description": "Permiso para registrar actividades"
+    },
+    {
+        "name": "Activities.advisers",
+        "guard_name": "web",
+        "description": "Permiso para ver las actividades"
     }
+
 ]

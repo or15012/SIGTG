@@ -103,6 +103,16 @@
         "permission_id": 23,
         "role_id": 4
 
+    },
+    {
+        "permission_id": 28,
+        "role_id": 2
+
+    },
+    {
+        "permission_id": 29,
+        "role_id": 3
+
     }
 
 

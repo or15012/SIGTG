@@ -13,9 +13,9 @@
         @endslot
     @endcomponent
     <div class="container">
-        <div class="contenedor">
+        {{-- <div class="contenedor">
             <a href="{{ route('activities.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
-                Regresar</a>
+                Regresar</a> --}}
         </div>
         <h1>Consultar actividad</h1>
         <dl class="row">

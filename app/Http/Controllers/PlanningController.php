@@ -45,10 +45,12 @@ class PlanningController extends Controller
             ->where('protocol_id', session('protocol')['id'])
             ->where('group_id', $group->id)
             ->where('type', 0)
+            ->select('profiles.*')
             ->paginate(10);
 
-
+            //dd($plannings);
         return view('plannings.index', compact('plannings'));
+
     }
 
     public function create()
@@ -94,6 +96,7 @@ class PlanningController extends Controller
         $planning->name                  = $request->input('name');
         $planning->description           = $request->input('description');
         $planning->path                  = $path; // Asigna el nombre del archivo (o null si no se cargó un archivo)
+        $planning->proposal_priority     = $request->input('proposal_priority');
         $planning->type                  = 0;
         $planning->group_id              = $group->id;
         $planning->status                = 0;

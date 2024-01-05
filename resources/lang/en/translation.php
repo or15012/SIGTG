@@ -175,5 +175,6 @@
 "GroupsAssigned"  => "Groups Assigned",
 "Evaluations"            => "Evaluations",
 "Plannings"            => "Plannings",
+"Activities"            => "Activities",
 
 ];

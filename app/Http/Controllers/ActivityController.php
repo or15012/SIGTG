@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Activity;
 use App\Models\Group;
 use App\Models\Project;
+use App\Models\UserGroup;
 use DateTime;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,19 @@ use Termwind\Components\Dd;
 
 class ActivityController extends Controller
 {
+    const PERMISSIONS = [
+        'index'                => 'Activities.students',
+        'index.adviser'       => 'Activities.advisers',
+    ];
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('permission:' . self::PERMISSIONS['index'])->only(['index']);
+        $this->middleware('permission:' . self::PERMISSIONS['index.adviser'])->only(['indexGroup']);
+        $this->middleware('check.protocol')->only(['indexGroup']);
+    }
+
     public function index()
     {
 
@@ -40,6 +54,47 @@ class ActivityController extends Controller
 
         $activities = $group->activities;
         return view('activities.index', compact('activities'));
+    }
+
+
+    public function indexGroup()
+    {
+        // dd($project);
+        $year = date('Y');
+        $groups = Group::select('groups.id', 'groups.number', 'u.first_name', 'u.middle_name', 'u.last_name', 'u.second_last_name', 's.name')
+            ->addSelect([
+                'user_count' => UserGroup::selectRaw('COUNT(user_id)')
+                    ->whereColumn('group_id', 'groups.id')
+                    ->where('status', 1)
+            ])
+            ->with('activities')  // Cargar las actividades relacionadas
+            ->join('user_group as ug', 'groups.id', 'ug.group_id')
+            ->join('users as u', 'ug.user_id', 'u.id')
+            ->join('states as s', 'groups.state_id', 's.id')
+            ->where('groups.protocol_id', session('protocol')['id'])
+            ->where('groups.year', $year)
+            ->where('ug.is_leader', 1)
+            ->paginate(30);
+
+
+        return view('activities.coordinator.index-groups', compact('groups'));
+    }
+
+    public function indexCoordinator(Group $group)
+    {
+
+        // //obtener grupo actual del user logueado
+        // $user = Auth::user();
+        // // Obtiene el año actual
+        // $year = date('Y');
+        // // Realiza una consulta para verificar si el usuario está en un grupo del año actual
+
+        // $group = Group::where('groups.year', $year)
+        //     ->where('groups.status', 1)
+        //     ->first();
+
+        $activities = $group->activities;
+        return view('activities.coordinator.index', compact('activities', 'group'));
     }
 
 
@@ -215,7 +270,7 @@ class ActivityController extends Controller
 
     public function modalStatus(Activity $activity)
     {
-        return view('activities.modal.change_status',compact('activity'));
+        return view('activities.modal.change_status', compact('activity'));
     }
 
     public function changeStatus(Request $request, Activity $activity)

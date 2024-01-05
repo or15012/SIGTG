@@ -423,6 +423,12 @@ Route::group(['prefix' => 'activities', 'as' => 'activities.'], function () {
     Route::get('/{activity}/edit', [ActivityController::class, 'edit'])->name('edit');
     Route::put('/update/{activity}', [ActivityController::class, 'update'])->name('update');
     Route::delete('/destroy/{activity}', [ActivityController::class, 'destroy'])->name('destroy');
+
+    Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
+        //Rutas para coordinadores para visualizar las actividades de grupos.
+        Route::get('/index-groups', [ActivityController::class, 'indexGroup'])->name('index.groups');
+        Route::get('/index/{group}', [ActivityController::class, 'indexCoordinator'])->name('index');
+    });
 });
 // Estas rutas dejarlas de ultimo
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
