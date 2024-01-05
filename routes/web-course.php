@@ -85,6 +85,6 @@ Route::group(['prefix' => 'proposals', 'as' => 'proposals.'], function () {
     Route::get('create', [ProposalController::class, 'create'])->name('create');
     Route::post('/', [ProposalController::class, 'store'])->name('store');
     Route::get('/show/{proposal}', [ProposalController::class, 'show'])->name('show');
-    Route::delete('{id}', [ProposalController::class, 'destroy'])->name('destroy');
+    Route::delete('/destroy/{proposal}', [ProposalController::class, 'destroy'])->name('destroy');
     Route::get('/download/{proposal}/{file}', [ProposalController::class, 'proposalDownload'])->name('download');
 });
