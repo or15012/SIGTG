@@ -12,11 +12,10 @@ class Proposal extends Model
 
     protected $fillable = [
         'name',
-        'description',,
+        'description',
         'path',
         'amount_student',
         'entity_id',
-        'status',
     ];
 
     public function entity()
@@ -24,5 +23,14 @@ class Proposal extends Model
         return $this->belongsTo(Entity::class, 'entity_id');
     }
 
+    public function status(){
+        if ($this->status == 1) {
+            return 'Aprobado';
+        }else if($this->status == 0){
+            return 'No aprobado';
+        }else{
+            return 'Not defined';
+        }
+    }
 
 }

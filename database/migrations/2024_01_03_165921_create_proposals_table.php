@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('proposal', function (Blueprint $table) {
+        Schema::create('proposals', function (Blueprint $table) {
             $table->id();
             $table->string("name");
             $table->mediumText("description")->nullable()->default(null);
-            $table->string("path")->nullable()->default(null);;
+            $table->string("path")->nullable()->default(null);
             $table->integer("amount_student");
             $table->foreignId('entity_id')->constrained('entities')->onDelete('restrict');
             $table->boolean('status');
