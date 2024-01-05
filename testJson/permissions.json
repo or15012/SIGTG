@@ -135,5 +135,10 @@
         "name": "Entities",
         "guard_name": "web",
         "description": "Permiso para registrar entidades"
+    },
+    {
+        "name": "Proposal",
+        "guard_name": "web",
+        "description": "Permiso para registrar propuestas"
     }
 ]

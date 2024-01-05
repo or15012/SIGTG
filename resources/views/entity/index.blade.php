@@ -15,9 +15,9 @@
     <div class="container">
         <h1>Lista de entidades</h1>
         <a href="{{ route('entities.create') }}" class="btn btn-primary mb-3">Nueva entidad</a>
-        <table class="table">
+        <table class="table table-bordered table-striped table-hover">
             <thead>
-                <tr>
+                <tr class="table-danger">
                     <th>Nombre</th>
                     <th>Dirección</th>
                     <th>Estado</th>
