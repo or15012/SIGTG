@@ -45,4 +45,40 @@ class StudentController extends Controller
             return response()->json(['success' => false, 'message' => 'Estudiante no encontrado']);
         }
     }
+    
+    public function getStudentById($id)
+    {
+        try {
+            return User::find($id);
+        } catch (Exception $th) {
+            Log::info($th->getMessage());
+            return response()->json(['success' => false, 'message' => 'Estudiante no encontrado']);
+        }
+    }
+
+    public function getStudents(Request $request)
+    {
+        $result = User::where('type', 1)->selectRaw("id, concat(ifnull(first_name, ''), ' ', ifnull(middle_name, ''), ' ', ifnull(last_name, ''), ' ', ifnull(second_last_name, ''), ' - CARNET: ', ifnull(carnet, ''), ' - CORREO: ', ifnull(email, '')) as text")
+			->whereRaw("(concat(ifnull(first_name, ''), ' ', ifnull(middle_name, ''), ' ', ifnull(last_name, ''), ' ', ifnull(second_last_name, '')) LIKE '%$request->term%' OR carnet LIKE '%$request->term%' OR email LIKE '%$request->term%')");
+
+		if (isset($request->no_paginate)) {
+			return $result->get();
+		}
+	    
+		// $result = $result->get();	  
+		$result = $result->simplePaginate(70);	  
+
+		$morePages=true;
+           if (empty($result->nextPageUrl())){
+            $morePages=false;
+           }
+            $result = array(
+              "results" => $result->items(),
+              "pagination" => array(
+                "more" => $morePages
+              )
+            );
+					  
+		return $result;   
+    }
 }

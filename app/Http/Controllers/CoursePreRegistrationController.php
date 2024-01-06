@@ -36,9 +36,10 @@ class CoursePreRegistrationController extends Controller
     public function create()
     {
         // $courses = Course::where('school_id', Auth::user()->school_id)->get();
-        $courses = DB::select("select c.id, c.name, c.description, c.cycle_id, c.school_id, cyc.number as cycle_number FROM groups g join cycles cyc on g.cycle_id = cyc.id join user_group ug on g.id = ug.group_id join courses c on g.cycle_id = c.cycle_id where cyc.status = 1 and ug.user_id = ? and c.school_id = ? GROUP BY c.id, c.name, c.description, c.cycle_id, c.school_id, cycle_number", [Auth::user()->id, Auth::user()->school_id]);
+        $courses = DB::select("select c.id, c.name, c.description, c.cycle_id, c.school_id, cyc.number as cycle_number FROM cycles cyc join courses c on cyc.id = c.cycle_id where cyc.status = 1 and c.school_id = ? GROUP BY c.id, c.name, c.description, c.cycle_id, c.school_id, cycle_number", [Auth::user()->school_id]);
 
-        $alreadyPreregistered = DB::select("SELECT count(*) count FROM groups g join cycles cyc on g.cycle_id = cyc.id join user_group ug on g.id = ug.group_id join courses c on g.cycle_id = c.cycle_id join course_preregistrations cp on c.id = cp.course_id where cyc.status = 1 and ug.user_id = ?", [Auth::user()->id])[0]->count;
+        $alreadyPreregistered = DB::select("SELECT count(*) count FROM cycles cyc join courses c on cyc.id = c.cycle_id join course_preregistrations cp on c.id = cp.course_id where cyc.status = 1 and cp.user_id = ?", [Auth::user()->id])[0]->count;
+
         if ($alreadyPreregistered > 0) {
             $courses = [];
         }

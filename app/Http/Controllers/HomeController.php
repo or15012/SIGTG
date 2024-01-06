@@ -128,8 +128,8 @@ class HomeController extends Controller
 
     public function home()
     {
-        $alreadyPreregistered = DB::select("SELECT count(*) count FROM groups g join cycles cyc on g.cycle_id = cyc.id join user_group ug on g.id = ug.group_id join courses c on g.cycle_id = c.cycle_id join course_preregistrations cp on c.id = cp.course_id where cyc.status = 1 and ug.user_id = ?", [Auth::user()->id])[0]->count;
-        $existsCoursesCurrentCycle = DB::select("select count(*) count FROM groups g join cycles cyc on g.cycle_id = cyc.id join user_group ug on g.id = ug.group_id join courses c on g.cycle_id = c.cycle_id where cyc.status = 1 and ug.user_id = ?", [Auth::user()->id])[0]->count;
+        $alreadyPreregistered = DB::select("SELECT count(*) count FROM cycles cyc join courses c on cyc.id = c.cycle_id join course_preregistrations cp on c.id = cp.course_id where cyc.status = 1 and cp.user_id = ?", [Auth::user()->id])[0]->count;
+        $existsCoursesCurrentCycle = DB::select("select count(*) count FROM cycles cyc join courses c on cyc.id = c.cycle_id where cyc.status = 1")[0]->count;
 
         $showLinkCourses = false;
         if ($alreadyPreregistered == 0 && $existsCoursesCurrentCycle > 0) {

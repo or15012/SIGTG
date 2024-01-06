@@ -78,6 +78,8 @@ Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
 
 Route::group(['prefix' => 'students', 'as' => 'students.'], function () {
     Route::get('/get-student/{carnet}', [StudentController::class, 'getStudent'])->name('get.student');
+    Route::get('/get-student-by-id/{id}', [StudentController::class, 'getStudentById'])->name('get.student.by.id');
+    Route::get('/get-students', [StudentController::class, 'getStudents'])->name('get.students');
 });
 
 //Grupo para las rutas de escuelas

@@ -166,6 +166,7 @@ function setSelect2Ajax(){
             if (typeof $(this).data('route') !== "undefined") {
 				route = $(this).data('route');
                 $(this).removeData('route');
+                delete this.dataset.route;
 			}
 
             let keys = Object.keys(this.dataset);
