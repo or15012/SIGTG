@@ -130,13 +130,18 @@ class EvaluationController extends Controller
     {
         $status = $this->disableProject($project);
         $evaluationSubareas = EvaluationCriteria::where('stage_id', $area->id)->get();
+        $evaluationStages = EvaluationSubarea::where('project_id', $project->id)
+            ->select('stg.id')
+            ->where('status', 1)
+            ->join('evaluation_criteria as stg', 'evaluation_subareas.evaluation_criteria_id', 'stg.id')
+            ->get();
 
         return view('evaluations.subareas.show-list', [
             "area"                  => $area,
             "project"               => $project,
             "evaluationSubareas"    => $evaluationSubareas,
             "status"                => $status,
-
+            "evaluationStages"      => $evaluationStages
         ]);
     }
 

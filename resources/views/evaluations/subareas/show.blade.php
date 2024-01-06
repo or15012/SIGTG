@@ -120,7 +120,7 @@
                         <div class="mr-5">Aprobar etapa</div>
                     </div>
                     @if ($evaluationStages->status == 2)
-                        <form action="{{ route('projects.submit.stage', $evaluationStages->id) }}"
+                        <form action="{{ route('evaluations.submit.subarea', $evaluationStages->id) }}"
                             id="form-evaluation-stage-confirm" method="POST">
                             @csrf
                             @method('PUT')

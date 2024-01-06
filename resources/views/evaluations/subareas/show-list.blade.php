@@ -20,7 +20,7 @@
                 $flag = false;
             @endphp
             @forelse ($evaluationSubareas as  $stage)
-                {{-- @if ($evaluationStages->contains('id', $stage->id)) --}}
+                @if ($evaluationStages->contains('id', $stage->id))
                     <div class="col-xl-3 col-sm-6 mb-3">
                         <div class="card text-black  o-hidden h-100">
                             <div class="card-body">
@@ -39,7 +39,7 @@
                             </a>
                         </div>
                     </div>
-                {{-- @else --}}
+                @else
                     @if ($flag == false)
                         <div class="col-xl-3 col-sm-6 mb-3">
                             <div class="card text-black o-hidden h-100 bg-primary">
@@ -83,7 +83,7 @@
                             </div>
                         </div>
                     @endif
-                {{-- @endif --}}
+                @endif
             @empty
                 <h3>
                     Sin subáreas evaluativas
