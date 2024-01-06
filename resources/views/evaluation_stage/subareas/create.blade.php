@@ -45,6 +45,8 @@
         <form action="{{ route('grades.subareas.store') }}" method="post">
             @csrf
             <input type="hidden" name="evaluation_stage_id" value="{{ $evaluationStages->id }}">
+            <input type="hidden" name="evaluation_criteria_id" value="{{ $stage->id }}">
+
             <table class="table table-bordered">
                 <thead>
                     <tr>

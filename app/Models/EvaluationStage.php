@@ -11,6 +11,7 @@ class EvaluationStage extends Model
     use HasFactory, SoftDeletes;
     protected $fillable = [
         "stage_id",
+        'project_id',
     ];
 
 }

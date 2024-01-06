@@ -14,6 +14,8 @@ use App\Models\Project;
 use App\Models\Stage;
 use App\Models\SubareaCriteria;
 use App\Models\User;
+use App\Models\UserProjectNote;
+use Exception;
 use Illuminate\Http\Request;
 
 class CriteriaStageController extends Controller
@@ -127,12 +129,29 @@ class CriteriaStageController extends Controller
 
         $data = $request->validate([
             'evaluation_stage_id'   => 'required|exists:evaluation_subareas,id',
+            'evaluation_criteria_id'   => 'required|exists:evaluation_criteria,id',
             'notes'                 => 'required|array',
             'finalnote'             => 'required|array',
         ]);
 
+        $evaluationCriteria = EvaluationCriteria::find($request->evaluation_criteria_id);
+        $evaluationSubArea  = EvaluationSubarea::find($request->evaluation_stage_id);
+
+        $instance = EvaluationStage::updateOrCreate(
+            [
+                'project_id' => $evaluationSubArea->project_id,
+                'stage_id' => $evaluationCriteria->stage_id,
+            ],
+            [
+                'status' => 0,
+            ]
+        );
+
+        $evaluationStageId = $instance->id;
+        $usuarioId = 0;
         try {
             foreach ($request->notes as $userId => $note) {
+                $usuarioId = $userId;
                 $totalGrade = 0; // Inicializar la nota final del estudiante
                 foreach ($note as $criteriaId => $value) {
 
@@ -166,10 +185,84 @@ class CriteriaStageController extends Controller
                         'note' => $totalGrade,
                     ]
                 );
+
+
+                CriteriaStage::updateOrCreate(
+                    [
+                        'user_id'                   => $userId,
+                        'evaluation_criteria_id'    => $request->evaluation_criteria_id,
+                        'evaluation_stage_id'       => $evaluationStageId,
+
+                    ],
+                    [
+                        'note'                      => $totalGrade
+                    ]
+                );
             }
+
+            //area necesito traer todas la notas de las subarea para calcular la nota final de stage
+
+
+            $notesSubareas = CriteriaStage::where('evaluation_stage_id', $evaluationStageId)
+                ->join('evaluation_criteria as ac', 'criteria_stage.evaluation_criteria_id', 'ac.id')
+                ->get();
+
+            $globalNote =  $this->calculateNoteStage($notesSubareas);
+
+            EvaluationStageNote::updateOrCreate(
+                [
+                    'user_id' => $userId,
+                    'evaluation_stage_id' => $evaluationStageId,
+                ],
+                [
+                    'note' => $globalNote,
+                ]
+            );
+
+
+            //voy a recuperar todos los stages con sus notas para calcular y actualizar nota del proyecto
+
+            $evaluationStages = EvaluationStage::join('evaluation_stage_note as esn', 'esn.evaluation_stage_id', 'evaluation_stages.id')
+                        ->join('stages as s', 's.id', 'evaluation_stages.stage_id')
+                        ->where('evaluation_stages.project_id', $evaluationSubArea->project_id)
+                        ->get();
+
+            $globalNoteProject =  $this->calculateNoteStage($evaluationStages);
+            UserProjectNote::updateOrCreate(
+                [
+                    'user_id' => $usuarioId,
+                    'project_id' => $evaluationSubArea->project_id,
+                ],
+                [
+                    'note' => $globalNoteProject,
+                ]
+            );
+
             return back()->with('success', 'Notas guardadas exitosamente.');
-        } catch (\Throwable $th) {
+        } catch (Exception $th) {
             return redirect()->route('grades.index')->with('error', $th->getMessage());
         }
+    }
+
+    public function calculateNoteStage($notesSubareas)
+    {
+        $globalNote = 0;
+        $totalPercentage = 0;
+
+        foreach ($notesSubareas as $subarea) {
+            $note = (float)$subarea->note;
+            $percentage = (float)$subarea->percentage;
+
+            // Calculate the weighted note
+            $weightedNote = ($note * $percentage) / 100;
+
+            // Add to the global note
+            $globalNote += $weightedNote;
+
+            // Track the total percentage to ensure it sums to 100
+            $totalPercentage += $percentage;
+        }
+
+        return $globalNote;
     }
 }
