@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Proposal;
 use App\Mail\SendMail;
+use App\Models\Application;
 use App\Models\Entity;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +21,7 @@ class ProposalController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('permission:' . self::PERMISSIONS['index'])->only(['index']);
+        // $this->middleware('permission:' . self::PERMISSIONS['index'])->only(['index']);
     }
 
     public function index()
@@ -28,22 +29,22 @@ class ProposalController extends Controller
         $user = Auth::user();
         $proposals = Proposal::where('user_id', $user->id)->get();
 
-        return view('proposals.index', compact ('proposals'));
+        return view('proposals.index', compact('proposals'));
     }
 
     public function create()
     {
         $entities = Entity::all();
-        return view('proposals.create', ['entities'=>$entities]);
+        return view('proposals.create', ['entities' => $entities]);
     }
 
     public function store(Request $request)
     {
-         // Validación de los datos del formulario
-         $validatedData = $request->validate([
+        // Validación de los datos del formulario
+        $validatedData = $request->validate([
             'name'                  => 'required|string|max:255',
             'description'           => 'required|string',
-            'path'                  => 'required|mimes:pdf', 
+            'path'                  => 'required|mimes:pdf',
             'amount_student'        => 'required|integer',
             'entity_id'             => 'required|integer',
         ]);
@@ -52,7 +53,7 @@ class ProposalController extends Controller
         $user = Auth::user();
         // Procesar y guardar el archivo
         if ($request->hasFile('path')) {
-            $path = $request->file('path')->store('proposals'); 
+            $path = $request->file('path')->store('proposals');
             //dd($path);
         }
 
@@ -66,7 +67,7 @@ class ProposalController extends Controller
             $proposals->entity_id         = $request->input('entity_id');
             $proposals->status            = 0;
             $proposals->user_id           = $user->id;
-            
+
             $proposals->save();
 
             //dd($proposals);
@@ -89,7 +90,7 @@ class ProposalController extends Controller
         $validatedData = $request->validate([
             'name'                  => 'required|string|max:255',
             'description'           => 'required|string',
-            'path'                  => 'required|mimes:pdf', 
+            'path'                  => 'required|mimes:pdf',
             'amount_student'        => 'required|integer',
             'entity_id'             => 'requiered|integer',
             'user_id'               => 'requiered|integer'
@@ -124,8 +125,51 @@ class ProposalController extends Controller
         //dd($filePath);
         return response()->download($filePath);
     }
-    
+
+    public function indexApplication()
+    {
+        $user = Auth::user();
+        $proposals = Proposal::all();
+
+        return view('proposals.applications.index', compact('proposals'));
+    }
+
+    public function createApplication(Proposal $proposal)
+    {
+
+        return view('proposals.applications.create', compact('proposal'));
+
+    }
+
+    public function storeApplication(Request $request)
+    {
+
+        // Validación de los datos del formulario
+        $validatedData = $request->validate([
+            'name'                  => 'required|string|max:255',
+            'path'                  => 'required|mimes:pdf',
+            'proposal_id'           => 'required|integer'
+        ]);
+
+        // Procesar y guardar el archivo
+        if ($request->hasFile('path')) {
+            $path = $request->file('path')->store('applications');
+            //dd($path);
+        }
+        //Obtener el usuario logueado
+        $user = Auth::user();
+        //Crear un nueva aplicación
+        $application = Application::create([
+            'name'          => $validatedData['name'],
+            'status'        => 0,
+            'path'          => $path,
+            'user_id'       => $user->id,
+            'proposal_id'   => $validatedData['proposal_id'],
+        ]);
 
 
-
+        $proposal = Proposal::find($validatedData['proposal_id']);
+        //dd($validatedData);
+        return redirect()->route('proposals.applications.index', [$proposal->proposal_id])->with('success', 'Has aplicado correctamente a la pasantía.');
+    }
 }
