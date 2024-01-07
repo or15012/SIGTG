@@ -136,12 +136,17 @@ class EvaluationController extends Controller
             ->join('evaluation_criteria as stg', 'evaluation_subareas.evaluation_criteria_id', 'stg.id')
             ->get();
 
+        $evaluationStage = EvaluationStage::where('stage_id', $area->id)
+            ->where('project_id', $project->id)
+            ->first();
+
         return view('evaluations.subareas.show-list', [
             "area"                  => $area,
             "project"               => $project,
             "evaluationSubareas"    => $evaluationSubareas,
             "status"                => $status,
-            "evaluationStages"      => $evaluationStages
+            "evaluationStages"      => $evaluationStages,
+            "evaluationStage"       => $evaluationStage,
         ]);
     }
 
@@ -172,27 +177,27 @@ class EvaluationController extends Controller
             ->where('evaluation_criteria_id', $subarea->id)
             ->first();
 
-            $evaluationDocuments = array();
+        $evaluationDocuments = array();
 
 
-            if (isset($evaluationStages)) {
-                $evaluationDocuments = SubareaDocument::where('evaluation_subarea_id', $evaluationStages->id)
-                    ->get();
-            } else {
-                $evaluationStages                           = new EvaluationSubarea();
-                $evaluationStages->project_id               = $project->id;
-                $evaluationStages->evaluation_criteria_id   = $subarea->id;
-                $evaluationStages->save();
-            }
+        if (isset($evaluationStages)) {
+            $evaluationDocuments = SubareaDocument::where('evaluation_subarea_id', $evaluationStages->id)
+                ->get();
+        } else {
+            $evaluationStages                           = new EvaluationSubarea();
+            $evaluationStages->project_id               = $project->id;
+            $evaluationStages->evaluation_criteria_id   = $subarea->id;
+            $evaluationStages->save();
+        }
 
-            return view('evaluations.subareas.show', [
-                "stage"                 => $subarea,
-                "project"               => $project,
-                "evaluationStages"      => $evaluationStages,
-                "evaluationDocuments"   => $evaluationDocuments,
-                "status"                => $status,
+        return view('evaluations.subareas.show', [
+            "stage"                 => $subarea,
+            "project"               => $project,
+            "evaluationStages"      => $evaluationStages,
+            "evaluationDocuments"   => $evaluationDocuments,
+            "status"                => $status,
 
-            ]);
+        ]);
     }
 
     public function submitSubarea(Request $request, EvaluationSubarea $evaluation_stage)
@@ -206,7 +211,7 @@ class EvaluationController extends Controller
             // Cuando tenga número de grupo, se manda a llamar al teacher.
             $role = 'Coordinador General';
             $userRoles = User::role($role)->get();
-            $notification = Notification::create(['title'=>'Alerta de etapa', 'message'=>"Te informamos que tu etapa ha sido enviada.", 'user_id'=>Auth::user()->id]);
+            $notification = Notification::create(['title' => 'Alerta de etapa', 'message' => "Te informamos que tu etapa ha sido enviada.", 'user_id' => Auth::user()->id]);
             foreach ($userRoles as $coordinator) {
                 try {
                     $emailData = [
@@ -215,7 +220,7 @@ class EvaluationController extends Controller
                     ];
                     //dd($emailData);
                     Mail::to($coordinator->email)->send(new SendMail('mail.stage-submitted', 'Notificación de etapa enviada', $emailData));
-                    UserNotification::create(['user_id'=>$coordinator->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
+                    UserNotification::create(['user_id' => $coordinator->id, 'notification_id' => $notification->id, 'is_read' => 0]);
                 } catch (\Throwable $th) {
                     // Manejar la excepción
                     //dd($th);
@@ -235,7 +240,7 @@ class EvaluationController extends Controller
                 ->select('users.id', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.second_last_name', 'users.email')
                 ->get();
 
-            $notificationAproved = Notification::create(['title'=>'Alerta de etapa', 'message'=>"Te informamos que tu etapa ha sido APROBADA.", 'user_id'=>Auth::user()->id]);
+            $notificationAproved = Notification::create(['title' => 'Alerta de etapa', 'message' => "Te informamos que tu etapa ha sido APROBADA.", 'user_id' => Auth::user()->id]);
             foreach ($users as  $students) {
                 try {
                     $emailData = [
@@ -244,7 +249,7 @@ class EvaluationController extends Controller
                     ];
                     //dd($emailData);
                     Mail::to($students->email)->send(new SendMail('mail.stage-approved', 'Notificación de etapa aprobada', $emailData));
-                    UserNotification::create(['user_id'=>$students->id, 'notification_id'=>$notificationAproved->id, 'is_read'=>0]);
+                    UserNotification::create(['user_id' => $students->id, 'notification_id' => $notificationAproved->id, 'is_read' => 0]);
                 } catch (\Throwable $th) {
                     // Manejar la excepción
                     //dd($th);
@@ -254,7 +259,7 @@ class EvaluationController extends Controller
 
         //identificare si es la ultima etapa para cargar las notas finales
 
-            return redirect()
+        return redirect()
             ->route('evaluations.show.subarea', [$evaluation_stage->project_id, $evaluation_stage->evaluation_criteria_id])
             ->with('success', 'Subarea entregada correctamente.');
     }
@@ -345,5 +350,28 @@ class EvaluationController extends Controller
             'group'                 => $group,
             'evaluationStagesNotes' => $evaluationStagesNotes,
         ]);
+    }
+
+
+    public function approveStage(Project $project, Stage $stage)
+    {
+        $evaluationStage = EvaluationStage::where('stage_id', $stage->id)
+            ->where('project_id', $project->id)
+            ->first();
+
+        $evaluationStage->status = 1;
+        $evaluationStage->update();
+
+        $evaluationSubareas         = EvaluationCriteria::where('stage_id', $stage->id)->count();
+        $evaluationStagesApproved   = EvaluationStage::where('project_id', $project->id)
+            ->where('status', 1)
+            ->count();
+
+        if ($evaluationSubareas === $evaluationStagesApproved) {
+            $project->status = 3;
+            $project->update();
+        }
+
+        return redirect()->back()->with('success', 'Exito! Se ha dado paso a la siguiente área.');
     }
 }

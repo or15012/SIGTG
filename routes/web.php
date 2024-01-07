@@ -307,25 +307,14 @@ Route::group(['prefix' => 'projects', 'as' => 'projects.'], function () {
 //Grupo para las rutas de evaluación de examen
 Route::group(['prefix' => 'evaluations', 'as' => 'evaluations.'], function () {
     Route::get('/', [EvaluationController::class, 'index'])->name('index');
-    // Route::get('/', [ProjectController::class, 'index'])->name('index');
-
     Route::get('/show-subareas/{project}/{area}', [EvaluationController::class, 'showSubareas'])->name('show.subareas');
     Route::get('/show-subarea/{project}/{subarea}', [EvaluationController::class, 'showSubarea'])->name('show.subarea');
-
-    // Route::put('/submit-stage/{evaluation_stage}', [ProjectController::class, 'submitStage'])->name('submit.stage');
     Route::put('/submit-stage/{evaluation_stage}', [EvaluationController::class, 'submitSubarea'])->name('submit.subarea');
-
-    // Route::get('/finish/{project}', [ProjectController::class, 'finish'])->name('finish');
-    // Route::get('/download/{project}/{file}', [ProjectController::class, 'download'])->name('download');
-    // Route::get('/final-volume/{project}', [ProjectController::class, 'finalVolume'])->name('final.volume');
-    // Route::post('/final-volume-store/{project}', [ProjectController::class, 'finalVolumeStore'])->name('final.volume.store');
 
     Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
         Route::get('/', [EvaluationController::class, 'coordinatorIndex'])->name('index');
-        // Route::get('/', [ProjectController::class, 'coordinatorIndex'])->name('index');
-
         Route::get('/show/{project}', [EvaluationController::class, 'coordinatorShow'])->name('show');
-        // Route::put('/subir-final-stage/{project}', [ProjectController::class, 'coordinatorSubmitFinalStage'])->name('submit.final.stage');
+        Route::get('/approve-stage/{project}/{stage}',  [EvaluationController::class, 'approveStage'])->name('approve.stage');
     });
 
 
