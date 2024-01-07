@@ -107,4 +107,8 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    public function full_name(){
+        return $this->first_name.' '.($this->middle_name??'').' '.($this->last_name??'').' '.($this->second_last_name??'');
+    }
+
 }

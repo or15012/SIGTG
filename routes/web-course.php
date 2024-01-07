@@ -59,6 +59,7 @@ Route::group(['prefix' => 'courses', 'as' => 'courses.'], function () {
     Route::get('{id}/edit', [CourseController::class, 'edit'])->name('edit');
     Route::put('{id}', [CourseController::class, 'update'])->name('update');
     Route::delete('{id}', [CourseController::class, 'destroy'])->name('destroy');
+    Route::post('import-registrations', [CourseController::class, 'importRegistrations'])->name('import.registrations');
 });
 
 //Grupo para las rutas de entidades

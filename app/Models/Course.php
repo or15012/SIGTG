@@ -33,4 +33,11 @@ class Course extends Model
             ->withPivot(['id'])
             ->withTimestamps();
     }
+    
+    public function registrations()
+    {
+        return $this->belongsToMany(User::class, 'course_registrations')
+            ->withPivot(['id'])
+            ->withTimestamps();
+    }
 }
