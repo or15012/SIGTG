@@ -22,6 +22,9 @@ return new class extends Migration
             $table->foreignId('proposal_id')->constrained('proposals')->onDelete('restrict');
             $table->timestamps();
             $table->softDeletes();
+
+            // Restricción única para evitar que un usuario aplique múltiples veces a la misma propuesta
+            $table->unique(['user_id', 'proposal_id']);
         });
     }
 

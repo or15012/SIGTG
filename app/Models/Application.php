@@ -19,4 +19,13 @@ class Application extends Model
         'updated_at',
         'deleted_at',
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function proposal()
+    {
+        return $this->belongsTo(Proposal::class);
+    }
 }

@@ -107,4 +107,8 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
 }

@@ -19,6 +19,13 @@
                 {{ session('success') }}
             </div>
         @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <tbody>
             @foreach ($proposals as $proposal)
                 <div class="card">

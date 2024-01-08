@@ -8,6 +8,7 @@ use App\Models\Proposal;
 use App\Mail\SendMail;
 use App\Models\Application;
 use App\Models\Entity;
+use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -144,6 +145,13 @@ class ProposalController extends Controller
     public function storeApplication(Request $request)
     {
 
+        $user = Auth::user();
+        // Validar si el usuario ya ha aplicado a esta propuesta
+
+        if ($user->applications()->where('proposal_id', $request->proposal_id)->exists()) {
+            //dd("entre");
+            return redirect()->route('proposals.applications.index')->with('error', 'Ya has aplicado a esta propuesta.');
+        }
         // Validación de los datos del formulario
         $validatedData = $request->validate([
             'name'                  => 'required|string|max:255',
