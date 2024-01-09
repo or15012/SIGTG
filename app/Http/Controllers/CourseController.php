@@ -36,7 +36,10 @@ class CourseController extends Controller
 
     public function index()
     {
-        $courses = Course::orderBy('id','desc')->paginate(100);
+        $courses = Course::orderBy('id', 'desc')
+            ->where('school_id', session('school', ['id']))
+            ->paginate(10);
+
         return view('course.index', compact('courses'));
     }
 
@@ -59,7 +62,7 @@ class CourseController extends Controller
         ]);
 
         DB::beginTransaction();
-        
+
         $course = Course::create([
             'name'        => $validatedData['name'],
             'description'          => $validatedData['description'],
@@ -67,7 +70,7 @@ class CourseController extends Controller
             'cycle_id'        => $validatedData['cycle_id'],
         ]);
         foreach ($request->teachers as $user_id) {
-            TeacherCourse::create(['course_id'=>$course->id, 'user_id'=>$user_id]);
+            TeacherCourse::create(['course_id' => $course->id, 'user_id' => $user_id]);
         }
 
         DB::commit();
@@ -108,23 +111,31 @@ class CourseController extends Controller
 
         DB::table('teacher_courses')->where('course_id', $id)->delete();
         foreach ($request->teachers as $user_id) {
-            TeacherCourse::create(['course_id'=>$course->id, 'user_id'=>$user_id]);
+            TeacherCourse::create(['course_id' => $course->id, 'user_id' => $user_id]);
         }
-        
-        CoursePreregistration::where('course_id', $id)->delete();
-        foreach ($request->user_id_preregistration as $user_id) {
-            $registration = CoursePreregistration::create([
-                'user_id'        => $user_id,
-                'course_id'       => $id,
-            ]);
+
+        if (isset($request->user_id_preregistration)) {
+
+            CoursePreregistration::where('course_id', $id)->delete();
+            foreach ($request->user_id_preregistration as $user_id) {
+                $registration = CoursePreregistration::create([
+                    'user_id'        => $user_id,
+                    'course_id'       => $id,
+                ]);
+            }
         }
-        CourseRegistration::where('course_id', $id)->delete();
-        foreach ($request->user_id_registration as $user_id) {
-            $registration = CourseRegistration::create([
-                'user_id'        => $user_id,
-                'course_id'       => $id,
-                'status'       => 1,
-            ]);
+
+
+        if (isset($request->$request->user_id_registration)) {
+
+            CourseRegistration::where('course_id', $id)->delete();
+            foreach ($request->user_id_registration as $user_id) {
+                $registration = CourseRegistration::create([
+                    'user_id'        => $user_id,
+                    'course_id'       => $id,
+                    'status'       => 1,
+                ]);
+            }
         }
 
         $course->save();
@@ -218,10 +229,10 @@ class CourseController extends Controller
 
             DB::commit();
 
-            if (count($withErrors)>0) {
+            if (count($withErrors) > 0) {
                 return redirect()->route('courses.index')
-                    ->with(['success' => 'Importación correcta. Inscritos: '.$registered])
-                    ->withErrors(['Los siguientes correos no pudieron inscribirse: '.implode(',', $withErrors)]);
+                    ->with(['success' => 'Importación correcta. Inscritos: ' . $registered])
+                    ->withErrors(['Los siguientes correos no pudieron inscribirse: ' . implode(',', $withErrors)]);
             }
 
             Storage::disk('public')->delete('courses/file.' . $extension);

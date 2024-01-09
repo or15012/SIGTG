@@ -17,8 +17,17 @@
             <a href="{{ route('courses.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <h1>Editar ciclo</h1>
-        <form action="{{ route('courses.update', $course->id) }}" method="POST">
+        <form  id="course-form" action="{{ route('courses.update', $course->id) }}" method="POST">
             @csrf
             @method('PUT')
 
@@ -63,15 +72,20 @@
             </div>
 
             <div class="row mb-3">
-                <div class="col-12">
-                    <label for="school_id" class="form-label">Escuela</label>
-                    <select class="form-control" id="school_id" name="school_id" required>
-                        @foreach ($schools as $school)
-                            <option @if ($school->id == old('school_id', $course->school_id)) selected @endif value="{{ $school->id }}">
-                                {{ $school->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                <label for="school_id" class="form-label">Escuela</label>
+                <select class="form-control" name="school_id" id="school_id" disabled>
+                    @foreach ($schools as $school)
+                        @if ($course->school_id == $school->id)
+                            <option value="{{ $school->id }}" selected>
+                                {{ $school->name }}
+                            </option>
+                        @else
+                            <option value="{{ $school->id }}">
+                                {{ $school->name }}
+                            </option>
+                        @endif
+                    @endforeach
+                </select>
             </div>
 
 
@@ -181,4 +195,5 @@
 @section('script')
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
     <script src="{{ URL::asset('/js/course.js') }}"></script>
+    <script src="{{ URL::asset('/js/courses.js') }}"></script>
 @endsection

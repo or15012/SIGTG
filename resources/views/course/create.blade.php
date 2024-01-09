@@ -34,16 +34,17 @@
                 Regresar</a>
         </div>
         <h1>Nuevo curso</h1>
-        <form action="{{ route('courses.store') }}" method="POST">
+        <form id="course-form" action="{{ route('courses.store') }}" method="POST">
             @csrf
 
             <div class="row mb-3">
                 <div class="col-12">
                     <label for="name" class="form-label">Nombre</label>
-                    <input value="{{ old('name') }}" type="text" class="form-control" id="name" name="name" required>
+                    <input value="{{ old('name') }}" type="text" class="form-control" id="name" name="name"
+                        required>
                 </div>
             </div>
-            
+
             <div class="row mb-3">
                 <div class="col-12">
                     <label for="description" class="form-label">Descripción</label>
@@ -56,29 +57,34 @@
                     <label for="teachers" class="form-label">Docentes</label>
                     <select multiple class="form-select select2" id="teachers" name="teachers[]" required>
                         @foreach ($teachers as $teacher)
-                            <option value="{{$teacher->id}}">{{$teacher->first_name.' '.$teacher->middle_name.' '.$teacher->last_name.' '.$teacher->second_last_name }}</option>
+                            <option value="{{ $teacher->id }}">
+                                {{ $teacher->first_name . ' ' . $teacher->middle_name . ' ' . $teacher->last_name . ' ' . $teacher->second_last_name }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
             </div>
-            
+
             <div class="row mb-3">
                 <div class="col-12">
                     <label for="cycle_id" class="form-label">Ciclo</label>
                     <select class="form-select" id="cycle_id" name="cycle_id" required>
                         @foreach ($cycles as $cycle)
-                            <option @if($cycle->id == old('cycle_id')) selected @endif value="{{$cycle->id}}">{{$cycle->number.' - '.$cycle->year }}</option>
+                            <option @if ($cycle->id == old('cycle_id')) selected @endif value="{{ $cycle->id }}">
+                                {{ $cycle->number . ' - ' . $cycle->year }}</option>
                         @endforeach
                     </select>
                 </div>
             </div>
-            
+
             <div class="row mb-3">
                 <div class="col-12">
                     <label for="school_id" class="form-label">Escuela</label>
-                    <select class="form-select" id="school_id" name="school_id" required>
+                    <select class="form-select" id="school_id" name="school_id" disabled>
                         @foreach ($schools as $school)
-                            <option @if($school->id == old('school_id')) selected @endif value="{{$school->id}}">{{$school->name }}</option>
+                            <option value="{{ $school->id }}" @if ($school->id == session('school')['id']) selected @endif>
+                                {{ $school->name }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
@@ -94,4 +100,5 @@
 
 @section('script')
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+    <script src="{{ URL::asset('js/courses.js') }}"></script>
 @endsection
