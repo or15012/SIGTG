@@ -63,14 +63,29 @@ class StageController extends Controller
 
 
         try {
-            $stage = Stage::create([
-                'name'          => $request['name'],
-                'protocol_id'   => $request['protocol'],
-                'cycle_id'      => $request['cycle'],
-                'school_id'     => $request['school'],
-                'sort'          => $request['sort'],
-                'percentage'    => $request['percentage'],
-            ]);
+
+            $stage = new Stage();
+            $stage->name        = $request->name;
+            $stage->protocol_id = $request->protocol;
+            $stage->cycle_id    = $request->cycle;
+            $stage->school_id   = $request->school;
+            $stage->sort        = $request->sort;
+            $stage->percentage  = $request->percentage;
+
+            switch (session('protocol')['id']) {
+                case 1:
+                    # code...
+                    $stage->type = $request->type;
+                    break;
+                case 5:
+                    # code...
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+            $stage->save();
+
 
             return redirect()->route('stages.index')->with('success', 'Etapa Evaluativa creada exitosamente.');
         } catch (\Exception $e) {
@@ -99,14 +114,27 @@ class StageController extends Controller
         ]);
 
         try {
-            $stage->update([
-                'name'          => $request['name'],
-                'protocol_id'   => $request['protocol'],
-                'cycle_id'      => $request['cycle'],
-                'school_id'     => $request['school'],
-                'sort'          => $request['sort'],
-                'percentage'    => $request['percentage'],
-            ]);
+
+            $stage->name        = $request->name;
+            $stage->protocol_id = $request->protocol;
+            $stage->cycle_id    = $request->cycle;
+            $stage->school_id   = $request->school;
+            $stage->sort        = $request->sort;
+            $stage->percentage  = $request->percentage;
+
+            switch (session('protocol')['id']) {
+                case 1:
+                    # code...
+                    $stage->type = $request->type;
+                    break;
+                case 5:
+                    # code...
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+            $stage->update();
 
             return redirect()->route('stages.index')->with('success', 'Etapa Evaluativa actualizada exitosamente.');
         } catch (\Exception $e) {

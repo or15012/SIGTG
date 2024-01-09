@@ -61,6 +61,15 @@
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Porcentaje</th>
+                    @if (session('protocol') != null)
+                        @switch(session('protocol')['id'])
+                            @case(5)
+                                <th>Entrega de documento</th>
+                            @break
+
+                            @default
+                        @endswitch
+                    @endif
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -70,6 +79,15 @@
                         <td>{{ $criteria->id }}</td>
                         <td>{{ $criteria->name }}</td>
                         <td>{{ $criteria->percentage }}</td>
+                        @if (session('protocol') != null)
+                            @switch(session('protocol')['id'])
+                                @case(5)
+                                    <td>{{ $criteria->type == 0 ? 'No' : 'Si' }}</td>
+                                @break
+
+                                @default
+                            @endswitch
+                        @endif
                         <td>
                             <a href="{{ route('criterias.edit', $criteria->id) }}" class="btn btn-primary">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"

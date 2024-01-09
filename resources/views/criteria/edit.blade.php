@@ -60,6 +60,25 @@
                 </select>
             </div>
 
+            @if (session('protocol') != null)
+                @switch(session('protocol')['id'])
+                    @case(5)
+                        <div class="mb-3">
+                            <label for="type" class="form-label">Tipo</label>
+                            <select class="form-control" id="type" name="type" required>
+                                <option value="-1"> Seleccione un tipo </option>
+                                <option value="1" @if ($criteria->type == 1) selected @endif>Con entrega de documentos
+                                </option>
+                                <option value="0" @if ($criteria->type == 0) selected @endif>Sin entrega de documentos
+                                </option>
+                            </select>
+                        </div>
+                    @break
+
+                    @default
+                @endswitch
+            @endif
+
             <button type="submit" class="btn btn-primary">Actualizar</button>
         </form>
     </div>

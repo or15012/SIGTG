@@ -17,6 +17,7 @@ class Stage extends Model
         'school_id',
         'sort',
         'percentage',
+        'type',
     ];
 
     // Relación con el modelo protocolo

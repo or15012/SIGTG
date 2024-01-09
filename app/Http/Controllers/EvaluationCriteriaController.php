@@ -30,7 +30,7 @@ class EvaluationCriteriaController extends Controller
     {
 
         $stage = Stage::findOrfail($id);
-        $sumatory = DB::table('evaluation_criteria')->where('stage_id', $stage->id)->sum('percentage');
+        $sumatory = EvaluationCriteria::where('stage_id', $stage->id)->sum('percentage');
 
         return view('criteria.create', compact('stage', 'sumatory'));
     }
@@ -46,19 +46,32 @@ class EvaluationCriteriaController extends Controller
 
         $stage_id   = $data['stage'];
         $percentage = $data['percentage'];
-        $sumatory = DB::table('evaluation_criteria')->where('stage_id', $stage_id)->sum('percentage');
+        $sumatory = EvaluationCriteria::where('stage_id', $stage_id)->sum('percentage');
 
         if ($sumatory + $percentage > 100) {
             return redirect()->route('stages.index')->with('error', 'No se pudo completar la acción. El porcentaje supera el 100%.');
         }
 
         try {
-            $criteria = EvaluationCriteria::create([
-                    'name'          => $request['name'],
-                    'percentage'    => $percentage,
-                    'stage_id'      => $stage_id,
-                    'description'   => $request['description']
-            ]);
+            $criteria = new EvaluationCriteria();
+            $criteria->name = $request['name'];
+            $criteria->percentage = $percentage;
+            $criteria->stage_id = $stage_id;
+            $criteria->description = $request['description'];
+            switch (session('protocol')['id']) {
+                case 1:
+                    # code...
+
+                    break;
+                case 5:
+                    # code...
+                    $criteria->type = $request->type;
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+            $criteria->save();
 
             return redirect()->route('stages.index')->with('success', 'Se añadió el criterio de evaluación correctamente.');
         }
@@ -92,12 +105,24 @@ class EvaluationCriteriaController extends Controller
         }
 
         try {
-            $criteria->update([
-                'name'          => $data['name'],
-                'percentage'    => $data['percentage'],
-                'description'   => $data['description'],
-            ]);
+            $criteria->name         = $data['name'];
+            $criteria->percentage   = $data['percentage'];
+            $criteria->description  = $data['description'];
 
+            switch (session('protocol')['id']) {
+                case 1:
+                    # code...
+
+                    break;
+                case 5:
+                    # code...
+                    $criteria->type = $request->type;
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+            $criteria->update();
             return redirect()->route('criterias.index', ['id'=>$criteria->stage_id])->with('success', 'Criterio de Evaluación actualizado exitosamente.');
         } catch (\Exception $e) {
             return redirect()->route('criterias.edit', ['criteria' => $criteria])->with('error', 'El criterio de evaluación ya se encuentra registrado, revisar.');
