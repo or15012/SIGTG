@@ -31,13 +31,13 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($plannings as $planning)
+                @foreach ($preprofiles as $preprofile)
                     <tr>
-                        <td>{{ $planning->name }} </td>
-                        <td style="width: 40%">{{ Illuminate\Support\Str::limit($planning->description, 100, '...') }}</td>
-                        <td class="text-nowrap">{{ $planning->created_at->format('d-m-Y') }}</td>
+                        <td>{{ $preprofile->name }} </td>
+                        <td style="width: 40%">{{ Illuminate\Support\Str::limit($preprofile->description, 100, '...') }}</td>
+                        <td class="text-nowrap">{{ $preprofile->created_at->format('d-m-Y') }}</td>
                         <td>
-                            @switch($planning->status)
+                            @switch($preprofile->status)
                                 @case(0)
                                     Planificación presentada.
                                 @break

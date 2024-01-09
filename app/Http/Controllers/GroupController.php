@@ -183,7 +183,7 @@ class GroupController extends Controller
             }
             // Insertar los nuevos usuarios
             $group->users()->attach($syncData);
-
+            $user = Auth::user();
             $protocols = $user->protocol()
             ->wherePivot('status', 1)
             ->pluck('name');
@@ -192,6 +192,11 @@ class GroupController extends Controller
         } catch (Exception $e) {
             Log::info('GroupController.store');
             Log::info($e->getMessage());
+
+            $protocols = $user->protocol()
+            ->wherePivot('status', 1)
+            ->pluck('name');
+
             return redirect()->back()->with(['error'=>'Hubo un error intente de nuevo.', $protocols]);
         }
     }
