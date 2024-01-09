@@ -80,12 +80,3 @@ Route::group(['prefix' => 'courses.preregistrations', 'as' => 'courses.preregist
     Route::post('/', [CoursePreRegistrationController::class, 'store'])->name('store');
 });
 
-//Grupo para las rutas de propuestas
-Route::group(['prefix' => 'proposals', 'as' => 'proposals.'], function () {
-    Route::get('/', [ProposalController::class, 'index'])->name('index');
-    Route::get('create', [ProposalController::class, 'create'])->name('create');
-    Route::post('/', [ProposalController::class, 'store'])->name('store');
-    Route::get('/show/{proposal}', [ProposalController::class, 'show'])->name('show');
-    Route::delete('/destroy/{proposal}', [ProposalController::class, 'destroy'])->name('destroy');
-    Route::get('/download/{proposal}/{file}', [ProposalController::class, 'proposalDownload'])->name('download');
-});

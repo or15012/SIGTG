@@ -111,4 +111,8 @@ class User extends Authenticatable
         return $this->first_name.' '.($this->middle_name??'').' '.($this->last_name??'').' '.($this->second_last_name??'');
     }
 
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
 }
