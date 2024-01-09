@@ -13,8 +13,8 @@
     @endcomponent
     <div class="container">
         
-        <h1>Lista de Propuestas</h1>
-        <a href="{{ route('proposals.create') }}" class="btn btn-primary mb-3">Nueva propuesta</a>
+        <h1>Lista de foros</h1>
+        <a href="{{ route('forum.create') }}" class="btn btn-primary mb-3">Nuevo foro</a>
 
         @if (session('success'))
             <div class="alert alert-success">
@@ -32,16 +32,16 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($proposals as $proposal)
+                @foreach ($forum as $forum)
                 <tr>
-                    <td>{{$proposal->name}}</td>
-                    <td>{{$proposal->description}}</td>
-                    <td>{{$proposal->status()}}</td>
+                    <td>{{$forum->name}}</td>
+                    <td>{{$forum->description}}</td>
+                    <td>{{$forum->status()}}</td>
                     <td>
-                        <a href="{{ route('proposals.show', $proposal->id) }}" class="btn btn-primary"><i
+                        <a href="{{ route('forum.show', $forum->id) }}" class="btn btn-primary"><i
                             class="fas fa-eye"></i>
                         </a>
-                        <form action="{{ route('proposals.destroy', $proposal->id) }}" method="POST"
+                        <form action="{{ route('forum.destroy', $forum->id) }}" method="POST"
                             style="display: inline">
                             @csrf
                             @method('DELETE')

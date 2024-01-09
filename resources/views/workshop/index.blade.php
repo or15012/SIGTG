@@ -13,8 +13,8 @@
     @endcomponent
     <div class="container">
         
-        <h1>Lista de Propuestas</h1>
-        <a href="{{ route('proposals.create') }}" class="btn btn-primary mb-3">Nueva propuesta</a>
+        <h1>Lista de Talleres de Investigación</h1>
+        <a href="{{ route('workshop.create') }}" class="btn btn-primary mb-3">Nuevo taller de Investigación</a>
 
         @if (session('success'))
             <div class="alert alert-success">
@@ -32,16 +32,16 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($proposals as $proposal)
+                @foreach ($workshops as $workshop)
                 <tr>
-                    <td>{{$proposal->name}}</td>
-                    <td>{{$proposal->description}}</td>
-                    <td>{{$proposal->status()}}</td>
+                    <td>{{$workshop->name}}</td>
+                    <td>{{$workshop->description}}</td>
+                    <td>{{$workshop->status()}}</td>
                     <td>
-                        <a href="{{ route('proposals.show', $proposal->id) }}" class="btn btn-primary"><i
+                        <a href="{{ route('workshop.show', $workshop->id) }}" class="btn btn-primary"><i
                             class="fas fa-eye"></i>
                         </a>
-                        <form action="{{ route('proposals.destroy', $proposal->id) }}" method="POST"
+                        <form action="{{ route('workshop.destroy', $workshop->id) }}" method="POST"
                             style="display: inline">
                             @csrf
                             @method('DELETE')
