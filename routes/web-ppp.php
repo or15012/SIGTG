@@ -25,7 +25,7 @@ Route::group(['prefix' => 'proposals', 'as' => 'proposals.'], function () {
 });
 
 //Grupo de rutas talleres
-Route::group(['prefix' => 'workshops', 'as' => 'workshops.'], function () {
+Route::group(['prefix' => 'workshop', 'as' => 'workshop.'], function () {
     Route::get('/', [WorkshopController::class, 'index'])->name('index');
     Route::get('create', [WorkshopController::class, 'create'])->name('create');
     Route::post('/', [WorkshopController::class, 'store'])->name('store');
@@ -35,7 +35,7 @@ Route::group(['prefix' => 'workshops', 'as' => 'workshops.'], function () {
 });
 
 //Grupo de rutas foros
-Route::group(['prefix' => 'forums', 'as' => 'forums.'], function () {
+Route::group(['prefix' => 'forum', 'as' => 'forum.'], function () {
     Route::get('/', [ForumController::class, 'index'])->name('index');
     Route::get('create', [ForumController::class, 'create'])->name('create');
     Route::post('/', [ForumController::class, 'store'])->name('store');

@@ -22,9 +22,7 @@ class ForumController extends Controller
 
     public function index()
     {
-        $user = Auth::user();
-        $forum = Forum::where('user_id', $user->id)->get();
-
+        $forum = Forum::get();
         return view('forum.index', compact('forum'));
     }
 

@@ -32,7 +32,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($workshops as $workshop)
+                @foreach ($workshop as $workshop)
                 <tr>
                     <td>{{$workshop->name}}</td>
                     <td>{{$workshop->description}}</td>

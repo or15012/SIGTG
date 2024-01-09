@@ -22,9 +22,7 @@ class WorkshopController extends Controller
 
     public function index()
     {
-        $user = Auth::user();
-        $workshop = Workshop::where('user_id', $user->id)->get();
-
+        $workshop = Workshop::get();
         return view('workshop.index', compact('workshop'));
     }
 

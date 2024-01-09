@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('forum', function (Blueprint $table) {
+        Schema::create('forums', function (Blueprint $table) {
             $table->id();
             $table->string("name");
             $table->mediumText("description")->nullable()->default(null);
