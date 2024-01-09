@@ -99,6 +99,16 @@
                             @endswitch
                         @endif
                     </th>
+                    @if (session('protocol') != null)
+                        @switch(session('protocol')['id'])
+                            @case(1)
+                                <th>Entrega de documento</th>
+                            @break
+
+                            @default
+                        @endswitch
+                    @endif
+
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -112,6 +122,15 @@
                         <td>{{ $stage->school->name }}</td>
                         <td>{{ $stage->percentage }}</td>
                         <td>{{ $stage->sort }}</td>
+                        @if (session('protocol') != null)
+                            @switch(session('protocol')['id'])
+                                @case(1)
+                                    <td>{{ $stage->type == 0 ? 'No' : 'Si' }}</td>
+                                @break
+
+                                @default
+                            @endswitch
+                        @endif
                         <td>
                             <a href="{{ route('criterias.index', $stage->id) }}" class="btn btn-primary my-1"><i
                                     class="fas fa-eye"></i></a>

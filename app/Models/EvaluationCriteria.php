@@ -15,6 +15,7 @@ class EvaluationCriteria extends Model
         "description",
         "percentage",
         "stage_id",
+        "type",
     ];
 
     public function Stage()

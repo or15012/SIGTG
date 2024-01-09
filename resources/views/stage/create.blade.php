@@ -58,7 +58,8 @@
                 <select class="form-control" id="protocol" name="protocol" disabled>
                     <option value="0"> Seleccione un protocolo </option>
                     @foreach ($protocols as $protocol)
-                        <option value="{{ $protocol->id }}" @if ($protocol->id == session('protocol')['id']) selected @endif> {{ $protocol->name }}</option>
+                        <option value="{{ $protocol->id }}" @if ($protocol->id == session('protocol')['id']) selected @endif>
+                            {{ $protocol->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -68,7 +69,8 @@
                 <select class="form-control" id="school" name="school" disabled>
                     <option value="0"> Seleccione una escuela </option>
                     @foreach ($schools as $school)
-                        <option value="{{ $school->id }}" @if ($school->id == session('school')['id']) selected @endif> {{ $school->name }}
+                        <option value="{{ $school->id }}" @if ($school->id == session('school')['id']) selected @endif>
+                            {{ $school->name }}
                         </option>
                     @endforeach
                 </select>
@@ -86,6 +88,23 @@
                     value="{{ old('percentage') }}" required>
             </div>
 
+            @if (session('protocol') != null)
+                @switch(session('protocol')['id'])
+                    @case(1)
+                        <div class="mb-3">
+                            <label for="type" class="form-label">Tipo</label>
+                            <select class="form-control" id="type" name="type" required>
+                                <option value="-1"> Seleccione un tipo </option>
+                                <option value="1">Con entrega de documentos</option>
+                                <option value="0">Sin entrega de documentos</option>
+                            </select>
+                        </div>
+                    @break
+
+                    @default
+                @endswitch
+            @endif
+
             <div class="contenedor">
                 <a href="{{ route('stages.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
                 <button type="submit" class="btn btn-primary">Guardar</button>
@@ -95,7 +114,6 @@
 @endsection
 
 @section('script')
-
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
     <script src="{{ URL::asset('js/stages.js') }}"></script>
 @endsection
