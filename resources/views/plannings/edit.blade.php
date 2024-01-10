@@ -44,11 +44,11 @@
                 <textarea class="form-control" id="description" name="description" required>{{ $planning->description }}</textarea>
             </div>
 
-            <div class="mb-5">
+            {{-- <div class="mb-5">
                 <label for="proposal_priority" class="form-label">Número de prioridad</label>
                 <input type="integer" class="form-control" id="proposal_priority" name="proposal_priority"
                     value="{{ $planning->proposal_priority }}" required>
-            </div>
+            </div> --}}
 
             <div class="mb-2">
                 <label for="path" class="form-label">Archivo planificación actual</label>
