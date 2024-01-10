@@ -42,20 +42,36 @@ class GroupController extends Controller
     {
        // dd($project);
         $year = date('Y');
-        $groups = Group::select('groups.id', 'groups.number', 'u.first_name', 'u.middle_name', 'u.last_name', 'u.second_last_name', 's.name')
+        $groups = Group::select(
+            'groups.id',
+            'groups.number',
+            'u.first_name',
+            'u.middle_name',
+            'u.last_name',
+            'u.second_last_name',
+            's.name'
+            )
             ->addSelect([
                 'user_count' => UserGroup::selectRaw('COUNT(user_id)')
                     ->whereColumn('group_id', 'groups.id')
                     ->where('status', 1)
             ])
-            ->join('user_group as ug', 'groups.id', 'ug.group_id')
-            ->join('users as u', 'ug.user_id', 'u.id')
-            ->join('states as s', 'groups.state_id', 's.id')
-            ->where('groups.year', $year)
-            ->where('ug.is_leader', 1)
-            ->paginate(30);
+                ->leftJoin('user_group as ug', 'groups.id', '=', 'ug.group_id')
+                ->join('users as u', 'ug.user_id', '=', 'u.id')
+                ->join('states as s', 'groups.state_id', '=', 's.id')
+                ->where('groups.year', $year)
+                ->where('ug.is_leader', 1)
+                ->where('groups.status', 1)
+                ->where('groups.protocol_id', session('protocol')['id'])
+                ->paginate(30);
+    
+        $user = Auth::user();
+        $protocols = $user->protocol()
+            ->wherePivot('status', 1)
+            ->pluck('protocols.id');
+        
 
-        return view('groups.index', compact('groups','project'));
+        return view('groups.index', compact('groups','project', 'protocols'));
     }
 
 
@@ -167,7 +183,7 @@ class GroupController extends Controller
             }
             // Insertar los nuevos usuarios
             $group->users()->attach($syncData);
-
+            $user = Auth::user();
             $protocols = $user->protocol()
             ->wherePivot('status', 1)
             ->pluck('name');
@@ -176,6 +192,11 @@ class GroupController extends Controller
         } catch (Exception $e) {
             Log::info('GroupController.store');
             Log::info($e->getMessage());
+
+            $protocols = $user->protocol()
+            ->wherePivot('status', 1)
+            ->pluck('name');
+
             return redirect()->back()->with(['error'=>'Hubo un error intente de nuevo.', $protocols]);
         }
     }
