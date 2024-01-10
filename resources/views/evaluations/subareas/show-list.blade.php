@@ -90,8 +90,12 @@
                 </h3>
             @endforelse
 
-            @if(count($evaluationSubareas) > 0 && $evaluationStage->status == 0)
-                <a href="{{route('evaluations.coordinator.approve.stage', [$project->id, $area->id])}}" class="btn btn-primary">Aprobar área</a>
+
+            @if (isset($evaluationStage))
+                @if (count($evaluationSubareas) > 0 && $evaluationStage->status == 0)
+                    <a href="{{ route('evaluations.coordinator.approve.stage', [$project->id, $area->id]) }}"
+                        class="btn btn-primary">Aprobar área</a>
+                @endif()
             @endif
         </div>
     </div>
