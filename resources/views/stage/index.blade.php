@@ -17,7 +17,7 @@
         <h1>
             @if (session('protocol') != null)
                 @switch(session('protocol')['id'])
-                    @case(1)
+                    @case(1 || 2 || 3 || 4)
                         Lista de etapas evaluativas
                     @break
 
@@ -33,7 +33,7 @@
 
             @if (session('protocol') != null)
                 @switch(session('protocol')['id'])
-                    @case(1)
+                    @case(1 || 2 || 3 || 4)
                         Nueva etapa evaluativa
                     @break
 
@@ -50,7 +50,7 @@
 
                 @if (session('protocol') != null)
                     @switch(session('protocol')['id'])
-                        @case(1)
+                        @case(1 || 2 || 3 || 4)
                             Descargar plantilla para carga de criterios
                         @break
 
@@ -87,7 +87,7 @@
                     <th>
                         @if (session('protocol') != null)
                             @switch(session('protocol')['id'])
-                                @case(1)
+                                @case(1 || 2 || 3 || 4)
                                     Orden de etapa
                                 @break
 
@@ -101,7 +101,7 @@
                     </th>
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
-                            @case(1)
+                            @case(1 || 2 || 3 || 4)
                                 <th>Entrega de documento</th>
                             @break
 
@@ -124,7 +124,7 @@
                         <td>{{ $stage->sort }}</td>
                         @if (session('protocol') != null)
                             @switch(session('protocol')['id'])
-                                @case(1)
+                                @case(1 || 2 || 3 || 4)
                                     <td>{{ $stage->type == 0 ? 'No' : 'Si' }}</td>
                                 @break
 

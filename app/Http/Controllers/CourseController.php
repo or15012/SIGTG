@@ -7,7 +7,10 @@ use App\Models\Course;
 use App\Models\CoursePreregistration;
 use App\Models\CourseRegistration;
 use App\Models\Cycle;
+use App\Models\Group;
 use App\Models\Parameter;
+use App\Models\Profile;
+use App\Models\Project;
 use App\Models\School;
 use App\Models\TeacherCourse;
 use App\Models\User;
@@ -214,7 +217,42 @@ class CourseController extends Controller
                         'course_id'       => intval($listado[$i][1]),
                         'status'       => 1,
                     ]);
+                    $cycle_id = Cycle::where('status', 1)->first()->id ?? 1;
+                    // Crear un nuevo grupo
+                    $group = Group::create([
+                        'year'          => date("Y"),
+                        'status'        => 1,
+                        'state_id'      => 1,
+                        'protocol_id'   => 4,
+                        'cycle_id'      => $cycle_id
+                    ]);
+
+                    $userData = array([
+                        'user_id'   => intval($user->id),
+                        'status'    => 1, // Establecer status = 1 para el primer    usuario, 0 para los demás
+                        'is_leader' => 1, // Establecer is_leader = 1 para el primer     usuario, 0 para los demás
+                    ]);
+                    $group->users()->attach($userData);
+
+                    //creandole el perfil internamente
+                    $profile                        = new Profile();
+                    $profile->name                  = "Curso de especialización";
+                    $profile->description           = "Curso de especialización";
+                    $profile->type                  = 1;
+                    $profile->group_id              = $group->id;
+                    $profile->status                = 1;
+                    $profile->save();
+
+
+                    //creandole el proyecto internamente
+                    $project                = new Project();
+                    $project->name          =  "Curso de especialización";
+                    $project->group_id      = $group->id;
+                    $project->profile_id    = $profile->id;
+                    $project->save();
+
                     $registered += 1;
+
                 } catch (\Throwable $th) {
                     array_push($withErrors, $listado[$i][0]);
                 }

@@ -74,6 +74,9 @@ class StageController extends Controller
 
             switch (session('protocol')['id']) {
                 case 1:
+                case 2:
+                case 3:
+                case 4:
                     # code...
                     $stage->type = $request->type;
                     break;
@@ -124,6 +127,9 @@ class StageController extends Controller
 
             switch (session('protocol')['id']) {
                 case 1:
+                case 2:
+                case 3:
+                case 4:
                     # code...
                     $stage->type = $request->type;
                     break;
