@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendMail;
 use App\Models\Activity;
 use App\Models\Group;
+use App\Models\Notification;
 use App\Models\Project;
+use App\Models\User;
 use App\Models\UserGroup;
+use App\Models\UserNotification;
 use DateTime;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
@@ -145,6 +150,46 @@ class ActivityController extends Controller
 
         ]);
 
+        //Envio de correo a coordinador.
+        $role = 'Coordinador General';
+        $userRoles = User::role($role)->get(); //modificar para diferenciar por modalidades.
+        $notificationCoordinator = Notification::create(['title' => 'Alerta de actividades', 'message' => "Han sido cargadas las actividades del estudiante", 'user_id' => Auth::user()->id]);
+        $notificationStudent = Notification::create(['title' => 'Alerta de actividades', 'message' => "Las actividades han sido cargadas correctamente", 'user_id' => Auth::user()->id]);
+        foreach ($userRoles as $coordinator) {
+            try {
+                $emailData = [
+                    'user'       => $coordinator,
+                    'group'      => $group,
+                    'activity'   => $activity,
+                ];
+                //dd($emailData);
+
+                Mail::to($coordinator->email)->send(new SendMail('mail.activity-coordinator-saved', 'Notificación de actividades enviada', $emailData));
+                UserNotification::create(['user_id' => $coordinator->id, 'notification_id' => $notificationCoordinator->id, 'is_read' => 0]);
+            } catch (\Throwable $th) {
+                // Manejar la excepción
+            }
+        }
+
+        // Obtener estudiantes del grupo
+        $students = $group->users;
+
+        // Envío de correo electrónico a cada estudiante del grupo
+        foreach ($students as $student) {
+            try {
+                $emailData = [
+                    'user'       => $student,
+                    'group'      => $group,
+                    'activity'   => $activity,
+                ];
+
+                Mail::to($student->email)->send(new SendMail('mail.activity-saved', 'Actividades cargadas con éxito', $emailData));
+                UserNotification::create(['user_id' => $student->id, 'notification_id' => $notificationStudent->id, 'is_read' => 0]);
+            } catch (Exception $th) {
+                // Manejar la excepción
+            }
+        }
+
         return redirect()->route('activities.index')->with('success', 'Actividad creado con éxito');
     }
     public function edit(Activity $activity)
@@ -259,6 +304,46 @@ class ActivityController extends Controller
 
             DB::commit();
 
+            //Envio de correo a coordinador.
+            $role = 'Coordinador General';
+            $userRoles = User::role($role)->get(); //modificar para diferenciar por modalidades.
+            $notificationCoordinator = Notification::create(['title' => 'Alerta de actividades', 'message' => "Han sido cargadas las actividades del estudiante", 'user_id' => Auth::user()->id]);
+            $notificationStudent = Notification::create(['title' => 'Alerta de actividades', 'message' => "Las actividades han sido cargadas correctamente", 'user_id' => Auth::user()->id]);
+            foreach ($userRoles as $coordinator) {
+                try {
+                    $emailData = [
+                        'user'       => $coordinator,
+                        'group'      => $group,
+                        'data'       => $data,
+                    ];
+                    //dd($emailData);
+
+                    Mail::to($coordinator->email)->send(new SendMail('mail.activity-coordinator-saved', 'Notificación de actividades enviada', $emailData));
+                    UserNotification::create(['user_id' => $coordinator->id, 'notification_id' => $notificationCoordinator->id, 'is_read' => 0]);
+                } catch (\Throwable $th) {
+                    // Manejar la excepción
+                }
+            }
+
+            // Obtener estudiantes del grupo
+            $students = $group->users;
+
+            // Envío de correo electrónico a cada estudiante del grupo
+            foreach ($students as $student) {
+                try {
+                    $emailData = [
+                        'user'       => $student,
+                        'group'      => $group,
+                        'data'       => $data,
+                    ];
+
+                    Mail::to($student->email)->send(new SendMail('mail.activity-saved', 'Actividades cargadas con éxito', $emailData));
+                    UserNotification::create(['user_id' => $student->id, 'notification_id' => $notificationStudent->id, 'is_read' => 0]);
+                } catch (Exception $th) {
+                    // Manejar la excepción
+                }
+            }
+
             return redirect()->route('activities.index')->with('success', 'Actividades cargadas exitosamente');
         } catch (Exception $th) {
             DB::rollBack();
@@ -275,7 +360,6 @@ class ActivityController extends Controller
 
     public function changeStatus(Request $request, Activity $activity)
     {
-        // Validación de los datos de la solicitud
 
         // Validación de los datos de la actividad
         $validatedData = $request->validate([
@@ -285,6 +369,58 @@ class ActivityController extends Controller
         // Actualizar actividad
         $activity->update($validatedData);
 
+        // Envío de correo electrónico a coordinador
+        $role = 'Coordinador General';
+        $userRoles = User::role($role)->get();
+        $notificationStudent = Notification::create(['title' => 'Alerta de actividad', 'message' => "Te informamos que el estado de tu actividad se ha actualizado", 'user_id' => Auth::user()->id]);
+        $notificationCoordinator = Notification::create(['title' => 'Alerta de actividad', 'message' => "Te informamos que el estudiante ha realizado una actualización en el estado de la actividad", 'user_id' => Auth::user()->id]);
+
+        foreach ($userRoles as $coordinator) {
+            $mailData = [
+                'user' => $coordinator,
+                'activity' => $activity,
+                'status' => $activity->status,
+            ];
+
+            try {
+                Mail::to($coordinator->email)->send(
+                    new SendMail(
+                        'mail.activity-updated-status',
+                        'Actualización del estado de actividad',
+                        $mailData
+                    )
+                );
+                UserNotification::create(['user_id' => $coordinator->id, 'notification_id' => $notificationCoordinator->id, 'is_read' => 0]);
+            } catch (\Throwable $th) {
+                // Log de errores o manejo adicional
+                // Log::error('Error al enviar correo electrónico: ' . $th->getMessage());
+            }
+        }
+
+
+        // Envío de correo electrónico a cada estudiante del grupo
+        $students = $activity->group->users;
+        foreach ($students as $student) {
+            $mailData = [
+                'user' => $student,
+                'activity' => $activity,
+                'status' => $activity->status,
+            ];
+
+            try {
+                Mail::to($student->email)->send(
+                    new SendMail(
+                        'mail.activity-updated-status-coordinator',
+                        'Actualización del estado de actividad',
+                        $mailData
+                    )
+                );
+                UserNotification::create(['user_id' => $student->id, 'notification_id' => $notificationStudent->id, 'is_read' => 0]);
+            } catch (\Throwable $th) {
+                // Log de errores o manejo adicional
+                // Log::error('Error al enviar correo electrónico: ' . $th->getMessage());
+            }
+        }
 
         return redirect()->route('activities.index')->with('success', 'Estado de la actividad cambiado con éxito');
     }

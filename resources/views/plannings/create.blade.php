@@ -42,11 +42,6 @@
             </div>
 
             <div class="mb-3">
-                <label for="path" class="form-label">Prioridad de propuesta</label>
-                <input type="number" class="form-control" id="proposal_priority" name="proposal_priority" required>
-            </div>
-
-            <div class="mb-3">
                 <label for="path" class="form-label">Archivo preperfil</label>
                 <input type="file" class="form-control" accept=".pdf,.PDF" id="path" name="path" required>
             </div>

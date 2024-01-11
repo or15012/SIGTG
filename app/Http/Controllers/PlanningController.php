@@ -48,9 +48,8 @@ class PlanningController extends Controller
             ->select('profiles.*')
             ->paginate(10);
 
-            //dd($plannings);
+        //dd($plannings);
         return view('plannings.index', compact('plannings'));
-
     }
 
     public function create()
@@ -96,7 +95,7 @@ class PlanningController extends Controller
         $planning->name                  = $request->input('name');
         $planning->description           = $request->input('description');
         $planning->path                  = $path; // Asigna el nombre del archivo (o null si no se cargó un archivo)
-        $planning->proposal_priority     = $request->input('proposal_priority');
+        $planning->proposal_priority     = 1;
         $planning->type                  = 0;
         $planning->group_id              = $group->id;
         $planning->status                = 0;
@@ -106,7 +105,8 @@ class PlanningController extends Controller
         $role = 'Coordinador General';
         $userRoles = User::role($role)->get(); //modificar para diferenciar por modalidades.
 
-        $notification = Notification::create(['title' => 'Alerta de planificación', 'message' => "Su planificación ha sido enviado, y está pendiente de revisión", 'user_id' => Auth::user()->id]);
+        $notificationStudent = Notification::create(['title' => 'Alerta de planificación', 'message' => "Su planificación ha sido enviada, y está pendiente de revisión", 'user_id' => Auth::user()->id]);
+        $notificationCoordinator = Notification::create(['title' => 'Alerta de planificación', 'message' => "El estudiante ha cargado la planificación para su revisión", 'user_id' => Auth::user()->id]);
         foreach ($userRoles as $coordinator) {
             try {
                 $emailData = [
@@ -117,9 +117,8 @@ class PlanningController extends Controller
                 //dd($emailData);
 
                 Mail::to($coordinator->email)->send(new SendMail('mail.planning-coordinator-saved', 'Notificación de planificación enviada', $emailData));
-                UserNotification::create(['user_id' => $coordinator->id, 'notification_id' => $notification->id, 'is_read' => 0]);
+                UserNotification::create(['user_id' => $coordinator->id, 'notification_id' => $notificationCoordinator->id, 'is_read' => 0]);
             } catch (\Throwable $th) {
-                // Manejar la excepción
             }
         }
 
@@ -136,7 +135,7 @@ class PlanningController extends Controller
                 ];
 
                 Mail::to($student->email)->send(new SendMail('mail.planning-saved', 'Planificación enviada con éxito', $emailData));
-                UserNotification::create(['user_id' => $student->id, 'notification_id' => $notification->id, 'is_read' => 0]);
+                UserNotification::create(['user_id' => $student->id, 'notification_id' => $notificationStudent->id, 'is_read' => 0]);
             } catch (Exception $th) {
                 // Manejar la excepción
             }
@@ -176,6 +175,59 @@ class PlanningController extends Controller
             }
 
             $planning->update();
+
+            // Envío de correo electrónico a coordinador
+            $role = 'Coordinador General';
+            $userRoles = User::role($role)->get();
+            $notificationStudent = Notification::create(['title' => 'Alerta de actividad', 'message' => "Le informamos que su planificación ha sido actualizada", 'user_id' => Auth::user()->id]);
+            $notificationCoordinator = Notification::create(['title' => 'Alerta de actividad', 'message' => "Le informamos que el estudiante ha realizado una actualizacion de la planificación", 'user_id' => Auth::user()->id]);
+
+            foreach ($userRoles as $coordinator) {
+                $mailData = [
+                    'user' => $coordinator,
+                    'planning' => $planning,
+                    'status' => $planning->status,
+                ];
+
+                try {
+                    Mail::to($coordinator->email)->send(
+                        new SendMail(
+                            'mail.planning-updated-coordinator',
+                            'Actualización de planificación',
+                            $mailData
+                        )
+                    );
+                    UserNotification::create(['user_id' => $coordinator->id, 'notification_id' => $notificationCoordinator->id, 'is_read' => 0]);
+                } catch (\Throwable $th) {
+                    // Log de errores o manejo adicional
+                    // Log::error('Error al enviar correo electrónico: ' . $th->getMessage());
+                }
+            }
+
+
+            // Envío de correo electrónico a cada estudiante del grupo
+            $students = $planning->group->users;
+            foreach ($students as $student) {
+                $mailData = [
+                    'user' => $student,
+                    'planning' => $planning,
+                    'status' => $planning->status,
+                ];
+
+                try {
+                    Mail::to($student->email)->send(
+                        new SendMail(
+                            'mail.planning-updated',
+                            'Actualización de planificación',
+                            $mailData
+                        )
+                    );
+                    UserNotification::create(['user_id' => $student->id, 'notification_id' => $notificationStudent->id, 'is_read' => 0]);
+                } catch (\Throwable $th) {
+                    // Log de errores o manejo adicional
+                    // Log::error('Error al enviar correo electrónico: ' . $th->getMessage());
+                }
+            }
 
             return redirect()->route('plannings.index')->with('success', 'La planificación se ha actualizado correctamente');
         } catch (\Throwable $th) {

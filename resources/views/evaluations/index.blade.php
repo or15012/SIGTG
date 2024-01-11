@@ -13,7 +13,7 @@
     @endcomponent
     <div class="container">
         <div class="w-100 d-flex justify-content-between align-items-center">
-            {{-- <h1>Consultar proyecto</h1> --}}
+            <h1>Seguimientos de evaluaciones</h1>
 
             @php
                 $today = new DateTime();
