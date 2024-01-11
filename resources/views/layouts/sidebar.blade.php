@@ -268,7 +268,7 @@
 
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
-                            @case(1)
+                            @case(1 || 2 || 3 || 4)
                                 <li>
                                     <a href="{{ route('projects.coordinator.index') }}">
                                         <i class="bx bx-code-block icon nav-icon"></i>

@@ -108,6 +108,15 @@
                             @default
                         @endswitch
                     @endif
+                    @if (session('protocol') != null)
+                        @switch(session('protocol')['id'])
+                            @case(4)
+                                <th>Curso</th>
+                            @break
+
+                            @default
+                        @endswitch
+                    @endif
 
                     <th>Acciones</th>
                 </tr>
@@ -126,6 +135,15 @@
                             @switch(session('protocol')['id'])
                                 @case(1 || 2 || 3 || 4)
                                     <td>{{ $stage->type == 0 ? 'No' : 'Si' }}</td>
+                                @break
+
+                                @default
+                            @endswitch
+                        @endif
+                        @if (session('protocol') != null)
+                            @switch(session('protocol')['id'])
+                                @case(4)
+                                    <th>{{ $stage->course->name}}</th>
                                 @break
 
                                 @default

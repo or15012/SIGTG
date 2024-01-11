@@ -126,6 +126,31 @@
                 @endswitch
             @endif
 
+            @if (session('protocol') != null)
+                @switch(session('protocol')['id'])
+                    @case(4)
+                        <div class="mb-3">
+                            <label for="course" class="form-label">Curso</label>
+                            <select class="form-control" id="course" name="course" required>
+                                @foreach ($coursesByCycle as $course)
+                                    @if ($stage->course_id == $course->id)
+                                        <option value="{{ $course->id }}" selected>
+                                            {{ $course->name }}
+                                        </option>
+                                    @else
+                                        <option value="{{ $course->id }}">
+                                            {{ $course->name }}
+                                        </option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                    @break
+
+                    @default
+                @endswitch
+            @endif
+
             <div class="contenedor">
                 <a href="{{ route('stages.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
                 <button type="submit" class="btn btn-primary">Actualizar</button>

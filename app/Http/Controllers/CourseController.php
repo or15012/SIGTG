@@ -252,7 +252,6 @@ class CourseController extends Controller
                     $project->save();
 
                     $registered += 1;
-
                 } catch (\Throwable $th) {
                     array_push($withErrors, $listado[$i][0]);
                 }
@@ -282,5 +281,18 @@ class CourseController extends Controller
                 ->withErrors(['Sorry, Error Occured !', 'Asegúrese que el archivo tenga el formato correcto.'])
                 ->withInput();
         }
+    }
+
+
+    public function getByCycle(Cycle $cycle)
+    {
+        // Encontrar el ciclo que se desea eliminar
+        $courses = Course::where('cycle_id', $cycle->id)->get();
+        return response()->json(
+            [
+                'success' => true,
+                'courses' => $courses
+            ]
+        );
     }
 }

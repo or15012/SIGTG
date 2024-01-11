@@ -36,6 +36,8 @@ class ProjectController extends Controller
         $this->middleware('auth');
         $this->middleware('permission:' . self::PERMISSIONS['index.student.project'])->only(['index']);
         $this->middleware('permission:' . self::PERMISSIONS['index.adviser.project'])->only(['coordinator.Index']);
+        $this->middleware('check.protocol')->only(['index']);
+        $this->middleware('check.school')->only(['index']);
     }
 
     public function index()
@@ -68,11 +70,35 @@ class ProjectController extends Controller
             ->where('projects.group_id', $group->id)
             ->get();
 
-        $stages = Stage::where("protocol_id", $group->protocol_id)
-            ->where('cycle_id', $group->cycle_id)
-            ->where('school_id', $user->school_id)
-            ->orderBy('stages.sort', 'asc')
-            ->get();
+
+            if (session('protocol')['id'] == 4) {
+                $user = Project::join('profiles as p', 'projects.profile_id', 'p.id')
+                    ->join('user_group as ug', 'ug.group_id', 'projects.group_id')
+                    ->join('users as u', 'ug.user_id', 'u.id')
+                    ->join('course_registrations as cr', 'cr.user_id', 'u.id')
+                    ->where('projects.group_id', $group->id)
+                    ->first();
+
+                $stages = Stage::where("protocol_id", $group->protocol_id)
+                ->where('cycle_id', $group->cycle_id)
+                ->where('school_id', $user->school_id)
+                ->where('course_id', $user->course_id)
+                ->orderBy('stages.sort', 'asc')
+                ->get();
+
+                if(count($stages) === 0){
+                    return redirect()->route('root')->with('error', 'No tiene etapas asignadas.');
+                }
+
+            }else{
+                $stages = Stage::where("protocol_id", $group->protocol_id)
+                ->where('cycle_id', $group->cycle_id)
+                ->where('school_id', $user->school_id)
+                ->orderBy('stages.sort', 'asc')
+                ->get();
+            }
+
+
 
         $evaluationStages = EvaluationStage::where('project_id', $project->id)
             ->select('stg.id')
@@ -168,7 +194,7 @@ class ProjectController extends Controller
             // Cuando tenga número de grupo, se manda a llamar al teacher.
             $role = 'Coordinador General';
             $userRoles = User::role($role)->get();
-            $notification = Notification::create(['title'=>'Alerta de etapa', 'message'=>"Te informamos que tu etapa ha sido enviada.", 'user_id'=>Auth::user()->id]);
+            $notification = Notification::create(['title' => 'Alerta de etapa', 'message' => "Te informamos que tu etapa ha sido enviada.", 'user_id' => Auth::user()->id]);
             foreach ($userRoles as $coordinator) {
                 try {
                     $emailData = [
@@ -177,7 +203,7 @@ class ProjectController extends Controller
                     ];
                     //dd($emailData);
                     Mail::to($coordinator->email)->send(new SendMail('mail.stage-submitted', 'Notificación de etapa enviada', $emailData));
-                    UserNotification::create(['user_id'=>$coordinator->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
+                    UserNotification::create(['user_id' => $coordinator->id, 'notification_id' => $notification->id, 'is_read' => 0]);
                 } catch (\Throwable $th) {
                     // Manejar la excepción
                     //dd($th);
@@ -197,7 +223,7 @@ class ProjectController extends Controller
                 ->select('users.id', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.second_last_name', 'users.email')
                 ->get();
 
-            $notificationAproved = Notification::create(['title'=>'Alerta de etapa', 'message'=>"Te informamos que tu etapa ha sido APROBADA.", 'user_id'=>Auth::user()->id]);
+            $notificationAproved = Notification::create(['title' => 'Alerta de etapa', 'message' => "Te informamos que tu etapa ha sido APROBADA.", 'user_id' => Auth::user()->id]);
             foreach ($users as  $students) {
                 try {
                     $emailData = [
@@ -206,7 +232,7 @@ class ProjectController extends Controller
                     ];
                     //dd($emailData);
                     Mail::to($students->email)->send(new SendMail('mail.stage-approved', 'Notificación de etapa aprobada', $emailData));
-                    UserNotification::create(['user_id'=>$students->id, 'notification_id'=>$notificationAproved->id, 'is_read'=>0]);
+                    UserNotification::create(['user_id' => $students->id, 'notification_id' => $notificationAproved->id, 'is_read' => 0]);
                 } catch (\Throwable $th) {
                     // Manejar la excepción
                     //dd($th);
@@ -315,13 +341,34 @@ class ProjectController extends Controller
             ->where('projects.group_id', $group->id)
             ->get();
 
+        if (session('protocol')['id'] == 4) {
+            $user = Project::join('profiles as p', 'projects.profile_id', 'p.id')
+                ->join('user_group as ug', 'ug.group_id', 'projects.group_id')
+                ->join('users as u', 'ug.user_id', 'u.id')
+                ->join('course_registrations as cr', 'cr.user_id', 'u.id')
+                ->where('projects.group_id', $group->id)
+                ->first();
 
+            $stages = Stage::where("protocol_id", $group->protocol_id)
+            ->where('cycle_id', $group->cycle_id)
+            ->where('school_id', $user->school_id)
+            ->where('course_id', $user->course_id)
+            ->orderBy('stages.sort', 'asc')
+            ->get();
 
-        $stages = Stage::where("protocol_id", $group->protocol_id)
+            if(count($stages) === 0){
+                return redirect()->route('root')->with('error', 'No tiene etapas asignadas.');
+            }
+
+        }else{
+            $stages = Stage::where("protocol_id", $group->protocol_id)
             ->where('cycle_id', $group->cycle_id)
             ->where('school_id', $user->school_id)
             ->orderBy('stages.sort', 'asc')
             ->get();
+        }
+
+
 
         $evaluationStages = EvaluationStage::where('project_id', $project->id)
             ->select('stg.id')
@@ -461,7 +508,7 @@ class ProjectController extends Controller
 
             // Actualiza la fecha de vencimiento del proyecto
             $project->update(['deadline' => $newDeadline]);
-            }
+        }
     }
 
     public function disableProject(Project $project)

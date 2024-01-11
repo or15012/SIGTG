@@ -28,7 +28,7 @@ Route::group(['prefix' => 'courses', 'as' => 'courses.'], function () {
     Route::get('{id}/edit', [CourseController::class, 'edit'])->name('edit');
     Route::put('{id}', [CourseController::class, 'update'])->name('update');
     Route::delete('{id}', [CourseController::class, 'destroy'])->name('destroy');
-
+    Route::get('/get-by-cycle/{cycle}', [CourseController::class, 'getByCycle'])->name('get.by.cycle');
 });
 
 //Grupo para las rutas de entidades
