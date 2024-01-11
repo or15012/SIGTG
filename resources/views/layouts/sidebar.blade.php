@@ -83,12 +83,21 @@
                 @endcan
 
                 @can('Groups.students')
-                    <li>
-                        <a href="{{ route('groups.initialize') }}">
-                            <i class="bx bx-group icon nav-icon"></i>
-                            <span class="menu-item" data-key="t-my.group">@lang('translation.MyGroup')</span>
-                        </a>
-                    </li>
+
+                    @if (session('protocol') != null)
+                        @switch(session('protocol')['id'])
+                            @case(1)
+                                <li>
+                                    <a href="{{ route('groups.initialize') }}">
+                                        <i class="bx bx-group icon nav-icon"></i>
+                                        <span class="menu-item" data-key="t-my.group">@lang('translation.MyGroup')</span>
+                                    </a>
+                                </li>
+                            @break
+
+                            @default
+                        @endswitch
+                    @endif
                 @endcan
 
                 @can('Groups.advisers')
@@ -146,7 +155,7 @@
                 @can('Projects.students')
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
-                            @case(1)
+                            @case(1 || 2 || 3 || 4)
                                 <li>
                                     <a href="{{ route('projects.index') }}">
                                         <i class="bx bx-code-block icon nav-icon"></i>
@@ -178,12 +187,18 @@
                 @endcan
 
                 @can('Profiles.students')
-                    <li>
-                        <a href="{{ route('profiles.index') }}">
-                            <i class="bx bx-file icon nav-icon"></i>
-                            <span class="menu-item" data-key="t-profile">@lang('translation.Profiles')</span>
-                        </a>
-                    </li>
+                    @if (session('protocol') != null)
+                        @switch(session('protocol')['id'])
+                            @case(1)
+                                <li>
+                                    <a href="{{ route('profiles.index') }}">
+                                        <i class="bx bx-file icon nav-icon"></i>
+                                        <span class="menu-item" data-key="t-profile">@lang('translation.Profiles')</span>
+                                    </a>
+                                </li>
+                            @break
+                        @endswitch
+                    @endif
                 @endcan
 
                 @can('Profiles.advisers')
@@ -215,7 +230,7 @@
                 @can('Stages')
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
-                            @case(1)
+                            @case(1 || 2 || 3 || 4)
                                 <li>
                                     <a href="{{ route('stages.index') }}">
                                         <i class="bx bx-git-pull-request icon nav-icon"></i>
@@ -253,7 +268,7 @@
 
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
-                            @case(1)
+                            @case(1 || 2 || 3 || 4)
                                 <li>
                                     <a href="{{ route('projects.coordinator.index') }}">
                                         <i class="bx bx-code-block icon nav-icon"></i>

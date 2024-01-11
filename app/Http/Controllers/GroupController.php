@@ -37,10 +37,13 @@ class GroupController extends Controller
         $this->middleware('permission:' . self::PERMISSIONS['index'])->only(['initialize']);
         $this->middleware('permission:' . self::PERMISSIONS['index.adviser'])->only(['index']);
         $this->middleware('permission:' . self::PERMISSIONS['assigned.group'])->only(['assignedGroup']);
+
+        $this->middleware('check.protocol')->only(['index','initialize']);
+        $this->middleware('check.school')->only(['index','initialize']);
     }
     public function index(Project $project)
     {
-       // dd($project);
+        // dd($project);
         $year = date('Y');
         $groups = Group::select(
             'groups.id',
@@ -60,14 +63,18 @@ class GroupController extends Controller
             ->whereIn('groups.status', [0, 1])
             ->where('groups.protocol_id', session('protocol')['id'])
             ->paginate(30);
-        
+
         $user = Auth::user();
         $protocols = $user->protocol()
             ->wherePivot('status', 1)
             ->pluck('protocols.id');
-        
 
-        return view('groups.index', compact('groups','project', 'protocols'));
+
+        $user = Auth::user();
+        $protocols = $user->protocol()->wherePivot('status', 1)->pluck('protocols.id');
+
+
+        return view('groups.index', compact('groups', 'project', 'protocols'));
     }
 
 
@@ -91,8 +98,8 @@ class GroupController extends Controller
         $groupUsers = array();
 
         $protocols = $user->protocol()
-        ->wherePivot('status', 1)
-        ->pluck('protocols.id');
+            ->wherePivot('status', 1)
+            ->pluck('protocols.id');
 
         //dd($protocols);
 
@@ -157,7 +164,7 @@ class GroupController extends Controller
 
             $group->users()->detach();
             $users = $request->users;
-            $notification = Notification::create(['title'=>'Alerta', 'message'=>'Has sido invitado al grupo '.$group->number.' por '.Auth::user()->first_name, 'user_id'=>Auth::user()->id]);
+            $notification = Notification::create(['title' => 'Alerta', 'message' => 'Has sido invitado al grupo ' . $group->number . ' por ' . Auth::user()->first_name, 'user_id' => Auth::user()->id]);
             // Preparar datos para la sincronización
             foreach ($users as $key => $userId) {
                 $userData = [
@@ -171,7 +178,7 @@ class GroupController extends Controller
                     try {
                         $user = User::find(intval($userId));
                         Mail::to($user->email)->send(new SendMail('mail.user-invited-to-group', 'Invitación a grupo', ['user' => $user, 'group' => $group]));
-                        UserNotification::create(['user_id'=>$user->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
+                        UserNotification::create(['user_id' => $user->id, 'notification_id' => $notification->id, 'is_read' => 0]);
                     } catch (Exception $e) {
                         Log::info($e->getMessage());
                     }
@@ -181,19 +188,19 @@ class GroupController extends Controller
             $group->users()->attach($syncData);
             $user = Auth::user();
             $protocols = $user->protocol()
-            ->wherePivot('status', 1)
-            ->pluck('name');
+                ->wherePivot('status', 1)
+                ->pluck('name');
 
-            return redirect()->back()->with(['success'=>'Grupo inicializado con éxito.', $protocols]);
+            return redirect()->back()->with(['success' => 'Grupo inicializado con éxito.', $protocols]);
         } catch (Exception $e) {
             Log::info('GroupController.store');
             Log::info($e->getMessage());
 
             $protocols = $user->protocol()
-            ->wherePivot('status', 1)
-            ->pluck('name');
+                ->wherePivot('status', 1)
+                ->pluck('name');
 
-            return redirect()->back()->with(['error'=>'Hubo un error intente de nuevo.', $protocols]);
+            return redirect()->back()->with(['error' => 'Hubo un error intente de nuevo.', $protocols]);
         }
     }
 
@@ -204,7 +211,7 @@ class GroupController extends Controller
         ]);
 
         $user = Auth::user();
-        $actual_date= Carbon::now();
+        $actual_date = Carbon::now();
         $cycle_id = Cycle::where('year', $actual_date->year)->where('status', 1)->first()->id ?? 1;
         $protocols = Protocol::where('id', $data['protocol'])->first();
 
@@ -226,8 +233,7 @@ class GroupController extends Controller
 
         ]);
 
-        return redirect()->back()->with(['success'=>'Trabajo inicializado con éxito.', $protocols]);
-
+        return redirect()->back()->with(['success' => 'Trabajo inicializado con éxito.', $protocols]);
     }
 
     public function edit($id)
@@ -300,11 +306,11 @@ class GroupController extends Controller
                 $cycleEndDate = Cycle::where('status', 1)->first()->end_date ?? now();
                 $data['deadline'] = $cycleEndDate;
 
-                $notification = Notification::create(['title'=>'Alerta de grupo', 'message'=>"Te informamos que tu grupo ha sido: ACEPTADO", 'user_id'=>Auth::user()->id]);
+                $notification = Notification::create(['title' => 'Alerta de grupo', 'message' => "Te informamos que tu grupo ha sido: ACEPTADO", 'user_id' => Auth::user()->id]);
 
                 foreach ($group->users as $user) {
                     Mail::to($user->email)->send(new SendMail('mail.notification', 'Notificacion de grupo', ['title' => "Notificacion del grupo $group->number", 'body' => "Hola $user->first_name, te informamos que tu grupo ha sido <b>ACEPTADO</b>."]));
-                    UserNotification::create(['user_id'=>$user->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
+                    UserNotification::create(['user_id' => $user->id, 'notification_id' => $notification->id, 'is_read' => 0]);
                 }
             } else {
                 $data = [
@@ -312,11 +318,11 @@ class GroupController extends Controller
                     'state_id'  => $stateId,
                 ];
 
-                $notification = Notification::create(['title'=>'Alerta de grupo', 'message'=>"Lamentamos informarte que tu grupo ha sido: RECHAZADO", 'user_id'=>Auth::user()->id]);
+                $notification = Notification::create(['title' => 'Alerta de grupo', 'message' => "Lamentamos informarte que tu grupo ha sido: RECHAZADO", 'user_id' => Auth::user()->id]);
 
                 foreach ($group->users as $user) {
                     Mail::to($user->email)->send(new SendMail('mail.notification', 'Notificacion de grupo', ['title' => "Notificacion del grupo $group->number", 'body' => "Hola $user->first_name, lamentamos informarte que tu grupo ha sido <b>RECHAZADO</b>."]));
-                    UserNotification::create(['user_id'=>$user->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
+                    UserNotification::create(['user_id' => $user->id, 'notification_id' => $notification->id, 'is_read' => 0]);
                 }
             }
             $group->update($data);
@@ -442,7 +448,7 @@ class GroupController extends Controller
         // }
 
         $syncData = [];
-        $notification = Notification::create(['title'=>'Alerta de comité', 'message'=>"Te informamos que has sido agregado/a al comité de evaluación", 'user_id'=>Auth::user()->id]);
+        $notification = Notification::create(['title' => 'Alerta de comité', 'message' => "Te informamos que has sido agregado/a al comité de evaluación", 'user_id' => Auth::user()->id]);
         foreach ($request->teachers as $key => $userId) {
             $userData = [
                 'user_id'           => intval($userId),
@@ -463,7 +469,7 @@ class GroupController extends Controller
                     'committee' => $committeeType,
                 ];
                 Mail::to($user->email)->send(new SendMail('mail.committee-added', 'Notificación de Comité', $mailData));
-                UserNotification::create(['user_id'=>$user->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
+                UserNotification::create(['user_id' => $user->id, 'notification_id' => $notification->id, 'is_read' => 0]);
             } catch (\Throwable $th) {
                 // working...
 
@@ -521,7 +527,6 @@ class GroupController extends Controller
             }
             $group->save();
             return redirect()->action([GroupController::class, 'index'])->with('success', 'Carta de autorización subida exitosamente.');
-
         } catch (\Throwable $th) {
 
             return redirect()->action([GroupController::class, 'index'])->with('error', 'Algo salió mal. Intente nuevamente.');

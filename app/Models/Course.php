@@ -22,7 +22,7 @@ class Course extends Model
     public function cycle(){
         return $this->belongsTo(Cycle::class, 'cycle_id')->withDefault();
     }
-    
+
     public function school(){
         return $this->belongsTo(School::class, 'school_id')->withDefault();
     }
@@ -33,11 +33,16 @@ class Course extends Model
             ->withPivot(['id'])
             ->withTimestamps();
     }
-    
+
     public function registrations()
     {
         return $this->belongsToMany(User::class, 'course_registrations')
             ->withPivot(['id'])
             ->withTimestamps();
+    }
+
+    public function stages()
+    {
+        return $this->hasMany(Stage::class);
     }
 }

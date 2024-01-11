@@ -64,6 +64,7 @@ Route::get('/home', [HomeController::class, 'home'])->name('home');
 
 Route::group(['prefix' => 'sessions', 'as' => 'sessions.'], function () {
     Route::get('/set-protocol/{protocol}', [SessionController::class, 'setProtocol'])->name('set.protocol');
+    Route::get('/set-school/{school}', [SessionController::class, 'setSchool'])->name('set.school');
 });
 Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
     Route::get('/', [RegisterController::class, 'index'])->name('index');
@@ -126,7 +127,7 @@ Route::group(['prefix' => 'cycles', 'as' => 'cycles.'], function () {
 
 //Grupo para las rutas de grupo
 Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
-    Route::get('/index/{project', [GroupController::class, 'index'])->name('index');
+    Route::get('/index', [GroupController::class, 'index'])->name('index');
     Route::get('create', [GroupController::class, 'create'])->name('create');
     Route::post('/', [GroupController::class, 'store'])->name('store');
     Route::get('/initialize', [GroupController::class, 'initialize'])->name('initialize');

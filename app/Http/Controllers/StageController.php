@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Controllers\Controller;
+use App\Models\Course;
 use App\Models\CriteriaStage;
 use Illuminate\Http\Request;
 use App\Models\Cycle;
@@ -43,11 +44,12 @@ class StageController extends Controller
 
     public function create()
     {
-        $protocols = Protocol::all();
+        $protocols  = Protocol::all();
         $schools    = School::all();
         $cycles     = Cycle::all();
+        $courses    = Course::all();
 
-        return view('stage.create')->with(compact('protocols', 'schools', 'cycles'));
+        return view('stage.create')->with(compact('protocols', 'schools', 'cycles', 'courses'));
     }
 
     public function store(Request $request)
@@ -74,7 +76,13 @@ class StageController extends Controller
 
             switch (session('protocol')['id']) {
                 case 1:
+                case 2:
+                case 3:
+                    $stage->type = $request->type;
+                    break;
+                case 4:
                     # code...
+                    $stage->course_id = $request->course;
                     $stage->type = $request->type;
                     break;
                 case 5:
@@ -95,11 +103,12 @@ class StageController extends Controller
 
     public function edit(Stage $stage)
     {
-        $protocols  = Protocol::all();
-        $schools    = School::all();
-        $cycles     = Cycle::all();
+        $protocols          = Protocol::all();
+        $schools            = School::all();
+        $cycles             = Cycle::all();
+        $coursesByCycle     = Course::where('cycle_id', $stage->cycle_id)->get();
 
-        return view('stage.edit')->with(compact('stage', 'protocols', 'schools', 'cycles'));
+        return view('stage.edit')->with(compact('stage', 'protocols', 'schools', 'cycles', 'coursesByCycle'));
     }
 
     public function update(Request $request, Stage $stage)
@@ -124,7 +133,13 @@ class StageController extends Controller
 
             switch (session('protocol')['id']) {
                 case 1:
+                case 2:
+                case 3:
+                    $stage->type = $request->type;
+                    break;
+                case 4:
                     # code...
+                    $stage->course_id = $request->course;
                     $stage->type = $request->type;
                     break;
                 case 5:

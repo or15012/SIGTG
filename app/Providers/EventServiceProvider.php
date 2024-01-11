@@ -37,7 +37,7 @@ class EventServiceProvider extends ServiceProvider
             $protocols      = $user->protocols;
             $allProtocols   = Protocol::all();
             //que pasa sino tiene escuela asignada
-
+            $allSchools     = School::all();
 
 
             //tengo que revisar si esque no tiene o si posee todas segun el rol
@@ -62,10 +62,11 @@ class EventServiceProvider extends ServiceProvider
             // Puedes asignar tu variable de sesión aquí.
             session([
                 //estaran globalmente como seleccionadas
-                'school'        => $schoolReturn,
-                'protocol'      => $protocol,
-                'protocols'     => $protocols,
-                'allProtocols'  => $allProtocols,
+                'school'        =>  $schoolReturn,
+                'protocol'      =>  $protocol,
+                'protocols'     =>  $protocols,
+                'allProtocols'  =>  $allProtocols,
+                'allSchools'  =>  $allSchools
             ]);
         });
     }

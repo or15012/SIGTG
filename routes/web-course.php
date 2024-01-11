@@ -1,42 +1,9 @@
 <?php
 
-use App\Http\Controllers\ActivityControlador;
-use App\Http\Controllers\ActivityControllador;
-use App\Http\Controllers\ActivityController;
-use App\Http\Controllers\AreaController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\CriteriaStageController;
-use App\Http\Controllers\CycleController;
-use App\Http\Controllers\EvaluationCriteriaController;
-use App\Http\Controllers\EvaluationStageController;
-use App\Http\Controllers\GroupController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ProtocolController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\SchoolController;
-use App\Http\Controllers\StudentController;
-use App\Http\Controllers\ConsultingController;
+
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CoursePreRegistrationController;
-use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EntityController;
-use App\Http\Controllers\EvaluationController;
-use App\Http\Controllers\EvaluationDocumentController;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\ExtensionController;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\PhaseController;
-use App\Http\Controllers\SessionController;
-use App\Http\Controllers\StageController;
-use App\Http\Controllers\SubareaController;
-use App\Http\Controllers\PlanningController;
-use App\Http\Controllers\ProposalController;
-use App\Models\Activity;
-use App\Models\CoursePreregistration;
-use App\Models\Group;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,11 +22,13 @@ Route::group(['prefix' => 'courses', 'as' => 'courses.'], function () {
     Route::get('/', [CourseController::class, 'index'])->name('index');
     Route::get('create', [CourseController::class, 'create'])->name('create');
     Route::post('/', [CourseController::class, 'store'])->name('store');
+    Route::post('import-registrations', [CourseController::class, 'importRegistrations'])->name('import.registrations');
+    Route::get('download-template', [CourseController::class, 'downloadTemplate'])->name('download.template');
     Route::get('{id}', [CourseController::class, 'show'])->name('show');
     Route::get('{id}/edit', [CourseController::class, 'edit'])->name('edit');
     Route::put('{id}', [CourseController::class, 'update'])->name('update');
     Route::delete('{id}', [CourseController::class, 'destroy'])->name('destroy');
-    Route::post('import-registrations', [CourseController::class, 'importRegistrations'])->name('import.registrations');
+    Route::get('/get-by-cycle/{cycle}', [CourseController::class, 'getByCycle'])->name('get.by.cycle');
 });
 
 //Grupo para las rutas de entidades
