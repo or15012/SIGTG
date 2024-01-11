@@ -49,22 +49,18 @@ class GroupController extends Controller
             'u.middle_name',
             'u.last_name',
             'u.second_last_name',
-            's.name'
-            )
-            ->addSelect([
-                'user_count' => UserGroup::selectRaw('COUNT(user_id)')
-                    ->whereColumn('group_id', 'groups.id')
-                    ->where('status', 1)
-            ])
-                ->leftJoin('user_group as ug', 'groups.id', '=', 'ug.group_id')
-                ->join('users as u', 'ug.user_id', '=', 'u.id')
-                ->join('states as s', 'groups.state_id', '=', 's.id')
-                ->where('groups.year', $year)
-                ->where('ug.is_leader', 1)
-                ->where('groups.status', 1)
-                ->where('groups.protocol_id', session('protocol')['id'])
-                ->paginate(30);
-    
+            's.name',
+            DB::raw('(SELECT COUNT(user_id) FROM user_group WHERE group_id = groups.id AND status = 1) as user_count')
+        )
+            ->leftJoin('user_group as ug', 'groups.id', '=', 'ug.group_id')
+            ->join('users as u', 'ug.user_id', '=', 'u.id')
+            ->join('states as s', 'groups.state_id', '=', 's.id')
+            ->where('groups.year', $year)
+            ->where('ug.is_leader', 1)
+            ->whereIn('groups.status', [0, 1])
+            ->where('groups.protocol_id', session('protocol')['id'])
+            ->paginate(30);
+        
         $user = Auth::user();
         $protocols = $user->protocol()
             ->wherePivot('status', 1)
