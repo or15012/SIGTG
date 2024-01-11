@@ -135,11 +135,18 @@ class ProposalController extends Controller
         return view('proposals.applications.index', compact('proposals'));
     }
 
+    public function indexApplicationCoordinator()
+    {
+        $user = Auth::user();
+        $proposals = Proposal::all();
+        $applications = Proposal::all();
+
+        return view('proposals.applications.coordinator.index', compact(['proposals', 'applications']));
+    }
     public function createApplication(Proposal $proposal)
     {
 
         return view('proposals.applications.create', compact('proposal'));
-
     }
 
     public function storeApplication(Request $request)

@@ -21,6 +21,11 @@ Route::group(['prefix' => 'proposals', 'as' => 'proposals.'], function () {
         Route::get('/', [ProposalController::class, 'indexApplication'])->name('index');
         Route::get('/create/{proposal}', [ProposalController::class, 'createApplication'])->name('create');
         Route::post('/', [ProposalController::class, 'storeApplication'])->name('store');
+
+        Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
+            //Rutas para coordinador para listado de estudiantes que han aplicado a las propuestas
+            Route::get('/', [ProposalController::class, 'indexApplicationCoordinator'])->name('index');
+        });
     });
 });
 
