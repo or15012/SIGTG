@@ -1,4 +1,16 @@
 <?php
+
+
+use Illuminate\Support\Facades\Auth;
+
+$user = Auth::user();
+$protocols = $user->protocol()
+            ->wherePivot('status', 1)
+            ->pluck('protocols.id');
+//$protocoloId = session('protocolo_id', 1);
+//dd($protocols);
+
+
 return [
     "SIGTG - FIA" => "SIGTG - FIA",
     "Dashboard" => "Tablero de mandos",
@@ -149,7 +161,7 @@ return [
     "Error_404"         => "Error 404",
     "Error_500"         => "Error 500",
     "Leaflet_Maps"      => "Leaflet Maps",
-    "User_Profile"      => "Perfil del usuario",
+    "User_Profile"      => "Perfil de usuario",
     "Google_Maps"       => "Mapas de Google",
     "Vector_Maps"       => "Vector Maps",
     "UserList"          => "Lista de usuarios",
@@ -158,10 +170,10 @@ return [
     "Schools"           => "Escuelas",
     "Protocols"         => "Protocolos",
     "Cycles"            => "Ciclos",
-    "PreProfile"        => "Pre perfiles",
+    "PreProfile"        => "Pre-perfiles",
     "Profiles"          => "Perfiles",
-    "ShowPreperfil"     => "Mostrar pre perfil",
-    "PreProfileAdviser" => "Pre prefil (coordinador)",
+    "ShowPreperfil"     => "Mostrar pre-perfil",
+    "PreProfileAdviser" => ($protocols === 5) ? "Planificaciones (Coordinador)" : "Pre-perfil (Coordinador)",
     "ProfilesAdviser"   => "Perfil (coordinaror)",
     "MyGroup"           => "Mi grupo",
     "Users"             => "Usuarios",
