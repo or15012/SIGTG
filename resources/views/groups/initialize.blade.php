@@ -13,7 +13,7 @@
     <div class="container">
 
 
-        <h1>{{$protocols[0]== 5 ? 'Iniciar Trabajo de Graduación':'Conformar grupos'}}</h1>
+        <h1>{{ $protocols[0] == 5 ? 'Iniciar Trabajo de Graduación' : 'Conformar grupos' }}</h1>
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -30,7 +30,7 @@
             </div>
         @endif
 
-        @if($protocols[0]== 5)
+        @if ($protocols[0] == 5)
             <div class="col-12 col-md-6 col-lg-6" id="user-{{ $user->id }}">
                 <div class="card mb-4">
                     <div class="card-header red-student">
@@ -41,29 +41,27 @@
                         <div>
                             @isset($group)
                                 <p>Trabajo Inicializado Correctamente</p>
-
                             @else
                                 <form action="{{ route('groups.exg') }}" method="POST">
                                     @csrf
-                                    <input  name="protocol" type="hidden" value="{{$protocols[0]}}">
+                                    <input name="protocol" type="hidden" value="{{ $protocols[0] }}">
                                     <button type="submit" class="btn btn-primary w-md">Iniciar trabajo de graduación</button>
-                                </form>                            
+                                </form>
                             @endisset
 
 
                         </div>
-                                        
+
                     </div>
                 </div>
             </div>
-
-
         @else
             <form action="{{ route('groups.store') }}" method="POST">
                 @csrf
                 <div class="row mb-3">
                     <div class="col-12 col-md-10 col-lg-10">
-                        <input type="text" placeholder="Ingrese carnet del estudiante" id="carnet" class="form-control">
+                        <input type="text" placeholder="Ingrese carnet del estudiante" id="carnet"
+                            class="form-control">
                     </div>
                     <div class="col-12 col-md-2 col-lg-2">
                         <button type="button" id="add-student" class="btn btn-primary w-md"
@@ -109,8 +107,7 @@
                                                 @break
 
                                                 @default
-                                                    <label
-                                                        class="my-1 text-opacity-100 p-2 rounded gray-project">Enviado
+                                                    <label class="my-1 text-opacity-100 p-2 rounded gray-project">Enviado
                                                     </label>
                                             @endswitch
                                         </div>
@@ -145,7 +142,7 @@
 
                     </button>
                 </form>
-        @endif
+            @endif
         </div>
     @endsection
     @section('script')

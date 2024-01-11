@@ -50,6 +50,20 @@
                         {{ session('school')['name'] }}
                     @endif
                 </button>
+
+                @hasanyrole('admin|Coordinador General')
+                    <div class="dropdown-menu dropdown-menu-end">
+                        @if (session('allSchools') != null)
+                            @forelse (session("allSchools") as $school)
+                                <a href="{{ route('sessions.set.school', $school->id) }}" class="dropdown-item notify-item"
+                                    data-lang="eng">
+                                    <span class="align-middle">{{ $school->name }}</span>
+                                </a>
+                            @empty
+                            @endforelse
+                        @endif
+                    </div>
+                @endrole
             </div>
 
             <div class="dropdown d-inline-block">
@@ -57,12 +71,12 @@
                     aria-expanded="false">
                     @if (session('protocol') != null)
                         {{ session('protocol')['name'] }}
-                        @else
+                    @else
                         Seleccione protocolo
                     @endif
                 </button>
 
-                @role('admin')
+                @hasanyrole('admin|Coordinador General')
                     <div class="dropdown-menu dropdown-menu-end">
                         @if (session('allProtocols') != null)
                             @forelse (session("allProtocols") as $protocol)
@@ -75,7 +89,6 @@
                         @endif
                     </div>
                 @endrole
-
             </div>
 
             <div class="dropdown d-inline-block language-switch">
@@ -108,13 +121,14 @@
             </div>
 
             @php
-                            $notifications = getNotifications();
-                        @endphp
+                $notifications = getNotifications();
+            @endphp
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item noti-icon" id="page-header-notifications-dropdown"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="icon-sm" data-feather="bell"></i>
-                    <span class="noti-dot bg-danger rounded-pill {{count($notifications)==0?'d-none':''}}">{{ count($notifications) }}</span>
+                    <span
+                        class="noti-dot bg-danger rounded-pill {{ count($notifications) == 0 ? 'd-none' : '' }}">{{ count($notifications) }}</span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
                     aria-labelledby="page-header-notifications-dropdown">
@@ -124,37 +138,43 @@
                                 <h5 class="m-0 font-size-15"> Notificaciones </h5>
                             </div>
                             <div class="col-auto">
-                                <a href="{{route('notifications.mark.as.read', ['all'=>1])}}" class="small"> Marcar todo como leído</a>
+                                <a href="{{ route('notifications.mark.as.read', ['all' => 1]) }}" class="small">
+                                    Marcar
+                                    todo como leído</a>
                             </div>
                         </div>
                     </div>
                     <div data-simplebar style="max-height: 250px;">
                         {{-- <h6 class="dropdown-header bg-light">New</h6> --}}
                         @forelse ($notifications as $notification)
-                             <a href="{{route('notifications.mark.as.read', ['usernoti_id'=>$notification->id])}}" class="text-reset notification-item">
-                            <div class="d-flex border-bottom align-items-start">
-                                        {{-- <div class="flex-shrink-0">
+                            <a href="{{ route('notifications.mark.as.read', ['usernoti_id' => $notification->id]) }}"
+                                class="text-reset notification-item">
+                                <div class="d-flex border-bottom align-items-start">
+                                    {{-- <div class="flex-shrink-0">
                                             <img src="{{ URL::asset('assets/images/users/avatar-3.jpg') }}" class="me-3 rounded-circle avatar-sm"
                                                 alt="user-pic">
                                         </div> --}}
                                     <div class="flex-grow-1">
-                                    <h6 class="mb-1">{{ $notification->notification->title }}</h6>
+                                        <h6 class="mb-1">{{ $notification->notification->title }}</h6>
                                         <div class="text-muted">
-                                            <p class="mb-1 font-size-13">{{ $notification->notification->message }}</p>
-                                            <p class="mb-0 font-size-10 text-uppercase fw-bold"><i class="mdi mdi-clock-outline"></i>
-                                         {{-- @lang('translation.1_hour_ago') --}}
+                                            <p class="mb-1 font-size-13">{{ $notification->notification->message }}
+                                            </p>
+                                            <p class="mb-0 font-size-10 text-uppercase fw-bold"><i
+                                                    class="mdi mdi-clock-outline"></i>
+                                                {{-- @lang('translation.1_hour_ago') --}}
                                                 {{ formatDateTime($notification->notification->created_at) }}
                                             </p>
                                         </div>
                                     </div>
                                 </div>
-                             </a>
+                            </a>
                         @empty
                             <h6 class="dropdown-header bg-light text-center">Sin notificaciones</h6>
                         @endforelse
                     </div>
                     <div class="p-2 border-top d-grid">
-                        <a class="btn btn-sm btn-link font-size-14 btn-block text-center" href="{{route('notifications.index')}}">
+                        <a class="btn btn-sm btn-link font-size-14 btn-block text-center"
+                            href="{{ route('notifications.index') }}">
                             <i class="uil-arrow-circle-right me-1"></i> <span>Ver todo</span>
                         </a>
                     </div>
@@ -163,7 +183,8 @@
 
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item user text-start d-flex align-items-center"
-                    id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
                     <img class="rounded-circle header-profile-user"
                         src="{{ isset(Auth::user()->avatar) && Auth::user()->avatar != '' ? asset(Auth::user()->avatar) : asset('/assets/images/users/avatar-1.jpg') }}"
                         alt="Header Avatar">

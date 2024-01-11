@@ -13,7 +13,33 @@
     @endcomponent
     <div class="container">
 
-        <h1>{{$protocols[0]== 5 ? 'Listado de estudiantes':'Lista de grupos'}} </h1>
+        <h1>
+            @if (session('protocol') != null)
+                @switch(session('protocol')['id'])
+                    @case(1)
+                        Lista de grupos
+                    @break
+
+                    @case(2)
+                        Listado de estudiantes
+                    @break
+
+                    @case(3)
+                        Listado de estudiantes
+                    @break
+
+                    @case(4)
+                        Listado de estudiantes
+                    @break
+
+                    @case(5)
+                        Listado de estudiantes
+                    @break
+
+                    @default
+                @endswitch
+            @endif
+        </h1>
 
         @if (session('success'))
             <div class="alert alert-success">
@@ -27,7 +53,10 @@
             </div>
         @endif
 
-        @if ($protocols[0]== 5)
+        @if (session('protocol')['id'] == 5 ||
+                session('protocol')['id'] == 4 ||
+                session('protocol')['id'] == 3 ||
+                session('protocol')['id'] == 2)
             <table class="table table-bordered">
                 <thead>
                     <tr class="table-danger">
@@ -52,8 +81,8 @@
                                 {{ $group->second_last_name }}</td>
                             <td>{{ $group->name }}</td>
                             <td>
-                                <a href="{{ route('groups.evaluating.committee.index', $group->id) }}" title="Asignar docentes"
-                                    class="btn btn-primary">
+                                <a href="{{ route('groups.evaluating.committee.index', $group->id) }}"
+                                    title="Asignar docentes" class="btn btn-primary">
                                     <i class="fas fa-balance-scale"></i>
                                 </a>
                                 <a href="{{ route('groups.edit', $group->id) }}" title="Ajustes de grupo"
@@ -103,8 +132,8 @@
                             <td>{{ $group->user_count }}</td>
                             <td>{{ $group->name }}</td>
                             <td>
-                                <a href="{{ route('groups.evaluating.committee.index', $group->id) }}" title="Asignar docentes"
-                                    class="btn btn-primary">
+                                <a href="{{ route('groups.evaluating.committee.index', $group->id) }}"
+                                    title="Asignar docentes" class="btn btn-primary">
                                     <i class="fas fa-balance-scale"></i>
                                 </a>
                                 <a href="{{ route('groups.edit', $group->id) }}" title="Ajustes de grupo"
