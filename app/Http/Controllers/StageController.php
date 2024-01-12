@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Controllers\Controller;
+use App\Models\Course;
 use App\Models\CriteriaStage;
 use Illuminate\Http\Request;
 use App\Models\Cycle;
@@ -43,11 +44,12 @@ class StageController extends Controller
 
     public function create()
     {
-        $protocols = Protocol::all();
+        $protocols  = Protocol::all();
         $schools    = School::all();
-        $cycles     = Cycle::all();
+        $cycles     = Cycle::where('status', 1)->get();
+        $courses    = Course::all();
 
-        return view('stage.create')->with(compact('protocols', 'schools', 'cycles'));
+        return view('stage.create')->with(compact('protocols', 'schools', 'cycles', 'courses'));
     }
 
     public function store(Request $request)
@@ -57,12 +59,41 @@ class StageController extends Controller
             'protocol'      => 'required|integer|min:1|exists:protocols,id',
             'cycle'         => 'required|integer|min:1|exists:cycles,id',
             'school'        => 'required|integer|min:1|exists:schools,id',
-            'sort'          => 'required|integer',
             'percentage'    => 'required|integer|min:1|max:100',
         ]);
 
-
         try {
+
+            $currentlyStages = Stage::where('protocol_id', $request->protocol)
+                ->where('school_id', $request->school)
+                ->where('cycle_id', $request->cycle)
+                ->sum('percentage');
+
+            $sortAvailable = Stage::where('protocol_id', $request->protocol)
+                ->where('school_id', $request->school)
+                ->where('cycle_id', $request->cycle)
+                ->where('sort', $request->sort)
+                ->first();
+
+            if (isset($sortAvailable)) {
+                return back()->withInput()->with('error', 'Orden de etapa ya utilizado.');
+            }
+
+            if (($currentlyStages + intval($request->percentage)) > 100) {
+                switch (session('protocol')['id']) {
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                        return back()->withInput()->with('error', 'No puede superar el 100% en porcentaje de etapas.');
+                        break;
+                    case 5:
+                        return back()->withInput()->with('error', 'No puede superar el 100% en porcentaje de áreas.');
+                        break;
+                    default:
+                        break;
+                }
+            }
 
             $stage = new Stage();
             $stage->name        = $request->name;
@@ -76,8 +107,11 @@ class StageController extends Controller
                 case 1:
                 case 2:
                 case 3:
+                    $stage->type = $request->type;
+                    break;
                 case 4:
                     # code...
+                    $stage->course_id = $request->course;
                     $stage->type = $request->type;
                     break;
                 case 5:
@@ -89,7 +123,6 @@ class StageController extends Controller
             }
             $stage->save();
 
-
             return redirect()->route('stages.index')->with('success', 'Etapa Evaluativa creada exitosamente.');
         } catch (\Exception $e) {
             return redirect()->route('stages.create')->with('error', 'La Etapa Evaluativa ya se encuentra registrada, revisar.');
@@ -98,11 +131,12 @@ class StageController extends Controller
 
     public function edit(Stage $stage)
     {
-        $protocols  = Protocol::all();
-        $schools    = School::all();
-        $cycles     = Cycle::all();
+        $protocols          = Protocol::all();
+        $schools            = School::all();
+        $cycles             = Cycle::where('status', 1)->get();
+        $coursesByCycle     = Course::where('cycle_id', $stage->cycle_id)->get();
 
-        return view('stage.edit')->with(compact('stage', 'protocols', 'schools', 'cycles'));
+        return view('stage.edit')->with(compact('stage', 'protocols', 'schools', 'cycles', 'coursesByCycle'));
     }
 
     public function update(Request $request, Stage $stage)
@@ -112,11 +146,43 @@ class StageController extends Controller
             'protocol'      => 'required|integer|min:1|exists:protocols,id',
             'cycle'         => 'required|integer|min:1|exists:cycles,id',
             'school'        => 'required|integer|min:1|exists:schools,id',
-            'sort'          => 'required|integer',
+            'sort'          => 'required|integer|exists:stages,sort',
             'percentage'    => 'required|integer|min:1|max:100',
         ]);
 
+
         try {
+            $sortAvailable = Stage::where('protocol_id', $request->protocol)
+                ->where('school_id', $request->school)
+                ->where('cycle_id', $request->cycle)
+                ->where('sort', $request->sort)
+                ->where('id', '=!', $stage->id)
+                ->first();
+
+            if (isset($sortAvailable)) {
+                return back()->withInput()->with('error', 'Orden de etapa ya utilizado.');
+            }
+            $currentlyStages = Stage::where('protocol_id', $request->protocol)
+                ->where('school_id', $request->school)
+                ->where('cycle_id', $request->cycle)
+                ->where('id', '=!', $stage->id)
+                ->sum('percentage');
+
+            if (($currentlyStages + intval($request->percentage)) > 100) {
+                switch (session('protocol')['id']) {
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                        return back()->withInput()->with('error', 'No puede superar el 100% en porcentaje de etapas.');
+                        break;
+                    case 5:
+                        return back()->withInput()->with('error', 'No puede superar el 100% en porcentaje de áreas.');
+                        break;
+                    default:
+                        break;
+                }
+            }
 
             $stage->name        = $request->name;
             $stage->protocol_id = $request->protocol;
@@ -129,8 +195,11 @@ class StageController extends Controller
                 case 1:
                 case 2:
                 case 3:
+                    $stage->type = $request->type;
+                    break;
                 case 4:
                     # code...
+                    $stage->course_id = $request->course;
                     $stage->type = $request->type;
                     break;
                 case 5:

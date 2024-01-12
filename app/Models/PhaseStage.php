@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Traits\LogsActivityTrait;
 class PhaseStage extends Model
 {
     use HasFactory;
+    use LogsActivityTrait;
 
     protected $table = 'phase_stage'; // Nombre de la tabla en la base de datos
 

@@ -105,6 +105,21 @@
                 @endswitch
             @endif
 
+            @if (session('protocol') != null)
+                @switch(session('protocol')['id'])
+                    @case(4)
+                        <div class="mb-3">
+                            <label for="course" class="form-label">Curso</label>
+                            <select class="form-control" id="course" name="course" required>
+                                <option value="-1"> Seleccione un curso </option>
+                            </select>
+                        </div>
+                    @break
+
+                    @default
+                @endswitch
+            @endif
+
             <div class="contenedor">
                 <a href="{{ route('stages.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
                 <button type="submit" class="btn btn-primary">Guardar</button>

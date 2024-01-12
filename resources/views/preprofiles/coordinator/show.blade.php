@@ -32,21 +32,17 @@
                 <p>
                     @switch($preprofile->status)
                         @case(0)
-                        Planificación presentada.
+                            Planificación presentada.
                         @break
-
                         @case(1)
                             Planificación aprobada.
                         @break
-
                         @case(2)
                             Planificación observada.
                         @break
-
                         @case(3)
                             Planificación rechazada.
                         @break
-
                         @default
                     @endswitch
                 </p>
@@ -62,8 +58,6 @@
                 </p>
             </div>
         </div>
-
-
 
         <form action="{{ route('profiles.preprofile.coordinator.update', $preprofile->id) }}" id="form-preprofile-confirm"
             method="POST">

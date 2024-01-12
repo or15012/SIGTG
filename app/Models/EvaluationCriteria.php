@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Traits\LogsActivityTrait;
 class EvaluationCriteria extends Model
 {
     protected $table = 'evaluation_criteria';
     use HasFactory;
+    use LogsActivityTrait;
 
     protected $fillable = [
         "name",

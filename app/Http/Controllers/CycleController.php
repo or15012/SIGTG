@@ -45,7 +45,14 @@ class CycleController extends Controller
         ], [
             'date_end.weeks_between' => 'La diferencia entre date_start y date_end debe ser de :weeks semanas.',
         ]);
-        // Crear un nuevo ciclo
+
+        if ($request->status == 1) {
+            $statusActive = Cycle::where('status', 1)->first();
+            if (isset($statusActive)) {
+                return back()->withInput()->with('error', 'Ya posee un ciclo activo.');
+            }
+        }
+
         $cycle = Cycle::create([
             'number'        => $validatedData['number'],
             'year'          => $validatedData['year'],
@@ -94,6 +101,13 @@ class CycleController extends Controller
 
         // Encontrar el ciclo que se desea actualizar
         $cycle = Cycle::findOrFail($id);
+
+        if ($request->status == 1) {
+            $statusActive = Cycle::where('status', 1)->first();
+            if (isset($statusActive) && $id != $statusActive->id) {
+                return back()->withInput()->with('error', 'Ya posee un ciclo activo.');
+            }
+        }
 
         // Actualizar los datos del ciclo
         $cycle->update([
