@@ -190,7 +190,7 @@
                                 @break
                                 @case(5)
                                     <li>
-                                        <a href="{{ route('plannings.index') }}">
+                                        <a href="{{ route('profiles.preprofile.coordinator.index') }}">
                                             <i class="far fa-calendar-alt"></i>
                                             <span class="menu-item" data-key="t-planing">@lang('translation.PlanningsAdviser')</span>
                                         </a>
