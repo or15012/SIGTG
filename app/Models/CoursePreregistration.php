@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Traits\LogsActivityTrait;
 class CoursePreregistration extends Model
 {
     use HasFactory;
-
+    use LogsActivityTrait;
     protected $fillable = [
         'course_id',
         'user_id'

@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Traits\LogsActivityTrait;
 class TeacherGroup extends Model
 {
     use HasFactory;
+    use LogsActivityTrait;
 
     // Asesor = 0
     // Jurado = 1

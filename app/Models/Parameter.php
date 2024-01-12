@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use App\Traits\LogsActivityTrait;
 class Parameter extends Model
 {
     use HasFactory, SoftDeletes;
+    use LogsActivityTrait;
     const PARAMETERS = [
         'max_group'         => 'Valor máximo de grupos',
         'min_group'         => 'Valor mínimo de grupos',

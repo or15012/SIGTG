@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Traits\LogsActivityTrait;
 class Workshop extends Model
 {
     use HasFactory;
+    use LogsActivityTrait;
 
     protected $fillable = [
         'name',
