@@ -9,7 +9,6 @@ use App\Traits\LogsActivityTrait;
 class Log extends Model
 {
     use HasFactory;
-    use LogsActivityTrait;
     protected $table = 'logs';
 
     public static function createLog($user, $table_name, $action){
@@ -23,5 +22,5 @@ class Log extends Model
         $log->save();
     }
 
-    
+
 }
