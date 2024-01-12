@@ -131,7 +131,7 @@ class ActivityController extends Controller
             })
             ->first();
 
-        //$project = $group->projects->first();
+        $project = $group->projects->first();
 
         // Crear un nueva actividad
         $activity = Activity::create([
@@ -140,8 +140,8 @@ class ActivityController extends Controller
             'status'        => $validatedData['status'],
             'date_start'    => date('Y-m-d', strtotime($validatedData['date_start'])),
             'date_end'      => date('Y-m-d', strtotime($validatedData['date_end'])),
-            'group_id'      => 1,
-            'project_id'    => 3
+            'group_id'      => $group->id,
+            'project_id'    => $project->id
 
         ]);
 
