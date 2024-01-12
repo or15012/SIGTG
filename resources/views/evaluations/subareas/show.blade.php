@@ -68,7 +68,7 @@
                                 <div class="card-body-icon">
                                     <i class="fas fa-cloud-upload-alt"></i>
                                 </div>
-                                <div class="mr-5">Entregar etapa</div>
+                                <div class="mr-5">Entregar área</div>
                             </div>
                             @if ($evaluationStages->status == 0 && $stage->type == 1)
                                 <form action="{{ route('evaluations.submit.subarea', $evaluationStages->id) }}"
@@ -117,7 +117,7 @@
                         <div class="card-body-icon">
                             <i class="far fa-check-square"></i>
                         </div>
-                        <div class="mr-5">Aprobar etapa</div>
+                        <div class="mr-5">Aprobar subárea</div>
                     </div>
                     @if ($evaluationStages->status == 2 || $stage->type == 0)
                         <form action="{{ route('evaluations.submit.subarea', $evaluationStages->id) }}"

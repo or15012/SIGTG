@@ -19,6 +19,12 @@
             </div>
         @endif
 
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -40,8 +46,8 @@
                 <div class="col-12">
                     <label for="number" class="form-label">Número</label>
                     <select class="form-select" id="number" name="number" required>
-                        <option value="1">I</option>
-                        <option value="2">II</option>
+                        <option @if(old('number') == 1) selected @endif value="1">I</option>
+                        <option @if(old('number') == 2) selected @endif value="2">II</option>
                     </select>
                 </div>
             </div>
@@ -50,9 +56,9 @@
                 <div class="col-12">
                     <label for="year" class="form-label">Año</label>
                     <select class="form-select" id="year" name="year" required>
-                        <option value="{{ date('Y') - 1 }}">{{ date('Y') - 1 }}</option>
-                        <option value="{{ date('Y') }}" selected>{{ date('Y') }}</option>
-                        <option value="{{ date('Y') + 1 }}">{{ date('Y') + 1 }}</option>
+                        <option @if(old('year') == (date('Y') - 1)) selected @endif value="{{ date('Y') - 1 }}">{{ date('Y') - 1 }}</option>
+                        <option @if(old('year') ==  date('Y') ) selected @endif value="{{ date('Y') }}" selected>{{ date('Y') }}</option>
+                        <option @if(old('year') == (date('Y') + 1)) selected @endif value="{{ date('Y') + 1 }}">{{ date('Y') + 1 }}</option>
                     </select>
                 </div>
             </div>
@@ -61,8 +67,8 @@
                 <div class="col-12">
                     <label for="status" class="form-label">Estado</label>
                     <select class="form-select" name="status" required>
-                        <option value="1">Activo</option>
-                        <option value="0">Inactivo</option>
+                        <option @if(old('status') == 1) selected @endif value="1">Activo</option>
+                        <option @if(old('status') == 0) selected @endif value="0">Inactivo</option>
                     </select>
                 </div>
             </div>

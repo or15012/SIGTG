@@ -210,7 +210,7 @@
                 @endif
             @empty
                 <h3>
-                    Sin etapas evaluativas
+                    Sin áreas evaluativas
                 </h3>
             @endforelse
 
