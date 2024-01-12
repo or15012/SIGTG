@@ -28,7 +28,7 @@
                     <th>Estado</th>
                     <th>Estudiante</th>
                     <th>Propuesta</th>
-                    <th>Entidad</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,26 +38,27 @@
                         <td>
                             @switch($application->status)
                                 @case(0)
-                                    Hoja de vida presentada.
+                                    CV presentado.
                                 @break
 
                                 @case(1)
-                                    Hoja de vida aprobada.
+                                    CV aprobado.
                                 @break
 
                                 @case(2)
-                                    Hoja de vida rechazada.
+                                    CV rechazado.
                                 @break
 
                                 @default
+                            <td>
                             @endswitch
-                            <td>{{ $application->users->name}}</td>
-                            {{-- <td>{{ $application->proposal->name}}</td> --}}
-                        </td>
+
+                        <td>{{ $application->user->first_name }} {{ $application->user->last_name }}</td>
+                        <td>{{ $application->proposal->name }}</td>
                         <td>
-                            {{-- <a href="{{ route('proposals.show', $appli->id) }}" class="btn btn-primary"><i
-                                    class="fas fa-eye"></i>
-                            </a> --}}
+                            <a href="{{ route('proposals.applications.coordinator.show', $application->id) }}"
+                                class="btn btn-primary"><i class="fas fa-eye"></i>
+                            </a>
                         </td>
                     </tr>
                 @endforeach

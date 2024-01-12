@@ -138,8 +138,9 @@ class ProposalController extends Controller
     public function indexApplicationCoordinator()
     {
         $user = Auth::user();
-        $proposals = Proposal::all();
-        $applications = Proposal::all();
+        $proposals = Proposal::with('entity')->get();
+        $applications = Application::with('user')->get();
+
 
         return view('proposals.applications.coordinator.index', compact(['proposals', 'applications']));
     }
@@ -186,5 +187,18 @@ class ProposalController extends Controller
         $proposal = Proposal::find($validatedData['proposal_id']);
         //dd($validatedData);
         return redirect()->route('proposals.applications.index', [$proposal->proposal_id])->with('success', 'Has aplicado correctamente a la pasantía.');
+    }
+
+    public function showApplicationCoordinator(Application $application)
+    {
+        //dd($proposal);
+        return view('proposals.applications.coordinator.show', compact('application'));
+    }
+
+    public function applicationDownload(Application $application, $file)
+    {
+        $filePath = storage_path('app/' . $application->$file);
+        //dd($filePath);
+        return response()->download($filePath);
     }
 }
