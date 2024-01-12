@@ -228,7 +228,7 @@
                                     </li>
                                 @break
                                 @case(5)
-                                    <!-- 
+                                    <!--
                                         Esta opción no se mostrará al Coordinador del protocolo.
                                     -->
                                 @break
@@ -276,7 +276,7 @@
                                     <ul class="sub-menu" aria-expanded="false">
                                         <li><a href="{{ route('phases.index') }}" data-key="t-phases">@lang('translation.Phases')</a>
                                         </li>
-                                        <li><a href="{{ route('stages.index') }}" data-key="t-stages">@lang('translation.Stages')</a>
+                                        <li><a href="{{ route('stages.index') }}" data-key="t-stages">@lang('translation.Areas')</a>
                                         </li>
                                     </ul>
                                 </li>

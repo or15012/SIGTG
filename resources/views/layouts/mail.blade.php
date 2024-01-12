@@ -30,11 +30,12 @@
             </div>
 
             @yield('content')
-            
+
 
         <div class="mt-10 text-center py-2" style="background-color: #dadada; margin-top: 20px;">
-            <small class="text-muted">Correo generado automáticamente. <br>Universidad de El Salvador <br> Copyright &copy;
-                2023</small>
+            <small class="text-muted">Correo generado automáticamente.
+                <br>Universidad de El Salvador <br>
+                Copyright &copy; {{ date('Y') }}</small>
             <p class="text-muted" style="font-size: 15px;">No responder este correo.</p>
         </div>
         </div>
