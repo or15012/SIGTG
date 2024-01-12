@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Traits\LogsActivityTrait;
 class CriteriaStage extends Model
 {
     use HasFactory;
+    use LogsActivityTrait;
+    
     protected $table = 'criteria_stage';
 
     protected $fillable = [
