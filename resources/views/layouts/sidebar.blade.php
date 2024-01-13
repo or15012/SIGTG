@@ -132,7 +132,7 @@
                             @case(5)
                                 <li>
                                     <a href="{{ route('plannings.index') }}">
-                                        <i class="far fa-calendar-alt"></i>
+                                        <i class="bx bx-calendar icon nav-icon"></i>
                                         <span class="menu-item" data-key="t-planing">@lang('translation.Plannings')</span>
                                     </a>
                                 </li>
@@ -149,7 +149,7 @@
                             @case(5)
                                 <li>
                                     <a href="{{ route('activities.index') }}">
-                                        <i class="far fa-calendar-check"></i>
+                                        <i class="bx bx-calendar-check icon nav-icon"></i>
                                         <span class="menu-item" data-key="t-activities">@lang('translation.Activities')</span>
                                     </a>
                                 </li>
@@ -163,7 +163,10 @@
                 @can('Projects.students')
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
-                            @case(1 || 2 || 3 || 4)
+                        @case(1)
+                        @case(2)
+                        @case(3)
+                        @case(4)
                                 <li>
                                     <a href="{{ route('projects.index') }}">
                                         <i class="bx bx-code-block icon nav-icon"></i>
@@ -188,26 +191,28 @@
 
                 @can('Preprofiles.advisers')
                     @if (session('protocol') != null)
-                            @switch(session('protocol')['id'])
-                                @case(1)
-                                    <li>
-                                        <a href="{{ route('profiles.preprofile.coordinator.index') }}">
-                                            <i class="bx bx-file-blank icon nav-icon"></i>
-                                            <span class="menu-item" data-key="t-preprofileadviser">@lang('translation.PreProfileAdviser')</span>
-                                        </a>
-                                    </li>
-                                @break
-                                @case(5)
-                                    <li>
-                                        <a href="{{ route('profiles.preprofile.coordinator.index') }}">
-                                            <i class="far fa-calendar-alt"></i>
-                                            <span class="menu-item" data-key="t-planing">@lang('translation.PlanningsAdviser')</span>
-                                        </a>
-                                    </li>
-                                @break
-                                @default
-                            @endswitch
-                        @endif
+                        @switch(session('protocol')['id'])
+                            @case(1)
+                                <li>
+                                    <a href="{{ route('profiles.preprofile.coordinator.index') }}">
+                                        <i class="bx bx-file-blank icon nav-icon"></i>
+                                        <span class="menu-item" data-key="t-preprofileadviser">@lang('translation.PreProfileAdviser')</span>
+                                    </a>
+                                </li>
+                            @break
+
+                            @case(5)
+                                <li>
+                                    <a href="{{ route('profiles.preprofile.coordinator.index') }}">
+                                        <i class="bx bx-calendar icon nav-icon"></i>
+                                        <span class="menu-item" data-key="t-planing">@lang('translation.PlanningsAdviser')</span>
+                                    </a>
+                                </li>
+                            @break
+
+                            @default
+                        @endswitch
+                    @endif
                 @endcan
 
                 @can('Profiles.students')
@@ -227,23 +232,25 @@
 
                 @can('Profiles.advisers')
                     @if (session('protocol') != null)
-                            @switch(session('protocol')['id'])
-                                @case(1)
-                                    <li>
-                                        <a href="{{ route('profiles.coordinator.index') }}">
-                                            <i class="bx bx-file icon nav-icon"></i>
-                                            <span class="menu-item" data-key="t-profileadviser">@lang('translation.ProfilesAdviser')</span>
-                                        </a>
-                                    </li>
-                                @break
-                                @case(5)
-                                    <!--
-                                        Esta opción no se mostrará al Coordinador del protocolo.
-                                    -->
-                                @break
-                                @default
-                            @endswitch
-                        @endif
+                        @switch(session('protocol')['id'])
+                            @case(1)
+                                <li>
+                                    <a href="{{ route('profiles.coordinator.index') }}">
+                                        <i class="bx bx-file icon nav-icon"></i>
+                                        <span class="menu-item" data-key="t-profileadviser">@lang('translation.ProfilesAdviser')</span>
+                                    </a>
+                                </li>
+                            @break
+
+                            @case(5)
+                                <!--
+                                                                Esta opción no se mostrará al Coordinador del protocolo.
+                                                            -->
+                            @break
+
+                            @default
+                        @endswitch
+                    @endif
 
                 @endcan
 
@@ -253,7 +260,7 @@
                             @case(5)
                                 <li>
                                     <a href="{{ route('activities.coordinator.index.groups') }}">
-                                        <i class="far fa-calendar-check"></i>
+                                        <i class="bx bx-calendar-check icon nav-icon"></i>
                                         <span class="menu-item" data-key="t-activities">@lang('translation.Activities')</span>
                                     </a>
                                 </li>
@@ -267,7 +274,10 @@
                 @can('Stages')
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
-                            @case(1 || 2 || 3 || 4)
+                            @case(1)
+                            @case(2)
+                            @case(3)
+                            @case(4)
                                 <li>
                                     <a href="{{ route('stages.index') }}">
                                         <i class="bx bx-git-pull-request icon nav-icon"></i>
@@ -303,7 +313,10 @@
                 @can('Projects.advisers')
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
-                            @case(1 || 2 || 3 || 4)
+                            @case(1)
+                            @case(2)
+                            @case(3)
+                            @case(4)
                                 <li>
                                     <a href="{{ route('projects.coordinator.index') }}">
                                         <i class="bx bx-code-block icon nav-icon"></i>
