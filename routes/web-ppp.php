@@ -27,6 +27,7 @@ Route::group(['prefix' => 'proposals', 'as' => 'proposals.'], function () {
             Route::get('/', [ProposalController::class, 'indexApplicationCoordinator'])->name('index');
             Route::get('show/{application}', [ProposalController::class, 'showApplicationCoordinator'])->name('show');
             Route::get('/download/{application}/{file}', [ProposalController::class, 'applicationDownload'])->name('download');
+            Route::put('/update/{application}', [ProposalController::class, 'coordinatorUpdate'])->name('update');
 
         });
     });

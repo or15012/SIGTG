@@ -189,6 +189,21 @@ class ProposalController extends Controller
         return redirect()->route('proposals.applications.index', [$proposal->proposal_id])->with('success', 'Has aplicado correctamente a la pasantía.');
     }
 
+
+    public function coordinatorUpdate(Request $request, Application $application)
+    {
+        $validatedData = $request->validate([
+            'decision' => 'required', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
+        ]);
+
+        $application->status = $request->decision;
+
+        $application->update();
+
+
+        return view('proposals.applications.coordinator.show', compact('application'));
+    }
+
     public function showApplicationCoordinator(Application $application)
     {
         //dd($proposal);

@@ -7,14 +7,14 @@
 @section('content')
     <div class="container">
         <div class="contenedor">
-            <a href="{{ route('proposals.applications.coordinator.index') }}" class="btn btn-danger regresar-button"><i
-                    class="fas fa-arrow-left"></i>
-                Regresar</a>
+            <a href="{{ route('proposals.applications.coordinator.index') }}" class="btn btn-danger regresar-button">
+                <i class="fas fa-arrow-left"></i> Regresar
+            </a>
         </div>
         <h1 class="mb-5">Consultar CV</h1>
         <div class="row">
             <div class="mb-3 col-12 col-md-6">
-                <label for="name" class="form-label">Nombre:</label>
+                <label for="name" class="form-label">Nombre de archivo:</label>
                 <p>{{ $application->name }}</p>
             </div>
             <div class="mb-3 col-12 col-md-6">
@@ -48,18 +48,28 @@
             </div>
         </div>
 
-        <button type="button" id="accept-application" class="btn btn-primary " data-bs-toggle="tooltip"
-            data-bs-placement="bottom" aria-label="Dark" data-bs-original-title="Aceptar CV.">
-            <i class="fas fa-check"></i>
-        </button>
-        <button type="button" id="deny-application" class="btn btn-danger buttonDelete  waves-effect waves-light"
-            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Rechazar CV.">
-            <i class="fas fa-window-close"></i>
-        </button>
+        <form action="{{ route('proposals.applications.coordinator.update', $application->id) }}"
+            id="form-application-confirm" method="POST">
+            @csrf
+            @method('PUT')
 
+            <input type="hidden" name="application_id" value="{{ $application->id }}">
+            <input type="hidden" id="decision" name="decision" value="">
+
+            <button type="button" id="accept-application" class="btn btn-primary" data-bs-toggle="tooltip"
+                data-bs-placement="bottom" aria-label="Dark" data-bs-original-title="Aceptar CV.">
+                <i class="fas fa-check"></i>
+            </button>
+            <button type="button" id="deny-application"
+                class="btn btn-danger buttonDelete waves-effect waves-light" data-bs-toggle="tooltip"
+                data-bs-placement="bottom" title="Rechazar CV.">
+                <i class="fas fa-window-close"></i>
+            </button>
+        </form>
     </div>
 @endsection
 
 @section('script')
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+    <script src="{{ URL::asset('js/application_coordinator_show.js') }}"></script>
 @endsection
