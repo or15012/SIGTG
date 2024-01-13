@@ -55,6 +55,15 @@
                     </li>
                 @endcan
 
+                @can('Logs')
+                    <li>
+                        <a href="{{ route('logs.index') }}">
+                            <i class="bx bxs-user-detail icon nav-icon"></i>
+                            <span class="menu-item" data-key="t-logs">@lang('translation.Logs')</span>
+                        </a>
+                    </li>
+                @endcan
+
                 @can('Schools')
                     <li>
                         <a href="{{ route('schools.index') }}">

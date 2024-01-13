@@ -30,6 +30,7 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StageController;
 use App\Http\Controllers\SubareaController;
 use App\Http\Controllers\PlanningController;
+use App\Http\Controllers\LogController;
 use App\Models\Activity;
 use App\Models\Group;
 use Illuminate\Http\Request;
@@ -425,6 +426,13 @@ Route::group(['prefix' => 'activities', 'as' => 'activities.'], function () {
         Route::get('/index/{group}', [ActivityController::class, 'indexCoordinator'])->name('index');
     });
 });
+
+//Grupo para las rutas de bitacora
+Route::group(['prefix' => 'logs', 'as' => 'logs.'], function () {
+    Route::get('/', [LogController::class, 'index'])->name('index');
+});
+
+
 // Estas rutas dejarlas de ultimo
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 //Language Translation
