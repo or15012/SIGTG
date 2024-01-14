@@ -17,7 +17,25 @@
             <a href="{{ route('stages.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
-        <h1>Registrar etapa evaluativa</h1>
+        <h1>
+            @if (session('protocol') != null)
+                @switch(session('protocol')['id'])
+                    @case(1)
+                    @case(2)
+
+                    @case(3)
+                    @case(4)
+                        Registrar etapa evaluativa
+                    @break
+
+                    @case(5)
+                        Registrar área
+                    @break
+
+                    @default
+                @endswitch
+            @endif
+        </h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -38,7 +56,24 @@
         <form action="{{ route('stages.store') }}" id="form-stage" method="POST">
             @csrf
             <div class="mb-3">
-                <label for="name" class="form-label">Nombre de etapa evaluativa</label>
+                <label for="name" class="form-label">
+                    @if (session('protocol') != null)
+                        @switch(session('protocol')['id'])
+                            @case(1)
+                            @case(2)
+                            @case(3)
+                            @case(4)
+                                Nombre de etapa evaluativa
+                            @break
+
+                            @case(5)
+                                Nombre área
+                            @break
+
+                            @default
+                        @endswitch
+                    @endif
+                </label>
                 <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}"
                     required>
             </div>
@@ -90,7 +125,11 @@
 
             @if (session('protocol') != null)
                 @switch(session('protocol')['id'])
-                    @case(1 || 2 || 3 || 4)
+                    @case(1)
+                    @case(2)
+
+                    @case(3)
+                    @case(4)
                         <div class="mb-3">
                             <label for="type" class="form-label">Tipo</label>
                             <select class="form-control" id="type" name="type" required>

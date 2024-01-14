@@ -150,6 +150,11 @@
         "name": "Activities.advisers",
         "guard_name": "web",
         "description": "Permiso para ver las actividades"
+    },
+    {
+        "name": "Logs",
+        "guard_name": "web",
+        "description": "Permiso para ver las logs de bitacora"
     }
 
 ]

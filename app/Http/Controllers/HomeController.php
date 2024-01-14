@@ -38,7 +38,8 @@ class HomeController extends Controller
 
     public function root()
     {
-        return view('index');
+        return redirect("/home");
+        // return view('index');
     }
 
     /*Language Translation*/
