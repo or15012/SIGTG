@@ -7,7 +7,12 @@ use Illuminate\Http\Request;
 use App\Models\Proposal;
 use App\Mail\SendMail;
 use App\Models\Application;
+use App\Models\Cycle;
 use App\Models\Entity;
+use App\Models\Group;
+use App\Models\Profile;
+use App\Models\Project;
+use App\Models\School;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -190,13 +195,63 @@ class ProposalController extends Controller
     }
 
 
+    //El coorinador acepta o rechaza CV
     public function coordinatorUpdate(Request $request, Application $application)
     {
         $validatedData = $request->validate([
-            'decision' => 'required', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
+            'decision' => 'required',
         ]);
 
+
+        $user = $application->user; //Obteniendo usuario que ha aplicado
+        $school = $user->school; //Obteniendo escuela a la que pertenece
+        $protocol = $user->protocol->first(); //obteniendo protocolo al que pertenece
+        $cycle = Cycle::where('status', 1)->first(); //Obteniendo ciclo activo
+        $year = date('Y');
+        //dd($user,$school,$cycle,$protocol);
+
         $application->status = $request->decision;
+        if ($request->decision == 1) {
+
+            $lastGroupNumber = Group::where('protocol_id', $protocol->id)
+                ->where('cycle_id', $cycle->id)
+                ->max('number');
+
+            // Verificar si $lastGroupNumber es null y asignar el valor apropiado
+            $nextGroupNumber = ($lastGroupNumber === null) ? 1 : ($lastGroupNumber + 1);
+
+            $group                       = new Group();
+            $group->number               = $nextGroupNumber;
+            $group->year                 = $year;
+            $group->status               = 1;
+            $group->protocol_id          = $protocol->id;
+            $group->cycle_id             = $cycle->id;
+            $group->state_id             = 9;
+            $group->save();
+
+            // Obtener el grupo recién creado
+          //  $currentGroup = Group::find($group->id);
+           // dd($currentGroup);
+
+            //creandole el perfil internamente
+            $profile                        = new Profile();
+            $profile->name                  = "Protocolo PPP";
+            $profile->description           = "Protocolo PPP";
+            $profile->group_id              = $group->id;
+            $profile->status                = 1;
+            $profile->type                  = 1;
+            $profile->save();
+
+
+            //creandole el proyecto internamente
+            $project                = new Project();
+            $project->name          =  "Pasantía profesional";
+            $project->group_id      = $group->id;
+            $project->profile_id    = $profile->id;
+            $project->save();
+        }
+
+
 
         $application->update();
 
