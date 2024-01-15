@@ -13,9 +13,10 @@
         </div>
 
 
-        <h1 class="mb-5">{{$protocols[0]== 5 ? 'Consultar planificaciones':'Consultar pre perfil'}} </h1>
+        <h1 class="mb-5">{{ isset($protocols[0]) && $protocols[0] == 5 ? 'Consultar planificaciones':'Consultar pre perfil' }}</h1>
 
-        @if ($protocols[0]==5)
+
+        @if (isset($protocols[0]) && $protocols[0]==5)
         <div class="row">
             <div class="mb-3 col-12 col-md-6 col-lg-6">
                 <label for="name" class="form-label">Nombre:</label>
@@ -88,22 +89,22 @@
 
                     @case(2)
                         <button type="button" id="accept-preprofile" class="btn btn-primary " data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" aria-label="Dark" data-bs-original-title="Aceptar preperfil.">
+                            data-bs-placement="bottom" aria-label="Dark" data-bs-original-title="Aceptar planificación">
                             <i class="fas fa-check"></i>
                         </button>
                         <button type="button" id="deny-preprofile" class="btn btn-danger buttonDelete  waves-effect waves-light" |
-                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Rechazar preprefil.">
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Rechazar planificación.">
                             <i class="fas fa-window-close"></i>
                         </button>
                     @break
 
                     @case(3)
                         <button type="button" id="accept-preprofile" class="btn btn-primary " data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" aria-label="Dark" data-bs-original-title="Aceptar preperfil.">
+                            data-bs-placement="bottom" aria-label="Dark" data-bs-original-title="Aceptar planificación">
                             <i class="fas fa-check"></i>
                         </button>
                         <button type="button" id="review-preprofile" class="btn btn-secondary waves-effect waves-light"
-                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Observar preperfil.">
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Observar planificación.">
                             <i class="fas fa-exclamation-triangle"></i>
                         </button>
                     @break

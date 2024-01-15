@@ -102,6 +102,14 @@
                                     </a>
                                 </li>
                             @break
+                            @case(5)
+                                <li>
+                                    <a href="{{ route('groups.initialize') }}">
+                                        <i class="bx bx-group icon nav-icon"></i>
+                                        <span class="menu-item" data-key="t-my.group">@lang('translation.MyGroup')</span>
+                                    </a>
+                                </li>
+                            @break
 
                             @default
                         @endswitch
