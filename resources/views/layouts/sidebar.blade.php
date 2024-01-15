@@ -95,6 +95,7 @@
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
                             @case(1)
+                            @case(5)
                                 <li>
                                     <a href="{{ route('groups.initialize') }}">
                                         <i class="bx bx-group icon nav-icon"></i>
@@ -115,6 +116,75 @@
                             <span class="menu-item" data-key="t-cycles">@lang('translation.Groups')</span>
                         </a>
                     </li>
+                @endcan
+
+
+                @can('Entities')
+                    @if (session('protocol') != null)
+                        @switch(session('protocol')['id'])
+                            @case(2)
+                                <li>
+                                    <a href="{{ route('entities.index') }}">
+                                        <i class="bx bx-building-house icon nav-icon"></i>
+                                        <span class="menu-item" data-key="t-entities">@lang('translation.Entities')</span>
+                                    </a>
+                                </li>
+                            @break
+
+                            @default
+                        @endswitch
+                    @endif
+                @endcan
+
+                @can('Applications.advisers')
+                    @if (session('protocol') != null)
+                        @switch(session('protocol')['id'])
+                            @case(2)
+                                <li>
+                                    <a href="{{ route('proposals.applications.coordinator.index') }}">
+                                        <i class="bx bx-building-house icon nav-icon"></i>
+                                        <span class="menu-item" data-key="t-applications">@lang('translation.Applications')</span>
+                                    </a>
+                                </li>
+                            @break
+
+                            @default
+                        @endswitch
+                    @endif
+                @endcan
+
+                @can('Proposals.advisers')
+                    @if (session('protocol') != null)
+                        @switch(session('protocol')['id'])
+                            @case(2)
+                                <li>
+                                    <a href="{{ route('proposals.index') }}">
+                                        <i class="bx bx-receipt icon nav-icon"></i>
+                                        <span class="menu-item" data-key="t-proposals">@lang('translation.Proposals')</span>
+                                    </a>
+                                </li>
+                            @break
+
+                            @default
+                        @endswitch
+                    @endif
+                @endcan
+
+                @can('Proposals.students')
+                    @if (session('protocol') != null)
+                        @switch(session('protocol')['id'])
+                            @case(2)
+                                <li>
+                                    <a href="{{ route('proposals.applications.index') }}">
+                                        <i class="bx bx-receipt icon nav-icon"></i>
+                                        <span class="menu-item" data-key="t-proposals">@lang('translation.Proposals')</span>
+                                    </a>
+                                </li>
+                            @break
+
+                            @default
+                        @endswitch
+                    @endif
                 @endcan
 
                 @can('Preprofiles.students')
@@ -163,10 +233,11 @@
                 @can('Projects.students')
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
-                        @case(1)
-                        @case(2)
-                        @case(3)
-                        @case(4)
+                            @case(1)
+                            @case(2)
+
+                            @case(3)
+                            @case(4)
                                 <li>
                                     <a href="{{ route('projects.index') }}">
                                         <i class="bx bx-code-block icon nav-icon"></i>
@@ -244,8 +315,8 @@
 
                             @case(5)
                                 <!--
-                                                                Esta opción no se mostrará al Coordinador del protocolo.
-                                                            -->
+                                                                            Esta opción no se mostrará al Coordinador del protocolo.
+                                                                        -->
                             @break
 
                             @default
@@ -261,7 +332,7 @@
                                 <li>
                                     <a href="{{ route('activities.coordinator.index.groups') }}">
                                         <i class="bx bx-calendar-check icon nav-icon"></i>
-                                        <span class="menu-item" data-key="t-activities">@lang('translation.Activities')</span>
+                                        <span class="menu-item" data-key="t-activities">@lang('translation.ActivitiesAdviser')</span>
                                     </a>
                                 </li>
                             @break
@@ -276,6 +347,7 @@
                         @switch(session('protocol')['id'])
                             @case(1)
                             @case(2)
+
                             @case(3)
                             @case(4)
                                 <li>
@@ -309,12 +381,29 @@
                     @endif
                 @endcan
 
+                @can('Courses')
+                    @if (session('protocol') != null)
+                        @switch(session('protocol')['id'])
+                            @case(4)
+                                <li>
+                                    <a href="{{ route('courses.index') }}">
+                                        <i class="bx bx-book-reader icon nav-icon"></i>
+                                        <span class="menu-item" data-key="t-courses">@lang('translation.Courses')</span>
+                                    </a>
+                                </li>
+                            @break
+
+                            @default
+                        @endswitch
+                    @endif
+                @endcan
 
                 @can('Projects.advisers')
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
                             @case(1)
                             @case(2)
+
                             @case(3)
                             @case(4)
                                 <li>
@@ -367,31 +456,6 @@
                     </li>
                 @endcan
 
-                @can('Courses')
-                    @if (session('protocol') != null)
-                        @switch(session('protocol')['id'])
-                            @case(4)
-                                <li>
-                                    <a href="{{ route('courses.index') }}">
-                                        <i class="bx bx-book-reader icon nav-icon"></i>
-                                        <span class="menu-item" data-key="t-courses">@lang('translation.Courses')</span>
-                                    </a>
-                                </li>
-                            @break
-
-                            @default
-                        @endswitch
-                    @endif
-                @endcan
-
-                @can('Entities')
-                    <li>
-                        <a href="{{ route('entities.index') }}">
-                            <i class="bx bx-building-house icon nav-icon"></i>
-                            <span class="menu-item" data-key="t-entities">@lang('translation.Entities')</span>
-                        </a>
-                    </li>
-                @endcan
 
 
                 {{-- <li>

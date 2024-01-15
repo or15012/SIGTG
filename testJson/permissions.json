@@ -137,7 +137,7 @@
         "description": "Permiso para registrar entidades"
     },
     {
-        "name": "Proposal",
+        "name": "Proposals.advisers",
         "guard_name": "web",
         "description": "Permiso para registrar propuestas"
     },
@@ -155,6 +155,20 @@
         "name": "Logs",
         "guard_name": "web",
         "description": "Permiso para ver las logs de bitacora"
+    },
+
+    {
+        "name": "Proposals.students",
+        "guard_name": "web",
+        "description": "Permiso para aplicar a las propuestas"
+    },
+
+    {
+        "name": "Applications.advisers",
+        "guard_name": "web",
+        "description": "Permiso para aprobar CV de estudiantes"
     }
 
+
 ]
+

@@ -38,5 +38,10 @@
         "name": "Perfil aprobado y proyecto en proceso",
         "protocol_id": 1,
         "id": 8
+    },
+    {
+        "name": "CV aprobado y proyecto activo",
+        "protocol_id": 2,
+        "id": 9
     }
 ]

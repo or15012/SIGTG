@@ -18,14 +18,14 @@ Route::group(['prefix' => 'proposals', 'as' => 'proposals.'], function () {
 
     Route::group(['prefix' => 'applications', 'as' => 'applications.'], function () {
         //Rutas para estudiantes para aplicar a propuestas.
-        Route::get('/', [ProposalController::class, 'indexApplication'])->name('index');
-        Route::get('/create/{proposal}', [ProposalController::class, 'createApplication'])->name('create');
-        Route::post('/', [ProposalController::class, 'storeApplication'])->name('store');
+        Route::get('/', [ProposalController::class, 'applicationIndex'])->name('index');
+        Route::get('/create/{proposal}', [ProposalController::class, 'applicationCreate'])->name('create');
+        Route::post('/', [ProposalController::class, 'applicationStore'])->name('store');
 
         Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
             //Rutas para coordinador para listado de estudiantes que han aplicado a las propuestas
-            Route::get('/', [ProposalController::class, 'indexApplicationCoordinator'])->name('index');
-            Route::get('show/{application}', [ProposalController::class, 'showApplicationCoordinator'])->name('show');
+            Route::get('/', [ProposalController::class, 'applicationCoordinatorIndex'])->name('index');
+            Route::get('show/{application}', [ProposalController::class, 'applicationCoordinatorShow'])->name('show');
             Route::get('/download/{application}/{file}', [ProposalController::class, 'applicationDownload'])->name('download');
             Route::put('/update/{application}', [ProposalController::class, 'coordinatorUpdate'])->name('update');
 

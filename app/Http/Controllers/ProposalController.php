@@ -14,6 +14,7 @@ use App\Models\Profile;
 use App\Models\Project;
 use App\Models\School;
 use App\Models\User;
+use App\Models\UserGroup;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -21,13 +22,17 @@ use Illuminate\Support\Facades\Mail;
 class ProposalController extends Controller
 {
     const PERMISSIONS = [
-        'index'    => 'Proposal',
+        'index.advisers'    => 'Proposals.advisers',
+        'index.students'    => 'Proposals.students',
+        'index.applications.advisers' => 'Applications.advisers',
     ];
 
     public function __construct()
     {
         $this->middleware('auth');
-        // $this->middleware('permission:' . self::PERMISSIONS['index'])->only(['index']);
+        $this->middleware('permission:' . self::PERMISSIONS['index.advisers'])->only(['index']);
+        $this->middleware('permission:' . self::PERMISSIONS['index.students'])->only(['applicationIndex']);
+        $this->middleware('permission:' . self::PERMISSIONS['index.applications.advisers'])->only(['applicationCoordinatorIndex']);
     }
 
     public function index()
@@ -132,7 +137,7 @@ class ProposalController extends Controller
         return response()->download($filePath);
     }
 
-    public function indexApplication()
+    public function applicationIndex()
     {
         $user = Auth::user();
         $proposals = Proposal::all();
@@ -140,7 +145,7 @@ class ProposalController extends Controller
         return view('proposals.applications.index', compact('proposals'));
     }
 
-    public function indexApplicationCoordinator()
+    public function applicationCoordinatorIndex()
     {
         $user = Auth::user();
         $proposals = Proposal::with('entity')->get();
@@ -149,13 +154,13 @@ class ProposalController extends Controller
 
         return view('proposals.applications.coordinator.index', compact(['proposals', 'applications']));
     }
-    public function createApplication(Proposal $proposal)
+    public function applicationCreate(Proposal $proposal)
     {
 
         return view('proposals.applications.create', compact('proposal'));
     }
 
-    public function storeApplication(Request $request)
+    public function applicationStore(Request $request)
     {
 
         $user = Auth::user();
@@ -229,9 +234,18 @@ class ProposalController extends Controller
             $group->state_id             = 9;
             $group->save();
 
+
+            $groupUser                       = new UserGroup();
+            $groupUser->status               = 1;
+            $groupUser->is_leader            = 1;
+            $groupUser->user_id              = $user->id;
+            $groupUser->group_id             = $group->id;
+
+            $groupUser->save();
+
             // Obtener el grupo recién creado
-          //  $currentGroup = Group::find($group->id);
-           // dd($currentGroup);
+            //  $currentGroup = Group::find($group->id);
+            // dd($currentGroup);
 
             //creandole el perfil internamente
             $profile                        = new Profile();
@@ -259,7 +273,7 @@ class ProposalController extends Controller
         return view('proposals.applications.coordinator.show', compact('application'));
     }
 
-    public function showApplicationCoordinator(Application $application)
+    public function applicationCoordinatorShow(Application $application)
     {
         //dd($proposal);
         return view('proposals.applications.coordinator.show', compact('application'));

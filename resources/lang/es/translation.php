@@ -185,4 +185,8 @@ return [
     "Activities"                  => "Actividades",
     "PlanningsAdviser"   => "Planificaciones (Coordinador)",
     "PlanningsApproved"   => "Planificaciones Aprobadas",
+    "ActivitiesAdviser"  => "Actividades (Coordinador)",
+    "ProposalsAdviser"  => "Propuestas(Coordinador)",
+    "Proposals"  => "Propuestas",
+    "Applications" => "Aplicaciones",
 ];
