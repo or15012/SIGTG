@@ -13,7 +13,6 @@
         </div>
         <h1 class="mb-5">Consultar perfil</h1>
 
-
         <div class="row">
             <div class="mb-3 col-12 col-md-6">
                 <label for="name" class="form-label">Nombre:</label>
@@ -33,7 +32,6 @@
                         archivo </a>
                 </p>
             </div>
-
             <div class="mb-3 col-12 col-md-6">
                 <label for="path" class="form-label">Archivo resumen:</label>
                 <p>
@@ -62,7 +60,6 @@
         <form action="{{ route('profiles.coordinator.update', $profile->id) }}" id="form-profile-confirm" method="POST">
             @csrf
             @method('PUT')
-
             <input type="hidden" name="profile_id" value="{{ $profile->id }}">
             <input type="hidden" id="decision" name="decision" value="">
             <div>
@@ -77,7 +74,6 @@
                             <i class="fas fa-exclamation-triangle"></i>
                         </button>
                     @break
-
                     @case(2)
                         <button type="button" id="accept-profile" class="btn btn-primary " data-bs-toggle="tooltip"
                             data-bs-placement="bottom" aria-label="Dark" data-bs-original-title="Aceptar preperfil.">
@@ -88,12 +84,9 @@
                             <i class="fas fa-exclamation-triangle"></i>
                         </button>
                     @break
-
                     @default
                 @endswitch
-
             </div>
-
         </form>
     </div>
 @endsection

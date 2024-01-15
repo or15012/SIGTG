@@ -33,6 +33,8 @@ class ProfileController extends Controller
         $this->middleware('permission:' . self::PERMISSIONS['index.adviser'])->only(['preProfileCoordinatorIndex']);
         $this->middleware('permission:' . self::PERMISSIONS['index.student.profil'])->only(['profileIndex']);
         $this->middleware('permission:' . self::PERMISSIONS['index.adviser.profil'])->only(['coordinatorIndex']);
+        $this->middleware('check.protocol')->only(['index']);
+        $this->middleware('check.school')->only(['index']);
     }
 
     /**
@@ -357,6 +359,18 @@ class ProfileController extends Controller
         }
         $preprofile->update();
 
+        if (session('protocol')['id'] == 5) {
+            $preprofile->status = $request->decision;
+            if ($request->decision == 1) {
+                //creare a partir del perfil el proyecto
+                $project                = new Project();
+                $project->name          = $profile->name;
+                $project->group_id      = $profile->group_id;
+                $project->profile_id    = $profile->profile_id;
+                $project->save();
+            }
+            $profile->update();
+
         // Obtener estudiantes del grupo
         $students = $preprofile->group->users;
 
@@ -596,7 +610,7 @@ class ProfileController extends Controller
                 'preprofile'    => $profile,
                 'status'        => $profile->status,
             ];
-            try { //REVISAR
+            try { 
                 Mail::to($student->email)->send(
                     new SendMail(
                         'mail.profile-updated',
@@ -606,7 +620,6 @@ class ProfileController extends Controller
                 );
                 UserNotification::create(['user_id' => $student->id, 'notification_id' => $notification->id, 'is_read' => 0]);
             } catch (\Throwable $th) {
-                // Working..
                 //dd($th);
             }
         }

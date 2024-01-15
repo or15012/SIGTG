@@ -140,7 +140,6 @@ class PlanningController extends Controller
                 // Manejar la excepción
             }
         }
-
         return redirect()->route('plannings.index')->with('success', 'La planificación se ha guardado correctamente');
     }
 
@@ -151,13 +150,11 @@ class PlanningController extends Controller
 
     public function edit(Profile $planning)
     {
-
         return view('plannings.edit', ['planning' => $planning]);
     }
 
     public function update(Request $request, Profile $planning)
     {
-
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
@@ -204,7 +201,6 @@ class PlanningController extends Controller
                 }
             }
 
-
             // Envío de correo electrónico a cada estudiante del grupo
             $students = $planning->group->users;
             foreach ($students as $student) {
@@ -240,14 +236,12 @@ class PlanningController extends Controller
 
     public function planningDownload(Profile $planning, $file)
     {
-
         $filePath = storage_path('app/' . $planning->$file);
         return response()->download($filePath);
     }
     public function destroy(Profile $planning)
     {
         $planning->delete();
-
         return redirect()->route('plannings.index')->with('success', 'Planificación eliminado correctamente.');
     }
 }

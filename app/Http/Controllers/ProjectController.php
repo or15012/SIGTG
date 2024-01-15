@@ -89,7 +89,7 @@ class ProjectController extends Controller
                 if(count($stages) === 0){
                     return redirect()->route('root')->with('error', 'No tiene etapas asignadas.');
                 }
-
+    
             }else{
                 $stages = Stage::where("protocol_id", $group->protocol_id)
                 ->where('cycle_id', $group->cycle_id)

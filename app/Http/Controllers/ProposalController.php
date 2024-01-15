@@ -145,7 +145,6 @@ class ProposalController extends Controller
     }
     public function createApplication(Proposal $proposal)
     {
-
         return view('proposals.applications.create', compact('proposal'));
     }
 
