@@ -23,85 +23,117 @@
 
         <div class="row">
             @if ($status)
-            @can('Projects.add.documents')
-                <div class="col-xl-3 col-sm-6 mb-3">
-                    <div class="card text-black  o-hidden h-100">
-                        <div class="card-body">
-                            <div class="card-body-icon">
-                                <i class="fas fa-file-alt"></i>
+                @can('Projects.add.documents')
+                    <div class="col-xl-3 col-sm-6 mb-3">
+                        <div class="card text-black  o-hidden h-100">
+                            <div class="card-body">
+                                <div class="card-body-icon">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <div class="mr-5">Documentos</div>
                             </div>
-                            <div class="mr-5">Documentos</div>
+                            <a class="card-footer text-black clearfix small z-1"
+                                href="{{ route('projects.final.volume', $project->id) }}">
+                                <span class="float-left">Subir tomo final</span>
+                                <span class="float-right">
+                                    <i class="fa fa-angle-right"></i>
+                                </span>
+                            </a>
                         </div>
-                        <a class="card-footer text-black clearfix small z-1"
-                            href="{{ route('projects.final.volume', $project->id) }}">
-                            <span class="float-left">Subir tomo final</span>
-                            <span class="float-right">
-                                <i class="fa fa-angle-right"></i>
-                            </span>
-                        </a>
                     </div>
-                </div>
-            @endcan
-            @can('Projects.approve.stage')
-                <div class="col-xl-3 col-sm-6 mb-3">
-                    <div class="card text-black  o-hidden h-100">
-                        <div class="card-body">
-                            <div class="card-body-icon">
-                                <i class="far fa-check-square"></i>
+                @endcan
+                @can('Projects.approve.stage')
+                    <div class="col-xl-3 col-sm-6 mb-3">
+                        <div class="card text-black  o-hidden h-100">
+                            <div class="card-body">
+                                <div class="card-body-icon">
+                                    <i class="far fa-check-square"></i>
+                                </div>
+                                <div class="mr-5">Aprobar etapa</div>
                             </div>
-                            <div class="mr-5">Aprobar etapa</div>
+                            @if (session('protocol') != null)
+                                @switch(session('protocol')['id'])
+                                    @case(1)
+                                    @case(2)
+                                    @case(3)
+                                    @case(4)
+                                        @if ($project->status == 1)
+                                            <form action="{{ route('projects.coordinator.submit.final.stage', $project->id) }}"
+                                                id="projects-approve-stage" method="POST">
+                                                @csrf
+                                                @method('PUT')
+
+                                                <input type="hidden" id="decision" name="decision" value="3">
+                                                <button type="submit"
+                                                    class="btn btn-primery card-footer text-black clearfix small z-1">
+                                                    <span class="float-left">Realizar</span>
+                                                    <span class="float-right">
+                                                        <i class="fa fa-angle-right"></i>
+                                                    </span>
+                                                </button>
+                                            </form>
+                                        @endif
+                                    @break
+
+                                    @case(5)
+                                        @if ($project->status == 2)
+                                            <form action="{{ route('projects.coordinator.submit.final.stage', $project->id) }}"
+                                                id="projects-approve-stage" method="POST">
+                                                @csrf
+                                                @method('PUT')
+
+                                                <input type="hidden" id="decision" name="decision" value="3">
+                                                <button type="submit"
+                                                    class="btn btn-primery card-footer text-black clearfix small z-1">
+                                                    <span class="float-left">Realizar</span>
+                                                    <span class="float-right">
+                                                        <i class="fa fa-angle-right"></i>
+                                                    </span>
+                                                </button>
+                                            </form>
+                                        @endif
+                                    @break
+
+                                    @default
+                                @endswitch
+                            @endif
+
                         </div>
-                        @if ($project->status == 2)
-                            <form action="{{ route('projects.coordinator.submit.final.stage', $project->id) }}"
-                                id="projects-approve-stage" method="POST">
-                                @csrf
-                                @method('PUT')
-
-                                <input type="hidden" id="decision" name="decision" value="3">
-                                <button type="submit" class="btn btn-primery card-footer text-black clearfix small z-1">
-                                    <span class="float-left">Realizar</span>
-                                    <span class="float-right">
-                                        <i class="fa fa-angle-right"></i>
-                                    </span>
-                                </button>
-                            </form>
-                        @endif
                     </div>
-                </div>
-            @endcan
+                @endcan
 
-            @can('Projects.send.stages')
-                <div class="col-xl-3 col-sm-6 mb-3">
-                    <div class="card text-black  o-hidden h-100">
-                        <div class="card-body">
-                            <div class="card-body-icon">
-                                <i class="fas fa-cloud-upload-alt"></i>
+                @can('Projects.send.stages')
+                    <div class="col-xl-3 col-sm-6 mb-3">
+                        <div class="card text-black  o-hidden h-100">
+                            <div class="card-body">
+                                <div class="card-body-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <div class="mr-5">Entregar etapa</div>
                             </div>
-                            <div class="mr-5">Entregar etapa</div>
-                        </div>
-                        @if ($project->status == 1 || $project->status == 2)
-                            <form action="{{ route('projects.coordinator.submit.final.stage', $project->id) }}"
-                                id="projects-submit-final-stage" method="POST">
-                                @csrf
-                                @method('PUT')
+                            @if ($project->status == 1 || $project->status == 2)
+                                <form action="{{ route('projects.coordinator.submit.final.stage', $project->id) }}"
+                                    id="projects-submit-final-stage" method="POST">
+                                    @csrf
+                                    @method('PUT')
 
-                                <input type="hidden" id="decision" name="decision" value="2">
-                                <button type="submit" class="btn btn-primery card-footer text-black clearfix small z-1">
-                                    <span class="float-left">Realizar</span>
-                                    <span class="float-right">
-                                        <i class="fa fa-angle-right"></i>
-                                    </span>
-                                </button>
-                            </form>
-                        @endif
+                                    <input type="hidden" id="decision" name="decision" value="2">
+                                    <button type="submit" class="btn btn-primery card-footer text-black clearfix small z-1">
+                                        <span class="float-left">Realizar</span>
+                                        <span class="float-right">
+                                            <i class="fa fa-angle-right"></i>
+                                        </span>
+                                    </button>
+                                </form>
+                            @endif
+                        </div>
                     </div>
-                </div>
-            @endcan
+                @endcan
             @else
-        <div class="alert alert-info " role="alert">
-            Este proyecto ya no está activo.
-        </div>
-        @endif
+                <div class="alert alert-info " role="alert">
+                    Este proyecto ya no está activo.
+                </div>
+            @endif
         </div>
         <div class="row text-center">
             <h3>Tomo final</h3>
