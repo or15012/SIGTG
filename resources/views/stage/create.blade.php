@@ -22,7 +22,6 @@
                 @switch(session('protocol')['id'])
                     @case(1)
                     @case(2)
-
                     @case(3)
                     @case(4)
                         Registrar etapa evaluativa
@@ -127,7 +126,6 @@
                 @switch(session('protocol')['id'])
                     @case(1)
                     @case(2)
-
                     @case(3)
                     @case(4)
                         <div class="mb-3">
