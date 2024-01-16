@@ -214,7 +214,7 @@
                 </h3>
             @endforelse
 
-            {{-- @if ($stages->count() === $evaluationStages->count())
+            @if ($stages->count() === $evaluationStages->count())
                 <div class="col-xl-3 col-sm-6 mb-3 red-student">
                     <div class="card text-black o-hidden h-100 red-student">
                         <div class="card-body">
@@ -233,7 +233,7 @@
                         </a>
                     </div>
                 </div>
-            @endif --}}
+            @endif
         </div>
         <div class="col-lg-12">
             <div class="card">
