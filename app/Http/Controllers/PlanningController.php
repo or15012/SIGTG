@@ -44,7 +44,6 @@ class PlanningController extends Controller
         $plannings = Profile::join('groups as gr', 'profiles.group_id', 'gr.id')
             ->where('gr.protocol_id', session('protocol')['id'])
             ->where('profiles.group_id', $group->id)
-            ->where('profiles.type', 1)
             ->paginate(10);
 
         return view('plannings.index', compact('plannings'));
