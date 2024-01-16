@@ -28,7 +28,7 @@ class StageController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('permission:' . self::PERMISSIONS['index'])->only(['index']);
-        $this->middleware('check.protocol')->only(['index', 'create']);
+        $this->middleware('check.protocol')->only(['index', 'create', 'update']);
         $this->middleware('check.school')->only(['index', 'create']);
     }
 

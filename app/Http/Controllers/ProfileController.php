@@ -33,6 +33,9 @@ class ProfileController extends Controller
         $this->middleware('permission:' . self::PERMISSIONS['index.adviser'])->only(['preProfileCoordinatorIndex']);
         $this->middleware('permission:' . self::PERMISSIONS['index.student.profil'])->only(['profileIndex']);
         $this->middleware('permission:' . self::PERMISSIONS['index.adviser.profil'])->only(['coordinatorIndex']);
+
+        $this->middleware('check.protocol')->only(['preProfileCoordinatorUpdate']);
+        $this->middleware('check.school')->only([]);
     }
 
     /**
@@ -178,9 +181,9 @@ class ProfileController extends Controller
             }
         }
         return redirect()
-                ->route('profiles.preprofile.index')
-                ->with('success', 'El preperfil se ha guardado correctamente')
-                ->with('protocols', $protocols);
+            ->route('profiles.preprofile.index')
+            ->with('success', 'El preperfil se ha guardado correctamente')
+            ->with('protocols', $protocols);
     }
 
     public function preProfileShow(Profile $preprofile)
@@ -310,7 +313,7 @@ class ProfileController extends Controller
             ->where('type', 0)
             ->select('profiles.status', 'profiles.name', 'profiles.description', 'profiles.created_at', 'g.number', 'profiles.id')
             ->paginate(10);
-        
+
         $protocols = $user->protocol()
             ->wherePivot('status', 1)
             ->pluck('protocols.id');
@@ -324,7 +327,7 @@ class ProfileController extends Controller
     {
         //obtener grupo actual del user logueado
         $user = Auth::user();
-        
+
         $protocols = $user->protocol()
             ->wherePivot('status', 1)
             ->pluck('protocols.id');
@@ -339,22 +342,46 @@ class ProfileController extends Controller
         ]);
 
         $preprofile->status = $request->decision;
-        if ($request->decision == 1) {
-            //creare a partir del preperfil un perfil
-            $profile                        = new Profile();
-            $profile->name                  = $preprofile->name;
-            $profile->description           = $preprofile->description;
-            $profile->group_id              = $preprofile->group_id;
-            $profile->proposal_priority     = $preprofile->proposal_priority;
-            $profile->path                  = $preprofile->path;
-            $profile->vision_path           = $preprofile->vision_path;
-            $profile->summary_path          = $preprofile->summary_path;
-            $profile->size_calculation_path = $preprofile->size_calculation_path;
-            $profile->profile_id            = $preprofile->id;
-            $profile->status                = 0;
-            $profile->type                  = 1;
-            $profile->save();
+
+
+        switch (session('protocol')['id']) {
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                if ($request->decision == 1) {
+                    //creare a partir del preperfil un perfil
+                    $profile                        = new Profile();
+                    $profile->name                  = $preprofile->name;
+                    $profile->description           = $preprofile->description;
+                    $profile->group_id              = $preprofile->group_id;
+                    $profile->proposal_priority     = $preprofile->proposal_priority;
+                    $profile->path                  = $preprofile->path;
+                    $profile->vision_path           = $preprofile->vision_path;
+                    $profile->summary_path          = $preprofile->summary_path;
+                    $profile->size_calculation_path = $preprofile->size_calculation_path;
+                    $profile->profile_id            = $preprofile->id;
+                    $profile->status                = 0;
+                    $profile->type                  = 1;
+                    $profile->save();
+                }
+                break;
+            case 5:
+                if ($request->decision == 1) {
+                    $preprofile->type = 1;
+
+                    $project                = new Project();
+                    $project->name          = "Pasantía de Práctica Profesional";
+                    $project->group_id      = $preprofile->group_id;
+                    $project->profile_id    = $preprofile->id;
+                    $project->save();
+                }
+
+                break;
+            default:
+                break;
         }
+
         $preprofile->update();
 
         // Obtener estudiantes del grupo
@@ -389,12 +416,12 @@ class ProfileController extends Controller
 
     public function preProfileCoordinatorObservationsList(Profile $preprofile)
     {
-         //obtener grupo actual del user logueado
-         $user = Auth::user();
-        
-         $protocols = $user->protocol()
-             ->wherePivot('status', 1)
-             ->pluck('protocols.id');
+        //obtener grupo actual del user logueado
+        $user = Auth::user();
+
+        $protocols = $user->protocol()
+            ->wherePivot('status', 1)
+            ->pluck('protocols.id');
 
         return view('preprofiles.coordinator.observations', ['preprofile' => $preprofile, 'protocols' => $protocols]);
     }
@@ -403,12 +430,12 @@ class ProfileController extends Controller
     {
         //obtener grupo actual del user logueado
         $user = Auth::user();
-        
+
         $protocols = $user->protocol()
             ->wherePivot('status', 1)
             ->pluck('protocols.id');
 
-            //dd($preprofile);
+        //dd($preprofile);
 
         return view('preprofiles.coordinator.create', ['preprofile' => $preprofile, 'protocols' => $protocols]);
     }
