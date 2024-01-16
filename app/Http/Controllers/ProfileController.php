@@ -371,7 +371,7 @@ class ProfileController extends Controller
                     $preprofile->type = 1;
 
                     $project                = new Project();
-                    $project->name          = "Pasantía de Práctica Profesional";
+                    $project->name          = $preprofile->name;
                     $project->group_id      = $preprofile->group_id;
                     $project->profile_id    = $preprofile->id;
                     $project->save();
