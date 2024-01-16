@@ -14,7 +14,7 @@
     @endcomponent
 
     <div class="container">
-        <h1>Bitacora</h1>
+        <h1>Lista de bitacoras</h1>
 
 
         <table class="table table-bordered table-striped table-hover">
@@ -36,7 +36,7 @@
                         <td>{{ $log->correo }}</td>
                         <td>{{ $log->table_name }}</td>
                         <td>
-                            @if($log->action == 0)
+                            @if ($log->action == 0)
                                 Insert
                             @elseif($log->action == 1)
                                 Update
@@ -52,5 +52,5 @@
 @endsection
 
 @section('script')
-
+    <script src="{{ URL::asset('assets/js/app.js') }}"></script>
 @endsection

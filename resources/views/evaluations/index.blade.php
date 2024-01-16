@@ -25,7 +25,7 @@
 
             <div class="d-flex justify-content-end align-items-center">
 
-                @if ($project->status === 3)
+                @if ($project->status === 2)
                     @can('Projects.manage.approvement.report')
                         <a class="btn btn-secondary" href="{{ route('document.approvement.report', $project->id) }}"><i
                                 class="fa fa-file"></i>&nbsp;&nbsp;Acta de aprobación</a>
@@ -214,7 +214,7 @@
                 </h3>
             @endforelse
 
-            {{-- @if ($stages->count() === $evaluationStages->count())
+            @if ($stages->count() === $evaluationStages->count())
                 <div class="col-xl-3 col-sm-6 mb-3 red-student">
                     <div class="card text-black o-hidden h-100 red-student">
                         <div class="card-body">
@@ -233,7 +233,7 @@
                         </a>
                     </div>
                 </div>
-            @endif --}}
+            @endif
         </div>
         <div class="col-lg-12">
             <div class="card">

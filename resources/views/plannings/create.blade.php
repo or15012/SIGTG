@@ -42,7 +42,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="path" class="form-label">Archivo preperfil</label>
+                <label for="path" class="form-label">Archivo planificación</label>
                 <input type="file" class="form-control" accept=".pdf,.PDF" id="path" name="path" required>
             </div>
 

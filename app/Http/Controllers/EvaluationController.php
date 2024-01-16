@@ -368,7 +368,7 @@ class EvaluationController extends Controller
             ->count();
 
         if ($evaluationSubareas === $evaluationStagesApproved) {
-            $project->status = 3;
+            $project->status = 2;
             $project->update();
         }
 

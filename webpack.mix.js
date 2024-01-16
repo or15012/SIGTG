@@ -273,6 +273,7 @@ mix.js('resources/js/entities.js', 'public/js/entities.js');
 mix.js('resources/js/course_preregistration.js', 'public/js/course_preregistration.js');
 mix.js('resources/js/course.js', 'public/js/course.js');
 mix.js('resources/js/courses.js', 'public/js/courses.js');
+mix.js('resources/js/application_coordinator_show.js', 'public/js/application_coordinator_show.js');
 
 
 mix.combine('resources/js/pages/invoice-list.init.js', folder.dist_assets + "js/pages/invoice-list.init.js");

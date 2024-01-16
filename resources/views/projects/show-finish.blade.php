@@ -79,7 +79,7 @@
                             </div>
                             <div class="mr-5">Entregar etapa</div>
                         </div>
-                        @if ($project->status == 1)
+                        @if ($project->status == 1 || $project->status == 2)
                             <form action="{{ route('projects.coordinator.submit.final.stage', $project->id) }}"
                                 id="projects-submit-final-stage" method="POST">
                                 @csrf
