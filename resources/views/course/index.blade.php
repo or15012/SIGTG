@@ -27,8 +27,8 @@
                 {{ session('success') }}
             </div>
         @endif
-        <h1>Lista de cursos</h1>
-        <a href="{{ route('courses.create') }}" class="btn btn-primary mb-3">Nuevo curso</a>
+        <h1>Lista de Cursos</h1>
+        <a href="{{ route('courses.create') }}" class="btn btn-primary mb-3">Nuevo Curso</a>
 
         <div class="float-end d-flex justify-content-end align-items-center">
             <a href="{{ route('courses.download.template') }}" class="btn btn-primary">Descargar plantilla</a>

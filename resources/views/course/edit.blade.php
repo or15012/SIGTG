@@ -26,7 +26,7 @@
                 </ul>
             </div>
         @endif
-        <h1>Editar ciclo</h1>
+        <h1>Editar Curso</h1>
         <form  id="course-form" action="{{ route('courses.update', $course->id) }}" method="POST">
             @csrf
             @method('PUT')
