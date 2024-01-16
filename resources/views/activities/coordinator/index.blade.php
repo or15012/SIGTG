@@ -15,7 +15,7 @@
 
     <div class="container">
         <h1>Lista de actividades</h1>
-    </div>
+
 
     <h5>Número de grupo: {{ $group->number }}</h5>
 

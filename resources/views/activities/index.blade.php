@@ -15,7 +15,7 @@
 
     <div class="container">
         <h1>Lista de actividades</h1>
-        <a href="{{ route('activities.create') }}" class="btn btn-primary mb-3">Registrar actividad</a>
+        <a href="{{ route('activities.create') }}" class="btn btn-primary mb-3">Nueva actividad</a>
 
 
         <div class="float-end d-flex justify-content-end align-items-center">

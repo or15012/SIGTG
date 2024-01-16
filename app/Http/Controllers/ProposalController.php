@@ -7,8 +7,14 @@ use Illuminate\Http\Request;
 use App\Models\Proposal;
 use App\Mail\SendMail;
 use App\Models\Application;
+use App\Models\Cycle;
 use App\Models\Entity;
+use App\Models\Group;
+use App\Models\Profile;
+use App\Models\Project;
+use App\Models\School;
 use App\Models\User;
+use App\Models\UserGroup;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -16,13 +22,17 @@ use Illuminate\Support\Facades\Mail;
 class ProposalController extends Controller
 {
     const PERMISSIONS = [
-        'index'    => 'Proposal',
+        'index.advisers'    => 'Proposals.advisers',
+        'index.students'    => 'Proposals.students',
+        'index.applications.advisers' => 'Applications.advisers',
     ];
 
     public function __construct()
     {
         $this->middleware('auth');
-        // $this->middleware('permission:' . self::PERMISSIONS['index'])->only(['index']);
+        $this->middleware('permission:' . self::PERMISSIONS['index.advisers'])->only(['index']);
+        $this->middleware('permission:' . self::PERMISSIONS['index.students'])->only(['applicationIndex']);
+        $this->middleware('permission:' . self::PERMISSIONS['index.applications.advisers'])->only(['applicationCoordinatorIndex']);
     }
 
     public function index()
@@ -127,7 +137,7 @@ class ProposalController extends Controller
         return response()->download($filePath);
     }
 
-    public function indexApplication()
+    public function applicationIndex()
     {
         $user = Auth::user();
         $proposals = Proposal::all();
@@ -135,21 +145,22 @@ class ProposalController extends Controller
         return view('proposals.applications.index', compact('proposals'));
     }
 
-    public function indexApplicationCoordinator()
+    public function applicationCoordinatorIndex()
     {
         $user = Auth::user();
-        $proposals = Proposal::all();
-        $applications = Proposal::all();
+        $proposals = Proposal::with('entity')->get();
+        $applications = Application::with('user')->get();
+
 
         return view('proposals.applications.coordinator.index', compact(['proposals', 'applications']));
     }
-    public function createApplication(Proposal $proposal)
+    public function applicationCreate(Proposal $proposal)
     {
 
         return view('proposals.applications.create', compact('proposal'));
     }
 
-    public function storeApplication(Request $request)
+    public function applicationStore(Request $request)
     {
 
         $user = Auth::user();
@@ -186,5 +197,92 @@ class ProposalController extends Controller
         $proposal = Proposal::find($validatedData['proposal_id']);
         //dd($validatedData);
         return redirect()->route('proposals.applications.index', [$proposal->proposal_id])->with('success', 'Has aplicado correctamente a la pasantía.');
+    }
+
+
+    //El coorinador acepta o rechaza CV
+    public function coordinatorUpdate(Request $request, Application $application)
+    {
+        $validatedData = $request->validate([
+            'decision' => 'required',
+        ]);
+
+
+        $user = $application->user; //Obteniendo usuario que ha aplicado
+        $school = $user->school; //Obteniendo escuela a la que pertenece
+        $protocol = $user->protocol->first(); //obteniendo protocolo al que pertenece
+        $cycle = Cycle::where('status', 1)->first(); //Obteniendo ciclo activo
+        $year = date('Y');
+        //dd($user,$school,$cycle,$protocol);
+
+        $application->status = $request->decision;
+        if ($request->decision == 1) {
+
+            $lastGroupNumber = Group::where('protocol_id', $protocol->id)
+                ->where('cycle_id', $cycle->id)
+                ->max('number');
+
+            // Verificar si $lastGroupNumber es null y asignar el valor apropiado
+            $nextGroupNumber = ($lastGroupNumber === null) ? 1 : ($lastGroupNumber + 1);
+
+            $group                       = new Group();
+            $group->number               = $nextGroupNumber;
+            $group->year                 = $year;
+            $group->status               = 1;
+            $group->protocol_id          = $protocol->id;
+            $group->cycle_id             = $cycle->id;
+            $group->state_id             = 9;
+            $group->save();
+
+
+            $groupUser                       = new UserGroup();
+            $groupUser->status               = 1;
+            $groupUser->is_leader            = 1;
+            $groupUser->user_id              = $user->id;
+            $groupUser->group_id             = $group->id;
+
+            $groupUser->save();
+
+            // Obtener el grupo recién creado
+            //  $currentGroup = Group::find($group->id);
+            // dd($currentGroup);
+
+            //creandole el perfil internamente
+            $profile                        = new Profile();
+            $profile->name                  = "Protocolo PPP";
+            $profile->description           = "Protocolo PPP";
+            $profile->group_id              = $group->id;
+            $profile->status                = 1;
+            $profile->type                  = 1;
+            $profile->save();
+
+
+            //creandole el proyecto internamente
+            $project                = new Project();
+            $project->name          =  "Pasantía profesional";
+            $project->group_id      = $group->id;
+            $project->profile_id    = $profile->id;
+            $project->save();
+        }
+
+
+
+        $application->update();
+
+
+        return view('proposals.applications.coordinator.show', compact('application'));
+    }
+
+    public function applicationCoordinatorShow(Application $application)
+    {
+        //dd($proposal);
+        return view('proposals.applications.coordinator.show', compact('application'));
+    }
+
+    public function applicationDownload(Application $application, $file)
+    {
+        $filePath = storage_path('app/' . $application->$file);
+        //dd($filePath);
+        return response()->download($filePath);
     }
 }

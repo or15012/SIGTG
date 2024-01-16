@@ -428,7 +428,7 @@ class ProjectController extends Controller
 
         if ($request->decision == 3) {
             // Prorroga aceptada, actualiza la fecha de vencimiento
-            $this->handleProrrogaAcceptance($project);
+          //  $this->handleProrrogaAcceptance($project);
 
 
             $group = $project->group;
