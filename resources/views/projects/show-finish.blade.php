@@ -55,7 +55,6 @@
                                 @switch(session('protocol')['id'])
                                     @case(1)
                                     @case(3)
-                                    @case(4)
                                         @if ($project->status == 1)
                                             <form action="{{ route('projects.coordinator.submit.final.stage', $project->id) }}"
                                                 id="projects-approve-stage" method="POST">
@@ -73,6 +72,7 @@
                                             </form>
                                         @endif
                                     @break
+                                    @case(4)
                                     @case(2)
                                     @case(5)
                                         @if ($project->status == 2)
