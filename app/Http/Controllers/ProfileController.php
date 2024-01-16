@@ -341,6 +341,8 @@ class ProfileController extends Controller
         ]);
 
         $preprofile->status = $request->decision;
+
+        $preprofile->status = $request->decision;
         if ($request->decision == 1) {
             //creare a partir del preperfil un perfil
             $profile                        = new Profile();
@@ -357,19 +359,17 @@ class ProfileController extends Controller
             $profile->type                  = 1;
             $profile->save();
         }
-        $preprofile->update();
+            $preprofile->update();
 
-        if (session('protocol')['id'] == 5) {
-            $preprofile->status = $request->decision;
-            if ($request->decision == 1) {
-                //creare a partir del perfil el proyecto
+            if (session('protocol')['id'] == 5) {
                 $project                = new Project();
                 $project->name          = $profile->name;
                 $project->group_id      = $profile->group_id;
                 $project->profile_id    = $profile->profile_id;
                 $project->save();
-            }
-            $profile->update();
+                
+                $profile->update();
+        }
 
         // Obtener estudiantes del grupo
         $students = $preprofile->group->users;
