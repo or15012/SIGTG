@@ -52,6 +52,7 @@ require __DIR__ . '/web-course.php';
 require __DIR__ . '/web-ppp.php';
 require __DIR__ . '/web-pdi.php';
 require __DIR__ . '/web-exg.php';
+require __DIR__ . '/web-dashboard.php';
 
 //HOME ROUTE
 Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('root');

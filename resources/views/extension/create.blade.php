@@ -18,7 +18,7 @@
                     class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
-        <h1>Crear notificación</h1>
+        <h1>Registrar notificación</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">
