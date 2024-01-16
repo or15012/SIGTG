@@ -240,6 +240,7 @@ class CourseController extends Controller
                     $profile->description           = "Curso de especialización";
                     $profile->type                  = 1;
                     $profile->group_id              = $group->id;
+                    $profile->proposal_priority     = 1;
                     $profile->status                = 1;
                     $profile->save();
 

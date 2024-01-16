@@ -54,7 +54,7 @@ class ProjectController extends Controller
             })
             ->first();
 
-        if (!isset($group)) return redirect()->route('root')->with('error', 'No tienes un grupo activo.');
+        if (!isset($group)) return redirect()->route('home')->with('error', 'No tienes un grupo activo.');
 
 
         $project = Project::join('profiles as p', 'projects.profile_id', 'p.id')
@@ -62,7 +62,7 @@ class ProjectController extends Controller
             ->where('projects.group_id', $group->id)
             ->first();
 
-        if (!isset($project)) return redirect()->route('root')->with('error', 'No tienes un proyecto activo.');
+        if (!isset($project)) return redirect()->route('home')->with('error', 'No tienes un proyecto activo.');
 
         $projectUsers = Project::join('profiles as p', 'projects.profile_id', 'p.id')
             ->join('user_group as ug', 'ug.group_id', 'projects.group_id')
@@ -87,7 +87,7 @@ class ProjectController extends Controller
                 ->get();
 
                 if(count($stages) === 0){
-                    return redirect()->route('root')->with('error', 'No tiene etapas asignadas.');
+                    return redirect()->route('home')->with('error', 'No tiene etapas asignadas.');
                 }
     
             }else{
@@ -319,7 +319,8 @@ class ProjectController extends Controller
             ->join('teacher_group as tg', 'tg.group_id', 'g.id')
             ->where('tg.user_id', $user->id)
             ->select('projects.id', 'projects.name')
-            ->paginate(30);
+            ->where('g.protocol_id', session('protocol')['id'])
+            ->paginate(20);
 
         return view('projects.coordinator.index', [
             "projects"  => $projects

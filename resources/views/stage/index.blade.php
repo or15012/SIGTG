@@ -19,7 +19,6 @@
                 @switch(session('protocol')['id'])
                     @case(1)
                     @case(2)
-
                     @case(3)
                     @case(4)
                         Lista de etapas evaluativas
@@ -39,7 +38,6 @@
                 @switch(session('protocol')['id'])
                     @case(1)
                     @case(2)
-
                     @case(3)
                     @case(4)
                         Nueva etapa evaluativa
