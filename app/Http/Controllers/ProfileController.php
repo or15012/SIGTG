@@ -33,7 +33,6 @@ class ProfileController extends Controller
         $this->middleware('permission:' . self::PERMISSIONS['index.adviser'])->only(['preProfileCoordinatorIndex']);
         $this->middleware('permission:' . self::PERMISSIONS['index.student.profil'])->only(['profileIndex']);
         $this->middleware('permission:' . self::PERMISSIONS['index.adviser.profil'])->only(['coordinatorIndex']);
-
         $this->middleware('check.protocol')->only(['index', 'preProfileCoordinatorUpdate']);
         $this->middleware('check.school')->only(['index']);
 
