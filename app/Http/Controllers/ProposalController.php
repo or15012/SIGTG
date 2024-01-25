@@ -33,12 +33,17 @@ class ProposalController extends Controller
         $this->middleware('permission:' . self::PERMISSIONS['index.advisers'])->only(['index']);
         $this->middleware('permission:' . self::PERMISSIONS['index.students'])->only(['applicationIndex']);
         $this->middleware('permission:' . self::PERMISSIONS['index.applications.advisers'])->only(['applicationCoordinatorIndex']);
+
+        $this->middleware('check.protocol')->only(['store']);
+        $this->middleware('check.school')->only(['store']);
     }
 
     public function index()
     {
         $user = Auth::user();
-        $proposals = Proposal::where('user_id', $user->id)->get();
+        $proposals = Proposal::where('protocol_id', session('protocol')['id'])
+            ->where('school_id', session('school', ['id']))
+            ->get();
 
         return view('proposals.index', compact('proposals'));
     }
@@ -57,8 +62,12 @@ class ProposalController extends Controller
             'description'           => 'required|string',
             'path'                  => 'required|mimes:pdf',
             'amount_student'        => 'required|integer',
-            'entity_id'             => 'required|integer',
+
         ]);
+
+        if (session('protocol')['id'] == 2) {
+            $request->validate(['entity_id'   =>  'required|integer']);
+        }
 
         //dd($validatedData);
         $user = Auth::user();
@@ -75,10 +84,13 @@ class ProposalController extends Controller
             $proposals->description       = $request->input('description');
             $proposals->path              = $path;
             $proposals->amount_student    = $request->input('amount_student');
-            $proposals->entity_id         = $request->input('entity_id');
-            $proposals->status            = 0;
+            if (session('protocol')['id'] == 2) {
+                $proposals->entity_id     = $request->input('entity_id');
+            }
+            $proposals->school_id         = session('school')['id'];
+            $proposals->status            = 1;
             $proposals->user_id           = $user->id;
-
+            $proposals->protocol_id       = session('protocol')['id'];
             $proposals->save();
 
             //dd($proposals);
@@ -140,7 +152,9 @@ class ProposalController extends Controller
     public function applicationIndex()
     {
         $user = Auth::user();
-        $proposals = Proposal::all();
+        $proposals = Proposal::where('protocol_id', session('protocol')['id'])
+            ->where('school_id', session('school', ['id']))
+            ->get();
 
         return view('proposals.applications.index', compact('proposals'));
     }

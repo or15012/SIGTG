@@ -33,7 +33,7 @@ class ProfileController extends Controller
         $this->middleware('permission:' . self::PERMISSIONS['index.adviser'])->only(['preProfileCoordinatorIndex']);
         $this->middleware('permission:' . self::PERMISSIONS['index.student.profil'])->only(['profileIndex']);
         $this->middleware('permission:' . self::PERMISSIONS['index.adviser.profil'])->only(['coordinatorIndex']);
-        $this->middleware('check.protocol')->only(['index', 'preProfileCoordinatorUpdate']);
+        $this->middleware('check.protocol')->only(['index', 'preProfileCoordinatorUpdate','preProfileCoordinatorIndex']);
         $this->middleware('check.school')->only(['index']);
 
     }
@@ -623,7 +623,7 @@ class ProfileController extends Controller
                 'preprofile'    => $profile,
                 'status'        => $profile->status,
             ];
-            try { 
+            try {
                 Mail::to($student->email)->send(
                     new SendMail(
                         'mail.profile-updated',

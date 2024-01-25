@@ -13,7 +13,10 @@
     <div class="container">
 
 
-        <h1>{{ $protocols[0] == 5 ? 'Iniciar Trabajo de Graduación' : 'Conformar grupos' }}</h1>
+        <h1>
+            {{ $protocols[0] == 5 ? 'Iniciar Trabajo de Graduación' : 'Conformar grupos' }}
+
+        </h1>
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -134,12 +137,7 @@
                         @endforelse
                     </div>
                     <button type="submit" class="btn btn-primary @if (isset($group) && $group->status != 0) d-none @endif">
-                        @if (isset($group))
-                            Actualizar grupo
-                        @else
-                            Conformar grupo
-                        @endif
-
+                        {{ isset($group) ? 'Actualizar grupo' : 'Conformar grupo' }}
                     </button>
                 </form>
             @endif

@@ -95,6 +95,7 @@
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
                             @case(1)
+                            @case(3)
                             @case(5)
                                 <li>
                                     <a href="{{ route('groups.initialize') }}">
@@ -103,14 +104,7 @@
                                     </a>
                                 </li>
                             @break
-                            @case(5)
-                                <li>
-                                    <a href="{{ route('groups.initialize') }}">
-                                        <i class="bx bx-group icon nav-icon"></i>
-                                        <span class="menu-item" data-key="t-my.group">@lang('translation.MyGroup')</span>
-                                    </a>
-                                </li>
-                            @break
+
 
                             @default
                         @endswitch
@@ -165,6 +159,7 @@
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
                             @case(2)
+                            @case(3)
                                 <li>
                                     <a href="{{ route('proposals.index') }}">
                                         <i class="bx bx-receipt icon nav-icon"></i>
@@ -182,6 +177,7 @@
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
                             @case(2)
+                            @case(3)
                                 <li>
                                     <a href="{{ route('proposals.applications.index') }}">
                                         <i class="bx bx-receipt icon nav-icon"></i>
@@ -208,6 +204,7 @@
                             @break
 
                             @case(5)
+                            @case(3)
                                 <li>
                                     <a href="{{ route('plannings.index') }}">
                                         <i class="bx bx-calendar icon nav-icon"></i>
@@ -281,6 +278,7 @@
                             @break
 
                             @case(5)
+                            @case(3)
                                 <li>
                                     <a href="{{ route('profiles.preprofile.coordinator.index') }}">
                                         <i class="bx bx-calendar icon nav-icon"></i>

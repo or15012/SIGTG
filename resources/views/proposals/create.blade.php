@@ -48,7 +48,11 @@
             </div>
 
             <div class="mb-3">
-                <label for="path" class="form-label">Archivo de propuesta:</label>
+                <label for="path" class="form-label">
+
+                    {{ session('protocol')['id'] == 2 ? 'Archivo de propuesta:' : 'Documento de PDI' }}
+
+                </label>
                 <input type="file" class="form-control" accept=".pdf,.PDF" id="path" name="path" required>
             </div>
 
@@ -57,15 +61,18 @@
                 <input class="form-control" type="number" id="amount_student" name="amount_student">
             </div>
 
-            <div class="mb-3">
-                <label for="entity_id" class="form-label">Entidad:</label>
-                <select class="form-control" id="entity_id" name="entity_id">
-                    <option value="0"> Seleccione una entidad </option>
-                    @foreach ($entities as $entity)
-                        <option value="{{ $entity->id }}"> {{ $entity->name }}</option>
-                    @endforeach
-                </select>
-            </div>
+            @if (session('protocol')['id'] == 2)
+                <div class="mb-3">
+                    <label for="entity_id" class="form-label">Entidad:</label>
+                    <select class="form-control" id="entity_id" name="entity_id">
+                        <option value="0"> Seleccione una entidad </option>
+                        @foreach ($entities as $entity)
+                            <option value="{{ $entity->id }}"> {{ $entity->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            @endif
+
 
             <div class="contenedor">
                 <a href="{{ route('proposals.index') }}" class="btn btn-danger regresar-button">Cancelar</a>

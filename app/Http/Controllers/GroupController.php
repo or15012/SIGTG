@@ -38,12 +38,11 @@ class GroupController extends Controller
         $this->middleware('permission:' . self::PERMISSIONS['index.adviser'])->only(['index']);
         $this->middleware('permission:' . self::PERMISSIONS['assigned.group'])->only(['assignedGroup']);
 
-        $this->middleware('check.protocol')->only(['index','initialize']);
-        $this->middleware('check.school')->only(['index','initialize']);
+        $this->middleware('check.protocol')->only(['index', 'initialize','update']);
+        $this->middleware('check.school')->only(['index', 'initialize']);
     }
     public function index(Project $project)
     {
-        // dd($project);
         $year = date('Y');
         $groups = Group::select(
             'groups.id',
@@ -264,7 +263,7 @@ class GroupController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            // Validación de los datos del ciclo y los parámetros
+            // Validación de los datos del grupo y los parámetros
             $validatedData = $request->validate([
                 'group_id'        => 'required|integer',
                 'decision'        => 'required|integer',
@@ -273,27 +272,36 @@ class GroupController extends Controller
 
             $group = Group::findOrFail($id);
 
-            // Actualizar los datos del ciclo
+            // Actualizar los datos del grupo
             // 1 = aceptado
             // 2 = denegado
 
-            $stateId = 3;
+            $stateId = 4;
 
-            DB::beginTransaction();
-
-            DB::statement("DELETE FROM user_group WHERE group_id = ? AND status != 1", [$id]);
+            UserGroup::where('group_id', $id)
+                ->where('status', '!=', 1)
+                ->delete();
 
             if ($request->decision == 1) {
-                $stateId = 2;
+                switch (session('protocol')['id']) {
+                    case 1:
+                    case 2:
+                    case 4:
+                    case 5:
+                        $stateId = 2;
+                        break;
+                    case 3:
+                        $stateId = 10;
+                        break;
+                }
+
                 $consultingGroup = Group::where('number', '!=', null)
                     ->where('protocol_id', $group->protocol_id)
                     ->orderBy('id', 'desc')
                     ->first();
-
+                $number = 1;
                 if (isset($consultingGroup)) {
                     $number = $consultingGroup->number + 1;
-                } else {
-                    $number = 1;
                 }
                 $data = [
                     'status'    => $request->decision,
@@ -309,8 +317,12 @@ class GroupController extends Controller
                 $notification = Notification::create(['title' => 'Alerta de grupo', 'message' => "Te informamos que tu grupo ha sido: ACEPTADO", 'user_id' => Auth::user()->id]);
 
                 foreach ($group->users as $user) {
-                    Mail::to($user->email)->send(new SendMail('mail.notification', 'Notificacion de grupo', ['title' => "Notificacion del grupo $group->number", 'body' => "Hola $user->first_name, te informamos que tu grupo ha sido <b>ACEPTADO</b>."]));
-                    UserNotification::create(['user_id' => $user->id, 'notification_id' => $notification->id, 'is_read' => 0]);
+                    try {
+                        Mail::to($user->email)->send(new SendMail('mail.notification', 'Notificacion de grupo', ['title' => "Notificacion del grupo $group->number", 'body' => "Hola $user->first_name, te informamos que tu grupo ha sido <b>ACEPTADO</b>."]));
+                        UserNotification::create(['user_id' => $user->id, 'notification_id' => $notification->id, 'is_read' => 0]);
+                    } catch (Exception $th) {
+                        Log::info($th->getMessage());
+                    }
                 }
             } else {
                 $data = [
@@ -327,10 +339,8 @@ class GroupController extends Controller
             }
             $group->update($data);
 
-            DB::commit();
             return redirect()->route('groups.index')->with('success', 'Grupo actualizado con éxito');
         } catch (\Throwable $th) {
-            DB::rollBack();
             return back()->withErrors(['¡Ups! Lo sentimos, algo salió mal.', $th->getMessage()]);
         }
     }

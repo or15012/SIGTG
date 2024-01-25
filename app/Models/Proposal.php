@@ -17,6 +17,10 @@ class Proposal extends Model
         'path',
         'amount_student',
         'entity_id',
+        'protocol_id',
+        'user_id',
+        'status',
+        'school_id',
     ];
 
     public function entity()
