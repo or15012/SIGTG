@@ -274,7 +274,7 @@ class ProposalController extends Controller
             //creandole el perfil internamente
             $profile                        = new Profile();
             $profile->name                  = $application->name;
-            $profile->description           = "Protocolo PPP";
+            $profile->description           = $application->name;
             $profile->proposal_priority     = 1;
             $profile->group_id              = $group->id;
             $profile->status                = 1;
