@@ -15,7 +15,7 @@
         <div class="row mb-1">
             <div class="col-12">
                 <h5>
-                Propuesta: {{ $application->proposal->name }}
+                    Propuesta: {{ $application->proposal->name }}
                 </h5>
             </div>
         </div>
@@ -54,25 +54,26 @@
                 </p>
             </div>
         </div>
+        @if ($application->status)
+            <form action="{{ route('proposals.applications.coordinator.update', $application->id) }}"
+                id="form-application-confirm" method="POST">
+                @csrf
+                @method('PUT')
 
-        <form action="{{ route('proposals.applications.coordinator.update', $application->id) }}"
-            id="form-application-confirm" method="POST">
-            @csrf
-            @method('PUT')
+                <input type="hidden" name="application_id" value="{{ $application->id }}">
+                <input type="hidden" id="decision" name="decision" value="">
 
-            <input type="hidden" name="application_id" value="{{ $application->id }}">
-            <input type="hidden" id="decision" name="decision" value="">
+                <button type="button" id="accept-application" class="btn btn-primary" data-bs-toggle="tooltip"
+                    data-bs-placement="bottom" aria-label="Dark" data-bs-original-title="Aceptar CV.">
+                    <i class="fas fa-check"></i>
+                </button>
+                <button type="button" id="deny-application" class="btn btn-danger buttonDelete waves-effect waves-light"
+                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="Rechazar CV.">
+                    <i class="fas fa-window-close"></i>
+                </button>
+            </form>
+        @endif
 
-            <button type="button" id="accept-application" class="btn btn-primary" data-bs-toggle="tooltip"
-                data-bs-placement="bottom" aria-label="Dark" data-bs-original-title="Aceptar CV.">
-                <i class="fas fa-check"></i>
-            </button>
-            <button type="button" id="deny-application"
-                class="btn btn-danger buttonDelete waves-effect waves-light" data-bs-toggle="tooltip"
-                data-bs-placement="bottom" title="Rechazar CV.">
-                <i class="fas fa-window-close"></i>
-            </button>
-        </form>
     </div>
 @endsection
 

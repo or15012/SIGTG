@@ -15,7 +15,7 @@
         <div class="row mb-1">
             <div class="col-12">
                 <h5>
-                Propuesta: {{ $application->proposal->name }}
+                    Propuesta: {{ $application->proposal->name }}
                 </h5>
             </div>
         </div>
@@ -27,7 +27,8 @@
             <div class="mb-3 col-12 col-md-6">
                 <label for="status" class="form-label">Alumno:</label>
                 <p>
-                    {{ $application->user->first_name }}  {{ $application->user->middle_name }} {{ $application->user->last_name }} {{ $application->user->second_last_name }}
+                    {{ $application->user->first_name }} {{ $application->user->middle_name }}
+                    {{ $application->user->last_name }} {{ $application->user->second_last_name }}
                 </p>
             </div>
 
@@ -62,24 +63,26 @@
             </div>
         </div>
 
-        <form action="{{ route('proposals.applications.coordinator.update', $application->id) }}"
-            id="form-application-confirm" method="POST">
-            @csrf
-            @method('PUT')
+        @if ($application->status == 0)
+            <form action="{{ route('proposals.applications.coordinator.update', $application->id) }}"
+                id="form-application-confirm" method="POST">
+                @csrf
+                @method('PUT')
 
-            <input type="hidden" name="application_id" value="{{ $application->id }}">
-            <input type="hidden" id="decision" name="decision" value="">
+                <input type="hidden" name="application_id" value="{{ $application->id }}">
+                <input type="hidden" id="decision" name="decision" value="">
 
-            <button type="button" id="accept-application" class="btn btn-primary" data-bs-toggle="tooltip"
-                data-bs-placement="bottom" aria-label="Dark" data-bs-original-title="Aceptar perfil.">
-                <i class="fas fa-check"></i>
-            </button>
-            <button type="button" id="deny-application"
-                class="btn btn-danger buttonDelete waves-effect waves-light" data-bs-toggle="tooltip"
-                data-bs-placement="bottom" title="Rechazar perfil.">
-                <i class="fas fa-window-close"></i>
-            </button>
-        </form>
+                <button type="button" id="accept-application" class="btn btn-primary" data-bs-toggle="tooltip"
+                    data-bs-placement="bottom" aria-label="Dark" data-bs-original-title="Aceptar perfil.">
+                    <i class="fas fa-check"></i>
+                </button>
+                <button type="button" id="deny-application" class="btn btn-danger buttonDelete waves-effect waves-light"
+                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="Rechazar perfil.">
+                    <i class="fas fa-window-close"></i>
+                </button>
+            </form>
+        @endif
+
     </div>
 @endsection
 
