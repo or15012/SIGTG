@@ -161,16 +161,33 @@ class ProposalController extends Controller
 
     public function applicationCoordinatorIndex()
     {
-        $user = Auth::user();
+
         $proposals = Proposal::with('entity')->get();
-        $applications = Application::with('user')->get();
+        $applications = Application::join('proposals as p', 'applications.proposal_id', 'p.id')
+            ->where('p.protocol_id', session('protocol')['id'])
+            ->where('p.school_id', session('school')['id'])
+            ->select('applications.user_id', 'applications.name', 'applications.status', 'applications.id', 'applications.proposal_id')
+            ->with('user')
+            ->with('proposal')
+            ->get();
 
-
-        return view('proposals.applications.coordinator.index', compact(['proposals', 'applications']));
+        if (session('protocol')['id'] == 2) {
+            return view('proposals.applications.coordinator.index', compact(['proposals', 'applications']));
+        } elseif (session('protocol')['id'] == 3) {
+            return view('proposals.applications.investigation.coordinator.index', compact(['proposals', 'applications']));
+        } else {
+            abort(404, "No puede gestionar propuestas en el protocolo actual");
+        }
     }
     public function applicationCreate(Proposal $proposal)
     {
-        return view('proposals.applications.create', compact('proposal'));
+        if (session('protocol')['id'] == 2) {
+            return view('proposals.applications.create', compact('proposal'));
+        } elseif (session('protocol')['id'] == 3) {
+            return view('proposals.applications.investigation.create', compact('proposal'));
+        } else {
+            abort(404, "No puede gestionar propuestas en el protocolo actual");
+        }
     }
 
     public function applicationStore(Request $request)
@@ -180,7 +197,6 @@ class ProposalController extends Controller
         // Validar si el usuario ya ha aplicado a esta propuesta
 
         if ($user->applications()->where('proposal_id', $request->proposal_id)->exists()) {
-            //dd("entre");
             return redirect()->route('proposals.applications.index')->with('error', 'Ya has aplicado a esta propuesta.');
         }
         // Validación de los datos del formulario
@@ -206,9 +222,7 @@ class ProposalController extends Controller
             'proposal_id'   => $validatedData['proposal_id'],
         ]);
 
-
         $proposal = Proposal::find($validatedData['proposal_id']);
-        //dd($validatedData);
         return redirect()->route('proposals.applications.index', [$proposal->proposal_id])->with('success', 'Has aplicado correctamente a la pasantía.');
     }
 
@@ -221,12 +235,11 @@ class ProposalController extends Controller
         ]);
 
 
-        $user = $application->user; //Obteniendo usuario que ha aplicado
-        $school = $user->school; //Obteniendo escuela a la que pertenece
-        $protocol = $user->protocol->first(); //obteniendo protocolo al que pertenece
-        $cycle = Cycle::where('status', 1)->first(); //Obteniendo ciclo activo
-        $year = date('Y');
-        //dd($user,$school,$cycle,$protocol);
+        $user       = $application->user; //Obteniendo usuario que ha aplicado
+        $school     = $user->school; //Obteniendo escuela a la que pertenece
+        $protocol   = $user->protocol->first(); //obteniendo protocolo al que pertenece
+        $cycle      = Cycle::where('status', 1)->first(); //Obteniendo ciclo activo
+        $year       = date('Y');
 
         $application->status = $request->decision;
         if ($request->decision == 1) {
@@ -256,13 +269,11 @@ class ProposalController extends Controller
 
             $groupUser->save();
 
-            // Obtener el grupo recién creado
-            //  $currentGroup = Group::find($group->id);
-            // dd($currentGroup);
+
 
             //creandole el perfil internamente
             $profile                        = new Profile();
-            $profile->name                  = "Protocolo PPP";
+            $profile->name                  = $application->name;
             $profile->description           = "Protocolo PPP";
             $profile->proposal_priority     = 1;
             $profile->group_id              = $group->id;
@@ -273,7 +284,7 @@ class ProposalController extends Controller
 
             //creandole el proyecto internamente
             $project                = new Project();
-            $project->name          =  "Pasantía profesional";
+            $project->name          = $application->name;
             $project->group_id      = $group->id;
             $project->profile_id    = $profile->id;
             $project->save();
@@ -284,13 +295,19 @@ class ProposalController extends Controller
         $application->update();
 
 
-        return view('proposals.applications.coordinator.show', compact('application'));
+        return redirect()->route('proposals.applications.coordinator.index')->with('success', 'Estado de aplicación actualizado.');
     }
 
     public function applicationCoordinatorShow(Application $application)
     {
-        //dd($proposal);
-        return view('proposals.applications.coordinator.show', compact('application'));
+        if (session('protocol')['id'] == 2) {
+            return view('proposals.applications.coordinator.show', compact('application'));
+        } elseif (session('protocol')['id'] == 3) {
+            return view('proposals.applications.investigation.coordinator.show', compact('application'));
+        } else {
+            abort(404, "No puede gestionar propuestas en el protocolo actual");
+        }
+
     }
 
     public function applicationDownload(Application $application, $file)

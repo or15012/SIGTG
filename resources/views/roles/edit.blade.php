@@ -30,8 +30,12 @@
             @method('PUT')
             <div class="mb-3">
                 <label for="name" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $role->name) }}"
-                    required>
+                <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $role->name) }}" required
+                    @if ($role->id == 1 || $role->id == 2 || $role->id == 3 || $role->id == 4 || $role->id == 5 )
+                        disabled
+                    @else
+                        required
+                    @endif>
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Descripción</label>

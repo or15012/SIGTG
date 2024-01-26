@@ -39,15 +39,15 @@
                         <td>
                             @switch($application->status)
                                 @case(0)
-                                    CV presentado.
+                                    Perfil presentado.
                                 @break
 
                                 @case(1)
-                                    CV aprobado.
+                                    Perfil aprobado.
                                 @break
 
                                 @case(2)
-                                    CV rechazado.
+                                    Perfil rechazado.
                                 @break
 
                                 @default

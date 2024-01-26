@@ -64,12 +64,15 @@ class RoleController extends Controller
     public function update(Request $request, Role $role)
     {
         $request->validate([
-            'name'          => 'required|unique:roles,name,' . $role->id,
+
             'description'   => 'nullable|string|max:255',
             'permissions'   => 'array',
         ]);
 
-        $role->name = $request->input('name');
+        if (!in_array($role->id, [1, 2, 3, 4, 5])) {
+            $role->name = $request->input('name');
+        }
+
         $role->description = $request->input('description');
         $role->save();
 

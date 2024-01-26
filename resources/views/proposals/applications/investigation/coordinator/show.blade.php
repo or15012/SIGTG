@@ -11,7 +11,7 @@
                 <i class="fas fa-arrow-left"></i> Regresar
             </a>
         </div>
-        <h1 class="mb-4">Consultar CV</h1>
+        <h1 class="mb-4">Consultar perfil de aplicación</h1>
         <div class="row mb-1">
             <div class="col-12">
                 <h5>
@@ -25,32 +25,39 @@
                 <p>{{ $application->name }}</p>
             </div>
             <div class="mb-3 col-12 col-md-6">
+                <label for="status" class="form-label">Alumno:</label>
+                <p>
+                    {{ $application->user->first_name }}  {{ $application->user->middle_name }} {{ $application->user->last_name }} {{ $application->user->second_last_name }}
+                </p>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="mb-3 col-12 col-md-6">
+                <label for="path" class="form-label">Archivo perfil:</label>
+                <p>
+                    <a href="{{ route('proposals.applications.coordinator.download', ['application' => $application->id, 'file' => 'path']) }}"
+                        target="_blank" class="btn btn-secondary archivo">Ver archivo</a>
+                </p>
+            </div>
+            <div class="mb-3 col-12 col-md-6">
                 <label for="status" class="form-label">Estado:</label>
                 <p>
                     @switch($application->status)
                         @case(0)
-                            CV presentado.
+                            Perfil presentado.
                         @break
 
                         @case(1)
-                            CV aprobado.
+                            Perfil aprobado.
                         @break
 
                         @case(2)
-                            CV rechazado.
+                            Perfil rechazado.
                         @break
 
                         @default
                     @endswitch
-                </p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="mb-3 col-12 col-md-6">
-                <label for="path" class="form-label">Archivo CV:</label>
-                <p>
-                    <a href="{{ route('proposals.applications.coordinator.download', ['application' => $application->id, 'file' => 'path']) }}"
-                        target="_blank" class="btn btn-secondary archivo">Ver archivo</a>
                 </p>
             </div>
         </div>
@@ -64,12 +71,12 @@
             <input type="hidden" id="decision" name="decision" value="">
 
             <button type="button" id="accept-application" class="btn btn-primary" data-bs-toggle="tooltip"
-                data-bs-placement="bottom" aria-label="Dark" data-bs-original-title="Aceptar CV.">
+                data-bs-placement="bottom" aria-label="Dark" data-bs-original-title="Aceptar perfil.">
                 <i class="fas fa-check"></i>
             </button>
             <button type="button" id="deny-application"
                 class="btn btn-danger buttonDelete waves-effect waves-light" data-bs-toggle="tooltip"
-                data-bs-placement="bottom" title="Rechazar CV.">
+                data-bs-placement="bottom" title="Rechazar perfil.">
                 <i class="fas fa-window-close"></i>
             </button>
         </form>

@@ -189,4 +189,6 @@ return [
     "Activities"             => "Actividades",
     "PlanningsAdviser"       => "Planificaciones (Coordinador)",
     "PlanningsApproved"      => "Planificaciones aprobadas",
+    "Forums"                 => "Foros",
+    "Workshops"              => "Talleres"
 ];

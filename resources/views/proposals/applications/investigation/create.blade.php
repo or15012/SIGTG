@@ -18,7 +18,7 @@
                     class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
-        <h1>Registrar hoja de vida</h1>
+        <h1>Registrar perfil del proyecto de investigación</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -40,12 +40,12 @@
             enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
-                <label for="name" class="form-label">Nombre:</label>
+                <label for="name" class="form-label">Nombre de perfil del proyecto de investigación:</label>
                 <input class="form-control" type="text" id="name" name="name" required>
             </div>
 
             <div class="mb-3">
-                <label for="path" class="form-label">Archivo CV:</label>
+                <label for="path" class="form-label">Archivo perfil del proyecto de investigación:</label>
                 <input type="file" class="form-control" accept=".pdf,.PDF" id="path" name="path" required>
             </div>
             <input type="hidden" name="proposal_id" value="{{ $proposal->id }}">
