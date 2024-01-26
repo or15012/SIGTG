@@ -203,7 +203,7 @@ class ProposalController extends Controller
         $userRoles = User::role($role)->get(); //modificar para diferenciar por modalidades.
 
         $notificationStudent = Notification::create(['title' => 'Alerta de aplicación', 'message' => "Se ha postulado correctamente ha esta propuesta, su CV está pendiente de revisión", 'user_id' => Auth::user()->id]);
-        $notificationCoordinator = Notification::create(['title' => 'Alerta de aplicación', 'message' => "El estudiante ha enviado su CV para revisión", 'user_id' => Auth::user()->id]);
+        $notificationCoordinator = Notification::create(['title' => 'Alerta de aplicación', 'message' => "El estudiante ha enviado su CV para revisión",  'user_id' => $user->id]);
         foreach ($userRoles as $coordinator) {
             try {
                 $emailData = [
@@ -219,24 +219,21 @@ class ProposalController extends Controller
             }
         }
 
-        // Obtener estudiante
-        $role = 'Estudiante';
-        $userRoles = User::role($role)->get(); //modificar para diferenciar por modalidades.
-        // Envío de correo electrónico a cada estudiante del grupo
-        foreach ($userRoles as $student) {
+        // Envío de correo electrónico a estudiante
+
             try {
                 $emailData = [
-                    'user'       => $student,
+                    'user' => $user,
                     'proposal'      => $proposal,
                     'application'   => $application,
                 ];
 
-                Mail::to($student->email)->send(new SendMail('mail.application-saved', 'Aplicación creada con éxito', $emailData));
-                UserNotification::create(['user_id' => $student->id, 'notification_id' => $notificationStudent->id, 'is_read' => 0]);
+                Mail::to($user->email)->send(new SendMail('mail.application-saved', 'Aplicación creada con éxito', $emailData));
+                UserNotification::create(['user_id' => $user->id, 'notification_id' => $notificationStudent->id, 'is_read' => 0]);
             } catch (Exception $th) {
                 // Manejar la excepción
             }
-        }
+
         return redirect()->route('proposals.applications.index', [$proposal->proposal_id])->with('success', 'Has aplicado correctamente a la pasantía.');
     }
 
@@ -307,10 +304,27 @@ class ProposalController extends Controller
             $project->save();
         }
 
-
-
         $application->update();
+        // Envío de notificación y correo electrónico al estudiante
+        $notificationStudent = Notification::create([
+            'title' => 'Alerta de aplicación',
+            'message' => "Se ha recibido una actualización sobre su aplicación a la pasantía profesional",
+            'user_id' => $user->id,
+        ]);
 
+        try {
+            $emailData = [
+                'user' => $user,
+                'application' => $application,
+            ];
+
+            //dd($emailData);
+
+            Mail::to($user->email)->send(new SendMail('mail.application-updated', 'Aplicación actualizada con éxito', $emailData));
+            UserNotification::create(['user_id' => $user->id, 'notification_id' => $notificationStudent->id, 'is_read' => 0]);
+        } catch (Exception $th) {
+            // Manejar la excepción
+        }
 
         return view('proposals.applications.coordinator.show', compact('application'));
     }
