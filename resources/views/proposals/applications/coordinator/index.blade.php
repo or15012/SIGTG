@@ -12,8 +12,13 @@
         @endslot
     @endcomponent
     <div class="container">
+            <div class="contenedor">
+                <a href="{{ route('home') }}" style="margin-left: 5px" class="btn btn-danger regresar-button"><i
+                        class="fas fa-arrow-left"></i>
+                    Regresar</a>
+        </div>
 
-        <h1>Lista de estudiantes que han aplicado</h1>
+        <h1>Registro de estudiantes postulantes</h1>
 
         @if (session('success'))
             <div class="alert alert-success">

@@ -7,6 +7,7 @@ use App\Models\Group;
 use App\Models\Notification;
 use Exception;
 use App\Models\Profile;
+use App\Models\Protocol;
 use App\Models\User;
 use App\Models\UserNotification;
 use Illuminate\Http\Request;
@@ -44,8 +45,10 @@ class PlanningController extends Controller
         $plannings = Profile::join('groups as gr', 'profiles.group_id', 'gr.id')
             ->where('gr.protocol_id', session('protocol')['id'])
             ->where('profiles.group_id', $group->id)
-            ->paginate(10);
+            ->where('type', 0)
+            ->paginate(30);
 
+//dd($plannings);
         return view('plannings.index', compact('plannings'));
     }
 
@@ -87,6 +90,7 @@ class PlanningController extends Controller
                 ->withInput();
         }
 
+
         // Crear una nueva planificación
         $planning                        = new Profile;
         $planning->name                  = $request->input('name');
@@ -98,6 +102,8 @@ class PlanningController extends Controller
         $planning->status                = 0;
         $planning->save();
 
+
+        //  dd($planning);
         //Envio de correo a coordinador.
         $role = 'Coordinador General';
         $userRoles = User::role($role)->get(); //modificar para diferenciar por modalidades.

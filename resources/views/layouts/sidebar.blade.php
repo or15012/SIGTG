@@ -103,6 +103,7 @@
                                     </a>
                                 </li>
                             @break
+
                             @case(5)
                                 <li>
                                     <a href="{{ route('groups.initialize') }}">
@@ -207,6 +208,7 @@
                                 </li>
                             @break
 
+                            @case(2)
                             @case(5)
                                 <li>
                                     <a href="{{ route('plannings.index') }}">
@@ -224,6 +226,7 @@
                 @can('Activities.students')
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
+                            @case(2)
                             @case(5)
                                 <li>
                                     <a href="{{ route('activities.index') }}">
@@ -279,7 +282,7 @@
                                     </a>
                                 </li>
                             @break
-
+                            @case(2)
                             @case(5)
                                 <li>
                                     <a href="{{ route('profiles.preprofile.coordinator.index') }}">
@@ -323,8 +326,8 @@
 
                             @case(5)
                                 <!--
-                                                                            Esta opción no se mostrará al Coordinador del protocolo.
-                                                                        -->
+                                                                                                    Esta opción no se mostrará al Coordinador del protocolo.
+                                                                                                -->
                             @break
 
                             @default
@@ -336,6 +339,7 @@
                 @can('Activities.advisers')
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
+                            @case(2)
                             @case(5)
                                 <li>
                                     <a href="{{ route('activities.coordinator.index.groups') }}">

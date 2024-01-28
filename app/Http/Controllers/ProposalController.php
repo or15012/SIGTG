@@ -286,22 +286,22 @@ class ProposalController extends Controller
             // dd($currentGroup);
 
             //creandole el perfil internamente
-            $profile                        = new Profile();
-            $profile->name                  = "Protocolo PPP";
-            $profile->description           = "Protocolo PPP";
-            $profile->proposal_priority     = 1;
-            $profile->group_id              = $group->id;
-            $profile->status                = 1;
-            $profile->type                  = 1;
-            $profile->save();
+            // $profile                        = new Profile();
+            // $profile->name                  = "Protocolo PPP";
+            // $profile->description           = "Protocolo PPP";
+            // $profile->proposal_priority     = 1;
+            // $profile->group_id              = $group->id;
+            // $profile->status                = 1;
+            // $profile->type                  = 1;
+            // $profile->save();
 
 
             //creandole el proyecto internamente
-            $project                = new Project();
-            $project->name          =  "Pasantía profesional";
-            $project->group_id      = $group->id;
-            $project->profile_id    = $profile->id;
-            $project->save();
+            // $project                = new Project();
+            // $project->name          =  "Pasantía profesional";
+            // $project->group_id      = $group->id;
+            // $project->profile_id    = $profile->id;
+            // $project->save();
         }
 
         $application->update();
