@@ -343,9 +343,6 @@ class ProfileController extends Controller
         $preprofile->status = $request->decision;
 
         switch (session('protocol')['id']) {
-            case 2:
-            case 3:
-                break;
             case 1:
             case 4:
                 if ($request->decision == 1) {
@@ -365,6 +362,8 @@ class ProfileController extends Controller
                     $profile->save();
                 }
                 break;
+            case 2:
+            case 3:
             case 5:
                 if ($request->decision == 1) {
                     $preprofile->type = 1;
