@@ -222,6 +222,7 @@
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
                             @case(2)
+                            @case(3)
                             @case(5)
                                 <li>
                                     <a href="{{ route('activities.index') }}">
@@ -336,6 +337,7 @@
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
                             @case(2)
+                            @case(3)
                             @case(5)
                                 <li>
                                     <a href="{{ route('activities.coordinator.index.groups') }}">
