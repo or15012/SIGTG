@@ -54,7 +54,7 @@
                 </p>
             </div>
         </div>
-        @if ($application->status)
+        @if ($application->status == 0)
             <form action="{{ route('proposals.applications.coordinator.update', $application->id) }}"
                 id="form-application-confirm" method="POST">
                 @csrf
