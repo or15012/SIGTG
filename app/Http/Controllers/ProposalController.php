@@ -35,12 +35,17 @@ class ProposalController extends Controller
         $this->middleware('permission:' . self::PERMISSIONS['index.advisers'])->only(['index']);
         $this->middleware('permission:' . self::PERMISSIONS['index.students'])->only(['applicationIndex']);
         $this->middleware('permission:' . self::PERMISSIONS['index.applications.advisers'])->only(['applicationCoordinatorIndex']);
+
+        $this->middleware('check.protocol')->only(['store']);
+        $this->middleware('check.school')->only(['store']);
     }
 
     public function index()
     {
         $user = Auth::user();
-        $proposals = Proposal::where('user_id', $user->id)->get();
+        $proposals = Proposal::where('protocol_id', session('protocol')['id'])
+            ->where('school_id', session('school', ['id']))
+            ->get();
 
         return view('proposals.index', compact('proposals'));
     }
@@ -59,8 +64,12 @@ class ProposalController extends Controller
             'description'           => 'required|string',
             'path'                  => 'required|mimes:pdf',
             'amount_student'        => 'required|integer',
-            'entity_id'             => 'required|integer',
+
         ]);
+
+        if (session('protocol')['id'] == 2) {
+            $request->validate(['entity_id'   =>  'required|integer']);
+        }
 
         //dd($validatedData);
         $user = Auth::user();
@@ -77,10 +86,13 @@ class ProposalController extends Controller
             $proposals->description       = $request->input('description');
             $proposals->path              = $path;
             $proposals->amount_student    = $request->input('amount_student');
-            $proposals->entity_id         = $request->input('entity_id');
-            $proposals->status            = 0;
+            if (session('protocol')['id'] == 2) {
+                $proposals->entity_id     = $request->input('entity_id');
+            }
+            $proposals->school_id         = session('school')['id'];
+            $proposals->status            = 1;
             $proposals->user_id           = $user->id;
-
+            $proposals->protocol_id       = session('protocol')['id'];
             $proposals->save();
 
             //dd($proposals);
@@ -142,23 +154,42 @@ class ProposalController extends Controller
     public function applicationIndex()
     {
         $user = Auth::user();
-        $proposals = Proposal::all();
+        $proposals = Proposal::where('protocol_id', session('protocol')['id'])
+            ->where('school_id', session('school', ['id']))
+            ->get();
 
         return view('proposals.applications.index', compact('proposals'));
     }
 
     public function applicationCoordinatorIndex()
     {
-        $user = Auth::user();
+
         $proposals = Proposal::with('entity')->get();
-        $applications = Application::with('user')->get();
+        $applications = Application::join('proposals as p', 'applications.proposal_id', 'p.id')
+            ->where('p.protocol_id', session('protocol')['id'])
+            ->where('p.school_id', session('school')['id'])
+            ->select('applications.user_id', 'applications.name', 'applications.status', 'applications.id', 'applications.proposal_id')
+            ->with('user')
+            ->with('proposal')
+            ->get();
 
-
-        return view('proposals.applications.coordinator.index', compact(['proposals', 'applications']));
+        if (session('protocol')['id'] == 2) {
+            return view('proposals.applications.coordinator.index', compact(['proposals', 'applications']));
+        } elseif (session('protocol')['id'] == 3) {
+            return view('proposals.applications.investigation.coordinator.index', compact(['proposals', 'applications']));
+        } else {
+            abort(404, "No puede gestionar propuestas en el protocolo actual");
+        }
     }
     public function applicationCreate(Proposal $proposal)
     {
-        return view('proposals.applications.create', compact('proposal'));
+        if (session('protocol')['id'] == 2) {
+            return view('proposals.applications.create', compact('proposal'));
+        } elseif (session('protocol')['id'] == 3) {
+            return view('proposals.applications.investigation.create', compact('proposal'));
+        } else {
+            abort(404, "No puede gestionar propuestas en el protocolo actual");
+        }
     }
 
     public function applicationStore(Request $request)
@@ -168,7 +199,6 @@ class ProposalController extends Controller
         // Validar si el usuario ya ha aplicado a esta propuesta
 
         if ($user->applications()->where('proposal_id', $request->proposal_id)->exists()) {
-            //dd("entre");
             return redirect()->route('proposals.applications.index')->with('error', 'Ya has aplicado a esta propuesta.');
         }
         // Validación de los datos del formulario
@@ -194,9 +224,7 @@ class ProposalController extends Controller
             'proposal_id'   => $validatedData['proposal_id'],
         ]);
 
-
         $proposal = Proposal::find($validatedData['proposal_id']);
-        //dd($validatedData);
 
         //Envio de correo a coordinador.
         $role = 'Coordinador General';
@@ -246,12 +274,11 @@ class ProposalController extends Controller
         ]);
 
 
-        $user = $application->user; //Obteniendo usuario que ha aplicado
-        $school = $user->school; //Obteniendo escuela a la que pertenece
-        $protocol = $user->protocol->first(); //obteniendo protocolo al que pertenece
-        $cycle = Cycle::where('status', 1)->first(); //Obteniendo ciclo activo
-        $year = date('Y');
-        //dd($user,$school,$cycle,$protocol);
+        $user       = $application->user; //Obteniendo usuario que ha aplicado
+        $school     = $user->school; //Obteniendo escuela a la que pertenece
+        $protocol   = $user->protocol->first(); //obteniendo protocolo al que pertenece
+        $cycle      = Cycle::where('status', 1)->first(); //Obteniendo ciclo activo
+        $year       = date('Y');
 
         $application->status = $request->decision;
         if ($request->decision == 1) {
@@ -281,9 +308,7 @@ class ProposalController extends Controller
 
             $groupUser->save();
 
-            // Obtener el grupo recién creado
-            //  $currentGroup = Group::find($group->id);
-            // dd($currentGroup);
+
 
             //creandole el perfil internamente
             // $profile                        = new Profile();
@@ -326,13 +351,19 @@ class ProposalController extends Controller
             // Manejar la excepción
         }
 
-        return view('proposals.applications.coordinator.show', compact('application'));
+        return redirect()->route('proposals.applications.coordinator.index')->with('success', 'Estado de aplicación actualizado.');
     }
 
     public function applicationCoordinatorShow(Application $application)
     {
-        //dd($proposal);
-        return view('proposals.applications.coordinator.show', compact('application'));
+        if (session('protocol')['id'] == 2) {
+            return view('proposals.applications.coordinator.show', compact('application'));
+        } elseif (session('protocol')['id'] == 3) {
+            return view('proposals.applications.investigation.coordinator.show', compact('application'));
+        } else {
+            abort(404, "No puede gestionar propuestas en el protocolo actual");
+        }
+
     }
 
     public function applicationDownload(Application $application, $file)

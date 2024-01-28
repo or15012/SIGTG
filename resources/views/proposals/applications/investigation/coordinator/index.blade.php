@@ -12,13 +12,8 @@
         @endslot
     @endcomponent
     <div class="container">
-            <div class="contenedor">
-                <a href="{{ route('home') }}" style="margin-left: 5px" class="btn btn-danger regresar-button"><i
-                        class="fas fa-arrow-left"></i>
-                    Regresar</a>
-        </div>
 
-        <h1>Registro de estudiantes postulantes</h1>
+        <h1>Lista de aplicaciones a propuestas</h1>
 
         @if (session('success'))
             <div class="alert alert-success">
@@ -44,15 +39,15 @@
                         <td>
                             @switch($application->status)
                                 @case(0)
-                                    CV presentado.
+                                    Perfil presentado.
                                 @break
 
                                 @case(1)
-                                    CV aprobado.
+                                    Perfil aprobado.
                                 @break
 
                                 @case(2)
-                                    CV rechazado.
+                                    Perfil rechazado.
                                 @break
 
                                 @default

@@ -167,6 +167,18 @@
         "name": "Applications.advisers",
         "guard_name": "web",
         "description": "Permiso para aprobar CV de estudiantes"
+    },
+
+    {
+        "name": "Forums.advisers",
+        "guard_name": "web",
+        "description": "Permiso ver foros"
+    },
+
+    {
+        "name": "Workshops.advisers",
+        "guard_name": "web",
+        "description": "Permiso para ver talleres"
     }
 
 

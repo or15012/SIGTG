@@ -33,10 +33,8 @@ class ProfileController extends Controller
         $this->middleware('permission:' . self::PERMISSIONS['index.adviser'])->only(['preProfileCoordinatorIndex']);
         $this->middleware('permission:' . self::PERMISSIONS['index.student.profil'])->only(['profileIndex']);
         $this->middleware('permission:' . self::PERMISSIONS['index.adviser.profil'])->only(['coordinatorIndex']);
-
-        $this->middleware('check.protocol')->only(['index', 'preProfileCoordinatorUpdate']);
+        $this->middleware('check.protocol')->only(['index', 'preProfileCoordinatorUpdate', 'preProfileCoordinatorIndex']);
         $this->middleware('check.school')->only(['index']);
-
     }
 
     /**
@@ -345,9 +343,10 @@ class ProfileController extends Controller
         $preprofile->status = $request->decision;
 
         switch (session('protocol')['id']) {
-            case 1:
             case 2:
             case 3:
+                break;
+            case 1:
             case 4:
                 if ($request->decision == 1) {
                     //creare a partir del preperfil un perfil
@@ -412,7 +411,7 @@ class ProfileController extends Controller
             }
         }
 
-        return view('preprofiles.coordinator.show', compact('preprofile'));
+        return redirect()-back()->with('success', 'Registro actualizado');
     }
 
     public function preProfileCoordinatorObservationsList(Profile $preprofile)
@@ -624,7 +623,7 @@ class ProfileController extends Controller
                 'preprofile'    => $profile,
                 'status'        => $profile->status,
             ];
-            try { 
+            try {
                 Mail::to($student->email)->send(
                     new SendMail(
                         'mail.profile-updated',

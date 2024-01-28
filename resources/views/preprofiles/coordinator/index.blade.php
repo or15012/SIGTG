@@ -10,6 +10,7 @@
                 @lang('translation.Plannings')
             @break
 
+            @case(3)
             @case(5)
                 @lang('translation.Plannings')
             @break
@@ -28,14 +29,31 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>{{ $protocols[0] == 5 ? 'Lista de planificaciones' : 'Lista de pre perfiles' }} </h1>
+        <h1>
+            @if (session('protocol') != null)
+                @switch(session('protocol')['id'])
+                    @case(1)
+                    @case(4)
+                        Lista de pre perfiles
+                    @break
+
+                    @case(2)
+                    @case(3)
+                    @case(5)
+                        Lista de planificaciones
+                    @break
+
+                    @default
+                @endswitch
+            @endif
+        </h1>
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
         @endif
 
-        @if ($protocols[0] == 5)
+        @if (session('protocol')['id'] == 5 || session('protocol')['id'] == 3 || session('protocol')['id'] == 2 )
             <table class="table table-bordered table-striped table-hover">
                 <thead>
                     <tr class="table-danger">

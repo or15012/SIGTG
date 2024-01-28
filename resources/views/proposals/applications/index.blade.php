@@ -36,7 +36,9 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">{{ $proposal->name }}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Entidad: {{ $proposal->entity->name }}</h6>
+                        @if (session('protocol')['id'] == 2)
+                            <h6 class="card-subtitle mb-2 text-muted">Entidad: {{ $proposal->entity->name }}</h6>
+                        @endif
                         <p class="card-text">{{ $proposal->description }}</p>
                         <a href="{{ route('proposals.applications.create', $proposal->id) }}" class="btn btn-primary"><i
                                 class="fas fa-hand-point-up"> Aplicar</i></a>

@@ -25,10 +25,11 @@
                 {{ session('error') }}
             </div>
         @endif
-        Bienvenido {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+        
     </div>
 
     <div class="row">
+        
                 <div class="col-xl-4">
                     <div class="card bg-primary">
                         <div class="card-body">
@@ -48,18 +49,20 @@
                                 <div class="main-wid position-relative">
                                     <h3 class="text-white">SIGTG - FIADashboard</h3>
 
-                                    <h3 class="text-white mb-0"> Welcome Back, Peter Kelsey!</h3>
-
+                                    <h3 class="text-white mb-0"> Bienvenido {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</h3>
+                                    {{--
                                     <p class="text-white-50 px-4 mt-4">Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien libero tincidunt.</p>
 
                                     <div class="mt-4 pt-2 mb-2">
                                         <a href="" class="btn btn-success">View Profile <i class="mdi mdi-arrow-right ms-1"></i></a>
-                                    </div>
+                                    </div>--}}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                {{--
                 <div class="col-xl-8">
                     <div class="row">
                         <div class="col-lg-3 col-md-6">
@@ -165,13 +168,15 @@
                     </div>
                 </div>
             </div>
+            --}}
 
             <div class="row">
+                {{--
                 <div class="col-xl-8">
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex flex-wrap align-items-center mb-3">
-                                <h5 class="card-title mb-0">Sales Statistics</h5>
+                                <h5 class="card-title mb-0">Estudiantes</h5>
                                 <div class="ms-auto">
                                     <div class="dropdown">
                                         <a class="dropdown-toggle text-reset" href="#" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -260,13 +265,15 @@
                         </div>
                     </div>
                 </div>
+                --}}
 
                 <div class="col-xl-4">
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex flex-wrap align-items-center">
-                                <h5 class="card-title mb-0">Sales By Category</h5>
+                                <h5 class="card-title mb-0">Estudiantes por protocolo</h5>
                                 <div class="ms-auto">
+                                {{--
                                     <div class="dropdown">
                                         <a class="dropdown-toggle text-reset" href="#" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span class="text-muted font-size-12">Sort By:</span> <span class="fw-medium">Weekly<i class="mdi mdi-chevron-down ms-1"></i></span>
@@ -275,14 +282,50 @@
                                             <a class="dropdown-item" href="#">Monthly</a>
                                             <a class="dropdown-item" href="#">Yearly</a>
                                         </div>
-                                    </div>
+                                    </div>--}}
                                 </div>
                             </div>
 
                             <div class="text-center mt-4">
-                                <canvas class="mx-auto" id="sales-category" height="281" data-colors='["#3980c0","#51af98", "#4bafe1", "#B4B4B5", "#f1f3f4"]'></canvas>
+                                    <canvas id="students-protocol"></canvas>
                             </div>
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    var datos = @json($datos); 
 
+                                    var etiquetas = datos.map(function (elemento) {
+                                        return elemento.protocol_name + ' (' + elemento.cycle_number + '-' + elemento.cycle_year+')';
+                                    });
+
+                                    var datosEstudiantes = datos.map(function (elemento) {
+                                        return elemento.cantidad_estudiantes;
+                                    });
+
+
+                                    var ctx = document.getElementById('students-protocol').getContext('2d');
+                                    var miGrafico = new Chart(ctx, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: etiquetas,
+                                            datasets: [{
+                                                label: 'Cantidad de Estudiantes por Protocolo',
+                                                data: datosEstudiantes,
+                                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                                borderColor: 'rgba(75, 192, 192, 1)',
+                                                borderWidth: 1
+                                            }]
+                                        },
+                                        options: {
+                                            scales: {
+                                                y: {
+                                                    beginAtZero: true
+                                                }
+                                            }
+                                        }
+                                    });
+                                });
+                            </script>
+                            {{--
                             <div class="row mt-4">
                                 <div class="col">
                                     <div class="px-2">
@@ -330,12 +373,12 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>--}}
                         </div>
                     </div>
                 </div>
             </div>
-
+            {{--
             <div class="row">
                 <div class="col-xl-8">
                         <div class="row">
@@ -813,8 +856,9 @@
                     </div>
                 </div>
                 </div>
-            </div>
+            </div>--}}
 
+            {{--
             <div class="row">
                 <div class="col-xl-4">
 
@@ -1090,7 +1134,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>--}}
 @endsection
 @section('script')
     <script src="{{ URL::asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>

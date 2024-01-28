@@ -95,6 +95,7 @@
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
                             @case(1)
+                            @case(3)
                             @case(5)
                                 <li>
                                     <a href="{{ route('groups.initialize') }}">
@@ -148,10 +149,11 @@
                 @can('Applications.advisers')
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
+                            @case(3)
                             @case(2)
                                 <li>
                                     <a href="{{ route('proposals.applications.coordinator.index') }}">
-                                        <i class="bx bx-building-house icon nav-icon"></i>
+                                        <i class="bx bx-list-check icon nav-icon"></i>
                                         <span class="menu-item" data-key="t-applications">@lang('translation.Applications')</span>
                                     </a>
                                 </li>
@@ -166,10 +168,11 @@
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
                             @case(2)
+                            @case(3)
                                 <li>
                                     <a href="{{ route('proposals.index') }}">
                                         <i class="bx bx-receipt icon nav-icon"></i>
-                                        <span class="menu-item" data-key="t-proposals">@lang('translation.Proposals')</span>
+                                        <span class="menu-item" data-key="t-proposals">@lang('translation.ProposalsAdviser')</span>
                                     </a>
                                 </li>
                             @break
@@ -183,6 +186,7 @@
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
                             @case(2)
+                            @case(3)
                                 <li>
                                     <a href="{{ route('proposals.applications.index') }}">
                                         <i class="bx bx-receipt icon nav-icon"></i>
@@ -210,6 +214,7 @@
 
                             @case(2)
                             @case(5)
+                            @case(3)
                                 <li>
                                     <a href="{{ route('plannings.index') }}">
                                         <i class="bx bx-calendar icon nav-icon"></i>
@@ -284,6 +289,7 @@
                             @break
                             @case(2)
                             @case(5)
+                            @case(3)
                                 <li>
                                     <a href="{{ route('profiles.preprofile.coordinator.index') }}">
                                         <i class="bx bx-calendar icon nav-icon"></i>
@@ -453,7 +459,7 @@
                 @can('Assigned.groups')
                     <li>
                         <a href="{{ route('groups.assigned') }}">
-                            <i class="bx bx-file icon nav-icon"></i>
+                            <i class="bx bxs-user-detail icon nav-icon"></i>
                             <span class="menu-item" data-key="t-groupsassigned">@lang('translation.GroupsAssigned')</span>
                         </a>
                     </li>
@@ -464,6 +470,26 @@
                         <a href="{{ route('notifications.index') }}">
                             <i class="bx bx-bell icon nav-icon"></i>
                             <span class="menu-item" data-key="t-notifications">@lang('translation.Notifications')</span>
+                        </a>
+                    </li>
+                @endcan
+
+
+                @can('Forums.advisers')
+                    <li>
+                        <a href="{{ route('forum.index') }}">
+                            <i class="bx bx-slideshow icon nav-icon"></i>
+                            <span class="menu-item" data-key="t-forums">@lang('translation.Forums')</span>
+                        </a>
+                    </li>
+                @endcan
+
+
+                @can('Workshops.advisers')
+                    <li>
+                        <a href="{{ route('workshop.index') }}">
+                            <i class="bx bx-home-circle icon nav-icon"></i>
+                            <span class="menu-item" data-key="t-workshops">@lang('translation.Workshops')</span>
                         </a>
                     </li>
                 @endcan

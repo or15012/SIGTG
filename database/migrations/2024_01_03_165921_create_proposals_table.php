@@ -19,7 +19,7 @@ return new class extends Migration
             $table->mediumText("description")->nullable()->default(null);
             $table->string("path")->nullable()->default(null);
             $table->integer("amount_student");
-            $table->foreignId('entity_id')->constrained('entities')->onDelete('restrict');
+            $table->foreignId('entity_id')->nullable()->constrained('entities')->onDelete('restrict');
             $table->boolean('status');
             $table->foreignId('user_id')->constrained('users')->onDelete('restrict');
             $table->timestamps();
