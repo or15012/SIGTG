@@ -307,11 +307,19 @@ class ProfileController extends Controller
             ->where('protocol_id', session('protocol')['id'])
             ->get(['id']);
 
-        $preprofiles = Profile::join('groups as g', 'g.id', 'profiles.group_id')
+        if(session('protocol')['id'] == 1){
+            $preprofiles = Profile::join('groups as g', 'g.id', 'profiles.group_id')
             ->whereIn('group_id', $groups)
             ->where('type', 0)
             ->select('profiles.status', 'profiles.name', 'profiles.description', 'profiles.created_at', 'g.number', 'profiles.id')
             ->paginate(10);
+        }else{
+            $preprofiles = Profile::join('groups as g', 'g.id', 'profiles.group_id')
+            ->whereIn('group_id', $groups)
+            ->select('profiles.status', 'profiles.name', 'profiles.description', 'profiles.created_at', 'g.number', 'profiles.id')
+            ->paginate(10);
+        }
+
 
         $protocols = $user->protocol()
             ->wherePivot('status', 1)
