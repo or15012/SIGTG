@@ -33,11 +33,11 @@
             @if (session('protocol') != null)
                 @switch(session('protocol')['id'])
                     @case(1)
-                    @case(2)
                     @case(4)
                         Lista de pre perfiles
                     @break
 
+                    @case(2)
                     @case(3)
                     @case(5)
                         Lista de planificaciones
@@ -53,7 +53,7 @@
             </div>
         @endif
 
-        @if (session('protocol')['id'] == 5 || session('protocol')['id'] == 3)
+        @if (session('protocol')['id'] == 5 || session('protocol')['id'] == 3 || session('protocol')['id'] == 2 )
             <table class="table table-bordered table-striped table-hover">
                 <thead>
                     <tr class="table-danger">
