@@ -410,7 +410,7 @@ class ProfileController extends Controller
             }
         }
 
-        return redirect()-back()->with('success', 'Registro actualizado');
+        return redirect()->back()->with('success', 'Registro actualizado');
     }
 
     public function preProfileCoordinatorObservationsList(Profile $preprofile)
