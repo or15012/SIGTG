@@ -27,7 +27,6 @@
                 <tr class="table-danger">
                     <th>Nombre</th>
                     <th style="width: 40%">Descripcion</th>
-                    <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -36,7 +35,6 @@
                 <tr>
                     <td>{{$forum->name}}</td>
                     <td>{{$forum->description}}</td>
-                    <td>{{$forum->status()}}</td>
                     <td>
                         <a href="{{ route('forum.show', $forum->id) }}" class="btn btn-primary"><i
                             class="fas fa-eye"></i>

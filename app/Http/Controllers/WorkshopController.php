@@ -41,6 +41,8 @@ class WorkshopController extends Controller
             'name'                  => 'required|string|max:255',
             'description'           => 'required|string',
             'path'                  => 'required|mimes:pdf',
+            'school_id'             => 'required',
+            'cycle_id'              => 'required',
         ]);
 
         //dd($validatedData);
@@ -56,6 +58,8 @@ class WorkshopController extends Controller
             $workshop->name              = $request->input('name');
             $workshop->description       = $request->input('description');
             $workshop->path              = $path;
+            $workshop->school_id         = $request->input('school_id');
+            $workshop->cycle_id          = $request->input('cycle_id');
 
             $workshop->save();
 

@@ -41,6 +41,8 @@ class ForumController extends Controller
             'name'                  => 'required|string|max:255',
             'description'           => 'required|string',
             'path'                  => 'required|mimes:pdf',
+            'school_id'             => 'required',
+            'cycle_id'              => 'required',
         ]);
 
         //dd($validatedData);
@@ -56,6 +58,8 @@ class ForumController extends Controller
             $forum->name              = $request->input('name');
             $forum->description       = $request->input('description');
             $forum->path              = $path;
+            $forum->school_id         = $request->input('school_id');
+            $forum->cycle_id          = $request->input('cycle_id');
 
             $forum->save();
 

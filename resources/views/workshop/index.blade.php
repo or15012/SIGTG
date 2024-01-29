@@ -27,7 +27,6 @@
                 <tr class="table-danger">
                     <th>Nombre</th>
                     <th style="width: 40%">Descripcion</th>
-                    <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -36,7 +35,7 @@
                 <tr>
                     <td>{{$workshop->name}}</td>
                     <td>{{$workshop->description}}</td>
-                    <td>{{$workshop->status()}}</td>
+                    
                     <td>
                         <a href="{{ route('workshop.show', $workshop->id) }}" class="btn btn-primary"><i
                             class="fas fa-eye"></i>
