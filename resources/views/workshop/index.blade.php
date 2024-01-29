@@ -12,7 +12,7 @@
         @endslot
     @endcomponent
     <div class="container">
-        
+
         <h1>Lista de Talleres de Investigación</h1>
         <a href="{{ route('workshop.create') }}" class="btn btn-primary mb-3">Nuevo taller de Investigación</a>
 
@@ -21,21 +21,25 @@
                 {{ session('success') }}
             </div>
         @endif
-        
+
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr class="table-danger">
                     <th>Nombre</th>
+                    <th style="width: 20%">Fecha</th>
+                    <th style="width: 20%">Lugar</th>
                     <th style="width: 40%">Descripcion</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($workshop as $workshop)
+                @foreach ($workshops as $workshop)
                 <tr>
                     <td>{{$workshop->name}}</td>
+                    <td>{{ \Carbon\Carbon::parse($workshop->date)->format('d-m-Y H:i:s') }}</td>
+                    <td>{{ $workshop->place }}</td>
                     <td>{{$workshop->description}}</td>
-                    
+
                     <td>
                         <a href="{{ route('workshop.show', $workshop->id) }}" class="btn btn-primary"><i
                             class="fas fa-eye"></i>
@@ -46,7 +50,7 @@
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger buttonDelete"><i
                                     class="fas fa-trash-alt"></i></button>
-                        </form> 
+                        </form>
                     </td>
                 </tr>
                 @endforeach

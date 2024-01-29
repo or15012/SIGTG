@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SendMail;
 use App\Models\Forum;
 use App\Models\Cycle;
+use App\Models\Group;
 use App\Models\School;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ForumController extends Controller
 {
@@ -23,7 +27,7 @@ class ForumController extends Controller
     public function index()
     {
         $forums = Forum::where('school_id', session('school', ['id']))
-                    ->get();
+            ->get();
 
         return view('forum.index', compact('forums'));
     }
@@ -43,9 +47,8 @@ class ForumController extends Controller
             'name'          => 'required|string|max:255',
             'description'   => 'required|string',
             'place'         => 'required|string',
-            'date'          => 'required|date_format:Y-m-d H:i:s',
+            'date'          => 'required|date',
             'path'          => 'required|mimes:pdf',
-            'school_id'     => 'required',
             'cycle_id'      => 'required',
         ]);
 
@@ -59,16 +62,37 @@ class ForumController extends Controller
             $forum->name        = $request->input('name');
             $forum->description = $request->input('description');
             $forum->place       = $request->input('place');
-            $forum->date        = $request->input('date');
+            $forum->date        = date('Y-m-d H:i:s', strtotime($validatedData['date']));
             $forum->path        = $path;
-            $forum->school_id   = $request->input('school_id');
+            $forum->school_id   = session('school')['id'];
             $forum->cycle_id    = $request->input('cycle_id');
-
             $forum->save();
 
-            return redirect()->route('forum.index')->with('success', 'Se añadió el taller correctamente.');
+            //obtendre estudiantes de la escuela del protocolo y del ciclo activo
+            $getStudents        = Group::join('user_group as ug', 'groups.id', 'ug.group_id')
+                ->join('users as u', 'u.id', 'ug.user_id')
+                ->join('user_protocol as up', 'up.user_id', 'u.id')
+                ->where('groups.cycle_id', $request->input('cycle_id'))
+                ->where('u.school_id', session('school', ['id']))
+                ->where('up.status', true)
+                ->where('up.protocol_id', 5)
+                ->select('u.email', 'u.first_name', 'u.last_name')
+                ->get();
+
+            // Preparar un conjunto de datos común para todos los estudiantes
+            $emailData = [
+                'forum' => $forum, // Puedes agregar otros datos que necesites en la vista del correo
+            ];
+
+            try {
+                Mail::bcc($getStudents->pluck('email')->toArray())->send(new SendMail('mail.send-invitation-forum', 'Notificación de foro', $emailData));
+            } catch (Exception $th) {
+                //throw $th;
+            }
+
+            return redirect()->route('forum.index')->with('success', 'Se añadió el foro correctamente.');
         } catch (\Throwable $th) {
-            return redirect()->route('forum.index')->with('error', 'El taller no pudo ser añadido.');
+            return redirect()->route('forum.index')->with('error', 'El foro no pudo ser añadido.');
         }
     }
 

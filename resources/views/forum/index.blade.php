@@ -35,24 +35,23 @@
             </thead>
             <tbody>
                 @foreach ($forums as $forum)
-                <tr>
-                    <td>{{$forum->name}}</td>
-                    <td>{{$forum->date->format('d-m-Y H:i:s')}}</td>
-                    <td>{{$forum->place}}</td>
-                    <td>{{$forum->description}}</td>
-                    <td>
-                        <a href="{{ route('forum.show', $forum->id) }}" class="btn btn-primary"><i
-                            class="fas fa-eye"></i>
-                        </a>
-                        <form action="{{ route('forum.destroy', $forum->id) }}" method="POST"
-                            style="display: inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger buttonDelete"><i
-                                    class="fas fa-trash-alt"></i></button>
-                        </form>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>{{ $forum->name }}</td>
+                        <td>{{ \Carbon\Carbon::parse($forum->date)->format('d-m-Y H:i:s') }}</td>
+                        <td>{{ $forum->place }}</td>
+                        <td>{{ $forum->description }}</td>
+                        <td>
+                            <a href="{{ route('forum.show', $forum->id) }}" class="btn btn-primary"><i
+                                    class="fas fa-eye"></i>
+                            </a>
+                            <form action="{{ route('forum.destroy', $forum->id) }}" method="POST" style="display: inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger buttonDelete"><i
+                                        class="fas fa-trash-alt"></i></button>
+                            </form>
+                        </td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
@@ -60,5 +59,5 @@
 @endsection
 
 @section('script')
-     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+    <script src="{{ URL::asset('assets/js/app.js') }}"></script>
 @endsection

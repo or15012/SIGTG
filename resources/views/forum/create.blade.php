@@ -64,7 +64,7 @@
             <div class="row mb-3">
                 <div class="col-12">
                     <label for="school_id" class="form-label">Escuela</label>
-                    <select class="form-select" id="school_id" name="school_id" readonly>
+                    <select class="form-select" id="school_id" name="school_id" disabled>
                         @foreach ($schools as $school)
                             <option value="{{ $school->id }}" @if ($school->id == session('school')['id']) selected @endif>
                                 {{ $school->name }}

@@ -48,6 +48,16 @@
             </div>
 
             <div class="mb-3">
+                <label for="place" class="form-label">Lugar:</label>
+                <input class="form-control" type="text" id="place" name="place" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="date" class="form-label">Fecha:</label>
+                <input class="form-control" type="datetime-local" id="date" name="date" required>
+            </div>
+
+            <div class="mb-3">
                 <label for="path" class="form-label">Archivo de información:</label>
                 <input type="file" class="form-control" accept=".pdf,.PDF" id="path" name="path" required>
             </div>
@@ -55,7 +65,7 @@
             <div class="row mb-3">
                 <div class="col-12">
                     <label for="school_id" class="form-label">Escuela</label>
-                    <select class="form-select" id="school_id" name="school_id" readonly>
+                    <select class="form-select" id="school_id" name="school_id" disabled>
                         @foreach ($schools as $school)
                             <option value="{{ $school->id }}" @if ($school->id == session('school')['id']) selected @endif>
                                 {{ $school->name }}
@@ -64,7 +74,7 @@
                     </select>
                 </div>
             </div>
-            
+
 
             <div class="row mb-3">
                 <div class="col-12">
