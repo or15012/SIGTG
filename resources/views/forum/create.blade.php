@@ -14,8 +14,7 @@
     @endcomponent
     <div class="container">
         <div class="contenedor">
-            <a href="{{ route('forum.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
-                Regresar</a>
+            <a href="{{ route('forum.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i> Regresar</a>
         </div>
         <h1>Registrar foro</h1>
 
@@ -48,10 +47,19 @@
             </div>
 
             <div class="mb-3">
+                <label for="place" class="form-label">Lugar:</label>
+                <input class="form-control" type="text" id="place" name="place" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="date" class="form-label">Fecha:</label>
+                <input class="form-control" type="datetime-local" id="date" name="date" required>
+            </div>
+
+            <div class="mb-3">
                 <label for="path" class="form-label">Archivo de propuesta:</label>
                 <input type="file" class="form-control" accept=".pdf,.PDF" id="path" name="path" required>
             </div>
-
 
             <div class="contenedor">
                 <a href="{{ route('forum.index') }}" class="btn btn-danger regresar-button">Cancelar</a>

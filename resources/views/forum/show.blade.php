@@ -25,6 +25,18 @@
 
         <div class="row">
             <div class="mb-3 col-12 col-md-6">
+                <label for="date" class="form-label">Fecha:</label>
+                <p>{{ $forum->date->format('Y-m-d H:i:s') }}</p>
+            </div>
+
+            <div class="mb-3 col-12 col-md-6">
+                <label for="place" class="form-label">Lugar:</label>
+                <p>{{ $forum->place }}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="mb-3 col-12 col-md-6">
                 <label for="path" class="form-label">Archivo de foro:</label>
                 <p>
                     <a href="{{ route('forum.download', ['forum' => $forum->id, 'file' => 'path']) }}" target="_blank"
@@ -32,8 +44,6 @@
                 </p>
             </div>
         </div>
-        
-
     </div>
 @endsection
 

@@ -22,54 +22,54 @@ class ForumController extends Controller
 
     public function index()
     {
-        $forum = Forum::get();
-        return view('forum.index', compact('forum'));
+        $forums = Forum::where('school_id', session('school', ['id']))
+                    ->get();
+
+        return view('forum.index', compact('forums'));
     }
 
     public function create()
     {
-        $schools   = School::all();
-        $cycles    = Cycle::all();
+        $schools    = School::all();
+        $cycles     = Cycle::all();
 
-        return view('forum.create')->with(compact('schools', 'cycles')); 
+        return view('forum.create')->with(compact('schools', 'cycles'));
     }
 
     public function store(Request $request)
     {
         // Validación de los datos del formulario
         $validatedData = $request->validate([
-            'name'                  => 'required|string|max:255',
-            'description'           => 'required|string',
-            'path'                  => 'required|mimes:pdf',
+            'name'          => 'required|string|max:255',
+            'description'   => 'required|string',
+            'place'         => 'required|string',
+            'date'          => 'required|date_format:Y-m-d H:i:s',
+            'path'          => 'required|mimes:pdf',
         ]);
 
-        //dd($validatedData);
-        $user = Auth::user();
         // Procesar y guardar el archivo
         if ($request->hasFile('path')) {
             $path = $request->file('path')->store('forum');
-            //dd($path);
         }
 
         try {
             $forum = new Forum;
-            $forum->name              = $request->input('name');
-            $forum->description       = $request->input('description');
-            $forum->path              = $path;
+            $forum->name        = $request->input('name');
+            $forum->description = $request->input('description');
+            $forum->place       = $request->input('place');
+            $forum->date        = $request->input('date');
+            $forum->path        = $path;
 
             $forum->save();
 
-            //dd($forum);
             return redirect()->route('forum.index')->with('success', 'Se añadió el taller correctamente.');
         } catch (\Throwable $th) {
-            dd($th->getMessage());
             return redirect()->route('forum.index')->with('error', 'El taller no pudo ser añadido.');
         }
     }
 
     public function show(Forum $forum)
     {
-        //dd($forum);
         return view('forum.show', compact('forum'));
     }
 
@@ -82,10 +82,6 @@ class ForumController extends Controller
     public function forumDownload(Forum $forum, $file)
     {
         $filePath = storage_path('app/' . $forum->$file);
-        //dd($filePath);
         return response()->download($filePath);
     }
-
-
-
 }

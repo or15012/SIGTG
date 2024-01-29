@@ -31,7 +31,7 @@ class WorkshopController extends Controller
         $schools   = School::all();
         $cycles    = Cycle::all();
 
-        return view('workshop.create')->with(compact('schools', 'cycles')); 
+        return view('workshop.create')->with(compact('schools', 'cycles'));
     }
 
     public function store(Request $request)
@@ -62,7 +62,6 @@ class WorkshopController extends Controller
             //dd($workshop);
             return redirect()->route('workshop.index')->with('success', 'Se añadió el taller correctamente.');
         } catch (\Throwable $th) {
-            dd($th->getMessage());
             return redirect()->route('workshop.index')->with('error', 'El taller no pudo ser añadido.');
         }
     }

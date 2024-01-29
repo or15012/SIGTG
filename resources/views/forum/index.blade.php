@@ -12,7 +12,7 @@
         @endslot
     @endcomponent
     <div class="container">
-        
+
         <h1>Lista de foros</h1>
         <a href="{{ route('forum.create') }}" class="btn btn-primary mb-3">Nuevo foro</a>
 
@@ -21,20 +21,24 @@
                 {{ session('success') }}
             </div>
         @endif
-        
+
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr class="table-danger">
                     <th>Nombre</th>
-                    <th style="width: 40%">Descripcion</th>
+                    <th style="width: 20%">Fecha</th>
+                    <th style="width: 20%">Lugar</th>
+                    <th style="width: 30%">Descripcion</th>
                     <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($forum as $forum)
+                @foreach ($forums as $forum)
                 <tr>
                     <td>{{$forum->name}}</td>
+                    <td>{{$forum->date->format('d-m-Y H:i:s')}}</td>
+                    <td>{{$forum->place}}</td>
                     <td>{{$forum->description}}</td>
                     <td>{{$forum->status()}}</td>
                     <td>
@@ -47,7 +51,7 @@
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger buttonDelete"><i
                                     class="fas fa-trash-alt"></i></button>
-                        </form> 
+                        </form>
                     </td>
                 </tr>
                 @endforeach
