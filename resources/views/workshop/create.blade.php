@@ -52,6 +52,32 @@
                 <input type="file" class="form-control" accept=".pdf,.PDF" id="path" name="path" required>
             </div>
 
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="school_id" class="form-label">Escuela</label>
+                    <select class="form-select" id="school_id" name="school_id" readonly>
+                        @foreach ($schools as $school)
+                            <option value="{{ $school->id }}" @if ($school->id == session('school')['id']) selected @endif>
+                                {{ $school->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            
+
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="cycle_id" class="form-label">Ciclo</label>
+                    <select class="form-select" id="cycle_id" name="cycle_id" required>
+                        @foreach ($cycles as $cycle)
+                            <option @if ($cycle->id == old('cycle_id')) selected @endif value="{{ $cycle->id }}">
+                                {{ $cycle->number . ' - ' . $cycle->year }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
 
             <div class="contenedor">
                 <a href="{{ route('workshop.index') }}" class="btn btn-danger regresar-button">Cancelar</a>

@@ -45,6 +45,8 @@ class ForumController extends Controller
             'place'         => 'required|string',
             'date'          => 'required|date_format:Y-m-d H:i:s',
             'path'          => 'required|mimes:pdf',
+            'school_id'     => 'required',
+            'cycle_id'      => 'required',
         ]);
 
         // Procesar y guardar el archivo
@@ -59,6 +61,8 @@ class ForumController extends Controller
             $forum->place       = $request->input('place');
             $forum->date        = $request->input('date');
             $forum->path        = $path;
+            $forum->school_id   = $request->input('school_id');
+            $forum->cycle_id    = $request->input('cycle_id');
 
             $forum->save();
 

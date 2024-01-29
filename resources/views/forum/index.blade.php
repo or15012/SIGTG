@@ -40,7 +40,6 @@
                     <td>{{$forum->date->format('d-m-Y H:i:s')}}</td>
                     <td>{{$forum->place}}</td>
                     <td>{{$forum->description}}</td>
-                    <td>{{$forum->status()}}</td>
                     <td>
                         <a href="{{ route('forum.show', $forum->id) }}" class="btn btn-primary"><i
                             class="fas fa-eye"></i>
