@@ -81,7 +81,7 @@ class PlanningController extends Controller
             })
             ->first();
         $validatedPlanningPriority = Profile::where('group_id', $group->id)
-            ->where('proposal_priority', $request->input('proposal_priority'))
+            ->where('proposal_priority', 1)
             ->first();
 
         if (isset($validatedPlanningPriority)) {
