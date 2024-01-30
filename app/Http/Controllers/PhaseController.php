@@ -6,6 +6,7 @@ use App\Models\Cycle;
 use App\Models\Parameter;
 use App\Models\Phase;
 use App\Models\Stage;
+use Exception;
 use Illuminate\Http\Request;
 
 class PhaseController extends Controller
@@ -124,6 +125,16 @@ class PhaseController extends Controller
         return redirect()->back()->with('success', 'Fase actualizada con éxito');
     }
 
+    public function getPhase(Phase $phase)
+    {
+        try {
+            return response()->json(['success' => true, 'phase' => $phase]);
+        } catch (Exception $th) {
+            return response()->json(['success' => false, 'phase' => []]);
+        }
+
+
+    }
 
 
 }

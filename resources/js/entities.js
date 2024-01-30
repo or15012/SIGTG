@@ -1,5 +1,4 @@
 jQuery(function(){
-    console.log('entities js loaded');
 });
 
 
@@ -16,7 +15,6 @@ addContact = function (){
                     <td><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)"><i class="fas fa-trash"></i></button></td>
                </tr>`;
     $('#table-contacts tbody').append(row);
-    console.log('runned');
 }
 
 removeRow = function(element){

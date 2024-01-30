@@ -136,8 +136,11 @@
                 </table>
             </div>
         </div>
+        <div id="phase" class="phase d-none">
+            <h2>Fase actual: <span id="name-phase"></span></h4>
+        </div>
         <div>
-            <h3>Areas evaluativas</h3>
+            <h3>Areas evaluativas:</h3>
         </div>
         <div class="row">
             @php
@@ -175,7 +178,7 @@
                                     </div>
 
                                 </div>
-                                <a class="card-footer text-black clearfix small z-1 bg-primary"
+                                <a class="card-footer text-black clearfix small z-1 bg-primary enabled" data-value="{{$stage->id}}"
                                     href="{{ route('evaluations.show.subareas', [$project->id, $stage->id]) }}">
                                     <span class="float-left text-white ">Ver Detalles</span>
                                     <span class="float-right text-white">
@@ -290,5 +293,5 @@
 
 @section('script')
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
-    <script src="{{ URL::asset('js/project_index.js') }}"></script>
+    <script src="{{ URL::asset('js/evaluation_index.js') }}"></script>
 @endsection
