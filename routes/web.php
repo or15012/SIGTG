@@ -3,6 +3,7 @@
 use App\Http\Controllers\ActivityControlador;
 use App\Http\Controllers\ActivityControllador;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\AdviserController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CriteriaStageController;
@@ -427,6 +428,21 @@ Route::group(['prefix' => 'activities', 'as' => 'activities.'], function () {
         Route::get('/index/{group}', [ActivityController::class, 'indexCoordinator'])->name('index');
     });
 });
+
+
+//Grupo para las rutas de actividad de asesores
+Route::group(['prefix' => 'advisers', 'as' => 'advisers.'], function () {
+    Route::get('/', [AdviserController::class, 'index'])->name('index');
+    Route::group(['prefix' => '/activities', 'as' => 'activities.'], function () {
+        Route::get('/', [AdviserController::class, 'index_actividades'])->name('index');
+        Route::get('/create', [AdviserController::class, 'create'])->name('create');
+        Route::post('/store', [AdviserController::class,  'store'])->name('store');
+        Route::get('/{activity}/edit', [AdviserController::class, 'edit'])->name('edit');
+        Route::put('/update/{activity}', [AdviserController::class, 'update'])->name('update');
+        Route::get('/show/{id}', [AdviserController::class, 'show'])->name('show');
+    });
+});
+
 
 //Grupo para las rutas de bitacora
 Route::group(['prefix' => 'logs', 'as' => 'logs.'], function () {
