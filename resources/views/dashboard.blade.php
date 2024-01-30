@@ -30,7 +30,7 @@
 
     <div class="row">
         
-                <div class="col-xl-4">
+                <div class="col-xl-4 ">
                     <div class="card bg-primary">
                         <div class="card-body">
                             <div class="text-center py-3">
@@ -267,22 +267,20 @@
                 </div>
                 --}}
 
-                <div class="col-xl-4">
+                <div class="col-xl-12">
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex flex-wrap align-items-center">
                                 <h5 class="card-title mb-0">Estudiantes por protocolo</h5>
                                 <div class="ms-auto">
-                                {{--
-                                    <div class="dropdown">
-                                        <a class="dropdown-toggle text-reset" href="#" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="text-muted font-size-12">Sort By:</span> <span class="fw-medium">Weekly<i class="mdi mdi-chevron-down ms-1"></i></span>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-                                            <a class="dropdown-item" href="#">Monthly</a>
-                                            <a class="dropdown-item" href="#">Yearly</a>
-                                        </div>
-                                    </div>--}}
+                                <div class="mb-3">
+                                    <label for="cycle-select" class="form-label">Seleccionar Ciclo:</label>
+                                    <select class="form-select" id="cycle-select"  onchange="updateData()">
+                                        @foreach($ciclos as $ciclo)
+                                            <option value="{{ $ciclo->id }}">{{$ciclo->number}} - {{$ciclo->year}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 </div>
                             </div>
 
@@ -1141,4 +1139,58 @@
     <script src="{{ URL::asset('assets/js/pages/chartjs.js') }}"></script>
     <script src="{{ URL::asset('assets/js/pages/dashboard.init.js') }}"></script>
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+        function updateData(){
+            var id = document.getElementById('cycle-select').value;
+            
+            $.ajax({
+                    url: '{{route('dashboard.cycle')}}/'+id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        document.addEventListener("DOMContentLoaded", function () {
+                        var datos = data.new_datos;
+
+                        var etiquetas = datos.map(function (elemento) {
+                            return elemento.protocol_name + ' (' + elemento.cycle_number + '-' + elemento.cycle_year+')';
+                        });
+
+                        var datosEstudiantes = datos.map(function (elemento) {
+                            return elemento.cantidad_estudiantes;
+                        });
+
+
+                        var ctx = document.getElementById('students-protocol').getContext('2d');
+                        var miGrafico = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                            labels: etiquetas,
+                            datasets: [{
+                                label: 'Cantidad de Estudiantes por Protocolo',
+                                data: datosEstudiantes,
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                        }
+                                }
+                            }
+                        });
+                    });
+
+
+                    }
+                });
+
+        }
+        
+
+    </script>
 @endsection
