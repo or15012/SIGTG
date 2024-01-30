@@ -75,7 +75,7 @@ class WorkshopController extends Controller
                 ->where('groups.cycle_id', $request->input('cycle_id'))
                 ->where('u.school_id', session('school', ['id']))
                 ->where('up.status', true)
-                ->where('up.protocol_id', 5)
+                ->where('up.protocol_id', 3)
                 ->select('u.email', 'u.first_name', 'u.last_name')
                 ->get();
 
@@ -110,7 +110,6 @@ class WorkshopController extends Controller
     public function workshopDownload(Workshop $workshop, $file)
     {
         $filePath = storage_path('app/' . $workshop->$file);
-        //dd($filePath);
         return response()->download($filePath);
     }
 }

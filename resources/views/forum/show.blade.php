@@ -11,6 +11,10 @@
                 Regresar</a>
         </div>
         <h1 class="mb-5">Consultar foro</h1>
+
+        <div class="row">
+            <h4>Cantidad de asistentes esperada a foro: {{ $forum->assistences->count() }}</h4>
+        </div>
         <div class="row">
             <div class="mb-3 col-12 col-md-6">
                 <label for="name" class="form-label">Nombre:</label>
@@ -26,7 +30,7 @@
         <div class="row">
             <div class="mb-3 col-12 col-md-6">
                 <label for="date" class="form-label">Fecha:</label>
-                <p>{{ $forum->date->format('Y-m-d H:i:s') }}</p>
+                <p>{{ \Carbon\Carbon::parse($forum->date)->format('d-m-Y H:i:s') }}</p>
             </div>
 
             <div class="mb-3 col-12 col-md-6">
@@ -39,12 +43,17 @@
             <div class="mb-3 col-12 col-md-6">
                 <label for="path" class="form-label">Archivo de foro:</label>
                 <p>
-                    <a href="{{ route('forum.download', ['forum' => $forum->id, 'file' => 'path']) }}" target="_blank"
+                    <a href="{{ route('forum.download', [$forum->id, 'path']) }}" target="_blank"
                         class="btn btn-secondary archivo">Ver archivo</a>
                 </p>
             </div>
         </div>
     </div>
+
+
+
+
+
 @endsection
 
 @section('script')

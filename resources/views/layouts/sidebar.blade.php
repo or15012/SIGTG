@@ -486,6 +486,13 @@
                     </li>
                 @endcan
 
+                <li>
+                    <a href="{{ route('forum.show.list.forums.workshops') }}">
+                        <i class="bx bx-home-circle icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-workshops">Talleres y foros</span>
+                    </a>
+                </li>
+
 
 
                 {{-- <li>
