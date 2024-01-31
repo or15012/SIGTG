@@ -28,7 +28,7 @@ class Workshop extends Model
         return $this->belongsTo(School::class, 'school_id');
     }
 
-    public function assistences()
+    public function userForumWorkshops()
     {
         return $this->hasMany(UserForumWorkshop::class, 'workshop_id');
     }

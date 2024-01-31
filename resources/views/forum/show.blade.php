@@ -13,7 +13,7 @@
         <h1 class="mb-5">Consultar foro</h1>
 
         <div class="row">
-            <h4>Cantidad de asistentes esperada a foro: {{ $forum->assistences->count() }}</h4>
+            <h4>Cantidad de asistentes esperada a foro: {{ $forum->userForumWorkshops->count() }}</h4>
         </div>
         <div class="row">
             <div class="mb-3 col-12 col-md-6">
@@ -48,12 +48,46 @@
                 </p>
             </div>
         </div>
+
+        <h4>Lista de estudiantes inscritos</h4>
+        <div>
+            <form action="{{ route('forum.assistence.store') }}" method="POST">
+                @csrf
+                <input type="hidden" name="forum_id" value="{{ $forum->id }}">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr class="table-danger">
+                            <th>Carnet</th>
+                            <th>Nombre</th>
+                            <th>Marcar asistencia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($users as $user)
+                            <tr>
+                                <td>{{ $user->user->carnet }}</td>
+                                <td>{{ $user->user->first_name }}
+                                    {{ $user->user->middle_name }}
+                                    {{ $user->user->last_name }}
+                                    {{ $user->user->second_last_name }}</td>
+                                <td>
+                                    <input type="checkbox" name="students[{{ $user->id }}]"
+                                        @if ($user->status == 1) checked @endif>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="2">No hay estudiantes inscritos</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+                <div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
     </div>
-
-
-
-
-
 @endsection
 
 @section('script')

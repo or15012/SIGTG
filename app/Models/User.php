@@ -116,4 +116,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Application::class);
     }
+
+    public function userForumWorkshops()
+    {
+        return $this->hasMany(UserForumWorkshop::class, 'user_id');
+    }
 }

@@ -8,9 +8,11 @@ use App\Models\Workshop;
 use App\Models\Cycle;
 use App\Models\Group;
 use App\Models\School;
+use App\Models\UserForumWorkshop;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class WorkshopController extends Controller
@@ -97,8 +99,11 @@ class WorkshopController extends Controller
 
     public function show(Workshop $workshop)
     {
-        //dd($workshop);
-        return view('workshop.show', compact('workshop'));
+        $users = UserForumWorkshop::where('workshop_id', $workshop->id)
+            ->with('user') // Cargar la relación con el modelo User
+            ->get(); // Extraer la relación User
+
+        return view('workshop.show', compact('workshop', 'users'));
     }
 
     public function destroy(Workshop $workshop)
@@ -111,5 +116,22 @@ class WorkshopController extends Controller
     {
         $filePath = storage_path('app/' . $workshop->$file);
         return response()->download($filePath);
+    }
+
+    public function assistenceStore(Request $request)
+    {
+        $values = array();
+        if (isset($request->students)) {
+            foreach ($request->students as $key => $value) {
+                $values[] = $key;
+            };
+
+            DB::table('user_forum_workshop')->where('workshop_id', $request->workshop_id)->update(['status' => 0]);
+            DB::table('user_forum_workshop')->whereIn('id', $values)->update(['status' => 1]);
+        } else {
+            DB::table('user_forum_workshop')->where('workshop_id', $request->workshop_id)->update(['status' => 0]);
+        }
+
+        return redirect()->back()->with('success', 'Asistencias registrada.');
     }
 }

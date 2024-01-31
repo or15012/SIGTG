@@ -28,7 +28,7 @@ class Forum extends Model
     }
 
     // Relación con el modelo escuelas
-    public function assistences()
+    public function userForumWorkshops()
     {
         return $this->hasMany(UserForumWorkshop::class, 'forum_id');
     }
