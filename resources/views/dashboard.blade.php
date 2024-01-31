@@ -288,6 +288,7 @@
                                     <canvas id="students-protocol"></canvas>
                             </div>
                             <script>
+                                var miGrafico;
                                 document.addEventListener("DOMContentLoaded", function () {
                                     var datos = @json($datos); 
 
@@ -298,17 +299,19 @@
                                     var datosEstudiantes = datos.map(function (elemento) {
                                         return elemento.cantidad_estudiantes;
                                     });
-
+                                    var colores = datos.map(function () {
+                                        return 'rgba(' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ', 0.2)';
+                                    });
 
                                     var ctx = document.getElementById('students-protocol').getContext('2d');
-                                    var miGrafico = new Chart(ctx, {
+                                    miGrafico = new Chart(ctx, {
                                         type: 'bar',
                                         data: {
                                             labels: etiquetas,
                                             datasets: [{
                                                 label: 'Cantidad de Estudiantes por Protocolo',
                                                 data: datosEstudiantes,
-                                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                                backgroundColor: colores,
                                                 borderColor: 'rgba(75, 192, 192, 1)',
                                                 borderWidth: 1
                                             }]
@@ -323,59 +326,76 @@
                                     });
                                 });
                             </script>
-                            {{--
-                            <div class="row mt-4">
-                                <div class="col">
-                                    <div class="px-2">
-                                        <div class="d-flex align-items-center mt-sm-0 mt-2">
-                                            <i class="mdi mdi-circle font-size-10 mt-1 text-primary"></i>
-                                            <div class="flex-grow-1 ms-2">
-                                                <p class="mb-0 text-truncate">Watch OS 8</p>
-                                            </div>
-                                            <div class="flex-shrink-0">
-                                                <span class="fw-bold">35.0%</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex align-items-center mt-2">
-                                            <i class="mdi mdi-circle font-size-10 mt-1 text-success"></i>
-                                                <div class="flex-grow-1 ms-2">
-                                                    <p class="mb-0 text-truncate">Iphone 12</p>
-                                                </div>
-                                            <div class="flex-shrink-0">
-                                                <span class="fw-bold">15.0%</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="px-2">
-                                        <div class="d-flex align-items-center mt-sm-0 mt-2">
-                                                <i class="mdi mdi-circle font-size-10 mt-1 text-info"></i>
-                                                <div class="flex-grow-1 ms-2">
-                                                    <p class="mb-0 text-truncate">Horror Book</p>
-                                                </div>
-                                                <div class="flex-shrink-0">
-                                                    <span class="fw-bold">8.0%</span>
-                                                </div>
-                                        </div>
-
-                                        <div class="d-flex align-items-center mt-2">
-                                                <i class="mdi mdi-circle font-size-10 mt-1 text-secondary"></i>
-                                                <div class="flex-grow-1 ms-2">
-                                                    <p class="mb-0 text-truncate">Smart 4k TV</p>
-                                                </div>
-                                                <div class="flex-shrink-0">
-                                                    <span class="fw-bold">7.0%</span>
-                                                </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>--}}
                         </div>
                     </div>
                 </div>
             </div>
+            @if(session('protocol')['id'] != null)
+            <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-wrap align-items-center">
+                                <h5 class="card-title mb-0">Estudiantes por curso</h5>
+                                <div class="ms-auto">
+                                <div class="mb-3">
+                                    <label for="cycle-select2" class="form-label">Seleccionar Ciclo:</label>
+                                    <select class="form-select" id="cycle-select2"  onchange="updateData2()">
+                                        @foreach($ciclos as $ciclo)
+                                            <option value="{{ $ciclo->id }}">{{$ciclo->number}} - {{$ciclo->year}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                    <canvas id="students-course"></canvas>
+                            </div>
+                            <script>
+                                var miGrafico2;
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    var datos = @json($datos2); 
+
+                                    var etiquetas = datos.map(function (elemento) {
+                                        return elemento.course_name + ' (' + elemento.cycle_number + '-' + elemento.cycle_year+')';
+                                    });
+
+                                    var datosEstudiantes = datos.map(function (elemento) {
+                                        return elemento.cantidad_estudiantes;
+                                    });
+
+                                    var colores = datos.map(function () {
+                                        return 'rgba(' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ', 0.2)';
+                                    });
+
+                                    var ctx = document.getElementById('students-course').getContext('2d');
+                                    miGrafico2 = new Chart(ctx, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: etiquetas,
+                                            datasets: [{
+                                                label: 'Cantidad de Estudiantes por Curso',
+                                                data: datosEstudiantes,
+                                                backgroundColor: colores,
+                                                borderColor: 'rgba(75, 192, 192, 1)',
+                                                borderWidth: 1
+                                            }]
+                                        },
+                                        options: {
+                                            scales: {
+                                                y: {
+                                                    beginAtZero: true
+                                                }
+                                            }
+                                        }
+                                    });
+                                });
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
             {{--
             <div class="row">
                 <div class="col-xl-8">
@@ -1135,7 +1155,7 @@
             </div>--}}
 @endsection
 @section('script')
-    <script src="{{ URL::asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
+    {{--<script src="{{ URL::asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>--}}
     <script src="{{ URL::asset('assets/js/pages/chartjs.js') }}"></script>
     <script src="{{ URL::asset('assets/js/pages/dashboard.init.js') }}"></script>
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
@@ -1146,46 +1166,53 @@
             var id = document.getElementById('cycle-select').value;
             
             $.ajax({
-                    url: '{{route('dashboard.cycle')}}/'+id,
+                    url: '{{route('dashboard.proto')}}/'+id,
                     type: 'GET',
                     dataType: 'json',
                     success: function(data) {
-                        document.addEventListener("DOMContentLoaded", function () {
+                        var nuevosDatos = data.new_datos;
+
+                        var etiquetas = nuevosDatos.map(function (elemento) {
+                            return elemento.protocol_name + ' (' + elemento.cycle_number + '-' + elemento.cycle_year+')';
+                        });
+
+                        var datosEstudiantes = nuevosDatos.map(function (elemento) {
+                            return elemento.cantidad_estudiantes;
+                        });
+
+                        miGrafico.data.labels = etiquetas;
+                        miGrafico.data.datasets[0].data = datosEstudiantes;
+
+
+                        miGrafico.update();
+
+                    }
+                });
+
+        }
+
+        function updateData2(){
+            var id = document.getElementById('cycle-select2').value;
+            
+            $.ajax({
+                    url: '{{route('dashboard.course')}}/'+id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
                         var datos = data.new_datos;
 
                         var etiquetas = datos.map(function (elemento) {
-                            return elemento.protocol_name + ' (' + elemento.cycle_number + '-' + elemento.cycle_year+')';
+                            return elemento.course_name + ' (' + elemento.cycle_number + '-' + elemento.cycle_year+')';
                         });
 
                         var datosEstudiantes = datos.map(function (elemento) {
                             return elemento.cantidad_estudiantes;
                         });
 
+                        miGrafico2.data.labels = etiquetas;
+                        miGrafico2.data.datasets[0].data = datosEstudiantes;
 
-                        var ctx = document.getElementById('students-protocol').getContext('2d');
-                        var miGrafico = new Chart(ctx, {
-                            type: 'bar',
-                            data: {
-                            labels: etiquetas,
-                            datasets: [{
-                                label: 'Cantidad de Estudiantes por Protocolo',
-                                data: datosEstudiantes,
-                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                borderColor: 'rgba(75, 192, 192, 1)',
-                                borderWidth: 1
-                                }]
-                            },
-                            options: {
-                                scales: {
-                                    y: {
-                                        beginAtZero: true
-                                        }
-                                }
-                            }
-                        });
-                    });
-
-
+                        miGrafico2.update();
                     }
                 });
 
