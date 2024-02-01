@@ -47,15 +47,15 @@ class EntityController extends Controller
         ]);
 
         DB::beginTransaction();
-        
+
         $entity = Entity::create([
             'name'        => $validatedData['name'],
             'address'          => $validatedData['address'],
             'status'        => $validatedData['status'],
         ]);
 
-        for ($i=0; $i < count($request->contact_name); $i++) { 
-            EntityContact::create(['entity_id'=>$entity->id, 'name'=>$request->contact_name[$i], 'phone_number'=>$request->contact_phone_number[$i], 'email'=>$request->contact_email[$i], 'position'=>$request->contact_position[$i]]);
+        for ($i = 0; $i < count($request->contact_name); $i++) {
+            EntityContact::create(['entity_id' => $entity->id, 'name' => $request->contact_name[$i], 'phone_number' => $request->contact_phone_number[$i], 'email' => $request->contact_email[$i], 'position' => $request->contact_position[$i]]);
         }
 
         DB::commit();
@@ -66,7 +66,9 @@ class EntityController extends Controller
     public function show($id)
     {
         // $cycle = Entity::findOrFail($id);
-        // return view('entity.show', compact('cycle'));
+        $entity = Entity::find($id);
+        $contacts = EntityContact::where('entity_id', $id)->get();
+        return view('entity.show', compact('entity', 'contacts'));
     }
 
     public function edit($id)
@@ -92,8 +94,8 @@ class EntityController extends Controller
         $entity->save();
 
         EntityContact::where('entity_id', $id)->delete();
-        for ($i=0; $i < count($request->contact_name); $i++) { 
-            EntityContact::create(['entity_id'=>$id, 'name'=>$request->contact_name[$i], 'phone_number'=>$request->contact_phone_number[$i], 'email'=>$request->contact_email[$i], 'position'=>$request->contact_position[$i]]);
+        for ($i = 0; $i < count($request->contact_name); $i++) {
+            EntityContact::create(['entity_id' => $id, 'name' => $request->contact_name[$i], 'phone_number' => $request->contact_phone_number[$i], 'email' => $request->contact_email[$i], 'position' => $request->contact_position[$i]]);
         }
 
         DB::commit();

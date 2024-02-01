@@ -33,7 +33,7 @@
             <a href="{{ route('entities.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
-        <h1>Nueva entidad</h1>
+        <h1>Registrar entidad</h1>
         <form action="{{ route('entities.store') }}" method="POST">
             @csrf
 
@@ -43,7 +43,7 @@
                     <input value="{{ old('name') }}" type="text" class="form-control" id="name" name="name" required>
                 </div>
             </div>
-            
+
             <div class="row mb-3">
                 <div class="col-12">
                     <label for="address" class="form-label">Dirección</label>
