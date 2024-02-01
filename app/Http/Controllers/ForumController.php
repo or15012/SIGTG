@@ -8,9 +8,12 @@ use App\Models\Forum;
 use App\Models\Cycle;
 use App\Models\Group;
 use App\Models\School;
+use App\Models\UserForumWorkshop;
+use App\Models\Workshop;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class ForumController extends Controller
@@ -75,7 +78,7 @@ class ForumController extends Controller
                 ->where('groups.cycle_id', $request->input('cycle_id'))
                 ->where('u.school_id', session('school', ['id']))
                 ->where('up.status', true)
-                ->where('up.protocol_id', 5)
+                ->where('up.protocol_id', 3)
                 ->select('u.email', 'u.first_name', 'u.last_name')
                 ->get();
 
@@ -98,7 +101,11 @@ class ForumController extends Controller
 
     public function show(Forum $forum)
     {
-        return view('forum.show', compact('forum'));
+        $users = UserForumWorkshop::where('forum_id', $forum->id)
+            ->with('user') // Cargar la relación con el modelo User
+            ->get();
+
+        return view('forum.show', compact('forum', 'users'));
     }
 
     public function destroy(Forum $forum)
@@ -111,5 +118,54 @@ class ForumController extends Controller
     {
         $filePath = storage_path('app/' . $forum->$file);
         return response()->download($filePath);
+    }
+
+
+    public function showListForumsWorkshops()
+    {
+        $forums = Forum::join('cycles as c', 'forums.cycle_id', 'c.id')
+            ->select('forums.id', 'forums.name', 'forums.description', 'forums.place', 'forums.date')
+            ->where('school_id', session('school', ['id']))
+            ->where('c.status', 1)
+            ->where('forums.date', '>', now())  // Agrega esta línea para filtrar por fecha actual
+            ->get();
+
+        $workshops = Workshop::join('cycles as c', 'workshops.cycle_id', 'c.id')
+            ->select('workshops.id', 'workshops.name', 'workshops.description', 'workshops.place', 'workshops.date')
+            ->where('school_id', session('school', ['id']))
+            ->where('c.status', 1)
+            ->where('workshops.date', '>', now())  // Agrega esta línea para filtrar por fecha actual
+            ->get();
+
+        return view('forum.show-list-all', compact('forums', 'workshops'));
+    }
+
+    public function confirmAssistanceForumsWorkshops($id, $type)
+    {
+
+        $insertModel            = new UserForumWorkshop();
+        $insertModel->user_id   = auth()->user()->id;
+
+        $type == 1 ? $insertModel->forum_id = $id : $insertModel->workshop_id = $id;
+        $insertModel->save();
+
+        return redirect()->back()->with('success', 'Asistencia registrada.');
+    }
+
+    public function assistenceStore(Request $request)
+    {
+        $values = array();
+        if (isset($request->students)) {
+            foreach ($request->students as $key => $value) {
+                $values[] = $key;
+            };
+
+            DB::table('user_forum_workshop')->where('forum_id', $request->forum_id)->update(['status' => 0]);
+            DB::table('user_forum_workshop')->whereIn('id', $values)->update(['status' => 1]);
+        } else {
+            DB::table('user_forum_workshop')->where('forum_id', $request->forum_id)->update(['status' => 0]);
+        }
+
+        return redirect()->back()->with('success', 'Asistencias registrada.');
     }
 }

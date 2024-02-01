@@ -26,4 +26,10 @@ class Forum extends Model
     {
         return $this->belongsTo(School::class, 'school_id');
     }
+
+    // Relación con el modelo escuelas
+    public function userForumWorkshops()
+    {
+        return $this->hasMany(UserForumWorkshop::class, 'forum_id');
+    }
 }

@@ -178,7 +178,7 @@ function setSelect2Ajax(){
 				}
 				params += keys[i]+'='+values[i];
 			}
-			
+
 
 			if($(this).closest('[role="dialog"]')[0] != undefined){
 				parent = $(this).closest('[role="dialog"] .modal-content');

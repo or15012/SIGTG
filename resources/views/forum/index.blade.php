@@ -29,7 +29,6 @@
                     <th style="width: 20%">Fecha</th>
                     <th style="width: 20%">Lugar</th>
                     <th style="width: 30%">Descripcion</th>
-                    <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>

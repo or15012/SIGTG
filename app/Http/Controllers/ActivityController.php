@@ -57,6 +57,13 @@ class ActivityController extends Controller
             return redirect('home')->withErrors(['message' => 'No tienes un grupo activo.']);
         }
 
+        $project = Project::join('profiles as p', 'projects.profile_id', 'p.id')
+            ->select('projects.id', 'projects.name', 'projects.approvement_report', 'projects.status')
+            ->where('projects.group_id', $group->id)
+            ->first();
+
+        if (!isset($project)) return redirect()->route('home')->with('error', 'No tienes planificación aprobada y proyecto activo.');
+
         $activities = $group->activities;
         return view('activities.index', compact('activities'));
     }

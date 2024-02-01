@@ -16,7 +16,6 @@ $('#btnImportar').on('click', ()=>$('#excelFile').click());
 
 
 window.getStudentPreregistration = function(e){
-        console.log(e.target);
         $.ajax({
             method: "GET",
             url: '/students/get-student-by-id/'+e.target.value,
@@ -37,10 +36,10 @@ window.getStudentPreregistration = function(e){
                         value="${ user.id }" />
                 </td>
             </tr>`;
-    
+
                 let isEmpty = $('#tablePreregistrations tbody').find('#empty_row').length>0?true:false;
                 if (isEmpty) {
-                    $('#tablePreregistrations tbody').html(row);	
+                    $('#tablePreregistrations tbody').html(row);
                 }else{
                     $('#tablePreregistrations tbody').append(row);
                 }
@@ -75,10 +74,10 @@ window.getStudentPreregistration = function(e){
                         value="${ user.id }" />
                 </td>
             </tr>`;
-    
+
                 let isEmpty = $('#tableRegistrations tbody').find('#empty_row').length>0?true:false;
                 if (isEmpty) {
-                    $('#tableRegistrations tbody').html(row);	
+                    $('#tableRegistrations tbody').html(row);
                 }else{
                     $('#tableRegistrations tbody').append(row);
                 }

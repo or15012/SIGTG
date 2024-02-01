@@ -8,7 +8,6 @@ $(document).ready(function () {
         var userId = $(this).data("user");
         $("#user-" + userId).remove();
         // Realizar las acciones que desees con userId
-        console.log("Se hizo clic en el botón con el data-user: " + userId);
     });
 
     $('#add-student').click(function () {
@@ -20,7 +19,6 @@ $(document).ready(function () {
         });
         if (carnetExiste) {
             // El carnet ya existe en el arreglo retornare sin ir a buscarlo
-            console.log('El carnet ya existe en el arreglo.');
             return false;
         }
 

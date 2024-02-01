@@ -5,7 +5,6 @@ $(document).ready(function () {
         $('tbody.notes tr').each(function () {
             var totalGrade = 0;
             var userId = $(this).data('value');
-
             // Recorrer las notas de cada criterio para este usuario
             $(this).find('label.note').each(function () {
                 var note = parseFloat($(this).html());
@@ -18,9 +17,41 @@ $(document).ready(function () {
             $(this).find('.final-note-' + userId).html(totalGrade.toFixed(2));
         });
     }
+
+    function getPhase() {
+        var linkElement = $(".card-footer.enabled");
+        var dataValue = linkElement.data("value");
+
+        $.ajax({
+            type: 'GET',
+            url: '/phases/get_phase/' + dataValue,
+            beforeSend: function () {
+                $('.loading').show();
+            },
+            success: function (response) {
+                if (response.success) {
+                    $("#name-phase").html(response.phase.name);
+                    $("#phase").removeClass("d-none");
+                } else {
+                    // Estudiante no encontrado, muestra un mensaje de error
+                    console.log('fase no encontrado');
+                }
+                $('.loading').hide();
+            },
+            error: function (error) {
+                $('.loading').hide();
+                console.log(error);
+            }
+        });
+    }
+
+
+
     calculateGrade();
+    getPhase();
 
     $('tbody').on('input', 'input.note', function () {
         calculateGrade();
     });
+
 });

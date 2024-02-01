@@ -18,7 +18,6 @@ $(document).ready(function () {
             },
             success: function (response) {
                 if (response.success) {
-                    console.log(response);
                     // Estudiante encontrado, puedes acceder a los datos en response.student
                     let stringHtml = "";
 

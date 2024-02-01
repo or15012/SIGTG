@@ -267,6 +267,7 @@ mix.js('resources/js/profile_coordinator_show.js', 'public/js/profile_coordinato
 mix.js('resources/js/evaluation_stage_create.js', 'public/js/evaluation_stage_create.js');
 mix.js('resources/js/scripts.js', 'public/js/scripts.js');
 mix.js('resources/js/project_index.js', 'public/js/project_index.js');
+mix.js('resources/js/evaluation_index.js', 'public/js/evaluation_index.js');
 mix.js('resources/js/stages.js', 'public/js/stages.js');
 mix.js('resources/js/phases.js', 'public/js/phases.js');
 mix.js('resources/js/entities.js', 'public/js/entities.js');

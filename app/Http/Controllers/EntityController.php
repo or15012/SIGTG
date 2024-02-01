@@ -41,21 +41,28 @@ class EntityController extends Controller
     {
         // Validación de los datos del ciclo y los parámetros
         $validatedData = $request->validate([
-            'name'        => 'required|max:255',
-            'address'          => 'required|max:255',
-            'status'        => 'required'
+            'name'          => 'required|max:255',
+            'address'       => 'required|max:255',
+            'status'        => 'required',
+            'contact_name'  => 'required'
         ]);
 
         DB::beginTransaction();
 
         $entity = Entity::create([
-            'name'        => $validatedData['name'],
-            'address'          => $validatedData['address'],
-            'status'        => $validatedData['status'],
+            'name'      => $validatedData['name'],
+            'address'   => $validatedData['address'],
+            'status'    => $validatedData['status'],
         ]);
 
         for ($i = 0; $i < count($request->contact_name); $i++) {
-            EntityContact::create(['entity_id' => $entity->id, 'name' => $request->contact_name[$i], 'phone_number' => $request->contact_phone_number[$i], 'email' => $request->contact_email[$i], 'position' => $request->contact_position[$i]]);
+            EntityContact::create([
+                'entity_id'     => $entity->id,
+                'name'          => $request->contact_name[$i],
+                'phone_number'  => $request->contact_phone_number[$i],
+                'email'         => $request->contact_email[$i],
+                'position'      => $request->contact_position[$i]
+            ]);
         }
 
         DB::commit();
@@ -81,21 +88,33 @@ class EntityController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'name'        => 'required|max:255',
-            'address'          => 'required|max:255',
-            'status'        => 'required'
+            'name'          => 'required|max:255',
+            'address'       => 'required|max:255',
+            'status'        => 'required',
+            'contact_name'  => 'required'
         ]);
 
         DB::beginTransaction();
-        $entity = Entity::find($id);
-        $entity->name           = $request->name;
+        $entity             = Entity::find($id);
+        $entity->name       = $request->name;
         $entity->address    = $request->address;
-        $entity->status      = $request->status;
+        $entity->status     = $request->status;
         $entity->save();
 
         EntityContact::where('entity_id', $id)->delete();
         for ($i = 0; $i < count($request->contact_name); $i++) {
+<<<<<<< HEAD
             EntityContact::create(['entity_id' => $id, 'name' => $request->contact_name[$i], 'phone_number' => $request->contact_phone_number[$i], 'email' => $request->contact_email[$i], 'position' => $request->contact_position[$i]]);
+=======
+            EntityContact::create([
+                    'entity_id'     => $id,
+                    'name'          => $request->contact_name[$i],
+                    'phone_number'  => $request->contact_phone_number[$i],
+                    'email'         => $request->contact_email[$i],
+                    'position'      => $request->contact_position[$i]
+                ]
+            );
+>>>>>>> 6166887d206408efe3b74835ed35734eac04f1f9
         }
 
         DB::commit();

@@ -48,7 +48,6 @@ function updateAssignedStagesInputs() {
             name: `stages[${index}]`,
             value: dataIdValue
         });
-        console.log(newInput);
         // Agregar el nuevo input al contenedor
         container.append(newInput);
     });
@@ -62,7 +61,6 @@ form.addEventListener('submit', function (event) {
     // Asegurarse de que los inputs estén actualizados antes de enviar el formulario
     event.preventDefault();
     updateAssignedStagesInputs();
-    console.log('pase')
 
     this.submit();
 });
