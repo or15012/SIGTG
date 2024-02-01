@@ -103,6 +103,7 @@ class EntityController extends Controller
 
         EntityContact::where('entity_id', $id)->delete();
         for ($i = 0; $i < count($request->contact_name); $i++) {
+
             EntityContact::create([
                     'entity_id'     => $id,
                     'name'          => $request->contact_name[$i],
