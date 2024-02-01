@@ -21,7 +21,8 @@ use Illuminate\Support\Facades\Route;
 //Grupo para las rutas de cursos
 Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function () {
     Route::get('/', [DashboardController::class, 'index'])->name('index');
-    Route::get('/cycle/{id?}',[DashboardController::class, 'ajaxCycle'])->name('cycle');
+    Route::get('/protocol/cycle/{id?}',[DashboardController::class, 'ajaxProto'])->name('proto');
+    Route::get('/course/cycle/{id?}',[DashboardController::class, 'ajaxCourse'])->name('course');
 });
 
 

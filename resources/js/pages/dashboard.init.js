@@ -63,8 +63,8 @@ var options = {
     }
   };
 
-  var chart = new ApexCharts(document.querySelector("#mini-1"), options);
-chart.render();
+  //var chart = new ApexCharts(document.querySelector("#mini-1"), options);
+//chart.render();
 
 // mini-2
 var barchartColors = getChartColorsArray("mini-2");
@@ -104,7 +104,7 @@ var options = {
     }
   };
 
-  var chart = new ApexCharts(document.querySelector("#mini-2"), options);
+  //var chart = new ApexCharts(document.querySelector("#mini-2"), options);
 chart.render();
 
 
@@ -146,7 +146,7 @@ var options = {
     }
   };
 
-  var chart = new ApexCharts(document.querySelector("#mini-3"), options);
+  //var chart = new ApexCharts(document.querySelector("#mini-3"), options);
 chart.render();
 
 
@@ -188,7 +188,7 @@ var options = {
     }
   };
 
-  var chart = new ApexCharts(document.querySelector("#mini-4"), options);
+  //var chart = new ApexCharts(document.querySelector("#mini-4"), options);
 chart.render();
 
 
@@ -234,7 +234,7 @@ var options = {
     }
 };
 
-var chart = new ApexCharts(document.querySelector("#sales-statistics"), options);
+//var chart = new ApexCharts(document.querySelector("#sales-statistics"), options);
 chart.render();
 
 
@@ -313,7 +313,7 @@ var options = {
   }
   };
 
-  var chart = new ApexCharts(document.querySelector("#earning-item"), options);
+  //var chart = new ApexCharts(document.querySelector("#earning-item"), options);
   chart.render();
 
   // Sales Category
