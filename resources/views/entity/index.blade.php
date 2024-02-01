@@ -31,7 +31,7 @@
                         <td>{{ $entity->address }}</td>
                         <td>{{ $entity->status() }}</td>
                         <td>
-                            {{-- <a href="{{ route('entities.show', $entity->id) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a> --}}
+                            <a href="{{ route('entities.show', $entity->id) }}" class="btn btn-primary"><i class="fas fa-eye"></i></a>
                             <a href="{{ route('entities.edit', $entity->id) }}" class="btn btn-primary"><i class="fas fa-pen"></i></a>
                             <form action="{{ route('entities.destroy', $entity->id) }}" method="POST" style="display: inline;">
                                 @csrf

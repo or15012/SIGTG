@@ -73,7 +73,9 @@ class EntityController extends Controller
     public function show($id)
     {
         // $cycle = Entity::findOrFail($id);
-        // return view('entity.show', compact('cycle'));
+        $entity = Entity::find($id);
+        $contacts = EntityContact::where('entity_id', $id)->get();
+        return view('entity.show', compact('entity', 'contacts'));
     }
 
     public function edit($id)
