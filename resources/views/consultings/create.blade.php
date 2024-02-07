@@ -42,6 +42,7 @@
                 <div class="mb-3">
                     <label for="date" class="form-label">Fecha</label>
                     <input type="date" class="form-control" id="date" name="date" value="{{ old('date') }}"
+                    min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
                         required>
                 </div>
             @elseif($userType === 2)
