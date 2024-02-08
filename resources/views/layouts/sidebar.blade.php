@@ -204,6 +204,7 @@
 
                             @case(2)
                             @case(5)
+
                             @case(3)
                                 <li>
                                     <a href="{{ route('plannings.index') }}">
@@ -223,6 +224,7 @@
                         @switch(session('protocol')['id'])
                             @case(2)
                             @case(3)
+
                             @case(5)
                                 <li>
                                     <a href="{{ route('activities.index') }}">
@@ -278,8 +280,10 @@
                                     </a>
                                 </li>
                             @break
+
                             @case(2)
                             @case(5)
+
                             @case(3)
                                 <li>
                                     <a href="{{ route('profiles.preprofile.coordinator.index') }}">
@@ -323,8 +327,8 @@
 
                             @case(5)
                                 <!--
-                                                                                                    Esta opción no se mostrará al Coordinador del protocolo.
-                                                                                                -->
+                                                                                                                            Esta opción no se mostrará al Coordinador del protocolo.
+                                                                                                                        -->
                             @break
 
                             @default
@@ -338,6 +342,7 @@
                         @switch(session('protocol')['id'])
                             @case(2)
                             @case(3)
+
                             @case(5)
                                 <li>
                                     <a href="{{ route('activities.coordinator.index.groups') }}">
@@ -466,32 +471,39 @@
                     </li>
                 @endcan
 
+                @if (session('protocol') != null)
+                    @switch(session('protocol')['id'])
+                        @case(3)
+                            @can('Forums.advisers')
+                                <li>
+                                    <a href="{{ route('forum.index') }}">
+                                        <i class="bx bx-slideshow icon nav-icon"></i>
+                                        <span class="menu-item" data-key="t-forums">@lang('translation.Forums')</span>
+                                    </a>
+                                </li>
+                            @endcan
 
-                @can('Forums.advisers')
-                    <li>
-                        <a href="{{ route('forum.index') }}">
-                            <i class="bx bx-slideshow icon nav-icon"></i>
-                            <span class="menu-item" data-key="t-forums">@lang('translation.Forums')</span>
-                        </a>
-                    </li>
-                @endcan
+
+                            @can('Workshops.advisers')
+                                <li>
+                                    <a href="{{ route('workshop.index') }}">
+                                        <i class="bx bx-home-circle icon nav-icon"></i>
+                                        <span class="menu-item" data-key="t-workshops">@lang('translation.Workshops')</span>
+                                    </a>
+                                </li>
+                            @endcan
+
+                            <li>
+                                <a href="{{ route('forum.show.list.forums.workshops') }}">
+                                    <i class="bx bx-home-circle icon nav-icon"></i>
+                                    <span class="menu-item" data-key="t-workshops">Talleres y foros</span>
+                                </a>
+                            </li>
+                        @break
+                    @endswitch
+                @endif
 
 
-                @can('Workshops.advisers')
-                    <li>
-                        <a href="{{ route('workshop.index') }}">
-                            <i class="bx bx-home-circle icon nav-icon"></i>
-                            <span class="menu-item" data-key="t-workshops">@lang('translation.Workshops')</span>
-                        </a>
-                    </li>
-                @endcan
-
-                <li>
-                    <a href="{{ route('forum.show.list.forums.workshops') }}">
-                        <i class="bx bx-home-circle icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-workshops">Talleres y foros</span>
-                    </a>
-                </li>
 
 
 
