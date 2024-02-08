@@ -34,26 +34,26 @@
             </div>
         </div>
 
-        {{-- <h3>Observaciones pre perfil: {{ $preprofile->name }}</h3>
+        <h3>Observaciones planificación: {{ $planning->name }}</h3>
 
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr class="table-danger">
-                    <th style="width: 50%">Descripcion</th>
+                    <th style="width: 80%">Descripcion</th>
                     <th>Fecha</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($preprofile->observations as $observation)
+                @foreach ($planning->observations as $observation)
                     <tr>
-                        <td style="width: 40%">{{ Illuminate\Support\Str::limit($observation->description, 100, '...') }}
+                        <td style="width: 80%">{{ Illuminate\Support\Str::limit($observation->description, 100, '...') }}
                         </td>
                         <td>{{ $observation->created_at->format('d-m-Y') }}</td>
 
                     </tr>
                 @endforeach
             </tbody>
-        </table> --}}
+        </table>
     </div>
 @endsection
 
