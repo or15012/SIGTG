@@ -17,7 +17,20 @@
             <a href="{{ route('stages.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
-        <h1>Editar etapa evaluativa</h1>
+        @if (session('protocol') != null)
+            @switch(session('protocol')['id'])
+                @case(1)
+                @case(2)
+                @case(3)
+                @case(4)
+                    <h1>Editar etapa evaluativa</h1>
+                @break
+                @case(5)
+                    <h1>Editar área tematica</h1>
+                @break
+            @endswitch
+        @endif
+
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -39,7 +52,7 @@
             @csrf
             @method('PUT')
             <div class="mb-3">
-                <label for="name" class="form-label">Nombre de la etapa evaluativa</label>
+                <label for="name" class="form-label">Nombre</label>
                 <input type="text" class="form-control" id="name" name="name"
                     value="{{ old('name', $stage->name) }}" required>
             </div>
@@ -111,6 +124,7 @@
                 @switch(session('protocol')['id'])
                     @case(1)
                     @case(2)
+
                     @case(3)
                     @case(4)
                         <div class="mb-3">
