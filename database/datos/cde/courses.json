@@ -1,0 +1,25 @@
+[
+    {
+        "id" : 11,
+        "name" : "CURSO DE ESPECIALIZACIÓN EN GARANTÍA DE CALIDAD",
+        "description" : "El aseguramiento de la calidad es el conjunto de actividades planificadas y sistemáticas aplicadas en un sistema para que los requisitos sean satisfechos",
+        "cycle_id" : 1,
+        "school_id" : 1,
+        "created_at" : "2024-02-08 20:20:15",
+        "updated_at" : "2024-02-08 20:20:15",
+        "deleted_at" : null
+    },
+
+    {
+        "id" : 12,
+        "name" : "CURSO DE ESPECIALIZACIÓN EN COMPUTACIÓN EN LA NUBE",
+        "description" : "La computación en la nube es una tecnología que permite acceder remotamente, a softwares, almacenamiento de archivos y procesamiento de datos a través de Internet.",
+        "cycle_id" : 1,
+        "school_id" : 1,
+        "created_at" : "2024-02-08 20:20:15",
+        "updated_at" : "2024-02-08 20:20:15",
+        "deleted_at" : null
+    }
+]
+        
+    

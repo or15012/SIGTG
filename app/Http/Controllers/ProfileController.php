@@ -252,7 +252,7 @@ class ProfileController extends Controller
                 $preprofile->save();
 
                 // Redireccionar a una vista específica para el protocolo "examen"
-                return redirect()->route('nombre_de_la_ruta_para_examen')->with('success', "El $type se ha actualizado correctamente"); //Ruta pendiente
+                return redirect()->route('plannings.index')->with('success', "El $type se ha actualizado correctamente"); //Ruta corregida
             }
 
             // Procesar y guardar el nuevo archivo si se proporciona

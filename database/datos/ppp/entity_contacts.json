@@ -1,0 +1,13 @@
+[
+    {
+        "id": 21,
+        "entity_id": 21,
+        "name": "Rafael Portillo",
+        "phone_number": "76540987",
+        "position": "Jefe de desarrollo",
+        "created_at": "2024-02-01 18:20:56",
+        "updated_at": "2024-02-01 18:20:56",
+        "deleted_at": null,
+        "email": "rportillo@mag.gob.sv"
+    }
+]
