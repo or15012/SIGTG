@@ -17,6 +17,7 @@ class Consulting extends Model
         'summary',
         'date',
         'group_id',
+        'attendance',
         'created_at',
         'updated_at',
         'deleted_at',

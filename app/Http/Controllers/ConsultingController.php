@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendMail;
 use App\Models\Consulting;
 use App\Models\Group;
+use App\Models\Notification;
 use App\Models\Project;
+use App\Models\TeacherGroup;
 use App\Models\User;
+use App\Models\UserNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Mail;
 
 class ConsultingController extends Controller
 {
@@ -101,6 +106,24 @@ class ConsultingController extends Controller
             $data['group_id'] = $group->id;
 
             $consulting = Consulting::create($data);
+
+
+            $notificationAdviser = Notification::create(['title' => 'Alerta de nueva asesoria', 'message' => "Se ha agendado una nueva asesoria", 'user_id' => Auth::user()->id]);
+            $adviserGroup = TeacherGroup::join('users as u', 'u.id', 'teacher_group.user_id')
+                ->select('u.email', 'u.id', 'u.first_name', 'u.last_name')
+                ->where('group_id', $group->id)
+                ->get();
+
+
+            foreach ($adviserGroup as $key => $item) {
+                $emailData = [
+                    'user'  => $item,
+                    'group' => $group,
+                    'data'  => $data
+                ];
+                Mail::to($item->email)->send(new SendMail('mail.new-advisory', 'Notificación de nueva asesoria', $emailData));
+                UserNotification::create(['user_id' => $item->id, 'notification_id' => $notificationAdviser->id, 'is_read' => 0]);
+            }
         } elseif ($user->type === 2) {
             // Docente
             $data['number'] = $request->input('number');
@@ -115,7 +138,10 @@ class ConsultingController extends Controller
 
         $user = auth()->user();
         $consulting->date = Carbon::parse($consulting->date)->format('Y-m-d');
-        return view('consultings.edit', compact('consulting', 'user', 'project'));
+
+        $users = $consulting->group->users;
+
+        return view('consultings.edit', compact('consulting', 'user', 'project', 'users'));
     }
 
     public function update(Request $request, Consulting $consulting, Project $project)
@@ -128,7 +154,6 @@ class ConsultingController extends Controller
                 'date'      => 'required|date', // Campo 'fecha' es obligatorio y debe ser una fecha válida'
             ]);
         } elseif ($user->type === 2) {
-
             $data = $request->validate([
                 'summary'   => 'required',
                 'date'      => 'required|date', // Campo 'fecha' es obligatorio y debe ser una fecha válida'
@@ -149,6 +174,16 @@ class ConsultingController extends Controller
                 } else {
                     $data['number'] = 1;
                 }
+            }
+
+            if (isset($request->students)) {
+                foreach ($request->students as $key => $value) {
+                    $values[] = $key;
+                };
+                $ids = implode(',', $values);
+                $data['attendance'] = $ids;
+            } else {
+                $data['attendance'] = null;
             }
         }
 

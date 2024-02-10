@@ -145,17 +145,34 @@ class ProfileController extends Controller
         $role = 'Coordinador General';
         $userRoles = User::role($role)->get(); //modificar para diferenciar por modalidades.
 
-        $notification = Notification::create(['title' => 'Alerta de pre-perfil', 'message' => "Su pre-perfil ha sido enviado, y está pendiente de revisión", 'user_id' => Auth::user()->id]);
+        $type = "";
+        switch (session('protocol')['id']) {
+            case 1:
+            case 4:
+                $type = "pre-perfil";
+                break;
+            case 2:
+            case 3:
+            case 5:
+                $type = "planificación";
+                break;
+            default:
+                break;
+        }
+
+
+        $notification = Notification::create(['title' => "Alerta de $type", 'message' => "Su $type ha sido enviado, y está pendiente de revisión", 'user_id' => Auth::user()->id]);
         foreach ($userRoles as $coordinator) {
             try {
                 $emailData = [
-                    'user'       => $coordinator,
-                    'group'      => $group,
-                    'preprofile' => $profile,
+                    'user'          => $coordinator,
+                    'group'         => $group,
+                    'preprofile'    => $profile,
+                    'type'          => $type,
                 ];
                 //dd($emailData);
 
-                Mail::to($coordinator->email)->send(new SendMail('mail.preprofile-coordinator-saved', 'Notificación de pre-perfil enviado', $emailData));
+                Mail::to($coordinator->email)->send(new SendMail('mail.preprofile-coordinator-saved', "Notificación de $type enviado", $emailData));
                 UserNotification::create(['user_id' => $coordinator->id, 'notification_id' => $notification->id, 'is_read' => 0]);
             } catch (\Throwable $th) {
                 // Manejar la excepción
@@ -169,11 +186,12 @@ class ProfileController extends Controller
         foreach ($students as $student) {
             try {
                 $emailData = [
-                    'user'       => $student,
-                    'group'      => $group,
-                    'preprofile' => $profile,
+                    'user'          => $student,
+                    'group'         => $group,
+                    'preprofile'    => $profile,
+                    'type'          => $type,
                 ];
-                Mail::to($student->email)->send(new SendMail('mail.preprofile-saved', 'Preperfil enviado con éxito', $emailData));
+                Mail::to($student->email)->send(new SendMail('mail.preprofile-saved', "$type enviado con éxito", $emailData));
                 UserNotification::create(['user_id' => $student->id, 'notification_id' => $notification->id, 'is_read' => 0]);
             } catch (Exception $th) {
                 // Manejar la excepción
@@ -181,7 +199,7 @@ class ProfileController extends Controller
         }
         return redirect()
             ->route('profiles.preprofile.index')
-            ->with('success', 'El preperfil se ha guardado correctamente')
+            ->with('success', "El $type se ha guardado correctamente")
             ->with('protocols', $protocols);
     }
 
@@ -198,15 +216,30 @@ class ProfileController extends Controller
     public function preProfileUpdate(Request $request, Profile $preprofile)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'proposal_priority' => 'required|integer',
-            'path' => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
-            'summary_path' => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
-            'vision_path' => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
+            'name'                  => 'required|string|max:255',
+            'description'           => 'required|string',
+            'proposal_priority'     => 'required|integer',
+            'path'                  => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
+            'summary_path'          => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
+            'vision_path'           => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
             'size_calculation_path' => 'nullable|mimes:pdf', // Esto valida que el nuevo archivo sea un PDF (puedes ajustar según tus necesidades)
         ]);
         try {
+
+            $type = "";
+            switch (session('protocol')['id']) {
+                case 1:
+                case 4:
+                    $type = "pre-perfil";
+                    break;
+                case 2:
+                case 3:
+                case 5:
+                    $type = "planificación";
+                    break;
+                default:
+                    break;
+            }
             // Actualizar los campos del perfil
             $preprofile->name               = $request->input('name');
             $preprofile->description        = $request->input('description');
@@ -219,7 +252,7 @@ class ProfileController extends Controller
                 $preprofile->save();
 
                 // Redireccionar a una vista específica para el protocolo "examen"
-                return redirect()->route('nombre_de_la_ruta_para_examen')->with('success', 'El preperfil se ha actualizado correctamente'); //Ruta pendiente
+                return redirect()->route('nombre_de_la_ruta_para_examen')->with('success', "El $type se ha actualizado correctamente"); //Ruta pendiente
             }
 
             // Procesar y guardar el nuevo archivo si se proporciona
@@ -245,19 +278,20 @@ class ProfileController extends Controller
             $students = $preprofile->group->users;
 
 
-            $notification = Notification::create(['title' => 'Alerta de pre-perfil', 'message' => "Te informamos que tu pre-perfil se ha actualizado.", 'user_id' => Auth::user()->id]);
+            $notification = Notification::create(['title' => "Alerta de $type", 'message' => "Te informamos que tu $type se ha actualizado.", 'user_id' => Auth::user()->id]);
 
             foreach ($students as $student) {
                 $mailData = [
-                    'user' => $student,
-                    'preprofile' => $preprofile,
+                    'user'          => $student,
+                    'preprofile'    => $preprofile,
+                    'type'          => $type
                 ];
 
                 try {
                     Mail::to($student->email)->send(
                         new SendMail(
                             'mail.preprofile-updated',
-                            'Actualización de Pre-Perfil',
+                            "Actualización de $type",
                             $mailData
                         )
                     );
@@ -268,11 +302,11 @@ class ProfileController extends Controller
                 }
             }
 
-            return redirect()->route('profiles.preprofile.index')->with('success', 'El preperfil se ha actualizado correctamente');
+            return redirect()->route('profiles.preprofile.index')->with('success', "El $type se ha actualizado correctamente");
         } catch (\Throwable $th) {
             // Log de errores o manejo adicional
             //Log::error('Error al actualizar el preperfil: ' . $th->getMessage());
-            return redirect()->route('profiles.preprofile.index')->with('error', 'Hubo un error al actualizar el preperfil. Por favor, inténtelo de nuevo.');
+            return redirect()->route('profiles.preprofile.index')->with('error', "Hubo un error al actualizar el $type. Por favor, inténtelo de nuevo.");
         }
     }
 
@@ -307,17 +341,17 @@ class ProfileController extends Controller
             ->where('protocol_id', session('protocol')['id'])
             ->get(['id']);
 
-        if(session('protocol')['id'] == 1){
+        if (session('protocol')['id'] == 1) {
             $preprofiles = Profile::join('groups as g', 'g.id', 'profiles.group_id')
-            ->whereIn('group_id', $groups)
-            ->where('type', 0)
-            ->select('profiles.status', 'profiles.name', 'profiles.description', 'profiles.created_at', 'g.number', 'profiles.id')
-            ->paginate(10);
-        }else{
+                ->whereIn('group_id', $groups)
+                ->where('type', 0)
+                ->select('profiles.status', 'profiles.name', 'profiles.description', 'profiles.created_at', 'g.number', 'profiles.id')
+                ->paginate(10);
+        } else {
             $preprofiles = Profile::join('groups as g', 'g.id', 'profiles.group_id')
-            ->whereIn('group_id', $groups)
-            ->select('profiles.status', 'profiles.name', 'profiles.description', 'profiles.created_at', 'g.number', 'profiles.id')
-            ->paginate(10);
+                ->whereIn('group_id', $groups)
+                ->select('profiles.status', 'profiles.name', 'profiles.description', 'profiles.created_at', 'g.number', 'profiles.id')
+                ->paginate(10);
         }
 
 
@@ -394,7 +428,22 @@ class ProfileController extends Controller
         // Obtener estudiantes del grupo
         $students = $preprofile->group->users;
 
-        $notification = Notification::create(['title' => 'Alerta de pre-perfil', 'message' => "Te informamos que tu pre-perfil se ha actualizado", 'user_id' => Auth::user()->id]);
+        $type = "";
+        switch (session('protocol')['id']) {
+            case 1:
+            case 4:
+                $type = "pre-perfil";
+                break;
+            case 2:
+            case 3:
+            case 5:
+                $type = "planificación";
+                break;
+            default:
+                break;
+        }
+
+        $notification = Notification::create(['title' => "Alerta de $type", 'message' => "Te informamos que tu $type se ha actualizado", 'user_id' => Auth::user()->id]);
 
         // Envío de correo electrónico a cada estudiante del grupo
         foreach ($students as $student) {
@@ -402,12 +451,13 @@ class ProfileController extends Controller
                 'user'          => $student,
                 'preprofile'    => $preprofile,
                 'status'        => $preprofile->status,
+                'type'          => $type,
             ];
             try {
                 Mail::to($student->email)->send(
                     new SendMail(
                         'mail.preprofile-updated',
-                        'Notificación de modificación de preperfil',
+                        "Notificación de modificación de $type",
                         $mailData
                     )
                 );
@@ -513,6 +563,21 @@ class ProfileController extends Controller
         ]);
 
         try {
+            $type = "";
+            switch (session('protocol')['id']) {
+                case 1:
+                case 4:
+                    $type = "perfil";
+                    break;
+                case 2:
+                case 3:
+                case 5:
+                    $type = "planificación";
+                    break;
+                default:
+                    break;
+            }
+
             // Actualizar los campos del perfil
             $profiles->name = $request->input('name');
             $profiles->description = $request->input('description');
@@ -537,21 +602,22 @@ class ProfileController extends Controller
 
             $profiles->update();
 
-            $notification = Notification::create(['title' => 'Alerta de perfil', 'message' => "Te informamos que tu perfil se ha actualizado", 'user_id' => Auth::user()->id]);
+            $notification = Notification::create(['title' => "Alerta de $type", 'message' => "Te informamos que tu $type se ha actualizado", 'user_id' => Auth::user()->id]);
             // Envío de correo electrónico a cada estudiante del grupo
             $students = $profiles->group->users;
             foreach ($students as $student) {
                 $mailData = [
-                    'user' => $student,
-                    'profile' => $profiles,
-                    'status' => $profiles->status,
+                    'user'      => $student,
+                    'profile'   => $profiles,
+                    'status'    => $profiles->status,
+                    'type'      => $type,
                 ];
 
                 try {
                     Mail::to($student->email)->send(
                         new SendMail(
                             'mail.profile-updated',
-                            'Actualización de perfil',
+                            "Actualización de $type",
                             $mailData
                         )
                     );

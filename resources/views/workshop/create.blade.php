@@ -54,7 +54,9 @@
 
             <div class="mb-3">
                 <label for="date" class="form-label">Fecha:</label>
-                <input class="form-control" type="datetime-local" id="date" name="date" required>
+                <input class="form-control" type="datetime-local" id="date" name="date"
+                    value="{{ \Carbon\Carbon::now()->format('Y-m-d\TH:i') }}"
+                    min="{{ \Carbon\Carbon::now()->format('Y-m-d\TH:i') }}" required>
             </div>
 
             <div class="mb-3">
