@@ -8,6 +8,12 @@ use Database\Seeders\Ppp\EntityContactSeeder;
 use Database\Seeders\Ppp\EntitySeeder;
 use Database\Seeders\Ppp\ProposalSeeder;
 use Database\Seeders\Ppp\StageSeeder;
+use App\Models\CriteriaStage;
+use App\Models\TypeExtension;
+use Database\Seeders\Exams\AreaSeeder;
+use Database\Seeders\Exams\CriteriaSeeder;
+use Database\Seeders\Exams\PhaseSeeder;
+use Database\Seeders\Exams\SubAreaSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -52,6 +58,14 @@ class DatabaseSeeder extends Seeder
              */
             PdiProposalSeeder::class,
             PdiStageSeeder::class,
+
+
+            //EXAMEN GENERAL TECNICO PROFESIONAL - KARLA ABREGO
+           PhaseSeeder::class,
+           AreaSeeder::class,
+           SubAreaSeeder::class,
+           CriteriaSeeder::class
+
 
         ]);
     }
