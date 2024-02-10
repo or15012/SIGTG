@@ -64,7 +64,7 @@
                         @break
 
                         @case(5)
-                            Descargar plantilla para carga de áreas
+                            Descargar plantilla para carga de subáreas
                         @break
 
                         @default

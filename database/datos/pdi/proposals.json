@@ -1,0 +1,32 @@
+[
+    {
+        "id": 23,
+        "name": "Análisis de Datos Médicos",
+        "description": "Análisis de Datos Médicos",
+        "path": "proposals\/CqWpmUktddxZqbbGqMHq9twrcCNhYPqG3dycOzo5.pdf",
+        "amount_student": 2,
+        "entity_id": null,
+        "status": 1,
+        "user_id": 6,
+        "created_at": "2024-02-01 18:14:52",
+        "updated_at": "2024-02-01 18:14:52",
+        "deleted_at": null,
+        "protocol_id": 3,
+        "school_id": 1
+    },
+    {
+        "id": 24,
+        "name": "Dispositivos Médicos Inteligentes",
+        "description": "Dispositivos Médicos Inteligentes",
+        "path": "proposals\/3bmQuOQ77hH16G1ZGt9aegRrwaHVv9EehS76FkHl.pdf",
+        "amount_student": 1,
+        "entity_id": null,
+        "status": 1,
+        "user_id": 6,
+        "created_at": "2024-02-01 18:15:34",
+        "updated_at": "2024-02-01 18:15:34",
+        "deleted_at": null,
+        "protocol_id": 3,
+        "school_id": 1
+    }
+]

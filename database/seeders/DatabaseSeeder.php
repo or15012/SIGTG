@@ -2,7 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\TypeExtension;
+use Database\Seeders\Pdi\PdiProposalSeeder;
+use Database\Seeders\Pdi\PdiStageSeeder;
+use Database\Seeders\Ppp\EntityContactSeeder;
+use Database\Seeders\Ppp\EntitySeeder;
+use Database\Seeders\Ppp\ProposalSeeder;
+use Database\Seeders\Ppp\StageSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -27,7 +32,27 @@ class DatabaseSeeder extends Seeder
             TypeExtensionSeeder::class,
             RolAndPermissionSeeder::class,
             RoleSeeder::class,
-            RolePermission::class
+            RolePermission::class,
+
+
+            /**
+             * Seeder Dennis Pasantia Profesional
+             *
+             */
+            EntitySeeder::class,
+            EntityContactSeeder::class,
+            ProposalSeeder::class,
+            StageSeeder::class,
+
+
+
+            /**
+             * Seeder Dennis Pasantia de Investigación
+             *
+             */
+            PdiProposalSeeder::class,
+            PdiStageSeeder::class,
+
         ]);
     }
 }
