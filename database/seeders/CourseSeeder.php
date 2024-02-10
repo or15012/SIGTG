@@ -1,13 +1,13 @@
 <?php
 
-namespace Database\Seeders\Cde;
+namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 
-class StagesSeeder extends Seeder
+class CourseSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,10 +16,10 @@ class StagesSeeder extends Seeder
      */
     public function run()
     {
-        $data = json_decode(File::get(database_path('datos/cde/stages.json')), true);
+        $data = json_decode(File::get(database_path('datos/cde/courses.json')), true);
 
-        DB::table('stages')->insert($data);
+        DB::table('courses')->insert($data);
 
-        $this->command->info('Stages data seeded successfully.');
+        $this->command->info('Courses data seeded successfully.');
     }
 }

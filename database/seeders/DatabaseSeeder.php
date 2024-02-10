@@ -2,21 +2,6 @@
 
 namespace Database\Seeders;
 
-use Database\Seeders\Pdi\PdiProposalSeeder;
-use Database\Seeders\Pdi\PdiStageSeeder;
-use Database\Seeders\Ppp\EntityContactSeeder;
-use Database\Seeders\Ppp\EntitySeeder;
-use Database\Seeders\Ppp\ProposalSeeder;
-use Database\Seeders\Ppp\StageSeeder;
-use App\Models\CriteriaStage;
-use App\Models\TypeExtension;
-use Database\Seeders\Exams\AreaSeeder;
-use Database\Seeders\Exams\CriteriaSeeder;
-use Database\Seeders\Exams\PhaseSeeder;
-use Database\Seeders\Exams\SubAreaSeeder;
-use Database\Seeders\Cde\CourseSeeder;
-use Database\Seeders\Cde\EvaluationCriteriaSeeder;
-use Database\Seeders\Cde\StagesSeeder;
 use Illuminate\Database\Seeder;
 
 
