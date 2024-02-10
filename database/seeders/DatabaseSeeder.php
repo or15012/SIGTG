@@ -14,7 +14,11 @@ use Database\Seeders\Exams\AreaSeeder;
 use Database\Seeders\Exams\CriteriaSeeder;
 use Database\Seeders\Exams\PhaseSeeder;
 use Database\Seeders\Exams\SubAreaSeeder;
+use Database\Seeders\Cde\CourseSeeder;
+use Database\Seeders\Cde\EvaluationCriteriaSeeder;
+use Database\Seeders\Cde\StagesSeeder;
 use Illuminate\Database\Seeder;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -61,11 +65,17 @@ class DatabaseSeeder extends Seeder
 
 
             //EXAMEN GENERAL TECNICO PROFESIONAL - KARLA ABREGO
-           PhaseSeeder::class,
-           AreaSeeder::class,
-           SubAreaSeeder::class,
-           CriteriaSeeder::class
+            PhaseSeeder::class,
+            AreaSeeder::class,
+            SubAreaSeeder::class,
+            CriteriaSeeder::class,
 
+            /*
+             * Seeders Curso de Especialización - CAlfaro.
+             **/
+            CourseSeeder::class,
+            StagesSeeder::class,
+            EvaluationCriteriaSeeder::class,
 
         ]);
     }
