@@ -1,13 +1,12 @@
 <?php
 
-namespace Database\Seeders\Cde;
+namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 
-class EvaluationCriteriaSeeder extends Seeder
+class PdiStageSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,9 +15,9 @@ class EvaluationCriteriaSeeder extends Seeder
      */
     public function run()
     {
-        $data = json_decode(File::get(database_path('datos/cde/ev_criteria.json')), true);
+        $data = json_decode(File::get(database_path('datos/pdi/stages.json')), true);
 
-        DB::table('evaluation_criteria')->insert($data);
+        DB::table('stages')->insert($data);
 
         $this->command->info('Stages data seeded successfully.');
     }
