@@ -1,0 +1,25 @@
+[
+    {
+        "id" : 11,
+        "name" : "CURSO DE ESPECIALIZACIÓN EN GARANTÍA DE CALIDAD",
+        "description" : "EN SIMPLES PALABRAS PARA QA",
+        "cycle_id" : 1,
+        "school_id" : 1,
+        "created_at" : "2024-02-08 20:20:15",
+        "updated_at" : "2024-02-08 20:20:15",
+        "deleted_at" : null
+    },
+
+    {
+        "id" : 12,
+        "name" : "CURSO DE ESPECIALIZACIÓN EN LA NUBE",
+        "description" : "EN SIMPLES PALABRAS PARA CLOUD",
+        "cycle_id" : 1,
+        "school_id" : 1,
+        "created_at" : "2024-02-08 20:20:15",
+        "updated_at" : "2024-02-08 20:20:15",
+        "deleted_at" : null
+    }
+]
+        
+    

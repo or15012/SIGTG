@@ -3,7 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\TypeExtension;
+use Database\Seeders\Cde\CourseSeeder;
+use Database\Seeders\Cde\EvaluationCriteriaSeeder;
+use Database\Seeders\Cde\StagesSeeder;
 use Illuminate\Database\Seeder;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -27,7 +31,22 @@ class DatabaseSeeder extends Seeder
             TypeExtensionSeeder::class,
             RolAndPermissionSeeder::class,
             RoleSeeder::class,
-            RolePermission::class
+            RolePermission::class,
+
+
+            /**
+             * Seeders Curso de Especialización - CAlfaro.
+             **/
+            CourseSeeder::class,
+            StagesSeeder::class,
+            EvaluationCriteriaSeeder::class,
+
+
+
+
+
+
+
         ]);
     }
 }
