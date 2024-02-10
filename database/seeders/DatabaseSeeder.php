@@ -2,7 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\CriteriaStage;
 use App\Models\TypeExtension;
+use Database\Seeders\Exams\AreaSeeder;
+use Database\Seeders\Exams\CriteriaSeeder;
+use Database\Seeders\Exams\PhaseSeeder;
+use Database\Seeders\Exams\SubAreaSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -27,7 +32,18 @@ class DatabaseSeeder extends Seeder
             TypeExtensionSeeder::class,
             RolAndPermissionSeeder::class,
             RoleSeeder::class,
-            RolePermission::class
+            RolePermission::class,
+
+
+
+
+            //EXAMEN GENERAL TECNICO PROFESIONAL - KARLA ABREGO
+           PhaseSeeder::class,
+           AreaSeeder::class,
+           SubAreaSeeder::class,
+           CriteriaSeeder::class
+
+
         ]);
     }
 }
