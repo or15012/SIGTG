@@ -13,7 +13,7 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Editar Criterio de Evaluación de Sub área</h1>
+        <h1>Editar criterio de evaluación de subárea</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">

@@ -728,7 +728,7 @@ class ProfileController extends Controller
         // Validación de los datos del formulario
         $validatedData = $request->validate([
             'description' => 'required|string',
-            'profile_id' => 'required', // Esto valida que el archivo sea un PDF (puedes ajustar según tus necesidades)
+            'profile_id' => 'required',
         ]);
 
         // Crear un nueva observación
@@ -736,6 +736,27 @@ class ProfileController extends Controller
         $observation->description   = $request->description;
         $observation->profile_id    = $request->profile_id;
         $observation->save();
+
+        //Aqui debo enviar notificacion a estudiantes
+        // Obtener estudiantes del grupo
+        $profile    = Profile::find($request->profile_id);
+        $students   = $profile->group->users;
+        $notificationStudent = Notification::create(['title' => 'Alerta de observación en perfil o planificación', 'message' => "Su planificación o perfil ha recibido una observación", 'user_id' => Auth::user()->id]);
+
+        // Envío de correo electrónico a cada estudiante del grupo
+        foreach ($students as $student) {
+            try {
+                $emailData = [
+                    'user'      => $student,
+                    'profile'   => $profile,
+                ];
+
+                Mail::to($student->email)->send(new SendMail('mail.observation', 'Observación en perfil o planificación', $emailData));
+                UserNotification::create(['user_id' => $student->id, 'notification_id' => $notificationStudent->id, 'is_read' => 0]);
+            } catch (Exception $th) {
+                // Manejar la excepción
+            }
+        }
 
         return redirect()->route('profiles.coordinator.observation.list', [$request->profile_id])->with('success', 'La observación se ha guardado correctamente');
     }

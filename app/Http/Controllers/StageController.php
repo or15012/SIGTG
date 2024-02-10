@@ -123,9 +123,30 @@ class StageController extends Controller
             }
             $stage->save();
 
-            return redirect()->route('stages.index')->with('success', 'Etapa Evaluativa creada exitosamente.');
+            switch (session('protocol')['id']) {
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                    return redirect()->route('stages.index')->with('success', 'Etapa Evaluativa creada exitosamente.');
+                    break;
+                case 5:
+                    return redirect()->route('stages.index')->with('success', 'Área creada exitosamente.');
+                    break;
+            }
+
         } catch (\Exception $e) {
-            return redirect()->route('stages.create')->with('error', 'La Etapa Evaluativa ya se encuentra registrada, revisar.');
+            switch (session('protocol')['id']) {
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                    return redirect()->route('stages.create')->with('error', 'La Etapa Evaluativa ya se encuentra registrada.');
+                    break;
+                case 5:
+                    return redirect()->route('stages.create')->with('error', 'La área ya se encuentra registrada.');
+                    break;
+            }
         }
     }
 
