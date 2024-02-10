@@ -14,10 +14,10 @@
 
 
         <h1 class="mb-5">
-            {{  session('protocol')['id'] == 5 || session('protocol')['id'] == 3 ? 'Consultar planificaciones' : 'Consultar pre perfil' }}</h1>
+            {{  session('protocol')['id'] == 5 || session('protocol')['id'] == 3 || session('protocol')['id'] == 2 ? 'Consultar planificaciones' : 'Consultar pre perfil' }}</h1>
 
 
-        @if (session('protocol')['id'] == 5 || session('protocol')['id'] == 3)
+        @if (session('protocol')['id'] == 5 || session('protocol')['id'] == 3 || session('protocol')['id'] == 2)
             <div class="row">
                 <div class="mb-3 col-12 col-md-6 col-lg-6">
                     <label for="name" class="form-label">Nombre:</label>
