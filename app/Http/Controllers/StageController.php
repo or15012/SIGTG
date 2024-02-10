@@ -303,7 +303,22 @@ class StageController extends Controller
 
             DB::commit();
 
-            return redirect()->route('stages.index')->with('success', 'Criterios cargados exitosamente');
+            switch (session('protocol')['id']) {
+                case '5':
+                    return redirect()->route('stages.index')->with('success', 'Subáreas cargadas exitosamente');
+                    break;
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                    return redirect()->route('stages.index')->with('success', 'Criterios cargados exitosamente');
+                    break;
+
+                default:
+                    break;
+            }
+
+
         } catch (Exception $th) {
             DB::rollBack();
             return redirect()->route('stages.index')

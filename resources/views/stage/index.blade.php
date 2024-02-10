@@ -38,6 +38,7 @@
                 @switch(session('protocol')['id'])
                     @case(1)
                     @case(2)
+
                     @case(3)
                     @case(4)
                         Nueva etapa evaluativa
@@ -58,6 +59,7 @@
                     @switch(session('protocol')['id'])
                         @case(1)
                         @case(2)
+
                         @case(3)
                         @case(4)
                             Descargar plantilla para carga de criterios
@@ -96,10 +98,10 @@
                     <th>
                         @if (session('protocol') != null)
                             @switch(session('protocol')['id'])
-                            @case(1)
-                            @case(2)
-                            @case(3)
-                            @case(4)
+                                @case(1)
+                                @case(2)
+                                @case(3)
+                                @case(4)
                                     Orden de etapa
                                 @break
 
@@ -113,10 +115,10 @@
                     </th>
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
-                        @case(1)
-                        @case(2)
-                        @case(3)
-                        @case(4)
+                            @case(1)
+                            @case(2)
+                            @case(3)
+                            @case(4)
                                 <th>Entrega de documento</th>
                             @break
 
@@ -148,10 +150,10 @@
                         <td>{{ $stage->sort }}</td>
                         @if (session('protocol') != null)
                             @switch(session('protocol')['id'])
-                            @case(1)
-                            @case(2)
-                            @case(3)
-                            @case(4)
+                                @case(1)
+                                @case(2)
+                                @case(3)
+                                @case(4)
                                     <td>{{ $stage->type == 0 ? 'No' : 'Si' }}</td>
                                 @break
 
@@ -180,8 +182,21 @@
                             <a href="{{ route('criterias.create', $stage->id) }}" class="btn btn-primary my-1"><i
                                     class="fas fa-file-medical"></i></a>
 
-                            <button class="btn btn-secondary ajax-modal my-1" data-title="Carga de criterios"
-                                title="Cargar criterios"
+                            <button class="btn btn-secondary ajax-modal my-1"
+                                @if (session('protocol') != null)
+                                    @switch(session('protocol')['id'])
+                                        @case(1)
+                                        @case(2)
+                                        @case(3)
+                                        @case(4)
+                                            data-title="Carga de criterios" title="Cargar criterios"
+                                        @break
+
+                                        @case(5)
+                                            data-title="Cargar subáreas" title="Cargar subáreas"
+                                        @break
+                                    @endswitch
+                                @endif
                                 href="{{ route('stages.modal.load.criterias', ['stage_id' => $stage->id]) }}">
                                 <i class="fas fa-file"></i>
                             </button>

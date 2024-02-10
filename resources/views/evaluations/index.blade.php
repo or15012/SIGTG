@@ -25,7 +25,7 @@
 
             <div class="d-flex justify-content-end align-items-center">
 
-                @if ($project->status === 2)
+                @if ($project->status === 3)
                     @can('Projects.manage.approvement.report')
                         <a class="btn btn-secondary" href="{{ route('document.approvement.report', $project->id) }}"><i
                                 class="fa fa-file"></i>&nbsp;&nbsp;Acta de aprobación</a>
