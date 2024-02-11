@@ -39,8 +39,8 @@
                 @foreach ($projects as $project)
                     <tr>
                         <td>
-                            @if (isset($project->group->number))
-                                {{ $project->group->number }}
+                            @if (isset($project->number))
+                                {{ $project->number }}
                             @else
                                 No asignado
                             @endif

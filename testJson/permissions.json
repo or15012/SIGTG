@@ -1,186 +1,218 @@
 [
     {
+        "id": 1,
         "name": "Users",
         "guard_name": "web",
         "description": "Permiso pare registrar usuarios"
     },
     {
+        "id": 2,
         "name": "Roles",
         "guard_name": "web",
         "description": "Permiso para registrar roles"
     },
-
     {
+        "id": 3,
         "name": "Schools",
         "guard_name": "web",
         "description": "Permiso para registrar escuelas"
     },
     {
+        "id": 4,
         "name": "Protocols",
         "guard_name": "web",
         "description": "Permiso para consultar protocolos"
     },
     {
+        "id": 5,
         "name": "Cycles",
         "guard_name": "web",
         "description": "Permiso para registrar ciclos"
     },
     {
+        "id": 6,
         "name": "Groups.students",
         "guard_name": "web",
         "description": "Permiso para conformar grupos"
     },
     {
+        "id": 7,
         "name": "Groups.advisers",
         "guard_name": "web",
         "description": "Permiso para aceptar o rechazar grupos"
     },
     {
+        "id": 8,
         "name": "Preprofiles.students",
         "guard_name": "web",
         "description": "Permiso para registrar pre perfiles"
     },
     {
+        "id": 9,
         "name": "Preprofiles.advisers",
         "guard_name": "web",
         "description": "Permiso para aprobar/rechazar pre perfiles"
     },
     {
+        "id": 10,
         "name": "Profiles.students",
         "guard_name": "web",
         "description": "Permiso para registrar perfiles"
     },
     {
+        "id": 11,
         "name": "Profiles.advisers",
         "guard_name": "web",
         "description": "Permiso para aprobar/rechazar perfiles"
     },
     {
+        "id": 12,
         "name": "Stages",
         "guard_name": "web",
         "description": "Permiso para agregar etapas y sus crtiterios de evaluación"
     },
     {
+        "id": 13,
         "name": "Projects.students",
         "guard_name": "web",
         "description": "Permiso para visualizar proyectos - estudiantes"
     },
     {
+        "id": 14,
         "name": "Projects.advisers",
         "guard_name": "web",
         "description": "Permiso para visualizar proyectos - docentes asesor"
     },
     {
+        "id": 15,
         "name": "Projects.add.notes",
         "guard_name": "web",
         "description": "Permiso para cargar notas de etapa evaluativa"
     },
     {
+        "id": 16,
         "name": "Projects.approve.stage",
         "guard_name": "web",
         "description": "Permiso para aprobar etapa evaluativa"
     },
     {
+        "id": 17,
         "name": "Projects.add.documents",
         "guard_name": "web",
         "description": "Permiso para cargar documentos de etapas evaluativas"
     },
     {
+        "id": 18,
         "name": "Projects.send.stages",
         "guard_name": "web",
         "description": "Permiso para entregar etapa evaluativa."
     },
     {
+        "id": 19,
         "name": "Consultings.student.create",
         "guard_name": "web",
-        "description": "Permiso para gestionar solicitudes de asesorias"
+        "description": "Permiso para gestionar solicitudes de asesorías"
     },
     {
+        "id": 20,
         "name": "Extensions.student.create",
         "guard_name": "web",
         "description": "Permiso para solucitud de prorroga"
     },
     {
+        "id": 21,
         "name": "Projects.manage.approvement.report",
         "guard_name": "web",
         "description": "Permiso para gestionar acta de aprobación"
     },
     {
+        "id": 22,
         "name": "Projects.coordinator.extension",
         "guard_name": "web",
         "description": "Permiso para gestionar extensiones de prorroga"
     },
     {
+        "id": 23,
         "name": "Assigned.groups",
         "guard_name": "web",
         "description": "Permiso para visualizar grupos asignados - docente asesor"
     },
-
     {
+        "id": 24,
         "name": "Areas",
         "guard_name": "web",
         "description": "Permiso para gestionar areas y sub areas"
     },
     {
+        "id": 25,
         "name": "Notifications",
         "guard_name": "web",
         "description": "Permiso para registrar notificaciones"
     },
     {
+        "id": 26,
         "name": "Courses",
         "guard_name": "web",
         "description": "Permiso para registrar cursos"
     },
     {
+        "id": 27,
         "name": "Entities",
         "guard_name": "web",
         "description": "Permiso para registrar entidades"
     },
     {
+        "id": 28,
         "name": "Proposals.advisers",
         "guard_name": "web",
         "description": "Permiso para registrar propuestas"
     },
     {
+        "id": 29,
         "name": "Activities.students",
         "guard_name": "web",
         "description": "Permiso para registrar actividades"
     },
     {
+        "id": 30,
         "name": "Activities.advisers",
         "guard_name": "web",
         "description": "Permiso para ver las actividades"
     },
     {
+        "id": 31,
         "name": "Logs",
         "guard_name": "web",
         "description": "Permiso para ver las logs de bitacora"
     },
-
     {
+        "id": 32,
         "name": "Proposals.students",
         "guard_name": "web",
         "description": "Permiso para aplicar a las propuestas"
     },
-
     {
+        "id": 33,
         "name": "Applications.advisers",
         "guard_name": "web",
         "description": "Permiso para aprobar CV de estudiantes"
     },
-
     {
+        "id": 34,
         "name": "Forums.advisers",
         "guard_name": "web",
         "description": "Permiso ver foros"
     },
-
     {
+        "id": 35,
         "name": "Workshops.advisers",
         "guard_name": "web",
         "description": "Permiso para ver talleres"
+    },
+    {
+        "id": 36,
+        "name": "Consultings.adviser.show",
+        "guard_name": "web",
+        "description": "Permiso para gestionar solicitudes de asesorías"
     }
-
-
 ]
-

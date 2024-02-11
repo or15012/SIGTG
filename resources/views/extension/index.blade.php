@@ -20,7 +20,7 @@
             <a href="{{ route('extensions.create', $project->id) }}" class="btn btn-primary mb-3">Registrar prórroga</a>
         @else
             <div class="alert alert-info mt-3">
-                No se puede registrar ni realizar cambios en asesorias. Proyecto inactivo.
+                No se puede registrar ni realizar cambios en asesorías. Proyecto inactivo.
             </div>
         @endif
 

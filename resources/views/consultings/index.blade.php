@@ -13,14 +13,14 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Lista de asesorias</h1>
+        <h1>Lista de asesorías</h1>
         @if (!$status)
         <div class="alert alert-info mt-3">
-            No se puede registrar ni realizar cambios en asesorias. Proyecto inactivo.
+            No se puede registrar ni realizar cambios en asesorías. Proyecto inactivo.
         </div>
     @endif
         @if ($userType === 1 && $status)
-            <a href="{{ route('consultings.create', $project->id) }}" class="btn btn-primary mb-3">Registrar asesoria</a>
+            <a href="{{ route('consultings.create', $project->id) }}" class="btn btn-primary mb-3">Registrar asesoría</a>
         @endif
 
         @if (session('success'))

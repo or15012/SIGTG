@@ -269,8 +269,9 @@ class EvaluationController extends Controller
         $projects = Project::join('groups as g', 'g.id', 'projects.group_id')
             ->join('teacher_group as tg', 'tg.group_id', 'g.id')
             ->where('tg.user_id', $user->id)
-            ->select('projects.id', 'projects.name')
-            ->paginate(30);
+            ->select('projects.id', 'projects.name', 'g.number')
+            ->where('g.protocol_id', session('protocol')['id'])
+            ->paginate(20);
 
         return view('evaluations.subareas.coordinator.index', [
             "projects"  => $projects

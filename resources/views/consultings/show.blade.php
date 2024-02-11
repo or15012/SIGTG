@@ -17,7 +17,7 @@
             <a href="{{ route('consultings.index',$project->id) }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
-        <h1>Consultar asesoria</h1>
+        <h1>Consultar asesoría</h1>
         <dl class="row">
             <dt class="col-sm-3">ID:</dt>
             <dd class="col-sm-9">{{ $consulting->id }}</dd>

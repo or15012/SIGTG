@@ -158,7 +158,7 @@ Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
     Route::get('/assigned/group', [GroupController::class, 'assignedGroup'])->name('assigned');
 });
 
-//Grupo para las rutas de asesoria.
+//Grupo para las rutas de asesoría.
 Route::group(['prefix' => 'consultings', 'as' => 'consultings.'], function () {
     Route::get('/index/{project}', [ConsultingController::class, 'index'])->name('index');
     Route::get('/create/{project}', [ConsultingController::class, 'create'])->name('create');
