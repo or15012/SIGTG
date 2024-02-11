@@ -38,7 +38,7 @@ class GroupController extends Controller
         $this->middleware('permission:' . self::PERMISSIONS['index.adviser'])->only(['index']);
         $this->middleware('permission:' . self::PERMISSIONS['assigned.group'])->only(['assignedGroup']);
 
-        $this->middleware('check.protocol')->only(['index', 'initialize','update']);
+        $this->middleware('check.protocol')->only(['index', 'initialize', 'update']);
         $this->middleware('check.school')->only(['index', 'initialize']);
     }
     public function index(Project $project)
@@ -209,19 +209,29 @@ class GroupController extends Controller
             'protocol'      => 'required|string|exists:protocols,id'
         ]);
 
-        $user = Auth::user();
-        $actual_date = Carbon::now();
-        $cycle_id = Cycle::where('year', $actual_date->year)->where('status', 1)->first()->id ?? 1;
-        $protocols = Protocol::where('id', $data['protocol'])->first();
+        $user           = Auth::user();
+        $actual_date    = Carbon::now();
+        $cycle_id       = Cycle::where('year', $actual_date->year)->where('status', 1)->first()->id ?? 1;
+        $protocols      = Protocol::where('id', $data['protocol'])->first();
+        $protocol       = $user->protocol->first(); //obteniendo protocolo al que pertenece
+        $cycle          = Cycle::where('status', 1)->first(); //Obteniendo ciclo activo
 
         //dd($protocols);
+
+        $lastGroupNumber = Group::where('protocol_id', $protocol->id)
+            ->where('cycle_id', $cycle->id)
+            ->max('number');
+
+        // Verificar si $lastGroupNumber es null y asignar el valor apropiado
+        $nextGroupNumber = ($lastGroupNumber === null) ? 1 : ($lastGroupNumber + 1);
 
         $group = Group::create([
             'year'          => $actual_date->year,
             'status'        => 1,
             'state_id'      => 3,
             'protocol_id'   => $protocols->id,
-            'cycle_id'      => $cycle_id
+            'cycle_id'      => $cycle_id,
+            'number'        => $nextGroupNumber
         ]);
 
         $user_group = UserGroup::create([

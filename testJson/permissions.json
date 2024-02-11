@@ -214,5 +214,17 @@
         "name": "Consultings.adviser.show",
         "guard_name": "web",
         "description": "Permiso para gestionar solicitudes de asesorías"
+    },
+    {
+        "id": 37,
+        "name": "Project.adviser.back",
+        "guard_name": "web",
+        "description": "Permiso para asesor retroceder en proyecto"
+    },
+    {
+        "id": 38,
+        "name": "Project.students.back",
+        "guard_name": "web",
+        "description": "Permiso para estudiante retroceder en proyecto"
     }
 ]

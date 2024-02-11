@@ -27,6 +27,11 @@
                 {{ session('error') }}
             </div>
         @endif
+        <div class="contenedor">
+            <a href="{{ route('evaluations.show.subareas', [$project->id,$stage->id]) }}" class="btn btn-danger regresar-button"><i
+                    class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
         <h1>
             @if (session('protocol') != null)
                 @switch(session('protocol')['id'])

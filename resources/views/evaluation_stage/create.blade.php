@@ -27,11 +27,19 @@
                 {{ session('error') }}
             </div>
         @endif
+        <div class="contenedor">
+            <a href="{{ route('projects.show.stage', [$project->id,$stage->id]) }}" class="btn btn-danger regresar-button"><i
+                    class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
         <h1>
             @if (session('protocol') != null)
                 @switch(session('protocol')['id'])
                     @case(1)
-                        Registro de Notas
+                    @case(2)
+                    @case(3)
+                    @case(4)
+                        Registro de notas
                     @break
 
                     @case(5)

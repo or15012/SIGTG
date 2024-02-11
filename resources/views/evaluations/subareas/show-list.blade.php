@@ -12,6 +12,25 @@
         @endslot
     @endcomponent
     <div class="container">
+
+        {{-- Poner permiso para asesor --}}
+        @can('Project.adviser.back')
+            <div class="contenedor">
+                <a href="{{ route('evaluations.coordinator.show', $project->id) }}" class="btn btn-danger regresar-button"><i
+                        class="fas fa-arrow-left"></i>
+                    Regresar</a>
+            </div>
+        @endcan
+
+
+        {{-- Poner permiso para estudiante --}}
+        @can('Project.students.back')
+            <div class="contenedor">
+                <a href="{{ route('evaluations.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+                    Regresar</a>
+            </div>
+        @endcan
+
         <div>
             <h3>Subáreas evaluativas</h3>
         </div>
