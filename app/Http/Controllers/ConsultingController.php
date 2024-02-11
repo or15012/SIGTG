@@ -19,13 +19,13 @@ use Illuminate\Support\Facades\Mail;
 class ConsultingController extends Controller
 {
     const PERMISSIONS = [
-        'index'     => 'Consultings.student.create',
+        'index'     => ['Consultings.student.create', 'Consultings.adviser.show'],
     ];
 
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('permission:' . self::PERMISSIONS['index'])->only(['index']);
+        $this->middleware('permission:' . implode('|', self::PERMISSIONS['index']))->only(['index']);
     }
 
     public function index(Project $project)

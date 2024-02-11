@@ -28,7 +28,7 @@
             </div>
         @endif
         <div class="contenedor">
-            <a href="{{ route('evaluations.show.subareas', [$project->id,$stage->id]) }}" class="btn btn-danger regresar-button"><i
+            <a href="{{ route('evaluations.show.subareas', [$project->id,$stage->stage_id]) }}" class="btn btn-danger regresar-button"><i
                     class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
