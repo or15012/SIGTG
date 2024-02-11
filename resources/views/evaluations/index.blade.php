@@ -25,7 +25,7 @@
 
             <div class="d-flex justify-content-end align-items-center">
 
-                @if ($project->status === 2)
+                @if ($project->status === 3)
                     @can('Projects.manage.approvement.report')
                         <a class="btn btn-secondary" href="{{ route('document.approvement.report', $project->id) }}"><i
                                 class="fa fa-file"></i>&nbsp;&nbsp;Acta de aprobación</a>
@@ -52,7 +52,12 @@
 
                 @can('Consultings.student.create')
                     <a href="{{ route('consultings.index', $project->id) }}" style="margin-left: 5px"
-                        class="btn btn-primary float-end"><i class="bx bx-file icon nav-icon"></i>Solicitar asesoria</a>
+                        class="btn btn-primary float-end"><i class="bx bx-file icon nav-icon"></i>Solicitar asesoría</a>
+                @endcan
+
+                @can('Consultings.adviser.show')
+                    <a href="{{ route('consultings.index', $project->id) }}" style="margin-left: 5px"
+                        class="btn btn-primary float-end"><i class="bx bx-file icon nav-icon"></i>Ver asesorías</a>
                 @endcan
                 <a href="{{ route('home') }}" style="margin-left: 5px" class="btn btn-danger regresar-button"><i
                         class="fas fa-arrow-left"></i>

@@ -108,7 +108,7 @@ class ConsultingController extends Controller
             $consulting = Consulting::create($data);
 
 
-            $notificationAdviser = Notification::create(['title' => 'Alerta de nueva asesoria', 'message' => "Se ha agendado una nueva asesoria", 'user_id' => Auth::user()->id]);
+            $notificationAdviser = Notification::create(['title' => 'Alerta de nueva asesoría', 'message' => "Se ha agendado una nueva asesoría", 'user_id' => Auth::user()->id]);
             $adviserGroup = TeacherGroup::join('users as u', 'u.id', 'teacher_group.user_id')
                 ->select('u.email', 'u.id', 'u.first_name', 'u.last_name')
                 ->where('group_id', $group->id)
@@ -121,7 +121,7 @@ class ConsultingController extends Controller
                     'group' => $group,
                     'data'  => $data
                 ];
-                Mail::to($item->email)->send(new SendMail('mail.new-advisory', 'Notificación de nueva asesoria', $emailData));
+                Mail::to($item->email)->send(new SendMail('mail.new-advisory', 'Notificación de nueva asesoría', $emailData));
                 UserNotification::create(['user_id' => $item->id, 'notification_id' => $notificationAdviser->id, 'is_read' => 0]);
             }
         } elseif ($user->type === 2) {
@@ -130,7 +130,7 @@ class ConsultingController extends Controller
             $data['summary'] = $request->input('summary');
             $consulting = Consulting::create($data);
         }
-        return redirect()->route('consultings.index', [$project->id])->with('success', 'Asesoria creada correctamente.');
+        return redirect()->route('consultings.index', [$project->id])->with('success', 'asesoría creada correctamente.');
     }
 
     public function edit(Consulting $consulting, Project $project)
@@ -190,7 +190,7 @@ class ConsultingController extends Controller
 
         $consulting->update($data);
 
-        return redirect()->route('consultings.index', [$project->id])->with('success', 'Asesoria actualizada correctamente.');
+        return redirect()->route('consultings.index', [$project->id])->with('success', 'asesoría actualizada correctamente.');
     }
 
     public function show(Consulting $consulting, Project $project)
@@ -204,6 +204,6 @@ class ConsultingController extends Controller
     {
         $consulting->delete();
 
-        return redirect()->back()->with('success', 'Asesoria eliminada correctamente.');
+        return redirect()->back()->with('success', 'Asesoría eliminada correctamente.');
     }
 }

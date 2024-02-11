@@ -44,7 +44,8 @@ class CriteriaStageController extends Controller
             'stage'             => $stage,
             'users'             => $users,
             'grades'            => $grades,
-            'evaluationStages'  => $evaluationStages
+            'evaluationStages'  => $evaluationStages,
+            'project'           => $project
         ]);
     }
 
@@ -118,7 +119,8 @@ class CriteriaStageController extends Controller
             'stage'             => $stage,
             'users'             => $users,
             'grades'            => $grades,
-            'evaluationStages'  => $evaluationStages
+            'evaluationStages'  => $evaluationStages,
+            'project'           => $project
         ]);
     }
 

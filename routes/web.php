@@ -29,7 +29,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PhaseController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StageController;
-use App\Http\Controllers\SubareaController;
+use App\Http\Controllers\SubAreaController;
 use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\LogController;
 use App\Models\Activity;
@@ -158,7 +158,7 @@ Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
     Route::get('/assigned/group', [GroupController::class, 'assignedGroup'])->name('assigned');
 });
 
-//Grupo para las rutas de asesoria.
+//Grupo para las rutas de asesoría.
 Route::group(['prefix' => 'consultings', 'as' => 'consultings.'], function () {
     Route::get('/index/{project}', [ConsultingController::class, 'index'])->name('index');
     Route::get('/create/{project}', [ConsultingController::class, 'create'])->name('create');
@@ -243,10 +243,10 @@ Route::group(['prefix' => 'criterias', 'as' => 'criterias.'], function () {
     Route::delete('/{criteria}', [EvaluationCriteriaController::class, 'destroy'])->name('destroy');
 
     Route::group(['prefix' => 'subareas', 'as' => 'subareas.'], function () {
-        Route::get('/{id}', [SubareaController::class, 'criteriasIndex'])->name('index');
-        Route::get('/{criteria}/edit', [SubareaController::class, 'criteriasEdit'])->name('edit');
-        Route::put('/{criteria}', [SubareaController::class, 'criteriasUpdate'])->name('update');
-        Route::delete('/{criteria}', [SubareaController::class, 'criteriasDestroy'])->name('destroy');
+        Route::get('/{id}', [SubAreaController::class, 'criteriasIndex'])->name('index');
+        Route::get('/{criteria}/edit', [SubAreaController::class, 'criteriasEdit'])->name('edit');
+        Route::put('/{criteria}', [SubAreaController::class, 'criteriasUpdate'])->name('update');
+        Route::delete('/{criteria}', [SubAreaController::class, 'criteriasDestroy'])->name('destroy');
     });
 });
 
@@ -357,16 +357,16 @@ Route::group(['prefix' => 'areas', 'as' => 'areas.'], function () {
 
 // Grupo para las rutas de subarea
 Route::group(['prefix' => 'subareas', 'as' => 'subareas.'], function () {
-    Route::get('/{id}', [SubareaController::class, 'index'])->name('index');
-    Route::get('/create/{id}', [SubareaController::class, 'create'])->name('create');
-    Route::post('/store', [SubareaController::class, 'store'])->name('store');
-    Route::get('/{subarea}/edit', [SubareaController::class, 'edit'])->name('edit');
-    Route::put('/{subarea}', [SubareaController::class, 'update'])->name('update');
-    Route::delete('/{subarea}', [SubareaController::class, 'destroy'])->name('destroy');
+    Route::get('/{id}', [SubAreaController::class, 'index'])->name('index');
+    Route::get('/create/{id}', [SubAreaController::class, 'create'])->name('create');
+    Route::post('/store', [SubAreaController::class, 'store'])->name('store');
+    Route::get('/{subarea}/edit', [SubAreaController::class, 'edit'])->name('edit');
+    Route::put('/{subarea}', [SubAreaController::class, 'update'])->name('update');
+    Route::delete('/{subarea}', [SubAreaController::class, 'destroy'])->name('destroy');
 
     Route::group(['prefix' => 'criterias', 'as' => 'criterias.'], function () {
-        Route::get('/create/{id}', [SubareaController::class, 'criteriasCreate'])->name('create');
-        Route::post('/store', [SubareaController::class,  'criteriasStore'])->name('store');
+        Route::get('/create/{id}', [SubAreaController::class, 'criteriasCreate'])->name('create');
+        Route::post('/store', [SubAreaController::class,  'criteriasStore'])->name('store');
     });
 });
 

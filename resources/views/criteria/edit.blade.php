@@ -13,7 +13,24 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Editar Criterio de Evaluación</h1>
+        @if (session('protocol') != null)
+            @switch(session('protocol')['id'])
+                @case(1)
+                @case(2)
+
+                @case(3)
+                @case(4)
+                    <h1>Editar criterio de evaluación</h1>
+                @break
+
+                @case(5)
+                    <h1>Editar subárea</h1>
+                @break
+
+                @default
+            @endswitch
+        @endif
+
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -35,7 +52,7 @@
             @csrf
             @method('PUT')
             <div class="mb-3">
-                <label for="name" class="form-label">Nombre del Criterio de Evaluación</label>
+                <label for="name" class="form-label">Nombre</label>
                 <input type="text" class="form-control" id="name" name="name" value="{{ $criteria->name }}"
                     required>
             </div>
@@ -54,7 +71,23 @@
             <input type="text" class="form-control" id="stage" name="stage" value="{{ $stage->id }}" hidden>
 
             <div class="mb-3">
-                <label for="stage" class="form-label">Etapa Evaluativa</label>
+                @if (session('protocol') != null)
+                    @switch(session('protocol')['id'])
+                        @case(1)
+                        @case(2)
+                        @case(3)
+                        @case(4)
+                            <label for="stage" class="form-label">Etapa Evaluativa</label>
+                        @break
+
+                        @case(5)
+                            <label for="stage" class="form-label">Área</label>
+                        @break
+
+                        @default
+                    @endswitch
+                @endif
+
                 <select class="form-control" id="stage" name="stage" disabled>
                     <option value="{{ $stage->id }}"> {{ $stage->name }}</option>
                 </select>

@@ -14,7 +14,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 
-class SubareaController extends Controller
+class SubAreaController extends Controller
 {
     public function __construct()
     {

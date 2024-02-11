@@ -40,7 +40,7 @@
                         <td>{{ $group->name }}</td>
                         <td>
                             @can('Consultings.student.create')
-                                <a href="{{ route('consultings.index', $group->id) }}" class="btn btn-primary">Asesorias <i
+                                <a href="{{ route('consultings.index', $group->id) }}" class="btn btn-primary">Asesorías <i
                                         class="fas fa-list"></i></a>
                             @endcan
                         </td>

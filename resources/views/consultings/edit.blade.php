@@ -18,7 +18,7 @@
                     class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
-        <h1>Editar asesoria</h1>
+        <h1>Editar asesoría</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -53,7 +53,7 @@
             </div>
             <input type="hidden" name="group_id" value="{{ $consulting->group_id }}">
 
-            <h3>Asistencias a asesoria</h3>
+            <h3>Asistencias a asesoría</h3>
             <table class="table table-bordered table-striped table-hover">
                 <thead>
                     <tr class="table-danger">

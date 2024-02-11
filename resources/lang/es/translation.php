@@ -169,7 +169,7 @@ return [
     "Projects"          => "Proyectos",
     "ProjectsAdviser"   => "Proyectos (Coordinador)",
     "ShowPerfil"        => "Mostrar perfil",
-    "Consultings"       => "Asesorias",
+    "Consultings"       => "Asesorías",
     "EvaluationsDocuments"   => "Documentos de evaluación",
     "Roles"                  => "Roles",
     "Logs"                   => "Bitácora",

@@ -71,32 +71,31 @@ class ProjectController extends Controller
             ->get();
 
 
-            if (session('protocol')['id'] == 4) {
-                $user = Project::join('profiles as p', 'projects.profile_id', 'p.id')
-                    ->join('user_group as ug', 'ug.group_id', 'projects.group_id')
-                    ->join('users as u', 'ug.user_id', 'u.id')
-                    ->join('course_registrations as cr', 'cr.user_id', 'u.id')
-                    ->where('projects.group_id', $group->id)
-                    ->first();
+        if (session('protocol')['id'] == 4) {
+            $user = Project::join('profiles as p', 'projects.profile_id', 'p.id')
+                ->join('user_group as ug', 'ug.group_id', 'projects.group_id')
+                ->join('users as u', 'ug.user_id', 'u.id')
+                ->join('course_registrations as cr', 'cr.user_id', 'u.id')
+                ->where('projects.group_id', $group->id)
+                ->first();
 
-                $stages = Stage::where("protocol_id", $group->protocol_id)
+            $stages = Stage::where("protocol_id", $group->protocol_id)
                 ->where('cycle_id', $group->cycle_id)
                 ->where('school_id', $user->school_id)
                 ->where('course_id', $user->course_id)
                 ->orderBy('stages.sort', 'asc')
                 ->get();
 
-                if(count($stages) === 0){
-                    return redirect()->route('home')->with('error', 'No tiene etapas asignadas.');
-                }
-
-            }else{
-                $stages = Stage::where("protocol_id", $group->protocol_id)
+            if (count($stages) === 0) {
+                return redirect()->route('home')->with('error', 'No tiene etapas asignadas.');
+            }
+        } else {
+            $stages = Stage::where("protocol_id", $group->protocol_id)
                 ->where('cycle_id', $group->cycle_id)
                 ->where('school_id', $user->school_id)
                 ->orderBy('stages.sort', 'asc')
                 ->get();
-            }
+        }
 
 
 
@@ -318,7 +317,7 @@ class ProjectController extends Controller
         $projects = Project::join('groups as g', 'g.id', 'projects.group_id')
             ->join('teacher_group as tg', 'tg.group_id', 'g.id')
             ->where('tg.user_id', $user->id)
-            ->select('projects.id', 'projects.name')
+            ->select('projects.id', 'projects.name', 'g.number')
             ->where('g.protocol_id', session('protocol')['id'])
             ->paginate(20);
 
@@ -351,22 +350,21 @@ class ProjectController extends Controller
                 ->first();
 
             $stages = Stage::where("protocol_id", $group->protocol_id)
-            ->where('cycle_id', $group->cycle_id)
-            ->where('school_id', $user->school_id)
-            ->where('course_id', $user->course_id)
-            ->orderBy('stages.sort', 'asc')
-            ->get();
+                ->where('cycle_id', $group->cycle_id)
+                ->where('school_id', $user->school_id)
+                ->where('course_id', $user->course_id)
+                ->orderBy('stages.sort', 'asc')
+                ->get();
 
-            if(count($stages) === 0){
+            if (count($stages) === 0) {
                 return redirect()->route('root')->with('error', 'No tiene etapas asignadas.');
             }
-
-        }else{
+        } else {
             $stages = Stage::where("protocol_id", $group->protocol_id)
-            ->where('cycle_id', $group->cycle_id)
-            ->where('school_id', $user->school_id)
-            ->orderBy('stages.sort', 'asc')
-            ->get();
+                ->where('cycle_id', $group->cycle_id)
+                ->where('school_id', $user->school_id)
+                ->orderBy('stages.sort', 'asc')
+                ->get();
         }
 
 
@@ -429,7 +427,7 @@ class ProjectController extends Controller
 
         if ($request->decision == 3) {
             // Prorroga aceptada, actualiza la fecha de vencimiento
-          //  $this->handleProrrogaAcceptance($project);
+            //  $this->handleProrrogaAcceptance($project);
 
 
             $group = $project->group;
@@ -477,9 +475,24 @@ class ProjectController extends Controller
 
         //identificare si es la ultima etapa para cargar las notas finales
 
-        return redirect()
-            ->route('projects.coordinator.show', [$project->id])
-            ->with('success', 'Proyecto actualizado correctamente.');
+        switch (session('protocol')['id']) {
+            case '5':
+                return redirect()
+                    ->route('evaluations.coordinator.show', [$project->id])
+                    ->with('success', 'Proyecto actualizado correctamente.');
+                break;
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+                return redirect()
+                    ->route('projects.coordinator.show', [$project->id])
+                    ->with('success', 'Proyecto actualizado correctamente.');
+                break;
+
+            default:
+                break;
+        }
     }
 
     private function handleGroupAcceptance(Project $project)
