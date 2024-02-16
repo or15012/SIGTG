@@ -18,6 +18,11 @@
         "id": "5",
         "name": "Coordinador de protocolo",
         "guard_name": "web"
+    },
+    {
+        "id": "6",
+        "name": "Jurado Evaluador",
+        "guard_name": "web"
     }
 
 ]
