@@ -9,6 +9,7 @@ use App\Mail\SendMail;
 use App\Models\Application;
 use App\Models\Cycle;
 use App\Models\Entity;
+use App\Models\EntityContact;
 use App\Models\Group;
 use App\Models\Notification;
 use App\Models\Profile;
@@ -226,28 +227,61 @@ class ProposalController extends Controller
 
         $proposal = Proposal::find($validatedData['proposal_id']);
 
-        //Envio de correo a coordinador.
-        $role = 'Coordinador General';
-        $userRoles = User::role($role)->get(); //modificar para diferenciar por modalidades.
+        // Obtener la entidad asociada a la propuesta
+        $entity = $proposal->entity;
 
-        $notificationStudent = Notification::create(['title' => 'Alerta de aplicación', 'message' => "Se ha postulado correctamente ha esta propuesta, su CV está pendiente de revisión", 'user_id' => Auth::user()->id]);
-        $notificationCoordinator = Notification::create(['title' => 'Alerta de aplicación', 'message' => "El estudiante ha enviado su CV para revisión",  'user_id' => $user->id]);
-        foreach ($userRoles as $coordinator) {
-            try {
-                $emailData = [
-                    'user'       => $coordinator,
-                    'proposal'      => $proposal,
-                    'application'   => $application,
-                ];
-                //dd($emailData);
 
-                Mail::to($coordinator->email)->send(new SendMail('mail.application-coordinator-saved', 'Notificación de aplicación enviada', $emailData));
-                UserNotification::create(['user_id' => $coordinator->id, 'notification_id' => $notificationCoordinator->id, 'is_read' => 0]);
-            } catch (\Throwable $th) {
+        if ($entity) {
+            // Obtener los correos electrónicos asociados a la entidad
+            $contacts = $entity->entity_contacts;
+
+            // Iterar sobre los contactos y enviar correos electrónicos
+
+            foreach ($contacts as $contact) {
+
+                try {
+                    $emailData = [
+                        'entity'      => $entity,
+                        'proposal'    => $proposal,
+                        'contact'     => $contact,
+                        'application' => $application,
+                        'name'        => $contact->name,
+                    ];
+                  ($emailData);
+                    // Enviar correo electrónico al contacto
+                    Mail::to($contact->email)->send(new SendMail('mail.application-entity-saved', 'Nueva aplicación recibida', $emailData));
+                } catch (\Throwable $th) {
+
+                    dd($th);
+                    // Manejar errores si falla el envío del correo electrónico
+                    // Puedes registrar el error o continuar con el próximo contacto
+                    continue;
+                }
             }
-        }
 
-        // Envío de correo electrónico a estudiante
+
+            //Envio de correo a coordinador.
+            $role = 'Coordinador General';
+            $userRoles = User::role($role)->get(); //modificar para diferenciar por modalidades.
+
+            $notificationStudent = Notification::create(['title' => 'Alerta de aplicación', 'message' => "Se ha postulado correctamente ha esta propuesta, su CV está pendiente de revisión", 'user_id' => Auth::user()->id]);
+            $notificationCoordinator = Notification::create(['title' => 'Alerta de aplicación', 'message' => "El estudiante ha enviado su CV para revisión",  'user_id' => $user->id]);
+            foreach ($userRoles as $coordinator) {
+                try {
+                    $emailData = [
+                        'user'       => $coordinator,
+                        'proposal'      => $proposal,
+                        'application'   => $application,
+                    ];
+                    //dd($emailData);
+
+                    Mail::to($coordinator->email)->send(new SendMail('mail.application-coordinator-saved', 'Notificación de aplicación enviada', $emailData));
+                    UserNotification::create(['user_id' => $coordinator->id, 'notification_id' => $notificationCoordinator->id, 'is_read' => 0]);
+                } catch (\Throwable $th) {
+                }
+            }
+
+            // Envío de correo electrónico a estudiante
 
             try {
                 $emailData = [
@@ -262,9 +296,9 @@ class ProposalController extends Controller
                 // Manejar la excepción
             }
 
-        return redirect()->route('proposals.applications.index', [$proposal->proposal_id])->with('success', 'Has aplicado correctamente a la pasantía.');
+            return redirect()->route('proposals.applications.index', [$proposal->proposal_id])->with('success', 'Has aplicado correctamente a la pasantía.');
+        }
     }
-
 
     //El coorinador acepta o rechaza CV
     public function coordinatorUpdate(Request $request, Application $application)
@@ -363,7 +397,6 @@ class ProposalController extends Controller
         } else {
             abort(404, "No puede gestionar propuestas en el protocolo actual");
         }
-
     }
 
     public function applicationDownload(Application $application, $file)
