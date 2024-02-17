@@ -247,9 +247,11 @@ class ProposalController extends Controller
                         'application' => $application,
                         'name'        => $contact->name,
                     ];
-                  ($emailData);
-                    // Enviar correo electrónico al contacto
-                    Mail::to($contact->email)->send(new SendMail('mail.application-entity-saved', 'Nueva aplicación recibida', $emailData));
+                    // Adjuntar el archivo al correo electrónico antes de enviarlo
+                    $filePath = storage_path('app/' . $application->path);
+                    $email = new SendMail('mail.application-entity-saved', 'Nueva aplicación recibida', $emailData);
+                    $email->attach($filePath); // Adjuntar el archivo al correo electrónico
+                    Mail::to($contact->email)->send($email); // Enviar el correo electrónico
                 } catch (\Throwable $th) {
 
                     dd($th);
