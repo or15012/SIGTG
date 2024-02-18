@@ -21,10 +21,12 @@
             @switch(session('protocol')['id'])
                 @case(1)
                 @case(2)
+
                 @case(3)
                 @case(4)
                     <h1>Editar etapa evaluativa</h1>
                 @break
+
                 @case(5)
                     <h1>Editar área tematica</h1>
                 @break
@@ -161,6 +163,24 @@
                                     @endif
                                 @endforeach
                             </select>
+                        </div>
+                    @break
+
+                    @case(5)
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label for="status" class="form-label">Fecha de inicio</label>
+                                <input type="date" class="form-control" id="start_date" name="start_date"
+                                    value="{{ $stage->start_date }}" min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label for="status" class="form-label">Fecha de fin</label>
+                                <input type="date" class="form-control" id="end_date" name="end_date"
+                                    value="{{ $stage->end_date }}" min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" required>
+                            </div>
                         </div>
                     @break
 

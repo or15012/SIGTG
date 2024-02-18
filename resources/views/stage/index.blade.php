@@ -89,7 +89,6 @@
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr class="table-danger">
-                    <th>ID</th>
                     <th>Nombre</th>
                     <th>Ciclo</th>
                     <th>Protocolo</th>
@@ -141,7 +140,6 @@
             <tbody>
                 @foreach ($stages as $stage)
                     <tr>
-                        <td>{{ $stage->id }}</td>
                         <td>{{ $stage->name }}</td>
                         <td>{{ $stage->cycle->number }}-{{ $stage->cycle->year }}</td>
                         <td>{{ $stage->protocol->name }}</td>

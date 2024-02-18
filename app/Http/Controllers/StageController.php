@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use Illuminate\Validation\Rule;
 
 class StageController extends Controller
 {
@@ -61,6 +62,20 @@ class StageController extends Controller
             'school'        => 'required|integer|min:1|exists:schools,id',
             'percentage'    => 'required|integer|min:1|max:100',
         ]);
+
+        switch (session('protocol')['id']) {
+
+            case 5:
+                $request->validate([
+                    'start_date' => 'required|date',
+                    'end_date' => [
+                        'required',
+                        'date',
+                        'after_or_equal:start_date', // Asegura que end_date sea después o igual a start_date
+                    ],
+                ]);
+                break;
+        }
 
         try {
 
@@ -111,11 +126,13 @@ class StageController extends Controller
                     break;
                 case 4:
                     # code...
-                    $stage->course_id = $request->course;
-                    $stage->type = $request->type;
+                    $stage->course_id   = $request->course;
+                    $stage->type        = $request->type;
                     break;
                 case 5:
                     # code...
+                    $stage->start_date  = $request->start_date;
+                    $stage->end_date    = $request->end_date;
                     break;
                 default:
                     # code...
@@ -134,17 +151,16 @@ class StageController extends Controller
                     return redirect()->route('stages.index')->with('success', 'Área creada exitosamente.');
                     break;
             }
-
         } catch (\Exception $e) {
             switch (session('protocol')['id']) {
                 case 1:
                 case 2:
                 case 3:
                 case 4:
-                    return redirect()->route('stages.create')->with('error', 'La Etapa Evaluativa ya se encuentra registrada.');
+                    return redirect()->route('stages.create')->with('error', 'Ocurrio un error al registrar etapa.');
                     break;
                 case 5:
-                    return redirect()->route('stages.create')->with('error', 'La área ya se encuentra registrada.');
+                    return redirect()->route('stages.create')->with('error', 'Ocurrio un error al registrar área.');
                     break;
             }
         }
@@ -171,8 +187,21 @@ class StageController extends Controller
             'percentage'    => 'required|integer|min:1|max:100',
         ]);
 
-
         try {
+            switch (session('protocol')['id']) {
+
+                case 5:
+                    $request->validate([
+                        'start_date' => 'required|date',
+                        'end_date' => [
+                            'required',
+                            'date',
+                            'after_or_equal:start_date', // Asegura que end_date sea después o igual a start_date
+                        ],
+                    ]);
+                    break;
+            }
+
             $sortAvailable = Stage::where('protocol_id', $request->protocol)
                 ->where('school_id', $request->school)
                 ->where('cycle_id', $request->cycle)
@@ -216,18 +245,17 @@ class StageController extends Controller
                 case 1:
                 case 2:
                 case 3:
-                    $stage->type = $request->type;
+                    $stage->type        = $request->type;
                     break;
                 case 4:
-                    # code...
-                    $stage->course_id = $request->course;
-                    $stage->type = $request->type;
+                    $stage->course_id   = $request->course;
+                    $stage->type        = $request->type;
                     break;
                 case 5:
-                    # code...
+                    $stage->start_date  = $request->start_date;
+                    $stage->end_date    = $request->end_date;
                     break;
                 default:
-                    # code...
                     break;
             }
             $stage->update();
@@ -338,8 +366,6 @@ class StageController extends Controller
                 default:
                     break;
             }
-
-
         } catch (Exception $th) {
             DB::rollBack();
             return redirect()->route('stages.index')
