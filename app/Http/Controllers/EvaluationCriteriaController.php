@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Stage;
 use App\Models\EvaluationCriteria;
+use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -39,52 +40,49 @@ class EvaluationCriteriaController extends Controller
     {
         $data = $request->validate([
             'name'          => 'required|string|max:255',
-            'percentage'    => 'required|integer|min:1|max:100',
+            // 'percentage'    => 'required|integer|min:1|max:100',
             'stage'         => 'required|integer|min:1|exists:stages,id',
             'description'   => 'required|string'
         ]);
 
         $stage_id   = $data['stage'];
-        $percentage = $data['percentage'];
-        $sumatory = EvaluationCriteria::where('stage_id', $stage_id)->sum('percentage');
+        $percentage = 0;
+        if (session('protocol')['id'] != 5) {
+            $data       = $request->validate(['percentage' => 'required|integer|min:1|max:100']);
+            $percentage = $data['percentage'];
+            $sumatory   = EvaluationCriteria::where('stage_id', $stage_id)->sum('percentage');
 
-        if ($sumatory + $percentage > 100) {
-            return redirect()->route('stages.index')->with('error', 'No se pudo completar la acción. El porcentaje supera el 100%.');
+            if ($sumatory + $percentage > 100) {
+                return redirect()->route('stages.index')->with('error', 'No se pudo completar la acción. El porcentaje supera el 100%.');
+            }
         }
 
         try {
-            $criteria = new EvaluationCriteria();
-            $criteria->name = $request['name'];
-            $criteria->percentage = $percentage;
-            $criteria->stage_id = $stage_id;
-            $criteria->description = $request['description'];
-            switch (session('protocol')['id']) {
-                case 1:
-                    # code...
-
-                    break;
-                case 5:
-                    # code...
-                    $criteria->type = $request->type;
-                    break;
-                default:
-                    # code...
-                    break;
-            }
+            $criteria               = new EvaluationCriteria();
+            $criteria->name         = $request['name'];
+            $criteria->percentage   = $percentage;
+            $criteria->stage_id     = $stage_id;
+            $criteria->description  = $request['description'];
             $criteria->save();
 
-            return redirect()->route('stages.index')->with('success', 'Se añadió el criterio de evaluación correctamente.');
-        }
-        catch (QueryException $e) {
+            if (session('protocol')['id'] != 5) {
+                return redirect()->route('stages.index')->with('success', 'Se añadió el criterio de evaluación correctamente.');
+
+            }else{
+                return redirect()->route('stages.index')->with('success', 'Se añadió la subárea correctamente.');
+
+            }
+
+        } catch (Exception $e) {
             return redirect()->route('stages.index')->with('error', 'El criterio de evaluacion está duplicado.');
         }
     }
 
     public function edit(EvaluationCriteria $criteria)
     {
-          $stage = Stage::findOrfail($criteria->stage_id);
+        $stage = Stage::findOrfail($criteria->stage_id);
 
-        return view('criteria.edit') ->with(compact('criteria', 'stage'));
+        return view('criteria.edit')->with(compact('criteria', 'stage'));
     }
 
     public function update(Request $request, EvaluationCriteria $criteria)
@@ -123,7 +121,7 @@ class EvaluationCriteriaController extends Controller
                     break;
             }
             $criteria->update();
-            return redirect()->route('criterias.index', ['id'=>$criteria->stage_id])->with('success', 'Criterio de Evaluación actualizado exitosamente.');
+            return redirect()->route('criterias.index', ['id' => $criteria->stage_id])->with('success', 'Criterio de Evaluación actualizado exitosamente.');
         } catch (\Exception $e) {
             return redirect()->route('criterias.edit', ['criteria' => $criteria])->with('error', 'El criterio de evaluación ya se encuentra registrado, revisar.');
         }
@@ -133,8 +131,6 @@ class EvaluationCriteriaController extends Controller
     {
         $criteria->delete();
 
-        return redirect()->route('criterias.index', ['id'=>$criteria->stage_id])->with('success', 'Criterio de Evaluación eliminada exitosamente.');
+        return redirect()->route('criterias.index', ['id' => $criteria->stage_id])->with('success', 'Criterio de Evaluación eliminada exitosamente.');
     }
-
-
 }

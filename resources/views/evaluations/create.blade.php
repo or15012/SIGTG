@@ -45,7 +45,7 @@
                 @if (session('protocol') !== null)
                     @switch(session('protocol')['id'])
                         @case(5)
-                            Evaluación:
+                            Área:
                         @break
 
                         @default
@@ -55,12 +55,12 @@
                 <br>
                 Porcentaje utilizado: {{ $sumatory }}%
                 <br>
-                Porcentaje máximo: 100%
+                Porcentaje máximo:  {{ $stage->percentage }}
             </p>
             <div class="progress">
                 <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
                     style="width: {{ $sumatory }}%" aria-valuenow="{{ $sumatory }}" aria-valuemin="0"
-                    aria-valuemax="100">
+                    aria-valuemax="{{ $stage->percentage }}">
 
                 </div>
             </div>
@@ -68,7 +68,7 @@
 
 
 
-        <form action="{{ route('criterias.store') }}" method="POST">
+        <form action="{{ route('subareas.criterias.store') }}" method="POST">
             @csrf
             <div class="mb-3">
                 <label for="name" class="form-label">Nombre</label>
@@ -89,26 +89,46 @@
 
             <input type="text" class="form-control" id="stage" name="stage" value="{{ $stage->id }}" hidden>
 
-            <div class="mb-3">
-                <label for="stage" class="form-label">
-                    @if (session('protocol') !== null)
-                        @switch(session('protocol')['id'])
-                            @case(1)
+
+            @if (session('protocol') !== null)
+                @switch(session('protocol')['id'])
+                    @case(1)
+                        <div class="mb-3">
+                            <label for="stage" class="form-label">
                                 Etapa evaluativa:
-                            @break
+                            </label>
+                            <select class="form-control" id="stage" name="stage" disabled>
+                                <option value="{{ $stage->id }}"> {{ $stage->name }}</option>
+                            </select>
+                        </div>
+                    @break
 
-                            @case(5)
+                    @case(5)
+                        <div class="mb-3 d-none">
+                            <label for="stage" class="form-label">
                                 Área:
-                            @break
+                            </label>
+                            <select class="form-control" id="stage" name="stage" disabled>
+                                <option value="{{ $stage->id }}"> {{ $stage->name }}</option>
+                            </select>
+                        </div>
 
-                            @default
-                        @endswitch
-                    @endif
-                </label>
-                <select class="form-control" id="stage" name="stage" disabled>
-                    <option value="{{ $stage->id }}"> {{ $stage->name }}</option>
-                </select>
-            </div>
+                        <div class="mb-3">
+                            <label for="subareas" class="form-label">Seleccionar Subáreas</label>
+                            <select class="form-control select2" id="subareas" name="subareas[]" multiple>
+                                @foreach ($subareas as $subarea)
+                                    <option value="{{ $subarea->id }}">{{ $subarea->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+
+                    @break
+
+                    @default
+                @endswitch
+            @endif
+
 
 
             @if (session('protocol') != null)

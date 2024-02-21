@@ -11,6 +11,7 @@ use App\Models\Group;
 use App\Models\Notification;
 use App\Models\Project;
 use App\Models\Stage;
+use App\Models\SubareaCriteria;
 use App\Models\SubareaDocument;
 use App\Models\User;
 use App\Models\UserNotification;
@@ -378,7 +379,7 @@ class EvaluationController extends Controller
     public function stagesCoordinatorEvaluationsCreate(Stage $stage)
     {
         $subareas = $stage->criterias;
-        $sumatory = EvaluationCriteria::where('stage_id', $stage->id)->sum('percentage');
+        $sumatory = SubareaCriteria::where('stage_id', $stage->id)->sum('percentage');
 
         return view('evaluations.create', compact('stage', 'subareas', 'sumatory'));
     }

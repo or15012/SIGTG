@@ -28,4 +28,9 @@ class EvaluationCriteria extends Model
      {
          return $this->belongsTo(SubareaCriteria::class, 'evaluation_criteria_id');
      }
+
+     public function subareaCriterias()
+    {
+        return $this->belongsToMany(EvaluationCritSubareaCrit::class, 'evaluation_crit_subarea_crit', 'subarea_criteria_id','evaluation_criteria_id');
+    }
 }

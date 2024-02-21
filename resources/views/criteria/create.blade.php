@@ -88,12 +88,24 @@
                 <label for="description" class="form-label">Descripción</label>
                 <textarea class="form-control" id="description" name="description" required>{{ old('description') }}</textarea>
             </div>
+            @if (session('protocol') != null)
+                @switch(session('protocol')['id'])
+                    @case(1)
+                    @case(2)
+                    @case(3)
+                    @case(4)
+                        <div class="mb-3">
+                            <label for="percentage" class="form-label">Porcentaje</label>
+                            <input type="text" class="form-control" id="percentage" name="percentage"
+                                value="{{ old('percentage') }}" required>
+                        </div>
+                    @break
 
-            <div class="mb-3">
-                <label for="percentage" class="form-label">Porcentaje</label>
-                <input type="text" class="form-control" id="percentage" name="percentage" value="{{ old('percentage') }}"
-                    required>
-            </div>
+                    @default
+                @endswitch
+            @endif
+
+
 
             <input type="text" class="form-control" id="stage" name="stage" value="{{ $stage->id }}" hidden>
 
@@ -122,14 +134,14 @@
             @if (session('protocol') != null)
                 @switch(session('protocol')['id'])
                     @case(5)
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label for="type" class="form-label">Tipo</label>
                             <select class="form-control" id="type" name="type" required>
                                 <option value="-1"> Seleccione un tipo </option>
                                 <option value="1">Con entrega de documentos</option>
                                 <option value="0">Sin entrega de documentos</option>
                             </select>
-                        </div>
+                        </div> --}}
                     @break
 
                     @default

@@ -18,12 +18,13 @@ return new class extends Migration
             $table->string("name");
             $table->mediumText("description")->nullable()->default(null);
             $table->integer("percentage");
-            $table->foreignId('stages_id')->constrained('stages')->onDelete('restrict');
+            $table->foreignId('stage_id')->constrained('stages')->onDelete('restrict');
+            $table->boolean("type")->default(0);
             $table->timestamps();
             $table->softDeletes();
 
             //Restricción de unicidad
-            $table->unique(['name', 'stages_id']);
+            $table->unique(['name', 'stage_id']);
         });
     }
 
