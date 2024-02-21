@@ -373,4 +373,14 @@ class EvaluationController extends Controller
 
         return redirect()->back()->with('success', 'Exito! Se ha dado paso a la siguiente área.');
     }
+
+
+    public function stagesCoordinatorEvaluationsCreate(Stage $stage)
+    {
+        $subareas = $stage->criterias;
+        $sumatory = EvaluationCriteria::where('stage_id', $stage->id)->sum('percentage');
+
+        return view('evaluations.create', compact('stage', 'subareas', 'sumatory'));
+    }
+
 }

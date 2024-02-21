@@ -195,7 +195,7 @@
                                                 <div class="col-sm-9">
                                                     <div class="form-check mb-4">
                                                         <input type="checkbox" class="form-check-input" id="horizontal-customCheck">
-                                                        <label class="form-check-label" for="horizontal-customCheck">Remember me</label>
+                                                        <label class="form-check-label" for="horizontal-customCheck">Recuerdame</label>
                                                     </div>
 
                                                     <div>
@@ -227,7 +227,7 @@
                                         <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="autoSizingCheck2">
                                         <label class="form-check-label" for="autoSizingCheck2">
-                                            Remember me
+                                            Recuerdame
                                         </label>
                                         </div>
                                     </div>

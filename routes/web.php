@@ -231,6 +231,12 @@ Route::group(['prefix' => 'stages', 'as' => 'stages.'], function () {
     /**
      * rutas para examen tecnico profesional
      */
+    Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
+
+        Route::group(['prefix' => 'evaluations', 'as' => 'evaluations.'], function () {
+            Route::get('/create/{stage}', [EvaluationController::class, 'stagesCoordinatorEvaluationsCreate'])->name('create');
+        });
+    });
 });
 
 //Grupo para las rutas de criterios de evaluación.
@@ -274,7 +280,6 @@ Route::group(['prefix' => 'evaluations_documents', 'as' => 'evaluations_document
         Route::delete('/{evaluation_document}', [EvaluationDocumentController::class, 'subareaDestroy'])->name('destroy');
         Route::get('/download/{evaluation_document}/{file}', [EvaluationDocumentController::class, 'subareaEvaluationsDownload'])->name('download');
     });
-
 });
 
 //Grupo para las rutas de notas.

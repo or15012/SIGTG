@@ -513,7 +513,7 @@
                                             <div class="mb-2">
                                                 <div class="form-check custom-checkbox">
                                                     <input type="checkbox" class="form-check-input" id="rememberdropdownCheck">
-                                                    <label class="form-check-label" for="rememberdropdownCheck">Remember me</label>
+                                                    <label class="form-check-label" for="rememberdropdownCheck">Recuerdame</label>
                                                 </div>
                                             </div>
                                             <button type="submit" class="btn btn-primary">Sign in</button>

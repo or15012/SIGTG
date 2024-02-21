@@ -4,7 +4,7 @@
             "name" : "Planificación completa",
             "description" : "Planificación completa",
             "percentage" : 100,
-            "evaluation_criteria_id" : 1,
+            "stages_id" : 1,
             "created_at" : "2024-02-08 20:07:51",
             "updated_at" : "2024-02-08 20:07:51",
             "deleted_at" : null
@@ -14,7 +14,7 @@
             "name" : "Creatividad e innovación",
             "description" : "Creatividad e innovación",
             "percentage" : 100,
-            "evaluation_criteria_id" : 2,
+            "stages_id" : 2,
             "created_at" : "2024-02-08 20:37:36",
             "updated_at" : "2024-02-08 20:37:36",
             "deleted_at" : null

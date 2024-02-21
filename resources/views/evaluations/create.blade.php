@@ -15,13 +15,6 @@
     <div class="container">
         @if (session('protocol') !== null)
             @switch(session('protocol')['id'])
-                @case(1)
-                @case(2)
-                @case(3)
-                @case(4)
-                    <h1>Registrar criterio de evaluación</h1>
-                @break
-
                 @case(5)
                     <h1>Registrar evaluación</h1>
                 @break
@@ -51,15 +44,8 @@
             <p>
                 @if (session('protocol') !== null)
                     @switch(session('protocol')['id'])
-                        @case(1)
-                        @case(2)
-                        @case(3)
-                        @case(4)
-                            Etapa evaluativa:
-                        @break
-
                         @case(5)
-                            Área:
+                            Evaluación:
                         @break
 
                         @default
@@ -82,7 +68,7 @@
 
 
 
-        <form action="{{ route('subareas.criterias.store') }}" method="POST">
+        <form action="{{ route('criterias.store') }}" method="POST">
             @csrf
             <div class="mb-3">
                 <label for="name" class="form-label">Nombre</label>
@@ -108,14 +94,11 @@
                     @if (session('protocol') !== null)
                         @switch(session('protocol')['id'])
                             @case(1)
-                            @case(2)
-                            @case(3)
-                            @case(4)
                                 Etapa evaluativa:
                             @break
 
                             @case(5)
-                                Sub área:
+                                Área:
                             @break
 
                             @default
@@ -126,6 +109,24 @@
                     <option value="{{ $stage->id }}"> {{ $stage->name }}</option>
                 </select>
             </div>
+
+
+            @if (session('protocol') != null)
+                @switch(session('protocol')['id'])
+                    @case(5)
+                        <div class="mb-3">
+                            <label for="type" class="form-label">Tipo</label>
+                            <select class="form-control" id="type" name="type" required>
+                                <option value="-1"> Seleccione un tipo </option>
+                                <option value="1">Con entrega de documentos</option>
+                                <option value="0">Sin entrega de documentos</option>
+                            </select>
+                        </div>
+                    @break
+
+                    @default
+                @endswitch
+            @endif
 
 
             <button type="submit" class="btn btn-primary">Guardar</button>

@@ -13,10 +13,22 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('evaluation_criteria_subarea_criteria', function (Blueprint $table) {
+        Schema::create('evaluation_crit_subarea_crit', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('evaluation_criteria_id')->constrained('evaluation_criteria')->onDelete('restrict');
-            $table->foreignId('subarea_criteria_id')->constrained('subarea_criterias')->onDelete('restrict');
+            // Campos de la tabla
+            $table->foreignId('evaluation_criteria_id');
+            $table->foreignId('subarea_criteria_id');
+
+            // Restricciones de clave externa
+            $table->foreign('evaluation_criteria_id', 'eval_crit_for')
+                ->references('id')
+                ->on('evaluation_criteria')
+                ->onDelete('restrict');
+
+            $table->foreign('subarea_criteria_id', 'sub_crit_for')
+                ->references('id')
+                ->on('subarea_criterias')
+                ->onDelete('restrict');
             $table->timestamps();
         });
     }

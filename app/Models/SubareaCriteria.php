@@ -15,7 +15,7 @@ class SubareaCriteria extends Model
         "name",
         "description",
         "percentage",
-        "evaluation_criteria_id",
+        "stages_id",
     ];
 
     public function area()
