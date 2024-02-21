@@ -274,8 +274,12 @@
                                 <h5 class="card-title mb-0">Estudiantes por protocolo</h5>
                                 <div class="ms-auto">
                                 <div class="mb-3">
+                                    <button id="export-excel-btn" class="btn btn-primary mt-3">Exportar notas según protocolo</button>
+                                </div>
+                                <div class="mb-3">
                                     <label for="cycle-select" class="form-label">Seleccionar Ciclo:</label>
                                     <select class="form-select" id="cycle-select"  onchange="updateData()">
+                                    <option value="" selected disabled>Seleccione un ciclo</option>
                                         @foreach($ciclos as $ciclo)
                                             <option value="{{ $ciclo->id }}">{{$ciclo->number}} - {{$ciclo->year}}</option>
                                         @endforeach
@@ -338,8 +342,12 @@
                                 <h5 class="card-title mb-0">Estudiantes por curso</h5>
                                 <div class="ms-auto">
                                 <div class="mb-3">
+                                    <button id="export-excel-btn2" class="btn btn-primary mt-3">Exportar notas curso</button>
+                                </div>
+                                <div class="mb-3">
                                     <label for="cycle-select2" class="form-label">Seleccionar Ciclo:</label>
                                     <select class="form-select" id="cycle-select2"  onchange="updateData2()">
+                                    <option value="" selected disabled>Seleccione un ciclo</option>
                                         @foreach($ciclos as $ciclo)
                                             <option value="{{ $ciclo->id }}">{{$ciclo->number}} - {{$ciclo->year}}</option>
                                         @endforeach
@@ -1217,7 +1225,68 @@
                 });
 
         }
+
+        $(document).ready(function() {
+            $('#export-excel-btn').click(function() {
+                excelproto();
+            });
+            $('#export-excel-btn2').click(function() {
+                excelcourse();
+            });
+        });
+
         
+        function excelproto(){
+            var id = document.getElementById('cycle-select').value;
+            
+            $.ajax({
+                    url: '{{route('dashboard.excel_proto')}}/'+id,
+                    type: 'GET',
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    success: function(data) {
+                        var a = document.createElement('a');
+                        var url = window.URL.createObjectURL(data);
+                        a.href = url;
+                        a.download = 'students.xlsx'; // Nombre del archivo
+                        document.body.append(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error en la solicitud AJAX:", error);
+                    }
+                });
+
+        }
+
+        function excelcourse(){
+            var id = document.getElementById('cycle-select2').value;
+            
+            $.ajax({
+                    url: '{{route('dashboard.excel_course')}}/'+id,
+                    type: 'GET',
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    success: function(data) {
+                        var a = document.createElement('a');
+                        var url = window.URL.createObjectURL(data);
+                        a.href = url;
+                        a.download = 'students.xlsx'; // Nombre del archivo
+                        document.body.append(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error en la solicitud AJAX:", error);
+                    }
+                });
+
+        }
 
     </script>
 @endsection
