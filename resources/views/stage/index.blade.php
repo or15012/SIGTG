@@ -225,11 +225,15 @@
                                             <i class="fas fa-file"></i>
                                         </button>
                                         <br>
-
+                                        <a href="{{ route('stages.coordinator.evaluations.index', $stage->id) }}"
+                                            class="btn btn-primary my-1" title="Ver evaluaciones">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
                                         <a href="{{ route('stages.coordinator.evaluations.create', $stage->id) }}"
                                             class="btn btn-primary my-1" title="Registrar evaluación">
                                             <i class="fas fa-file-medical"></i>
                                         </a>
+
                                     @break
                                 @endswitch
                             @endif

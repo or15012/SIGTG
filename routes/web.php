@@ -235,18 +235,22 @@ Route::group(['prefix' => 'stages', 'as' => 'stages.'], function () {
 
         Route::group(['prefix' => 'evaluations', 'as' => 'evaluations.'], function () {
             Route::get('/create/{stage}', [EvaluationController::class, 'stagesCoordinatorEvaluationsCreate'])->name('create');
+            Route::get('/index/{stage}', [EvaluationController::class, 'stagesCoordinatorEvaluationsIndex'])->name('index');
+            Route::get('/edit/{evaluation}', [EvaluationController::class, 'stagesCoordinatorEvaluationsEdit'])->name('edit');
+            Route::put('/update/{evaluation}', [EvaluationController::class, 'stagesCoordinatorEvaluationsUpdate'])->name('update');
         });
     });
 });
 
 //Grupo para las rutas de criterios de evaluación.
 Route::group(['prefix' => 'criterias', 'as' => 'criterias.'], function () {
-    Route::get('/{id}', [EvaluationCriteriaController::class, 'index'])->name('index');
+
     Route::get('/create/{id}', [EvaluationCriteriaController::class, 'create'])->name('create');
     Route::post('/store', [EvaluationCriteriaController::class,  'store'])->name('store');
     Route::get('/{criteria}/edit', [EvaluationCriteriaController::class, 'edit'])->name('edit');
     Route::put('/{criteria}', [EvaluationCriteriaController::class, 'update'])->name('update');
     Route::delete('/{criteria}', [EvaluationCriteriaController::class, 'destroy'])->name('destroy');
+    Route::get('/{id}', [EvaluationCriteriaController::class, 'index'])->name('index');
 
     Route::group(['prefix' => 'subareas', 'as' => 'subareas.'], function () {
         Route::get('/{id}', [SubAreaController::class, 'criteriasIndex'])->name('index');

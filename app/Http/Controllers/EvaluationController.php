@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DateTime;
 use App\Mail\SendMail;
 use App\Models\EvaluationCriteria;
+use App\Models\EvaluationCritSubareaCrit;
 use App\Models\EvaluationStage;
 use App\Models\EvaluationSubarea;
 use App\Models\Group;
@@ -384,4 +385,25 @@ class EvaluationController extends Controller
         return view('evaluations.create', compact('stage', 'subareas', 'sumatory'));
     }
 
+
+    public function stagesCoordinatorEvaluationsIndex(Stage $stage)
+    {
+
+        $evaluations = SubareaCriteria::where('stage_id', $stage->id)->get();
+        return view('evaluations.list', compact('stage', 'evaluations'));
+    }
+
+    public function stagesCoordinatorEvaluationsEdit(SubareaCriteria $evaluation)
+    {
+        $stage              = Stage::find($evaluation->stage_id);
+        $evaluationSubareas = EvaluationCritSubareaCrit::where('subarea_criteria_id', $evaluation->id)->get('evaluation_criteria_id');
+        $subareas           = $stage->criterias;
+        $selectedSubareas   = array();
+        $sumatory           = SubareaCriteria::where('stage_id', $stage->id)->sum('percentage');
+
+        foreach ($evaluationSubareas as $key => $value) {
+            $selectedSubareas[] = $value->evaluation_criteria_id;
+        }
+        return view('evaluations.edit', compact('evaluation', 'stage', 'subareas', 'sumatory', 'evaluationSubareas', 'selectedSubareas'));
+    }
 }
