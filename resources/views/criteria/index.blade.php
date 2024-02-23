@@ -38,6 +38,10 @@
     @endif
 
     <div class="container">
+        <div class="contenedor">
+            <a href="{{ route('stages.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
         <h1>
             @if (session('protocol') != null)
                 @switch(session('protocol')['id'])
@@ -60,11 +64,15 @@
                 <tr class="table-danger">
                     <th>ID</th>
                     <th>Nombre</th>
-                    <th>Porcentaje</th>
+                    <th>Descripción</th>
+
                     @if (session('protocol') != null)
                         @switch(session('protocol')['id'])
-                            @case(5)
-                                <th>Entrega de documento</th>
+                            @case(1)
+                            @case(2)
+                            @case(3)
+                            @case(4)
+                                <th>Porcentaje</th>
                             @break
 
                             @default
@@ -78,16 +86,20 @@
                     <tr>
                         <td>{{ $criteria->id }}</td>
                         <td>{{ $criteria->name }}</td>
-                        <td>{{ $criteria->percentage }}</td>
+                        <td>{{ $criteria->description }}</td>
                         @if (session('protocol') != null)
                             @switch(session('protocol')['id'])
-                                @case(5)
-                                    <td>{{ $criteria->type == 0 ? 'No' : 'Si' }}</td>
+                            @case(1)
+                            @case(2)
+                            @case(3)
+                            @case(4)
+                                    <td>{{ $criteria->percentage }}</td>
                                 @break
 
                                 @default
                             @endswitch
                         @endif
+
                         <td>
                             <a href="{{ route('criterias.edit', $criteria->id) }}" class="btn btn-primary">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -100,12 +112,12 @@
                             @if (session('protocol') != null)
                                 @switch(session('protocol')['id'])
                                     @case(5)
-                                        <a href="{{ route('criterias.subareas.index', $criteria->id) }}" class="btn btn-primary my-1"><i
+                                        {{-- <a href="{{ route('criterias.subareas.index', $criteria->id) }}" class="btn btn-primary my-1"><i
                                                 class="fas fa-eye"></i></a>
                                         <a href="{{ route('subareas.criterias.create', $criteria->id) }}"
                                             class="btn btn-primary my-1" title="Registrar criterio">
                                             <i class="fas fa-file-medical"></i>
-                                        </a>
+                                        </a> --}}
                                     @break
 
                                     @default

@@ -45,33 +45,35 @@
         @endif
 
         <div class="m-4">
-            <p>
-                @if (session('protocol') !== null)
-                    @switch(session('protocol')['id'])
-                        @case(1)
+
+            @if (session('protocol') !== null)
+                @switch(session('protocol')['id'])
+                    @case(1)
+                        <p>
                             Etapa evaluativa:
-                        @break
+                            {{ $stage->name }}
+                            <br>
+                            Porcentaje utilizado: {{ $sumatory }}%
+                            <br>
+                            Porcentaje máximo: 100%
+                        </p>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
+                                style="width: {{ $sumatory }}%" aria-valuenow="{{ $sumatory }}" aria-valuemin="0"
+                                aria-valuemax="100">
 
-                        @case(5)
-                            Área:
-                        @break
+                            </div>
+                        </div>
+                    @break
 
-                        @default
-                    @endswitch
-                @endif
-                {{ $stage->name }}
-                <br>
-                Porcentaje utilizado: {{ $sumatory }}%
-                <br>
-                Porcentaje máximo: 100%
-            </p>
-            <div class="progress">
-                <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
-                    style="width: {{ $sumatory }}%" aria-valuenow="{{ $sumatory }}" aria-valuemin="0"
-                    aria-valuemax="100">
+                    @case(5)
+                        <p>Área:  {{ $stage->name }}</p>
+                    @break
 
-                </div>
-            </div>
+                    @default
+                @endswitch
+            @endif
+
         </div>
 
 
@@ -92,6 +94,7 @@
                 @switch(session('protocol')['id'])
                     @case(1)
                     @case(2)
+
                     @case(3)
                     @case(4)
                         <div class="mb-3">

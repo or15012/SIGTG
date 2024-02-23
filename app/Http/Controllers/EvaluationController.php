@@ -16,6 +16,7 @@ use App\Models\SubareaCriteria;
 use App\Models\SubareaDocument;
 use App\Models\User;
 use App\Models\UserNotification;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -405,5 +406,49 @@ class EvaluationController extends Controller
             $selectedSubareas[] = $value->evaluation_criteria_id;
         }
         return view('evaluations.edit', compact('evaluation', 'stage', 'subareas', 'sumatory', 'evaluationSubareas', 'selectedSubareas'));
+    }
+
+
+    public function stagesCoordinatorEvaluationsUpdate(Request $request, SubareaCriteria $evaluation)
+    {
+        $data = $request->validate([
+            'name'          => 'required|string|max:255',
+            'percentage'    => 'required|integer|min:1|max:100',
+            'stage'         => 'required|integer|min:1',
+            'description'   => 'required|string'
+        ]);
+
+        if (session('protocol')['id'] == 5) {
+            $data = $request->validate(['subareas'   => 'required|array']);
+        }
+
+        $stage_id   = $request->stage;
+        $stage      = Stage::find($stage_id);
+        $percentage = $request->percentage;
+        $sumatory   = SubareaCriteria::where('stage_id', $stage_id)->where('id', '!=', $evaluation->id)->sum('percentage');
+
+        if (($sumatory + $percentage) > $stage->percentage) {
+            return redirect()->back()->with('error', "No se pudo completar la acción. El porcentaje supera el $stage->percentage%.");
+        }
+
+        try {
+
+            $evaluation->name           = $request->name;
+            $evaluation->percentage     = $request->percentage;
+            $evaluation->stage_id       = $stage_id;
+            $evaluation->description    = $request->description;
+            $evaluation->type           = $request->type;
+            $evaluation->update();
+
+            if ($request->has('subareas')) {
+                $subareas = $request->input('subareas');
+                $evaluation->evaluationCriterias()->detach();
+                $evaluation->evaluationCriterias()->attach($subareas);
+            }
+
+            return redirect()->route('stages.coordinator.evaluations.index', $stage_id)->with('success', 'Se actualizo la evaluación correctamente.');
+        } catch (Exception $e) {
+            return redirect()->route('stages.coordinator.evaluations.index', $stage_id)->with('error', 'La evaluacion está duplicada.');
+        }
     }
 }

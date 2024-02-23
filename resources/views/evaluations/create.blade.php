@@ -13,6 +13,10 @@
         @endslot
     @endcomponent
     <div class="container">
+        <div class="contenedor">
+            <a href="{{ route('stages.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
         @if (session('protocol') !== null)
             @switch(session('protocol')['id'])
                 @case(5)

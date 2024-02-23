@@ -110,7 +110,7 @@ class SubAreaController extends Controller
         // dd($request);
         $data = $request->validate([
             'name'          => 'required|string|max:255',
-            // 'percentage'    => 'required|integer|min:1|max:100',
+            'percentage'    => 'required|integer|min:1|max:100',
             'stage'         => 'required|integer|min:1',
             'description'   => 'required|string'
         ]);
@@ -123,8 +123,6 @@ class SubAreaController extends Controller
         $percentage = $request->percentage;
         $sumatory   = SubareaCriteria::where('stage_id', $stage_id)->sum('percentage');
 
-
-        $sumatory = SubareaCriteria::where('stage_id', $stage_id)->sum('percentage');
         if (($sumatory + $percentage) > $stage->percentage) {
             return redirect()->back()->with('error', "No se pudo completar la acción. El porcentaje supera el $stage->percentage%.");
         }
@@ -134,7 +132,8 @@ class SubAreaController extends Controller
                 'name'                      => $request->name,
                 'percentage'                => $percentage,
                 'stage_id'                  => $stage_id,
-                'description'               => $request->description
+                'description'               => $request->description,
+                'type'                      => $request->type
             ]);
 
             if ($request->has('subareas')) {

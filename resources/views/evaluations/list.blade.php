@@ -35,6 +35,10 @@
     @endif
 
     <div class="container">
+        <div class="contenedor">
+            <a href="{{ route('stages.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
         <h1>
             @if (session('protocol') != null)
                 @switch(session('protocol')['id'])
@@ -93,12 +97,12 @@
                             @if (session('protocol') != null)
                                 @switch(session('protocol')['id'])
                                     @case(5)
-                                        {{-- <a href="{{ route('evaluations.subareas.index', $evaluation->id) }}" class="btn btn-primary my-1"><i
+                                        <a href="{{ route('stages.coordinator.evaluations.criterias.index', $evaluation->id) }}" class="btn btn-primary my-1"><i
                                                 class="fas fa-eye"></i></a>
-                                        <a href="{{ route('subareas.evaluations.create', $evaluation->id) }}"
+                                        <a href="{{ route('stages.coordinator.evaluations.criterias.create', $evaluation->id) }}"
                                             class="btn btn-primary my-1" title="Registrar criterio">
                                             <i class="fas fa-file-medical"></i>
-                                        </a> --}}
+                                        </a>
                                     @break
 
                                     @default
