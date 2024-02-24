@@ -10,6 +10,7 @@ class Events extends Model
 {
     use HasFactory;
     use LogsActivityTrait;
+
     protected $fillable = [
         'name',
         'description',
@@ -22,32 +23,31 @@ class Events extends Model
         'school_id',
     ];
 
+    protected $dates = ['date']; // Para asegurar que 'date' sea un objeto Carbon
+
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 
-    // Relación con el modelo ciclos
     public function cycle()
     {
-        return $this->belongsTo(Cycle::class, 'cycle_id');
+        return $this->belongsTo(Cycle::class);
     }
 
-    // Relación con el modelo escuelas
     public function school()
     {
-        return $this->belongsTo(School::class, 'school_id');
+        return $this->belongsTo(School::class);
     }
 
-    // Relación con el modelo grupo
     public function group()
     {
-        return $this->belongsTo(Group::class, 'group_id');
+        return $this->belongsTo(Group::class);
     }
 
-    // Relación con el modelo project
     public function project()
     {
-        return $this->belongsTo(Project::class, 'project_id');
+        return $this->belongsTo(Project::class);
     }
 }
+

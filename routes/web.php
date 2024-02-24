@@ -456,7 +456,10 @@ Route::group(['prefix' => 'logs', 'as' => 'logs.'], function () {
 //Grupo para las rutas de defensa (eventos)
 Route::group(['prefix' => 'events', 'as' => 'events.'], function () {
     Route::get('/', [EventsController::class, 'index'])->name('index');
-
+    Route::get('/create', [EventsController::class, 'create'])->name('create');
+    Route::post('/store', [EventsController::class,  'store'])->name('store');
+    Route::get('/show/{event}', [EventsController::class, 'show'])->name('show');
+    Route::delete('/destroy/{event}', [EventsController::class, 'destroy'])->name('destroy');
 });
 
 

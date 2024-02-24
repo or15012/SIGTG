@@ -13,8 +13,8 @@
     @endcomponent
     <div class="container">
 
-        <h1>Lista de foros</h1>
-        <a href="{{ route('forum.create') }}" class="btn btn-primary mb-3">Nuevo foro</a>
+        <h1>Lista de defensas</h1>
+        <a href="{{ route('events.create') }}" class="btn btn-primary mb-3">Registrar defensa</a>
 
         @if (session('success'))
             <div class="alert alert-success">
@@ -33,17 +33,17 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($forums as $forum)
+                @foreach ($events as $event)
                     <tr>
-                        <td>{{ $forum->name }}</td>
-                        <td>{{ \Carbon\Carbon::parse($forum->date)->format('d-m-Y H:i:s') }}</td>
-                        <td>{{ $forum->place }}</td>
-                        <td>{{ $forum->description }}</td>
+                        <td>{{ $event->name }}</td>
+                        <td>{{ \Carbon\Carbon::parse($event->date)->format('d-m-Y H:i:s') }}</td>
+                        <td>{{ $event->place }}</td>
+                        <td>{{ $event->description }}</td>
                         <td>
-                            <a href="{{ route('forum.show', $forum->id) }}" class="btn btn-primary"><i
+                            <a href="{{ route('events.show', $event->id) }}" class="btn btn-primary"><i
                                     class="fas fa-eye"></i>
                             </a>
-                            <form action="{{ route('forum.destroy', $forum->id) }}" method="POST" style="display: inline">
+                            <form action="{{ route('events.destroy', $event->id) }}" method="POST" style="display: inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger buttonDelete"><i
