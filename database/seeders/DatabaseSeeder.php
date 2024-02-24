@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\TypeWithdrawal;
 use Illuminate\Database\Seeder;
 
 
@@ -25,9 +26,11 @@ class DatabaseSeeder extends Seeder
             ParameterSeeder::class,
             UserProtocolSeeder::class,
             TypeExtensionSeeder::class,
+            TypeWithdrawalSeeder::class,
             RolAndPermissionSeeder::class,
             RoleSeeder::class,
             RolePermission::class,
+
 
 
             /**
