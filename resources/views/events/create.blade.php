@@ -59,7 +59,41 @@
                     min="{{ \Carbon\Carbon::now()->format('Y-m-d\TH:i') }}" required>
             </div>
 
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="user_id" class="form-label">Usuario:</label>
+                    <select class="form-select" id="user_id" name="user_id" required>
+                        @foreach ($users as $user)
+                            <option @if ($user->id == old('user_id')) selected @endif value="{{ $user->id }}">
+                                {{ $user->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
             
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="group_id" class="form-label">Grupo:</label>
+                    <select class="form-select" id="group_id" name="group_id" required>
+                        @foreach ($groups as $group)
+                            <option @if ($group->id == old('group_id')) selected @endif value="{{ $group->id }}">
+                                {{ $group->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="project_id" class="form-label">Proyecto:</label>
+                    <select class="form-select" id="project_id" name="project_id" required disabled>
+                        @foreach ($projects as $project)
+                            <option @if ($project->id == old('project_id')) selected @endif value="{{ $project->id }}">
+                                {{ $project->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
 
             <div class="row mb-3">
                 <div class="col-12">
