@@ -31,9 +31,28 @@ class WithdrawalController extends Controller
     }
     public function index()
     {
+        //obtener grupo actual del user logueado
+        $user = Auth::user();
+        // Obtiene el año actual
+        $year = date('Y');
+        // Realiza una consulta para verificar si el usuario está en un grupo del año actual
 
-        $withdrawals = [];
-        $withdrawals = Withdrawal::with("type_withdrawal")->get();
+        $group = Group::where('groups.year', $year)
+            ->where('groups.status', 1)
+            ->whereHas('users', function ($query) use ($user) {
+                $query->where('users.id', $user->id);
+            })
+            ->first();
+
+        if (!isset($group)) {
+            return redirect('home')->withErrors(['message' => 'No tienes un grupo activo.']);
+        }
+
+        $withdrawals = Withdrawal::join('groups as gr', 'withdrawals.group_id', 'gr.id')
+            ->where('gr.protocol_id', session('protocol')['id'])
+            ->where('withdrawals.group_id', $group->id)
+            ->select('withdrawals.*') // Seleccionar todos los campos de retiros
+            ->paginate(30);
 
 
         //   // Creando una instancia del controlador Project
@@ -82,7 +101,7 @@ class WithdrawalController extends Controller
             //dd($request['type_withdrawals_id'] );
             //      dd($data, $user, $group, $withdrawal_request_path);
             $withdrawals = Withdrawal::create([
-                // 'user_id'                   => $user->id,
+                'user_id'                   => $user->id,
                 'group_id'                  => $group->id,
                 'type_withdrawals_id'       => $request['type_withdrawals_id'],
                 'description'               => $request['description'],
@@ -145,5 +164,15 @@ class WithdrawalController extends Controller
             dd($e);
             return redirect()->back()->with('error', 'Algo salió mal. Intente nuevamente.');
         }
+    }
+
+    public function coordinatorIndex()
+    {
+
+        $withdrawals = [];
+        $withdrawals = Withdrawal::with("type_withdrawal")->get();
+        //dd($withdrawals);
+
+        return view('withdrawals.coordinator.index', compact('withdrawals'));
     }
 }

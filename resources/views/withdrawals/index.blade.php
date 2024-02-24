@@ -43,7 +43,6 @@
                         <td>{{ $withdrawal->group->number }}</td>
                         <td>{{ $withdrawal->status() }}</td>
                         <td>{{ $withdrawal->description }}</td>
-
                         <td>
 
                             <a href="{{ route('withdrawals.edit', $withdrawal->id) }}" class="btn btn-primary"><i

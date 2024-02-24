@@ -35,7 +35,7 @@ class Withdrawal extends Model
 
     public function user()
     {
-        return $this->belongsTo(Group::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function status()

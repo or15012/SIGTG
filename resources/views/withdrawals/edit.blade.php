@@ -17,7 +17,7 @@
             <a href="{{ route('withdrawals.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
-        <h1>Editar prórroga</h1>
+        <h1>Editar retiro</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">
