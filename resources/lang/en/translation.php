@@ -179,4 +179,6 @@ return [
     "Proposals"            => "Propuestas (Adviser)",
     "Proposals"            => "Propuestas",
     "Applications" => "Aplicaciones",
+    "Withdrawals"            => "Withdrawals (Adviser)",
+    "Withdrawals"            => "Withdrawals",
 ];

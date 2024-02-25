@@ -168,11 +168,41 @@ class WithdrawalController extends Controller
 
     public function coordinatorIndex()
     {
+        // Obtener el coordinador en sesión
+        $coordinator = Auth::user();
 
-        $withdrawals = [];
-        $withdrawals = Withdrawal::with("type_withdrawal")->get();
+        // Filtrar retiros por protocolo y escuela
+        $withdrawals = Withdrawal::with(['user', 'group'])
+            ->whereHas('user', function ($query) use ($coordinator) {
+                $query->where('school_id', session('school')['id']);
+            })
+            ->whereHas('group', function ($query) use ($coordinator) {
+                $query->where('protocol_id', session('protocol')['id']);
+            })
+            ->get();
+
         //dd($withdrawals);
-
         return view('withdrawals.coordinator.index', compact('withdrawals'));
+    }
+
+    public function coordinatorShow(Withdrawal $withdrawal)
+    {
+
+        $type_withdrawals = TypeWithdrawal::all();
+
+        return view('withdrawals.coordinator.show')->with(compact('withdrawal', 'type_withdrawals'));
+    }
+
+    public function coordinatorUpdate(Request $request, Withdrawal $withdrawal)
+    {
+        $validatedData = $request->validate([
+            'decision' => 'required',
+        ]);
+
+        $withdrawal->status = $request->decision;
+
+        $withdrawal->update();
+
+        return redirect()->route('withdrawals.coordinator.index')->with('success', 'Estado de aplicación actualizado.');
     }
 }

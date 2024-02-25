@@ -276,7 +276,6 @@ Route::group(['prefix' => 'evaluations_documents', 'as' => 'evaluations_document
         Route::delete('/{evaluation_document}', [EvaluationDocumentController::class, 'subareaDestroy'])->name('destroy');
         Route::get('/download/{evaluation_document}/{file}', [EvaluationDocumentController::class, 'subareaEvaluationsDownload'])->name('download');
     });
-
 });
 
 //Grupo para las rutas de notas.
@@ -457,11 +456,17 @@ Route::group(['prefix' => 'logs', 'as' => 'logs.'], function () {
 
 // Retiros (withdrawals).
 Route::group(['prefix' => 'withdrawals', 'as' => 'withdrawals.'], function () {
-    Route::get('', [WithdrawalController::class, 'index'])->name('index');
+    Route::get('/', [WithdrawalController::class, 'index'])->name('index');
     Route::get('/create', [WithdrawalController::class, 'create'])->name('create');
     Route::post('/store', [WithdrawalController::class,  'store'])->name('store');
     Route::get('/{withdrawal}/edit', [WithdrawalController::class, 'edit'])->name('edit');
     Route::put('/update/{withdrawal}', [WithdrawalController::class, 'update'])->name('update');
+
+    Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
+        Route::get('/', [WithdrawalController::class, 'coordinatorIndex'])->name('index');
+        Route::get('show/{withdrawal}', [WithdrawalController::class, 'coordinatorShow'])->name('show');
+        Route::put('/update/{withdrawal}', [WithdrawalController::class, 'coordinatorUpdate'])->name('update');
+    });
 });
 
 // Estas rutas dejarlas de ultimo
