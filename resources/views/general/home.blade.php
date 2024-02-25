@@ -38,11 +38,13 @@
             Bienvenido
              {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
         </div>
+        <!--
         @if(Auth::user()->type == 1 && $showLinkCourses)
             <div>
                 <h4>¿Desea preinscribir para curso de especialización? <a href="{{route('courses.preregistrations.create')}}">¡De click aqui!</a></h4>
             </div>
         @endif
+        -->
     </div>
 @endsection
 

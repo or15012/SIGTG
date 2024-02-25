@@ -23,6 +23,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EntityController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\EvaluationDocumentController;
+use App\Http\Controllers\EventsController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ExtensionController;
 use App\Http\Controllers\NotificationController;
@@ -469,6 +470,15 @@ Route::group(['prefix' => 'advisers', 'as' => 'advisers.'], function () {
 //Grupo para las rutas de bitacora
 Route::group(['prefix' => 'logs', 'as' => 'logs.'], function () {
     Route::get('/', [LogController::class, 'index'])->name('index');
+});
+
+//Grupo para las rutas de defensa (eventos)
+Route::group(['prefix' => 'events', 'as' => 'events.'], function () {
+    Route::get('/', [EventsController::class, 'index'])->name('index');
+    Route::get('/create', [EventsController::class, 'create'])->name('create');
+    Route::post('/store', [EventsController::class,  'store'])->name('store');
+    Route::get('/show/{event}', [EventsController::class, 'show'])->name('show');
+    Route::delete('/destroy/{event}', [EventsController::class, 'destroy'])->name('destroy');
 });
 
 
