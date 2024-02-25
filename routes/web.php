@@ -241,6 +241,7 @@ Route::group(['prefix' => 'stages', 'as' => 'stages.'], function () {
 
             Route::group(['prefix' => 'criterias', 'as' => 'criterias.'], function () {
                 Route::get('/create/{evaluation}', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasCreate'])->name('create');
+                Route::post('/store', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasStore'])->name('store');
                 Route::get('/index/{evaluation}', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasIndex'])->name('index');
                 Route::get('/edit/{criteria}', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasEdit'])->name('edit');
                 Route::put('/update/{criteria}', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasUpdate'])->name('update');

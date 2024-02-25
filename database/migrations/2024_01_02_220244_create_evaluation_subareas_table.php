@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('evaluation_subareas', function (Blueprint $table) {
-            $table->id();
-            $table->timestamp('date');
-            $table->foreignId('project_id')->constrained('projects')->onDelete('restrict');
-            $table->foreignId('evaluation_criteria_id')->constrained('evaluation_criteria')->onDelete('restrict');
-            $table->timestamps();
-            $table->softDeletes();
-        });
+        // Schema::create('evaluation_subareas', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->timestamp('date');
+        //     $table->foreignId('project_id')->constrained('projects')->onDelete('restrict');
+        //     $table->foreignId('evaluation_criteria_id')->constrained('evaluation_criteria')->onDelete('restrict');
+        //     $table->timestamps();
+        //     $table->softDeletes();
+        // });
     }
 
     /**
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('evaluation_subareas');
+        // Schema::dropIfExists('evaluation_subareas');
     }
 };

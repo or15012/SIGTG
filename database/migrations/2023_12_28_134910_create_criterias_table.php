@@ -13,14 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('subarea_documents', function (Blueprint $table) {
+        Schema::create('criterias', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string("path");
+            $table->mediumText("description")->nullable()->default(null);
+            $table->integer("percentage");
             $table->foreignId('subarea_criteria_id')->constrained('subarea_criterias')->onDelete('restrict');
-            // $table->foreignId('evaluation_subarea_id')->constrained('evaluation_subareas')->onDelete('restrict')->nullable();
-            $table->timestamps();
             $table->softDeletes();
+            $table->unique(['name', 'subarea_criteria_id']);
+            $table->timestamps();
         });
     }
 
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subarea_documents');
+        Schema::dropIfExists('criterias');
     }
 };

@@ -15,7 +15,9 @@ return new class extends Migration
     {
         Schema::create('evaluation_subarea_note', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('evaluation_subarea_id')->constrained('evaluation_subareas')->onDelete('restrict');
+            // $table->foreignId('evaluation_subarea_id')->constrained('evaluation_subareas')->onDelete('restrict');
+            $table->foreignId('subarea_criteria_id')->constrained('subarea_criterias')->onDelete('restrict');
+            $table->foreignId('criteria_id')->constrained('criterias')->onDelete('restrict');
             $table->foreignId('user_id')->constrained('users')->onDelete('restrict');
             $table->decimal("note",8,2,true);
             $table->timestamps();
