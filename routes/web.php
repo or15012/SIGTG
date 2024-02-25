@@ -31,9 +31,11 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StageController;
 use App\Http\Controllers\SubAreaController;
 use App\Http\Controllers\PlanningController;
+use App\Http\Controllers\WithdrawalController;
 use App\Http\Controllers\LogController;
 use App\Models\Activity;
 use App\Models\Group;
+use App\Models\Withdrawals;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -469,6 +471,15 @@ Route::group(['prefix' => 'logs', 'as' => 'logs.'], function () {
     Route::get('/', [LogController::class, 'index'])->name('index');
 });
 
+
+// Retiros (withdrawals).
+Route::group(['prefix' => 'withdrawals', 'as' => 'withdrawals.'], function () {
+    Route::get('', [WithdrawalController::class, 'index'])->name('index');
+    Route::get('/create', [WithdrawalController::class, 'create'])->name('create');
+    Route::post('/store', [WithdrawalController::class,  'store'])->name('store');
+    Route::get('/{withdrawal}/edit', [WithdrawalController::class, 'edit'])->name('edit');
+    Route::put('/update/{withdrawal}', [WithdrawalController::class, 'update'])->name('update');
+});
 
 // Estas rutas dejarlas de ultimo
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
