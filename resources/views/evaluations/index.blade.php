@@ -42,6 +42,15 @@
                                 class="fa fa-download"></i></a>
                     @endif
                 @endif
+
+                @can('Extensions.student.create')
+                @if ($today >= $date_end_mod && $today <= $date_end)
+                    <a href="{{ route('events.index', $project->id) }}" style="margin-left: 5px" class="btn btn-primary float-end">
+                        <i class="fa fa-plus"></i>&nbsp; Solicitar defensa
+                    </a>
+                @endif
+                @endcan
+                
                 @can('Extensions.student.create')
                     @if ($today >= $date_end_mod && $today <= $date_end)
                         <a href="{{ route('extensions.index', $project->id) }}" style="margin-left: 5px" class="btn btn-primary float-end">

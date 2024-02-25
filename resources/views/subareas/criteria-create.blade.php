@@ -16,11 +16,14 @@
         @if (session('protocol') !== null)
             @switch(session('protocol')['id'])
                 @case(1)
+                @case(2)
+                @case(3)
+                @case(4)
                     <h1>Registrar criterio de evaluación</h1>
                 @break
 
                 @case(5)
-                <h1>Registrar criterio de sub área</h1>
+                    <h1>Registrar evaluación</h1>
                 @break
 
                 @default
@@ -49,11 +52,14 @@
                 @if (session('protocol') !== null)
                     @switch(session('protocol')['id'])
                         @case(1)
+                        @case(2)
+                        @case(3)
+                        @case(4)
                             Etapa evaluativa:
                         @break
 
                         @case(5)
-                            Sub área:
+                            Área:
                         @break
 
                         @default
@@ -102,6 +108,9 @@
                     @if (session('protocol') !== null)
                         @switch(session('protocol')['id'])
                             @case(1)
+                            @case(2)
+                            @case(3)
+                            @case(4)
                                 Etapa evaluativa:
                             @break
 

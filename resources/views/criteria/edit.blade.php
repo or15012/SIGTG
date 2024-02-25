@@ -61,12 +61,23 @@
                 <label for="description" class="form-label">Descripción</label>
                 <textarea class="form-control" id="description" name="description" required>{{ $criteria->description }}</textarea>
             </div>
+            @if (session('protocol') != null)
+                @switch(session('protocol')['id'])
+                    @case(1)
+                    @case(2)
 
-            <div class="mb-3">
-                <label for="percentage" class="form-label">Porcentaje</label>
-                <input type="text" class="form-control" id="percentage" name="percentage"
-                    value="{{ $criteria->percentage }}" required>
-            </div>
+                    @case(3)
+                    @case(4)
+                        <div class="mb-3">
+                            <label for="percentage" class="form-label">Porcentaje</label>
+                            <input type="text" class="form-control" id="percentage" name="percentage"
+                                value="{{ $criteria->percentage }}" required>
+                        </div>
+                    @break
+
+                    @default
+                @endswitch
+            @endif
 
             <input type="text" class="form-control" id="stage" name="stage" value="{{ $stage->id }}" hidden>
 
@@ -75,6 +86,7 @@
                     @switch(session('protocol')['id'])
                         @case(1)
                         @case(2)
+
                         @case(3)
                         @case(4)
                             <label for="stage" class="form-label">Etapa Evaluativa</label>
@@ -96,7 +108,7 @@
             @if (session('protocol') != null)
                 @switch(session('protocol')['id'])
                     @case(5)
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label for="type" class="form-label">Tipo</label>
                             <select class="form-control" id="type" name="type" required>
                                 <option value="-1"> Seleccione un tipo </option>
@@ -105,7 +117,7 @@
                                 <option value="0" @if ($criteria->type == 0) selected @endif>Sin entrega de documentos
                                 </option>
                             </select>
-                        </div>
+                        </div> --}}
                     @break
 
                     @default

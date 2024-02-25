@@ -22,6 +22,7 @@
                 @switch(session('protocol')['id'])
                     @case(1)
                     @case(2)
+
                     @case(3)
                     @case(4)
                         Registrar etapa evaluativa
@@ -60,6 +61,7 @@
                         @switch(session('protocol')['id'])
                             @case(1)
                             @case(2)
+
                             @case(3)
                             @case(4)
                                 Nombre de etapa evaluativa
@@ -126,6 +128,7 @@
                 @switch(session('protocol')['id'])
                     @case(1)
                     @case(2)
+
                     @case(3)
                     @case(4)
                         <div class="mb-3">
@@ -150,6 +153,27 @@
                             <select class="form-control" id="course" name="course" required>
                                 <option value="-1"> Seleccione un curso </option>
                             </select>
+                        </div>
+                    @break
+
+                    @case(5)
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label for="status" class="form-label">Fecha de inicio</label>
+                                <input  type="date" class="form-control" id="start_date"
+                                    name="start_date" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
+                                    min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label for="status" class="form-label">Fecha de fin</label>
+                                <input  type="date" class="form-control" id="end_date"
+                                    name="end_date" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
+                                    min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
+                                    required>
+                            </div>
                         </div>
                     @break
 

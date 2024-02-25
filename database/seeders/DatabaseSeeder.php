@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
              */
             PdiProposalSeeder::class,
             PdiStageSeeder::class,
-
+            PasantiaCriteriaSeeder::class,
 
             //EXAMEN GENERAL TECNICO PROFESIONAL - KARLA ABREGO
             PhaseSeeder::class,

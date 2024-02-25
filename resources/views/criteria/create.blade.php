@@ -45,33 +45,35 @@
         @endif
 
         <div class="m-4">
-            <p>
-                @if (session('protocol') !== null)
-                    @switch(session('protocol')['id'])
-                        @case(1)
+
+            @if (session('protocol') !== null)
+                @switch(session('protocol')['id'])
+                    @case(1)
+                        <p>
                             Etapa evaluativa:
-                        @break
+                            {{ $stage->name }}
+                            <br>
+                            Porcentaje utilizado: {{ $sumatory }}%
+                            <br>
+                            Porcentaje máximo: 100%
+                        </p>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
+                                style="width: {{ $sumatory }}%" aria-valuenow="{{ $sumatory }}" aria-valuemin="0"
+                                aria-valuemax="100">
 
-                        @case(5)
-                            Área:
-                        @break
+                            </div>
+                        </div>
+                    @break
 
-                        @default
-                    @endswitch
-                @endif
-                {{ $stage->name }}
-                <br>
-                Porcentaje utilizado: {{ $sumatory }}%
-                <br>
-                Porcentaje máximo: 100%
-            </p>
-            <div class="progress">
-                <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
-                    style="width: {{ $sumatory }}%" aria-valuenow="{{ $sumatory }}" aria-valuemin="0"
-                    aria-valuemax="100">
+                    @case(5)
+                        <p>Área:  {{ $stage->name }}</p>
+                    @break
 
-                </div>
-            </div>
+                    @default
+                @endswitch
+            @endif
+
         </div>
 
 
@@ -88,12 +90,25 @@
                 <label for="description" class="form-label">Descripción</label>
                 <textarea class="form-control" id="description" name="description" required>{{ old('description') }}</textarea>
             </div>
+            @if (session('protocol') != null)
+                @switch(session('protocol')['id'])
+                    @case(1)
+                    @case(2)
 
-            <div class="mb-3">
-                <label for="percentage" class="form-label">Porcentaje</label>
-                <input type="text" class="form-control" id="percentage" name="percentage" value="{{ old('percentage') }}"
-                    required>
-            </div>
+                    @case(3)
+                    @case(4)
+                        <div class="mb-3">
+                            <label for="percentage" class="form-label">Porcentaje</label>
+                            <input type="text" class="form-control" id="percentage" name="percentage"
+                                value="{{ old('percentage') }}" required>
+                        </div>
+                    @break
+
+                    @default
+                @endswitch
+            @endif
+
+
 
             <input type="text" class="form-control" id="stage" name="stage" value="{{ $stage->id }}" hidden>
 
@@ -122,14 +137,14 @@
             @if (session('protocol') != null)
                 @switch(session('protocol')['id'])
                     @case(5)
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label for="type" class="form-label">Tipo</label>
                             <select class="form-control" id="type" name="type" required>
                                 <option value="-1"> Seleccione un tipo </option>
                                 <option value="1">Con entrega de documentos</option>
                                 <option value="0">Sin entrega de documentos</option>
                             </select>
-                        </div>
+                        </div> --}}
                     @break
 
                     @default

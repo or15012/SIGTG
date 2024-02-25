@@ -1,0 +1,62 @@
+@extends('layouts.master')
+@section('title')
+    @lang('translation.Dashboard')
+@endsection
+
+@section('content')
+    @component('components.breadcrumb')
+        @slot('li_1')
+            SIGTG - FIA
+        @endslot
+        @slot('title')
+        @endslot
+    @endcomponent
+    <div class="container">
+
+        <h1>Lista de defensas</h1>
+        <a href="{{ route('events.create') }}" class="btn btn-primary mb-3">Registrar defensa</a>
+
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr class="table-danger">
+                    <th>Nombre</th>
+                    <th style="width: 20%">Fecha</th>
+                    <th style="width: 20%">Lugar</th>
+                    <th style="width: 30%">Descripcion</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($events as $event)
+                    <tr>
+                        <td>{{ $event->name }}</td>
+                        <td>{{ \Carbon\Carbon::parse($event->date)->format('d-m-Y H:i:s') }}</td>
+                        <td>{{ $event->place }}</td>
+                        <td>{{ $event->description }}</td>
+                        <td>
+                            <a href="{{ route('events.show', $event->id) }}" class="btn btn-primary"><i
+                                    class="fas fa-eye"></i>
+                            </a>
+                            <form action="{{ route('events.destroy', $event->id) }}" method="POST" style="display: inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger buttonDelete"><i
+                                        class="fas fa-trash-alt"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+@endsection
+
+@section('script')
+    <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+@endsection

@@ -15,11 +15,17 @@ class SubareaCriteria extends Model
         "name",
         "description",
         "percentage",
-        "evaluation_criteria_id",
+        "stage_id",
+        "type",
     ];
 
     public function area()
      {
          return $this->belongsTo(EvaluationCriteria::class);
+     }
+
+     public function evaluationCriterias()
+     {
+         return $this->belongsToMany(EvaluationCritSubareaCrit::class, 'evaluation_crit_subarea_crit',  'subarea_criteria_id',  'evaluation_criteria_id');
      }
 }

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('stages', function (Blueprint $table) {
             $table->id();
             $table->string("name");
+            $table->boolean("visible")->default(1);
             $table->foreignId('protocol_id')->constrained('users')->onDelete('restrict');
             $table->foreignId('cycle_id')->constrained('cycles')->onDelete('restrict');
             $table->foreignId('school_id')->constrained('schools')->onDelete('restrict');

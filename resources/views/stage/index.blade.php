@@ -19,6 +19,7 @@
                 @switch(session('protocol')['id'])
                     @case(1)
                     @case(2)
+
                     @case(3)
                     @case(4)
                         Lista de etapas evaluativas
@@ -89,17 +90,17 @@
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr class="table-danger">
-                    <th>ID</th>
                     <th>Nombre</th>
                     <th>Ciclo</th>
                     <th>Protocolo</th>
                     <th>Escuela</th>
-                    <th>Porcentaje</th>
-                    <th>
+                    <th style="width: 6%;word-break: break-all;">Porcentaje</th>
+                    <th style="width: 6%;word-break: break-all;">
                         @if (session('protocol') != null)
                             @switch(session('protocol')['id'])
                                 @case(1)
                                 @case(2)
+
                                 @case(3)
                                 @case(4)
                                     Orden de etapa
@@ -117,6 +118,7 @@
                         @switch(session('protocol')['id'])
                             @case(1)
                             @case(2)
+
                             @case(3)
                             @case(4)
                                 <th>Entrega de documento</th>
@@ -135,13 +137,12 @@
                         @endswitch
                     @endif
 
-                    <th>Acciones</th>
+                    <th style="width: 15%;">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($stages as $stage)
                     <tr>
-                        <td>{{ $stage->id }}</td>
                         <td>{{ $stage->name }}</td>
                         <td>{{ $stage->cycle->number }}-{{ $stage->cycle->year }}</td>
                         <td>{{ $stage->protocol->name }}</td>
@@ -152,6 +153,7 @@
                             @switch(session('protocol')['id'])
                                 @case(1)
                                 @case(2)
+
                                 @case(3)
                                 @case(4)
                                     <td>{{ $stage->type == 0 ? 'No' : 'Si' }}</td>
@@ -170,36 +172,72 @@
                             @endswitch
                         @endif
                         <td>
-                            <a href="{{ route('criterias.index', $stage->id) }}" class="btn btn-primary my-1"><i
-                                    class="fas fa-eye"></i></a>
-                            <a href="{{ route('stages.edit', $stage->id) }}" class="btn btn-primary my-1"><i
-                                    class="fas fa-pen"></i></a>
 
-                            <button class="btn btn-danger buttonDelete my-1"
-                                onclick="mostrarConfirmacion('{{ route('stages.destroy', $stage->id) }}', '{{ csrf_token() }}')">
-                                <i class="fas fa-trash-alt"></i> </button>
 
-                            <a href="{{ route('criterias.create', $stage->id) }}" class="btn btn-primary my-1"><i
-                                    class="fas fa-file-medical"></i></a>
 
-                            <button class="btn btn-secondary ajax-modal my-1"
-                                @if (session('protocol') != null)
-                                    @switch(session('protocol')['id'])
-                                        @case(1)
-                                        @case(2)
-                                        @case(3)
-                                        @case(4)
-                                            data-title="Carga de criterios" title="Cargar criterios"
-                                        @break
 
-                                        @case(5)
-                                            data-title="Cargar subáreas" title="Cargar subáreas"
-                                        @break
-                                    @endswitch
-                                @endif
-                                href="{{ route('stages.modal.load.criterias', ['stage_id' => $stage->id]) }}">
-                                <i class="fas fa-file"></i>
-                            </button>
+                            @if (session('protocol') != null)
+                                @switch(session('protocol')['id'])
+                                    @case(1)
+                                    @case(2)
+
+                                    @case(3)
+                                    @case(4)
+                                        <a href="{{ route('stages.edit', $stage->id) }}" class="btn btn-primary my-1" title="Editar etapa"><i
+                                                class="fas fa-pen"></i></a>
+
+                                        <button class="btn btn-danger buttonDelete my-1"  title="Eliminar etapa"
+                                            onclick="mostrarConfirmacion('{{ route('stages.destroy', $stage->id) }}', '{{ csrf_token() }}')">
+                                            <i class="fas fa-trash-alt"></i> </button>
+
+                                        <br>
+                                        <a href="{{ route('criterias.index', $stage->id) }}" class="btn btn-primary my-1" title="Ver criterios"><i
+                                                class="fas fa-eye"></i></a>
+                                        <a href="{{ route('criterias.create', $stage->id) }}" class="btn btn-primary my-1"
+                                            title="Registar criterio">
+                                            <i class="fas fa-file-medical"></i>
+                                        </a>
+                                        <button class="btn btn-secondary ajax-modal my-1" data-title="Carga de criterios"
+                                            title="Cargar criterios"
+                                            href="{{ route('stages.modal.load.criterias', ['stage_id' => $stage->id]) }}">
+                                            <i class="fas fa-file"></i>
+                                        </button>
+                                    @break
+
+                                    @case(5)
+                                        <a href="{{ route('stages.edit', $stage->id) }}" class="btn btn-primary my-1" title="Editar área"><i
+                                                class="fas fa-pen"></i></a>
+
+                                        <button class="btn btn-danger buttonDelete my-1"  title="Eliminar área"
+                                            onclick="mostrarConfirmacion('{{ route('stages.destroy', $stage->id) }}', '{{ csrf_token() }}')">
+                                            <i class="fas fa-trash-alt"></i> </button>
+
+                                        <br>
+                                        <a href="{{ route('criterias.index', $stage->id) }}" class="btn btn-primary my-1"  title="Ver subáreas"><i
+                                                class="fas fa-eye"></i></a>
+                                        <a href="{{ route('criterias.create', $stage->id) }}" class="btn btn-primary my-1"
+                                            title="Registrar subarea">
+                                            <i class="fas fa-file-medical"></i>
+                                        </a>
+                                        <button class="btn btn-secondary ajax-modal my-1" data-title="Cargar subáreas"
+                                            title="Cargar subáreas" title="Cargar criterios"
+                                            href="{{ route('stages.modal.load.criterias', ['stage_id' => $stage->id]) }}">
+                                            <i class="fas fa-file"></i>
+                                        </button>
+                                        <br>
+                                        <a href="{{ route('stages.coordinator.evaluations.index', $stage->id) }}"
+                                            class="btn btn-primary my-1" title="Ver evaluaciones">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{{ route('stages.coordinator.evaluations.create', $stage->id) }}"
+                                            class="btn btn-primary my-1" title="Registrar evaluación">
+                                            <i class="fas fa-file-medical"></i>
+                                        </a>
+
+                                    @break
+                                @endswitch
+                            @endif
+
                         </td>
                     </tr>
                 @endforeach

@@ -23,6 +23,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EntityController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\EvaluationDocumentController;
+use App\Http\Controllers\EventsController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ExtensionController;
 use App\Http\Controllers\NotificationController;
@@ -233,16 +234,34 @@ Route::group(['prefix' => 'stages', 'as' => 'stages.'], function () {
     /**
      * rutas para examen tecnico profesional
      */
+    Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
+
+        Route::group(['prefix' => 'evaluations', 'as' => 'evaluations.'], function () {
+            Route::get('/create/{stage}', [EvaluationController::class, 'stagesCoordinatorEvaluationsCreate'])->name('create');
+            Route::get('/index/{stage}', [EvaluationController::class, 'stagesCoordinatorEvaluationsIndex'])->name('index');
+            Route::get('/edit/{evaluation}', [EvaluationController::class, 'stagesCoordinatorEvaluationsEdit'])->name('edit');
+            Route::put('/update/{evaluation}', [EvaluationController::class, 'stagesCoordinatorEvaluationsUpdate'])->name('update');
+
+            Route::group(['prefix' => 'criterias', 'as' => 'criterias.'], function () {
+                Route::get('/create/{evaluation}', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasCreate'])->name('create');
+                Route::post('/store', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasStore'])->name('store');
+                Route::get('/index/{evaluation}', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasIndex'])->name('index');
+                Route::get('/edit/{criteria}', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasEdit'])->name('edit');
+                Route::put('/update/{criteria}', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasUpdate'])->name('update');
+            });
+        });
+    });
 });
 
 //Grupo para las rutas de criterios de evaluación.
 Route::group(['prefix' => 'criterias', 'as' => 'criterias.'], function () {
-    Route::get('/{id}', [EvaluationCriteriaController::class, 'index'])->name('index');
+
     Route::get('/create/{id}', [EvaluationCriteriaController::class, 'create'])->name('create');
     Route::post('/store', [EvaluationCriteriaController::class,  'store'])->name('store');
     Route::get('/{criteria}/edit', [EvaluationCriteriaController::class, 'edit'])->name('edit');
     Route::put('/{criteria}', [EvaluationCriteriaController::class, 'update'])->name('update');
     Route::delete('/{criteria}', [EvaluationCriteriaController::class, 'destroy'])->name('destroy');
+    Route::get('/{id}', [EvaluationCriteriaController::class, 'index'])->name('index');
 
     Route::group(['prefix' => 'subareas', 'as' => 'subareas.'], function () {
         Route::get('/{id}', [SubAreaController::class, 'criteriasIndex'])->name('index');
@@ -451,6 +470,15 @@ Route::group(['prefix' => 'advisers', 'as' => 'advisers.'], function () {
 //Grupo para las rutas de bitacora
 Route::group(['prefix' => 'logs', 'as' => 'logs.'], function () {
     Route::get('/', [LogController::class, 'index'])->name('index');
+});
+
+//Grupo para las rutas de defensa (eventos)
+Route::group(['prefix' => 'events', 'as' => 'events.'], function () {
+    Route::get('/', [EventsController::class, 'index'])->name('index');
+    Route::get('/create', [EventsController::class, 'create'])->name('create');
+    Route::post('/store', [EventsController::class,  'store'])->name('store');
+    Route::get('/show/{event}', [EventsController::class, 'show'])->name('show');
+    Route::delete('/destroy/{event}', [EventsController::class, 'destroy'])->name('destroy');
 });
 
 

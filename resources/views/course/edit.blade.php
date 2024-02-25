@@ -88,20 +88,23 @@
                 </select>
             </div>
 
-
+            
             <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <!--
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="presuscriptions-tab" data-bs-toggle="tab"
                         data-bs-target="#presuscriptions-tab-pane" type="button" role="tab"
                         aria-controls="presuscriptions-tab-pane" aria-selected="true">Pre-inscripciones</button>
                 </li>
+            -->
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="suscriptions-tab" data-bs-toggle="tab"
+                    <button class="nav-link active" id="suscriptions-tab" data-bs-toggle="tab"
                         data-bs-target="#suscriptions-tab-pane" type="button" role="tab"
                         aria-controls="suscriptions-tab-pane" aria-selected="false">Inscripciones</button>
                 </li>
             </ul>
             <div class="tab-content" id="myTabContent">
+                <!--
                 <div class="tab-pane fade show active" id="presuscriptions-tab-pane" role="tabpanel"
                     aria-labelledby="presuscriptions-tab" tabindex="0">
                     <div class="mt-3">
@@ -142,7 +145,8 @@
                         </table>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="suscriptions-tab-pane" role="tabpanel" aria-labelledby="suscriptions-tab"
+                -->
+                <div class="tab-pane fade show active" id="suscriptions-tab-pane" role="tabpanel" aria-labelledby="suscriptions-tab"
                     tabindex="0">
                     <div class="mt-3">
                         <div class="form-group select-product-container mt-2">

@@ -1,0 +1,48 @@
+[
+    {
+        "id": 21,
+        "name": "Planificación de actividades para la ejecución de la PPP",
+        "description": "Consiste en la elaboración de un perfil o plan de acciones de la PPP, este se realizará por el estudiante egresado con el seguimiento y tutoría del asesor interno y del asesor externo de la entidad solicitante.",
+        "percentage": 100,
+        "stage_id": 21,
+        "created_at": "2024-02-08 20:04:42",
+        "updated_at": "2024-02-08 20:04:42",
+        "deleted_at": null,
+        "type": 1
+    },
+    {
+        "id": 22,
+        "name": "Ejecución del plan de acción de PPP",
+        "description": "El estudiante egresado desarrollará las actividades en la institución, de acuerdo a lo planificado en la etapa anterior",
+        "percentage": 100,
+        "stage_id": 26,
+        "created_at": "2024-02-08 20:37:16",
+        "updated_at": "2024-02-08 20:37:16",
+        "deleted_at": null,
+        "type": 1
+    },
+    {
+        "id": 23,
+        "name": "Informe de actividades desarrolladas duranta la pasantía.",
+        "description": "Informe de actividades desarrolladas duranta la pasantía.",
+        "percentage": 50,
+        "stage_id": 22,
+        "created_at": "2024-02-09 20:13:41",
+        "updated_at": "2024-02-09 20:13:41",
+        "deleted_at": null,
+        "type": 1
+    },
+
+    {
+        "id": 24,
+        "name": "Presentación oral de informe final",
+        "description": "Presentación oral de informe final",
+        "percentage": 50,
+        "stage_id": 22,
+        "created_at": "2024-02-09 22:46:04",
+        "updated_at": "2024-02-09 22:46:04",
+        "deleted_at": null,
+        "type": 1
+    }
+
+]
