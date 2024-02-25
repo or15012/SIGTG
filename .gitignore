@@ -24,4 +24,4 @@ yarn-error.log
 /public/assets/
 composer.lock
 package-lock.json
-*.json
+package.json
