@@ -14,10 +14,15 @@
     @endcomponent
 
     <div class="container">
+        <div class="contenedor">
+            <a href="{{ route('projects.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
 
         <h1>Lista de prórrogas</h1>
         @if ($status)
             <a href="{{ route('extensions.create', $project->id) }}" class="btn btn-primary mb-3">Registrar prórroga</a>
+
         @else
             <div class="alert alert-info mt-3">
                 No se puede registrar ni realizar cambios en asesorías. Proyecto inactivo.
