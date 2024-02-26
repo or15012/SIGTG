@@ -108,6 +108,7 @@ class EventsController extends Controller
 
     public function update(Request $request, Project $project, Events $event)
     {
+        //dd($event);
         // Validación de los datos del formulario
         $validatedData = $request->validate([
             'name'          => 'required|string|max:255',
@@ -120,29 +121,32 @@ class EventsController extends Controller
             'cycle_id'      => 'required',
             'school_id'     => 'required',   
         ]);
-
+    
         try {
-            $event->name        = $request->input('name');
-            $event->description = $request->input('description');
-            $event->place       = $request->input('place');
-            $event->date        = date('Y-m-d H:i:s', strtotime($validatedData['date']));
-        
-            $event->school_id   = $request->input('school_id');
-            $event->cycle_id    = $request->input('cycle_id');
-            $event->user_id     = $request->input('user_id');
-            $event->group_id    = $request->input('group_id');
-            $event->project_id  = $request->input('project_id');
-            $event->update();
-
-            dd($event);
+            if (!$event) {
+                return redirect()->route('events.index', ['project' => $validatedData['project_id']])->with('error', 'El evento no existe.');
+            }
+    
+            $event->update([
+                'name'        => $request->input('name'),
+                'description' => $request->input('description'),
+                'place'       => $request->input('place'),
+                'date'        => date('Y-m-d H:i:s', strtotime($validatedData['date'])),
+                'school_id'   => $request->input('school_id'),
+                'cycle_id'    => $request->input('cycle_id'),
+                'user_id'     => $request->input('user_id'),
+                'group_id'    => $request->input('group_id'),
+                'project_id'  => $request->input('project_id'),
+            ]);
+    
+            //dd($event);
             return redirect()->route('events.index', ['project' => $validatedData['project_id']])->with('success', 'Se actualizó la defensa correctamente.');
         } catch (\Throwable $th) {
-            dd($th);
-            //return redirect()->route('events.index', ['project' => $validatedData['project_id']])->with('error', 'La defensa no pudo ser actualizada.');
+            //dd($th);
+            return redirect()->route('events.index', ['project' => $validatedData['project_id']])->with('error', 'La defensa no pudo ser actualizada.');
         }
     }
-
-
+    
 
     public function show(Events $events)
     {
