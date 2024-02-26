@@ -3,13 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SendMail;
+use App\Models\Cycle;
+use App\Models\EvaluationStage;
+use App\Models\EvaluationStageNote;
 use App\Models\Group;
 use App\Models\Notification;
 use App\Models\User;
 use App\Models\Observation;
 use App\Models\Profile;
 use App\Models\Project;
+use App\Models\Stage;
 use App\Models\UserNotification;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -408,6 +413,12 @@ class ProfileController extends Controller
             case 3:
             case 5:
                 if ($request->decision == 1) {
+                    $validatedData = $request->validate([
+                        'note' => 'required|numeric|min:0|max:10',
+                    ]);
+
+
+
                     $preprofile->type = 1;
 
                     $project                = new Project();
@@ -415,6 +426,32 @@ class ProfileController extends Controller
                     $project->group_id      = $preprofile->group_id;
                     $project->profile_id    = $preprofile->id;
                     $project->save();
+
+                    $cycle  = Cycle::where('status', 1)->first();
+                    $stage  = Stage::where('protocol_id', session('protocol')['id'])
+                        ->where('school_id', session('school')['id'])
+                        ->where('cycle_id', $cycle->id)
+                        ->where('category', 2)
+                        ->first();
+
+                    //primero creare el evaluation_stages
+                    $evaluationStage                = new EvaluationStage();
+                    $evaluationStage->date          = Carbon::now();
+                    $evaluationStage->project_id    = $project->id;
+                    $evaluationStage->stage_id      = $stage->id;
+                    $evaluationStage->status        = 1;
+                    $evaluationStage->save();
+
+                    $user = User::join('user_group as ug', 'ug.user_id', 'users.id')
+                        ->join('groups as g', 'ug.group_id', 'g.id')
+                        ->where('g.id', $preprofile->group_id)
+                        ->select('users.id')
+                        ->first();
+                    $evaluationStageNote                        = new EvaluationStageNote();
+                    $evaluationStageNote->evaluation_stage_id   = $evaluationStage->id;
+                    $evaluationStageNote->user_id               = $user->id;
+                    $evaluationStageNote->note                  = $request->note;
+                    $evaluationStageNote->save();
                 }
 
                 break;

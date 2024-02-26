@@ -13,7 +13,9 @@
     @endcomponent
     <div class="container">
         <h1>Lista de planificación</h1>
-        <a href="{{ route('plannings.create') }}" class="btn btn-primary mb-3">Nueva planificación</a>
+        @if (!(count($plannings) > 0))
+            <a href="{{ route('plannings.create') }}" class="btn btn-primary mb-3">Nueva planificación</a>
+        @endif
 
 
         @if (session('success'))
@@ -43,15 +45,19 @@
                                 @case(0)
                                     Planificación presentada.
                                 @break
+
                                 @case(1)
                                     Planificación aprobada.
                                 @break
+
                                 @case(2)
                                     Planificación observada.
                                 @break
+
                                 @case(3)
                                     Planificación rechazada.
                                 @break
+
                                 @default
                             @endswitch
                         </td>

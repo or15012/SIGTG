@@ -6,6 +6,22 @@
 
 @section('content')
     <div class="container">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <div class="contenedor">
             <a href="{{ route('profiles.preprofile.coordinator.index') }}" class="btn btn-danger regresar-button"><i
                     class="fas fa-arrow-left"></i>
@@ -72,6 +88,7 @@
 
                 <input type="hidden" name="profile_id" value="{{ $preprofile->id }}">
                 <input type="hidden" id="decision" name="decision" value="">
+                <input type="hidden" id="note" name="note" value="">
                 <div>
                     @switch($preprofile->status)
                         @case(0)
@@ -203,6 +220,7 @@
 
                 <input type="hidden" name="profile_id" value="{{ $preprofile->id }}">
                 <input type="hidden" id="decision" name="decision" value="">
+
                 <div>
                     @switch($preprofile->status)
                         @case(0)
