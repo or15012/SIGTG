@@ -45,10 +45,10 @@ class Withdrawal extends Model
                 return 'Presentada';
                 break;
             case 1:
-                return 'Aprobado';
+                return 'Aprobada';
                 break;
             case 2:
-                return 'Rechazado';
+                return 'Rechazada';
                 break;
             default:
                 return 'Not found';
