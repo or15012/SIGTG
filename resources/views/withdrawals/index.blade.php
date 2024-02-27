@@ -24,6 +24,12 @@
             </div>
         @endif
 
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr class="table-danger">
@@ -53,6 +59,7 @@
                 @endforeach
             </tbody>
         </table>
+        {!! $withdrawals->withQueryString()->links('pagination::bootstrap-5') !!}
     </div>
 @endsection
 

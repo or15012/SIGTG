@@ -503,21 +503,22 @@
                     @endswitch
                 @endif
 
+                @can('Withdrawals.students')
                 <li>
                     <a href="{{ route('withdrawals.index') }}">
                         <i class="bx bx-dislike icon nav-icon"></i>
                         <span class="menu-item" data-key="t-withdrawals">@lang('translation.Withdrawals')</span>
                     </a>
                 </li>
-
-
+                @endcan
+                @can('Withdrawals.advisers')
                 <li>
                     <a href="{{ route('withdrawals.coordinator.index') }}">
                         <i class="bx bx-dislike icon nav-icon"></i>
                         <span class="menu-item" data-key="t-withdrawalsadviser">@lang('translation.WithdrawalsAdviser')</span>
                     </a>
                 </li>
-
+                @endcan
 
 
 

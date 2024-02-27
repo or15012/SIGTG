@@ -374,7 +374,7 @@
         "role_id": 5
     },
 
-    
+
     {
         "permission_id": 14,
         "role_id": 6
@@ -418,6 +418,18 @@
     {
         "permission_id": 37,
         "role_id": 6
+
+    },
+
+    {
+        "permission_id": 41,
+        "role_id": 3
+
+    },
+
+    {
+        "permission_id": 42,
+        "role_id": 2
 
     }
 

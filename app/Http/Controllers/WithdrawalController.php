@@ -26,9 +26,17 @@ use Illuminate\Support\Facades\Auth;
 
 class WithdrawalController extends Controller
 {
+
+    const PERMISSIONS = [
+        'index.advisers'    => 'Withdrawals.advisers',
+        'index.students'    => 'Withdrawals.students',
+    ];
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('permission:' . self::PERMISSIONS['index.advisers'])->only(['coordinatorIndex']);
+        $this->middleware('permission:' . self::PERMISSIONS['index.students'])->only(['index']);
     }
     public function index()
     {
@@ -152,8 +160,17 @@ class WithdrawalController extends Controller
 
     public function edit(Withdrawal $withdrawal)
     {
+        $status = $withdrawal->status();
+        //dd($status);
+        if ($status === 'Aprobada') {
+            return redirect()->back()->with('error', 'No puedes editar este retiro porque ya ha sido aceptado.');
+        } elseif ($status == 'Rechazada') {
+            return redirect()->back()->with('error', 'No puedes editar este retiro porque ya ha sido rechazado.');
+        }
 
         $type_withdrawals = TypeWithdrawal::all();
+
+        // Verificar si el retiro está en un estado que permite la edición
 
         return view('withdrawals.edit')->with(compact('withdrawal', 'type_withdrawals'));
     }
@@ -301,7 +318,7 @@ class WithdrawalController extends Controller
             UserNotification::create(['user_id' => $user->id, 'notification_id' => $notificationStudent->id, 'is_read' => 0]);
         } catch (Exception $th) {
             // Manejar la excepción
-           // dd($th);
+            // dd($th);
         }
 
         return redirect()->route('withdrawals.coordinator.index')->with('success', 'Estado de retiro actualizado.');
