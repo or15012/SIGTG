@@ -35,7 +35,7 @@ class Withdrawal extends Model
 
     public function user()
     {
-        return $this->belongsTo(Group::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function status()
@@ -45,10 +45,10 @@ class Withdrawal extends Model
                 return 'Presentada';
                 break;
             case 1:
-                return 'Aprobado';
+                return 'Aprobada';
                 break;
             case 2:
-                return 'Rechazado';
+                return 'Rechazada';
                 break;
             default:
                 return 'Not found';

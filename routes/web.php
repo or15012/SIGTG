@@ -491,11 +491,17 @@ Route::group(['prefix' => 'events', 'as' => 'events.'], function () {
 
 // Retiros (withdrawals).
 Route::group(['prefix' => 'withdrawals', 'as' => 'withdrawals.'], function () {
-    Route::get('', [WithdrawalController::class, 'index'])->name('index');
-    Route::get('/create/{project}', [WithdrawalController::class, 'create'])->name('create');
+    Route::get('/', [WithdrawalController::class, 'index'])->name('index');
+    Route::get('/create', [WithdrawalController::class, 'create'])->name('create');
     Route::post('/store', [WithdrawalController::class,  'store'])->name('store');
     Route::get('/{withdrawal}/edit', [WithdrawalController::class, 'edit'])->name('edit');
     Route::put('/update/{withdrawal}', [WithdrawalController::class, 'update'])->name('update');
+
+    Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
+        Route::get('/', [WithdrawalController::class, 'coordinatorIndex'])->name('index');
+        Route::get('show/{withdrawal}', [WithdrawalController::class, 'coordinatorShow'])->name('show');
+        Route::put('/update/{withdrawal}', [WithdrawalController::class, 'coordinatorUpdate'])->name('update');
+    });
 });
 
 // Estas rutas dejarlas de ultimo

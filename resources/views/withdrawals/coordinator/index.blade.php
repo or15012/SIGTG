@@ -15,7 +15,6 @@
 
     <div class="container">
         <h1>Lista de retiros</h1>
-        <a href="{{ route('withdrawals.create') }}" class="btn btn-primary mb-3">Registrar retiro</a>
 
 
         @if (session('success'))
@@ -30,6 +29,7 @@
                     <th>ID</th>
                     <th>Tipo de retiro</th>
                     <th>Grupo</th>
+                    <th>Estudiante</th>
                     <th>Estado</th>
                     <th>Descripción</th>
                     <th>Acciones</th>
@@ -41,12 +41,13 @@
                         <td>{{ $withdrawal->id }}</td>
                         <td>{{ $withdrawal->type_withdrawal->name }}</td>
                         <td>{{ $withdrawal->group->number }}</td>
+                        <td>{{ $withdrawal->user->first_name }} {{ $withdrawal->user->second_last_name }}</td>
                         <td>{{ $withdrawal->status() }}</td>
                         <td>{{ $withdrawal->description }}</td>
                         <td>
 
-                            <a href="{{ route('withdrawals.edit', $withdrawal->id) }}" class="btn btn-primary"><i
-                                    class="fas fa-pen"></i></a>
+                            <a href="{{ route('withdrawals.coordinator.show', $withdrawal->id) }}" class="btn btn-primary"><i
+                                    class="fas fa-eye"></i></a>
 
                         </td>
                     </tr>

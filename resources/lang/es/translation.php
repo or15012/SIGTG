@@ -190,5 +190,7 @@ return [
     "PlanningsAdviser"       => "Planificaciones (Coordinador)",
     "PlanningsApproved"      => "Planificaciones aprobadas",
     "Forums"                 => "Foros",
-    "Workshops"              => "Talleres"
+    "Workshops"              => "Talleres",
+    "WithdrawalsAdviser"     => "Retiros (Coordinador)",
+    "Withdrawals"            => "Retiros",
 ];
