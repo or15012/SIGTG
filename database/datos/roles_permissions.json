@@ -44,6 +44,10 @@
         "permission_id": 38,
         "role_id": 2
     },
+    {
+        "permission_id": 39,
+        "role_id": 2
+    },
 
 
 
@@ -177,6 +181,10 @@
         "role_id": 3
 
     },
+    {
+        "permission_id": 40,
+        "role_id": 3
+    },
 
 
     {
@@ -223,6 +231,10 @@
         "permission_id": 37,
         "role_id": 4
 
+    },
+    {
+        "permission_id": 40,
+        "role_id": 4
     },
 
 
@@ -356,6 +368,10 @@
         "permission_id": 37,
         "role_id": 5
 
+    },
+    {
+        "permission_id": 40,
+        "role_id": 5
     },
 
     

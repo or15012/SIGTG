@@ -9,16 +9,36 @@
             SIGTG - FIA
         @endslot
         @slot('title')
+        Welcome !
         @endslot
     @endcomponent
+
     <div class="container">
+        <div class="contenedor">
+            <a href="{{ route('projects.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+                Regresar</a>
+        </div>
 
         <h1>Lista de defensas</h1>
-        <a href="{{ route('events.create') }}" class="btn btn-primary mb-3">Registrar defensa</a>
 
+        @if ($status)
+        <a href="{{ route('events.create', $project->id) }}" class="btn btn-primary mb-3">Registrar defensa</a>
+ 
+        @else
+            <div class="alert alert-info mt-3">
+                No se puede registrar ni realizar cambios en defensas. Proyecto inactivo.
+            </div>
+        @endif
+        
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
             </div>
         @endif
 
@@ -40,15 +60,8 @@
                         <td>{{ $event->place }}</td>
                         <td>{{ $event->description }}</td>
                         <td>
-                            <a href="{{ route('events.show', $event->id) }}" class="btn btn-primary"><i
-                                    class="fas fa-eye"></i>
-                            </a>
-                            <form action="{{ route('events.destroy', $event->id) }}" method="POST" style="display: inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger buttonDelete"><i
-                                        class="fas fa-trash-alt"></i></button>
-                            </form>
+                            <a href="{{ route('events.edit', ['events' => $event->id, 'project' => $project->id]) }}class="btn btn-primary"><i
+                                class="fas fa-pen"></i></a>
                         </td>
                     </tr>
                 @endforeach

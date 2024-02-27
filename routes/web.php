@@ -477,18 +477,22 @@ Route::group(['prefix' => 'logs', 'as' => 'logs.'], function () {
 
 //Grupo para las rutas de defensa (eventos)
 Route::group(['prefix' => 'events', 'as' => 'events.'], function () {
-    Route::get('/', [EventsController::class, 'index'])->name('index');
-    Route::get('/create', [EventsController::class, 'create'])->name('create');
+    Route::get('/index/{project}', [EventsController::class, 'index'])->name('index');
+    Route::get('/create/{project}', [EventsController::class, 'create'])->name('create');
     Route::post('/store', [EventsController::class,  'store'])->name('store');
-    Route::get('/show/{event}', [EventsController::class, 'show'])->name('show');
-    Route::delete('/destroy/{event}', [EventsController::class, 'destroy'])->name('destroy');
+    Route::get('/show/{events}', [EventsController::class, 'show'])->name('show');
+    Route::get('/{events}/edit/{project}', [EventsController::class, 'edit'])->name('edit');
+    //Route::get('/{events}/edit/', [EventsController::class, 'edit'])->name('edit');
+    Route::put('/{events}', [EventsController::class, 'update'])->name('update');
+    Route::delete('/destroy/{events}', [EventsController::class, 'destroy'])->name('destroy');
 });
+
 
 
 // Retiros (withdrawals).
 Route::group(['prefix' => 'withdrawals', 'as' => 'withdrawals.'], function () {
     Route::get('', [WithdrawalController::class, 'index'])->name('index');
-    Route::get('/create', [WithdrawalController::class, 'create'])->name('create');
+    Route::get('/create/{project}', [WithdrawalController::class, 'create'])->name('create');
     Route::post('/store', [WithdrawalController::class,  'store'])->name('store');
     Route::get('/{withdrawal}/edit', [WithdrawalController::class, 'edit'])->name('edit');
     Route::put('/update/{withdrawal}', [WithdrawalController::class, 'update'])->name('update');
