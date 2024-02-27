@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string("name");
             $table->boolean("visible")->default(1);
-            $table->enum("type",[1,2,3])->default(1);
+            $table->enum("category",[1,2,3])->default(1);
             $table->foreignId('protocol_id')->constrained('users')->onDelete('restrict');
             $table->foreignId('cycle_id')->constrained('cycles')->onDelete('restrict');
             $table->foreignId('school_id')->constrained('schools')->onDelete('restrict');
