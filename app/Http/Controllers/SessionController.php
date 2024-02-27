@@ -31,4 +31,28 @@ class SessionController extends Controller
         session(['school' => $school]);
         return redirect('home');
     }
+
+    public function setAllProtocol($protocol)
+    {
+
+        $protocol = array(
+            "id"    => -1,
+            "name"  =>  "Todos los protocolos"
+        );
+
+        session(['protocol' => $protocol]);
+        return redirect('home');
+    }
+
+    public function setAllSchool($school)
+    {
+
+        $school = array(
+            "id"    => -1,
+            "name"  =>  "Todas las escuelas"
+        );
+
+        session(['school' => $school]);
+        return redirect('home');
+    }
 }

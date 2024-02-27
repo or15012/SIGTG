@@ -51,9 +51,13 @@
                     @endif
                 </button>
 
-                @hasanyrole('admin|Coordinador General')
+                @hasanyrole('admin')
                     <div class="dropdown-menu dropdown-menu-end">
                         @if (session('allSchools') != null)
+                            <a href="{{ route('sessions.set.all.school', -1) }}" class="dropdown-item notify-item"
+                                data-lang="eng">
+                                <span class="align-middle">Todas las escuelas</span>
+                            </a>
                             @forelse (session("allSchools") as $school)
                                 <a href="{{ route('sessions.set.school', $school->id) }}" class="dropdown-item notify-item"
                                     data-lang="eng">
@@ -79,6 +83,12 @@
                 @hasanyrole('admin|Coordinador General')
                     <div class="dropdown-menu dropdown-menu-end">
                         @if (session('allProtocols') != null)
+                            @hasanyrole('admin')
+                                <a href="{{ route('sessions.set.all.protocol', -1) }}" class="dropdown-item notify-item"
+                                    data-lang="eng">
+                                    <span class="align-middle">Todos los protocolos</span>
+                                </a>
+                            @endrole
                             @forelse (session("allProtocols") as $protocol)
                                 <a href="{{ route('sessions.set.protocol', $protocol->id) }}"
                                     class="dropdown-item notify-item" data-lang="eng">

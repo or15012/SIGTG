@@ -71,6 +71,9 @@ Route::get('/home', [HomeController::class, 'home'])->name('home');
 Route::group(['prefix' => 'sessions', 'as' => 'sessions.'], function () {
     Route::get('/set-protocol/{protocol}', [SessionController::class, 'setProtocol'])->name('set.protocol');
     Route::get('/set-school/{school}', [SessionController::class, 'setSchool'])->name('set.school');
+
+    Route::get('/set-all-protocol/{protocol}', [SessionController::class, 'setAllProtocol'])->name('set.all.protocol');
+    Route::get('/set-all-school/{school}', [SessionController::class, 'setAllSchool'])->name('set.all.school');
 });
 Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
     Route::get('/', [RegisterController::class, 'index'])->name('index');

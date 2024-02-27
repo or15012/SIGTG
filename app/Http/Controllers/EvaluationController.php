@@ -74,6 +74,7 @@ class EvaluationController extends Controller
         $stages = Stage::where("protocol_id", $group->protocol_id)
             ->where('cycle_id', $group->cycle_id)
             ->where('school_id', $user->school_id)
+            ->where('visible', 1)
             ->orderBy('stages.sort', 'asc')
             ->get();
 

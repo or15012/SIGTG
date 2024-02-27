@@ -44,16 +44,18 @@
                 @endif
 
                 @can('Extensions.student.create')
-                @if ($today >= $date_end_mod && $today <= $date_end)
-                    <a href="{{ route('events.index', $project->id) }}" style="margin-left: 5px" class="btn btn-primary float-end">
-                        <i class="fa fa-plus"></i>&nbsp; Solicitar defensa
-                    </a>
-                @endif
+                    @if ($today >= $date_end_mod && $today <= $date_end)
+                        <a href="{{ route('events.index', $project->id) }}" style="margin-left: 5px"
+                            class="btn btn-primary float-end">
+                            <i class="fa fa-plus"></i>&nbsp; Solicitar defensa
+                        </a>
+                    @endif
                 @endcan
-                
+
                 @can('Extensions.student.create')
                     @if ($today >= $date_end_mod && $today <= $date_end)
-                        <a href="{{ route('extensions.index', $project->id) }}" style="margin-left: 5px" class="btn btn-primary float-end">
+                        <a href="{{ route('extensions.index', $project->id) }}" style="margin-left: 5px"
+                            class="btn btn-primary float-end">
                             <i class="fa fa-plus"></i>&nbsp; Solicitar prórroga
                         </a>
                     @endif
@@ -192,7 +194,8 @@
                                     </div>
 
                                 </div>
-                                <a class="card-footer text-black clearfix small z-1 bg-primary enabled" data-value="{{$stage->id}}"
+                                <a class="card-footer text-black clearfix small z-1 bg-primary enabled"
+                                    data-value="{{ $stage->id }}"
                                     href="{{ route('evaluations.show.subareas', [$project->id, $stage->id]) }}">
                                     <span class="float-left text-white ">Ver Detalles</span>
                                     <span class="float-right text-white">
@@ -230,27 +233,29 @@
                     Sin áreas evaluativas
                 </h3>
             @endforelse
-
-            @if ($stages->count() === $evaluationStages->count())
-                <div class="col-xl-3 col-sm-6 mb-3 red-student">
-                    <div class="card text-black o-hidden h-100 red-student">
-                        <div class="card-body">
-                            <div class="mr-5 w-50 text-black">Cierre de trabajo de grado</div>
-                            <div class="mr-5 w-50 text-black"></div>
-                            <div class="card-body-icon">
-                                <i class="fas fa-graduation-cap"></i>
+            @if ($stages->count() > 0)
+                @if ($stages->count() === $evaluationStages->count())
+                    <div class="col-xl-3 col-sm-6 mb-3 red-student">
+                        <div class="card text-black o-hidden h-100 red-student">
+                            <div class="card-body">
+                                <div class="mr-5 w-50 text-black">Cierre de trabajo de grado</div>
+                                <div class="mr-5 w-50 text-black"></div>
+                                <div class="card-body-icon">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
                             </div>
+                            <a class="card-footer text-black clearfix small z-1 red-student"
+                                href="{{ route('projects.finish', [$project->id]) }}">
+                                <span class="float-left">Ver detalles</span>
+                                <span class="float-right">
+                                    <i class="fa fa-angle-right"></i>
+                                </span>
+                            </a>
                         </div>
-                        <a class="card-footer text-black clearfix small z-1 red-student"
-                            href="{{ route('projects.finish', [$project->id]) }}">
-                            <span class="float-left">Ver detalles</span>
-                            <span class="float-right">
-                                <i class="fa fa-angle-right"></i>
-                            </span>
-                        </a>
                     </div>
-                </div>
+                @endif
             @endif
+
         </div>
         <div class="col-lg-12">
             <div class="card">
@@ -265,8 +270,6 @@
                                 @foreach ($stages as $item)
                                     <th>
                                         {{ $item->name }}
-                                        {{-- <br>
-                                        {{ $item->percentage }}% --}}
                                     </th>
                                 @endforeach
                                 <td>Nota final</td>
