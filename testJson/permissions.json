@@ -226,5 +226,17 @@
         "name": "Project.students.back",
         "guard_name": "web",
         "description": "Permiso para estudiante retroceder en proyecto"
+    },
+    {
+        "id": 39,
+        "name": "Events.student.create",
+        "guard_name": "web",
+        "description": "Permiso para solucitud de defensa"
+    },
+    {
+        "id": 40,
+        "name": "Events.adviser.show",
+        "guard_name": "web",
+        "description": "Permiso para ver defensas"
     }
 ]
