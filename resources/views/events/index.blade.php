@@ -60,7 +60,7 @@
                         <td>{{ $event->place }}</td>
                         <td>{{ $event->description }}</td>
                         <td>
-                            <a href="{{ route('events.edit', ['events' => $event->id, 'project' => $project->id]) }}class="btn btn-primary"><i
+                            <a href="{{ route('events.edit', ['events' => $event->id, 'project' => $project->id]) }}"class="btn btn-primary"><i
                                 class="fas fa-pen"></i></a>
                         </td>
                     </tr>
