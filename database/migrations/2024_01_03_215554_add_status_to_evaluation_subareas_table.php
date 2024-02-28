@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        // Schema::table('evaluation_subareas', function (Blueprint $table) {
-        //     $table->integer('status')->default(0); // Cambia el tipo de dato según tu necesidad
+        Schema::table('evaluation_subareas', function (Blueprint $table) {
+            $table->integer('status')->default(0); // Cambia el tipo de dato según tu necesidad
 
-        // });
+        });
     }
 
     /**
@@ -26,9 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        // Schema::table('evaluation_subareas', function (Blueprint $table) {
-        //     $table->dropColumn('status');
+        Schema::table('evaluation_subareas', function (Blueprint $table) {
+            $table->dropColumn('status');
 
-        // });
+        });
     }
 };

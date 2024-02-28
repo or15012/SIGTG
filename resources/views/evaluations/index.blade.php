@@ -269,14 +269,14 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header bg-transparent border-bottom text-uppercase">
-                    Notas de estudiantes por area
+                    Notas de estudiantes
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>Nombre de alumno</th>
-                                @foreach ($stages as $item)
+                                @foreach ($stagesNote as $item)
                                     <th>
                                         {{ $item->name }}
                                     </th>
@@ -290,7 +290,7 @@
                                 <tr id="user-{{ $user->id }}" data-value="{{ $user->id }}">
                                     <td>{{ $user->first_name }} {{ $user->middle_name }} {{ $user->last_name }}
                                         {{ $user->second_last_name }}</td>
-                                    @foreach ($stages as $item)
+                                    @foreach ($stagesNote as $item)
                                         <td>
                                             @php
                                                 $existingGrade = $evaluationStagesNotes->first(function ($evaluationStagesNotes) use ($user, $item) {

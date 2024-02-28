@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string("name");
             $table->string("path");
-            $table->foreignId('subarea_criteria_id')->constrained('subarea_criterias')->onDelete('restrict');
-            // $table->foreignId('evaluation_subarea_id')->constrained('evaluation_subareas')->onDelete('restrict')->nullable();
+            // $table->foreignId('subarea_criteria_id')->constrained('subarea_criterias')->onDelete('restrict');
+            $table->foreignId('evaluation_subarea_id')->constrained('evaluation_subareas')->onDelete('restrict')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

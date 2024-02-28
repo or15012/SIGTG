@@ -142,7 +142,7 @@ class EvaluationDocumentController extends Controller
         $evaluation_stage = EvaluationSubarea::find($request['evaluation_stage_id']);
 
         return redirect()
-            ->route('evaluations.show.subarea', [$evaluation_stage->project_id, $evaluation_stage->evaluation_criteria_id])
+            ->route('evaluations.show.subarea', [$evaluation_stage->project_id, $evaluation_stage->subarea_criteria_id])
             ->with('success', 'Documento guardado correctamente.');
     }
 

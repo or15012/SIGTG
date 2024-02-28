@@ -29,19 +29,7 @@
             </div>
         @endcan
         <h1>
-            @if (session('protocol') != null)
-                @switch(session('protocol')['id'])
-                    @case(1)
-                        Etapa:
-                    @break
-
-                    @case(5)
-                        Subárea:
-                    @break
-
-                    @default
-                @endswitch
-            @endif
+            Evaluación:
             {{ $stage->name }}
         </h1>
         @if (session('success'))
@@ -81,7 +69,7 @@
                                 <div class="card-body-icon">
                                     <i class="fas fa-cloud-upload-alt"></i>
                                 </div>
-                                <div class="mr-5">Entregar subárea</div>
+                                <div class="mr-5">Entregar evaluación</div>
                             </div>
                             @if ($evaluationStages->status == 0 && $stage->type == 1)
                                 <form action="{{ route('evaluations.submit.subarea', $evaluationStages->id) }}"
@@ -130,7 +118,7 @@
                         <div class="card-body-icon">
                             <i class="far fa-check-square"></i>
                         </div>
-                        <div class="mr-5">Aprobar subárea</div>
+                        <div class="mr-5">Aprobar evaluación</div>
                     </div>
                     @if ($evaluationStages->status == 2 || $stage->type == 0)
                         <form action="{{ route('evaluations.submit.subarea', $evaluationStages->id) }}"

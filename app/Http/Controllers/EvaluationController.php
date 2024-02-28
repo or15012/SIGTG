@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use DateTime;
 use App\Mail\SendMail;
+use App\Models\CriteriaSubarea;
 use App\Models\EvaluationCriteria;
 use App\Models\EvaluationCritSubareaCrit;
 use App\Models\EvaluationStage;
 use App\Models\EvaluationSubarea;
+use App\Models\EvaluationSubareaNote;
 use App\Models\Group;
 use App\Models\Notification;
 use App\Models\Project;
@@ -78,9 +80,16 @@ class EvaluationController extends Controller
             ->orderBy('stages.sort', 'asc')
             ->get();
 
+        $stagesNote = Stage::where("protocol_id", $group->protocol_id)
+            ->where('cycle_id', $group->cycle_id)
+            ->where('school_id', $user->school_id)
+            ->orderBy('stages.sort', 'asc')
+            ->get();
+
         $evaluationStages = EvaluationStage::where('project_id', $project->id)
             ->select('stg.id')
             ->where('status', 1)
+            ->where('visible', 1)
             ->join('stages as stg', 'evaluation_stages.stage_id', 'stg.id')
             ->get();
 
@@ -125,22 +134,31 @@ class EvaluationController extends Controller
             'progressPercentage'    => $progressPercentage,
             'group'                 => $group,
             'evaluationStagesNotes' => $evaluationStagesNotes,
+            'stagesNote'            => $stagesNote,
         ]);
     }
 
     public function showSubareas(Project $project, Stage $area)
     {
         $status = $this->disableProject($project);
-        $evaluationSubareas = EvaluationCriteria::where('stage_id', $area->id)->get();
+        // $evaluationSubareas = EvaluationCriteria::where('stage_id', $area->id)->get();
+        // $evaluationStages = EvaluationSubarea::where('project_id', $project->id)
+        //     ->select('stg.id')
+        //     ->where('status', 1)
+        //     ->join('evaluation_criteria as stg', 'evaluation_subareas.evaluation_criteria_id', 'stg.id')
+        //     ->get();
+
+        // $evaluationStage = EvaluationStage::where('stage_id', $area->id)
+        //     ->where('project_id', $project->id)
+        //     ->first();
+
+
+        $evaluationSubareas = SubareaCriteria::where('stage_id', $area->id)->get();
         $evaluationStages = EvaluationSubarea::where('project_id', $project->id)
             ->select('stg.id')
             ->where('status', 1)
-            ->join('evaluation_criteria as stg', 'evaluation_subareas.evaluation_criteria_id', 'stg.id')
+            ->join('subarea_criterias as stg', 'evaluation_subareas.subarea_criteria_id', 'stg.id')
             ->get();
-
-        $evaluationStage = EvaluationStage::where('stage_id', $area->id)
-            ->where('project_id', $project->id)
-            ->first();
 
         return view('evaluations.subareas.show-list', [
             "area"                  => $area,
@@ -148,7 +166,6 @@ class EvaluationController extends Controller
             "evaluationSubareas"    => $evaluationSubareas,
             "status"                => $status,
             "evaluationStages"      => $evaluationStages,
-            "evaluationStage"       => $evaluationStage,
         ]);
     }
 
@@ -172,11 +189,11 @@ class EvaluationController extends Controller
     }
 
 
-    public function showSubarea(Project $project, EvaluationCriteria $subarea)
+    public function showSubarea(Project $project, SubareaCriteria $subarea)
     {
         $status = $this->disableProject($project);
         $evaluationStages = EvaluationSubarea::where('project_id', $project->id)
-            ->where('evaluation_criteria_id', $subarea->id)
+            ->where('subarea_criteria_id', $subarea->id)
             ->first();
 
         $evaluationDocuments = array();
@@ -188,7 +205,7 @@ class EvaluationController extends Controller
         } else {
             $evaluationStages                           = new EvaluationSubarea();
             $evaluationStages->project_id               = $project->id;
-            $evaluationStages->evaluation_criteria_id   = $subarea->id;
+            $evaluationStages->subarea_criteria_id      = $subarea->id;
             $evaluationStages->save();
         }
 
@@ -262,7 +279,7 @@ class EvaluationController extends Controller
         //identificare si es la ultima etapa para cargar las notas finales
 
         return redirect()
-            ->route('evaluations.show.subarea', [$evaluation_stage->project_id, $evaluation_stage->evaluation_criteria_id])
+            ->route('evaluations.show.subarea', [$evaluation_stage->project_id, $evaluation_stage->subarea_criteria_id])
             ->with('success', 'Subarea entregada correctamente.');
     }
 

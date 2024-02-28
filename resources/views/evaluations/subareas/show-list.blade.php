@@ -32,7 +32,7 @@
         @endcan
 
         <div>
-            <h3>Subáreas evaluativas</h3>
+            <h3>Evaluaciones de área</h3>
         </div>
         <div class="row">
             @php

@@ -13,7 +13,7 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Registrar subárea</h1>
+        <h1>Cargar documento de evaluación</h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -32,7 +32,7 @@
                 <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
             </div>
             <div class="mb-3">
-                <label for="path" class="form-label">Archivo subárea</label>
+                <label for="path" class="form-label">Archivo de evaluación</label>
                 <input type="file" class="form-control" id="path" name="path" required>
             </div>
             <input type="hidden" name="evaluation_stage_id" value="{{ $evaluation_stage->id }}">
