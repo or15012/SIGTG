@@ -71,7 +71,9 @@ class EventsController extends Controller
 
     public function create(Project $project)
     {
-        return view('events.create')->with(compact('project'));
+        // Obtiene el tipo de usuario actual
+        $userType = auth()->user()->type;
+        return view('events.create', compact('userType', 'project'));
     }
 
 
@@ -139,12 +141,14 @@ class EventsController extends Controller
 
     public function edit(Events $events, Project $project)
     {
-        return view('events.edit') ->with(compact('events','project'));
+        $user = auth()->user();
+        return view('events.edit') ->with(compact('events','project', 'user'));
     }
 
     public function update(Request $request, Project $project, Events $event)
     {
         //dd($event);
+        $user = auth()->user();
         // Validación de los datos del formulario
         $validatedData = $request->validate([
             'name'          => 'required|string|max:255',
@@ -184,9 +188,9 @@ class EventsController extends Controller
     }
     
 
-    public function show(Events $events)
+    public function show(Events $events, Project $project)
     {
-        return view('events.show', compact('events'));
+        return view('events.show', compact('events', 'project'));
     }
 
 

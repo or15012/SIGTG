@@ -231,7 +231,7 @@
         "id": 39,
         "name": "Events.student.create",
         "guard_name": "web",
-        "description": "Permiso para solucitud de defensa"
+        "description": "Permiso para registrar defensa"
     },
     {
         "id": 40,
@@ -241,8 +241,8 @@
     },
     {
         "id": 41,
-        "name": "Events.student.create",
+        "name": "Events.student.edit",
         "guard_name": "web",
-        "description": "Permiso para registrar defensas"
+        "description": "Permiso para editar defensas"
     }
 ]
