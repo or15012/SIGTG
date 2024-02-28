@@ -238,5 +238,11 @@
         "name": "Events.adviser.show",
         "guard_name": "web",
         "description": "Permiso para ver defensas"
+    },
+    {
+        "id": 41,
+        "name": "Events.student.create",
+        "guard_name": "web",
+        "description": "Permiso para registrar defensas"
     }
 ]
