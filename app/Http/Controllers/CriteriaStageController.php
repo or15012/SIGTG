@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Criteria;
 use App\Models\EvaluationCriteria;
 use App\Models\CriteriaStage;
 use App\Models\CriteriaSubarea;
@@ -99,19 +100,19 @@ class CriteriaStageController extends Controller
         }
     }
 
-    public function subareaCreate(Project $project, EvaluationCriteria $stage)
+    public function subareaCreate(Project $project, SubareaCriteria $stage)
     {
 
         $group      = $project->group()->first();
-        $criteria   = SubareaCriteria::where('evaluation_criteria_id', $stage->id)->get();
+        $criteria   = Criteria::where('subarea_criteria_id', $stage->id)->get();
         $users      = User::join('user_group as ug', 'ug.user_id', 'users.id')
             ->where('ug.group_id', $group->id)
             ->select('users.id', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.second_last_name')
             ->get();
         $evaluationStages = EvaluationSubarea::where('project_id', $project->id)
-            ->where('evaluation_criteria_id', $stage->id)
+            ->where('subarea_criteria_id', $stage->id)
             ->first();
-        $grades     = CriteriaSubarea::where('evaluation_subareas_id', $evaluationStages->id)->get();
+        $grades     = CriteriaSubarea::where('evaluation_subarea_id', $evaluationStages->id)->get();
 
         return view('evaluation_stage.subareas.create', [
             'group'             => $group,
@@ -130,13 +131,13 @@ class CriteriaStageController extends Controller
     {
 
         $data = $request->validate([
-            'evaluation_stage_id'   => 'required|exists:evaluation_subareas,id',
-            'evaluation_criteria_id'   => 'required|exists:evaluation_criteria,id',
-            'notes'                 => 'required|array',
-            'finalnote'             => 'required|array',
+            'evaluation_stage_id'       => 'required|exists:evaluation_subareas,id',
+            'evaluation_criteria_id'    => 'required|exists:subarea_criterias,id',
+            'notes'                     => 'required|array',
+            'finalnote'                 => 'required|array',
         ]);
 
-        $evaluationCriteria = EvaluationCriteria::find($request->evaluation_criteria_id);
+        $evaluationCriteria = SubareaCriteria::find($request->evaluation_criteria_id);
         $evaluationSubArea  = EvaluationSubarea::find($request->evaluation_stage_id);
 
         $instance = EvaluationStage::updateOrCreate(
@@ -162,15 +163,14 @@ class CriteriaStageController extends Controller
                     // Calcular la contribución de esta nota al total según el porcentaje del criterio
                     $totalGrade += ($value * $percentage) / 100;
                     // dd($userId, $criteriaId, $request->evaluation_stage_id, $value);
-                    CriteriaSubarea::updateOrCreate(
+                    EvaluationSubareaNote::updateOrCreate(
                         [
-                            'user_id'                   => $userId,
-                            'subarea_criteria_id'       => $criteriaId,
-                            'evaluation_subareas_id'    => $request->evaluation_stage_id,
-
+                            'user_id'               => $userId,
+                            'evaluation_subarea_id' => $request->evaluation_stage_id,
+                            'criteria_id'           => $criteriaId
                         ],
                         [
-                            'note'                      => $value
+                            'note' => $value,
                         ]
                     );
                 }
@@ -178,35 +178,38 @@ class CriteriaStageController extends Controller
                 $totalGrade = round($totalGrade, 2);
 
                 // Guardar la nota final para este estudiante
-                EvaluationSubareaNote::updateOrCreate(
-                    [
-                        'user_id' => $userId,
-                        'evaluation_subarea_id' => $request->evaluation_stage_id,
-                    ],
-                    [
-                        'note' => $totalGrade,
-                    ]
-                );
 
 
-                CriteriaStage::updateOrCreate(
+                CriteriaSubarea::updateOrCreate(
                     [
                         'user_id'                   => $userId,
-                        'evaluation_criteria_id'    => $request->evaluation_criteria_id,
-                        'evaluation_stage_id'       => $evaluationStageId,
-
+                        'evaluation_subareas_id'    => $request->evaluation_stage_id,
                     ],
                     [
                         'note'                      => $totalGrade
                     ]
                 );
+
+
+                // CriteriaStage::updateOrCreate(
+                //     [
+                //         'user_id'                   => $userId,
+                //         'evaluation_criteria_id'    => $request->evaluation_criteria_id,
+                //         'evaluation_stage_id'       => $evaluationStageId,
+
+                //     ],
+                //     [
+                //         'note'                      => $totalGrade
+                //     ]
+                // );
             }
 
             //area necesito traer todas la notas de las subarea para calcular la nota final de stage
 
 
-            $notesSubareas = CriteriaStage::where('evaluation_stage_id', $evaluationStageId)
-                ->join('evaluation_criteria as ac', 'criteria_stage.evaluation_criteria_id', 'ac.id')
+            $notesSubareas = CriteriaSubarea::join('evaluation_subareas as es', 'criteria_subareas.evaluation_subarea_id', 'es.id')
+                ->join('subarea_criterias sc', 'sc.id', 'es.subarea_criteria_id')
+                ->where('evaluation_subarea_id', $request->evaluation_stage_id)
                 ->get();
 
             $globalNote =  $this->calculateNoteStage($notesSubareas);
@@ -225,9 +228,9 @@ class CriteriaStageController extends Controller
             //voy a recuperar todos los stages con sus notas para calcular y actualizar nota del proyecto
 
             $evaluationStages = EvaluationStage::join('evaluation_stage_note as esn', 'esn.evaluation_stage_id', 'evaluation_stages.id')
-                        ->join('stages as s', 's.id', 'evaluation_stages.stage_id')
-                        ->where('evaluation_stages.project_id', $evaluationSubArea->project_id)
-                        ->get();
+                ->join('stages as s', 's.id', 'evaluation_stages.stage_id')
+                ->where('evaluation_stages.project_id', $evaluationSubArea->project_id)
+                ->get();
 
             $globalNoteProject =  $this->calculateNoteStage($evaluationStages);
             UserProjectNote::updateOrCreate(
@@ -242,6 +245,7 @@ class CriteriaStageController extends Controller
 
             return back()->with('success', 'Notas guardadas exitosamente.');
         } catch (Exception $th) {
+            dd($th);
             return redirect()->route('grades.index')->with('error', $th->getMessage());
         }
     }

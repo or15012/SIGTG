@@ -11,7 +11,7 @@ class EvaluationSubarea extends Model
     use HasFactory, SoftDeletes;
     use LogsActivityTrait;
     protected $fillable = [
-        "evaluation_criteria_id",
+        "subarea_criteria_id",
         "project_id",
         "date",
     ];

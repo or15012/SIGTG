@@ -16,6 +16,17 @@
 
 
     <div class="container">
+
+        @if (Session::has('errors'))
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -28,8 +39,8 @@
             </div>
         @endif
         <div class="contenedor">
-            <a href="{{ route('evaluations.show.subareas', [$project->id,$stage->stage_id]) }}" class="btn btn-danger regresar-button"><i
-                    class="fas fa-arrow-left"></i>
+            <a href="{{ route('evaluations.show.subareas', [$project->id, $stage->stage_id]) }}"
+                class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
         <h1>
@@ -90,8 +101,8 @@
                                 <td>
                                     @php
                                         $existingGrade = $grades->first(function ($grade) use ($user, $item) {
-
-                                            return $grade->user_id === $user->id && $grade->subarea_criteria_id === $item->id;
+                                            return $grade->user_id === $user->id &&
+                                                $grade->subarea_criteria_id === $item->id;
                                         });
                                     @endphp
                                     <input id="note-{{ $user->id }}-{{ $item->id }}"

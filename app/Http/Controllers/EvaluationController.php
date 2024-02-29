@@ -319,12 +319,20 @@ class EvaluationController extends Controller
         $stages = Stage::where("protocol_id", $group->protocol_id)
             ->where('cycle_id', $group->cycle_id)
             ->where('school_id', $user->school_id)
+            ->where('visible', 1)
+            ->orderBy('stages.sort', 'asc')
+            ->get();
+
+        $stagesNote = Stage::where("protocol_id", $group->protocol_id)
+            ->where('cycle_id', $group->cycle_id)
+            ->where('school_id', $user->school_id)
             ->orderBy('stages.sort', 'asc')
             ->get();
 
         $evaluationStages = EvaluationStage::where('project_id', $project->id)
             ->select('stg.id')
             ->where('status', 1)
+            ->where('visible', 1)
             ->join('stages as stg', 'evaluation_stages.stage_id', 'stg.id')
             ->get();
 
@@ -369,6 +377,7 @@ class EvaluationController extends Controller
             'progressPercentage'    => $progressPercentage,
             'group'                 => $group,
             'evaluationStagesNotes' => $evaluationStagesNotes,
+            'stagesNote'            => $stagesNote
         ]);
     }
 
