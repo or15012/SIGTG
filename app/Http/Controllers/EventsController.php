@@ -66,7 +66,7 @@ class EventsController extends Controller
         //Llamando a la funcion disableProject
         $status = $projectController->disableProject($project);
 
-        return view('events.index', compact('events', 'project', 'status'));
+        return view('events.index', compact('userType', 'events', 'project', 'status'));
     }
 
     public function create(Project $project)

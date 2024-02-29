@@ -477,13 +477,13 @@ Route::group(['prefix' => 'events', 'as' => 'events.'], function () {
     Route::get('/index/{project}', [EventsController::class, 'index'])->name('index');
     Route::get('/create/{project}', [EventsController::class, 'create'])->name('create');
     Route::post('/store', [EventsController::class,  'store'])->name('store');
-    Route::get('/show/{events}', [EventsController::class, 'show'])->name('show');
+    Route::get('/{events}/{project}', [EventsController::class, 'show'])->name('show');
+    //Route::post('/{project}', [EventsController::class, 'show'])->name('show');
     Route::get('/{events}/edit/{project}', [EventsController::class, 'edit'])->name('edit');
     //Route::get('/{events}/edit/', [EventsController::class, 'edit'])->name('edit');
     Route::put('/{events}', [EventsController::class, 'update'])->name('update');
     Route::delete('/destroy/{events}', [EventsController::class, 'destroy'])->name('destroy');
 });
-
 
 
 // Retiros (withdrawals).
