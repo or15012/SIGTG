@@ -11,6 +11,7 @@ class EvaluationSubareaNote extends Model
     use LogsActivityTrait;
     protected $table = 'evaluation_subarea_note';
     protected $fillable = [
+        "evaluation_subarea_id",
         "criteria_id",
         "user_id",
         "note",

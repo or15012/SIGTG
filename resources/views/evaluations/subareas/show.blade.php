@@ -99,7 +99,7 @@
                         </div>
                         <div class="mr-5">Cargar notas</div>
                     </div>
-                    @if ($evaluationStages->status == 2 || $stage->type == 0)
+                    @if ($evaluationStages->status == 2 )
                         <a class="card-footer text-black clearfix small z-1"
                             href="{{ route('grades.subareas.create', [$project->id, $stage->id]) }}">
                             <span class="float-left">Realizar</span>
@@ -120,7 +120,7 @@
                         </div>
                         <div class="mr-5">Aprobar evaluación</div>
                     </div>
-                    @if ($evaluationStages->status == 2 || $stage->type == 0)
+                    @if ($evaluationStages->status == 2 )
                         <form action="{{ route('evaluations.submit.subarea', $evaluationStages->id) }}"
                             id="form-evaluation-stage-confirm" method="POST">
                             @csrf

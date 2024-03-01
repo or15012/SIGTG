@@ -14,5 +14,6 @@ class EvaluationSubarea extends Model
         "subarea_criteria_id",
         "project_id",
         "date",
+        "status",
     ];
 }

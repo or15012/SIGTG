@@ -101,8 +101,7 @@
                                 <td>
                                     @php
                                         $existingGrade = $grades->first(function ($grade) use ($user, $item) {
-                                            return $grade->user_id === $user->id &&
-                                                $grade->subarea_criteria_id === $item->id;
+                                            return $grade->user_id === $user->id && $grade->criteria_id === $item->id;
                                         });
                                     @endphp
                                     <input id="note-{{ $user->id }}-{{ $item->id }}"

@@ -12,8 +12,7 @@ class CriteriaSubarea extends Model
 
     protected $table = 'criteria_subareas';
     protected $fillable = [
-        'subarea_criteria_id',
-        'evaluation_subareas_id',
+        'evaluation_subarea_id',
         'user_id',
         'note',
         'created_at',

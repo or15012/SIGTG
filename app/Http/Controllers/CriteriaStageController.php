@@ -18,6 +18,7 @@ use App\Models\User;
 use App\Models\UserProjectNote;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CriteriaStageController extends Controller
 {
@@ -105,6 +106,7 @@ class CriteriaStageController extends Controller
 
         $group      = $project->group()->first();
         $criteria   = Criteria::where('subarea_criteria_id', $stage->id)->get();
+
         $users      = User::join('user_group as ug', 'ug.user_id', 'users.id')
             ->where('ug.group_id', $group->id)
             ->select('users.id', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.second_last_name')
@@ -112,7 +114,8 @@ class CriteriaStageController extends Controller
         $evaluationStages = EvaluationSubarea::where('project_id', $project->id)
             ->where('subarea_criteria_id', $stage->id)
             ->first();
-        $grades     = CriteriaSubarea::where('evaluation_subarea_id', $evaluationStages->id)->get();
+
+        $grades     = EvaluationSubareaNote::where('evaluation_subarea_id', $evaluationStages->id)->get();
 
         return view('evaluation_stage.subareas.create', [
             'group'             => $group,
@@ -157,9 +160,9 @@ class CriteriaStageController extends Controller
                 $usuarioId = $userId;
                 $totalGrade = 0; // Inicializar la nota final del estudiante
                 foreach ($note as $criteriaId => $value) {
-
-                    $percentage = SubareaCriteria::find($criteriaId)->percentage;
-
+                    // dd($criteriaId);
+                    $percentage = Criteria::find($criteriaId)->percentage;
+                    // dd($value, $percentage);
                     // Calcular la contribución de esta nota al total según el porcentaje del criterio
                     $totalGrade += ($value * $percentage) / 100;
                     // dd($userId, $criteriaId, $request->evaluation_stage_id, $value);
@@ -183,7 +186,7 @@ class CriteriaStageController extends Controller
                 CriteriaSubarea::updateOrCreate(
                     [
                         'user_id'                   => $userId,
-                        'evaluation_subareas_id'    => $request->evaluation_stage_id,
+                        'evaluation_subarea_id'    => $request->evaluation_stage_id,
                     ],
                     [
                         'note'                      => $totalGrade
@@ -208,10 +211,12 @@ class CriteriaStageController extends Controller
 
 
             $notesSubareas = CriteriaSubarea::join('evaluation_subareas as es', 'criteria_subareas.evaluation_subarea_id', 'es.id')
-                ->join('subarea_criterias sc', 'sc.id', 'es.subarea_criteria_id')
-                ->where('evaluation_subarea_id', $request->evaluation_stage_id)
+                ->join('subarea_criterias  as sc', 'sc.id', 'es.subarea_criteria_id')
+                ->join('stages as s','s.id', 'sc.stage_id')
+                ->where('s.id', $evaluationCriteria->stage_id)
+                ->select('criteria_subareas.note', 'sc.percentage', 's.percentage as totalPercentage')
                 ->get();
-
+            // dd($notesSubareas);
             $globalNote =  $this->calculateNoteStage($notesSubareas);
 
             EvaluationStageNote::updateOrCreate(
@@ -230,6 +235,7 @@ class CriteriaStageController extends Controller
             $evaluationStages = EvaluationStage::join('evaluation_stage_note as esn', 'esn.evaluation_stage_id', 'evaluation_stages.id')
                 ->join('stages as s', 's.id', 'evaluation_stages.stage_id')
                 ->where('evaluation_stages.project_id', $evaluationSubArea->project_id)
+                ->select('esn.note', 's.percentage', DB::raw('100 as totalPercentage'))
                 ->get();
 
             $globalNoteProject =  $this->calculateNoteStage($evaluationStages);
@@ -256,17 +262,19 @@ class CriteriaStageController extends Controller
         $totalPercentage = 0;
 
         foreach ($notesSubareas as $subarea) {
-            $note = (float)$subarea->note;
-            $percentage = (float)$subarea->percentage;
+            $note               = (float)$subarea->note;
+            $percentage         = (float)$subarea->percentage;
+            $totalPercentage    = (float)$subarea->totalPercentage;
 
+            // dd($note, $percentage, $totalPercentage);
             // Calculate the weighted note
-            $weightedNote = ($note * $percentage) / 100;
+            $weightedNote = ($note * $percentage) / $totalPercentage;
 
             // Add to the global note
             $globalNote += $weightedNote;
 
             // Track the total percentage to ensure it sums to 100
-            $totalPercentage += $percentage;
+            // $totalPercentage += $percentage;
         }
 
         return $globalNote;
