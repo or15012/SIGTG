@@ -231,12 +231,18 @@
         "id": 39,
         "name": "Events.student.create",
         "guard_name": "web",
-        "description": "Permiso para solucitud de defensa"
+        "description": "Permiso para registrar defensa"
     },
     {
         "id": 40,
         "name": "Events.adviser.show",
         "guard_name": "web",
         "description": "Permiso para ver defensas"
+    },
+    {
+        "id": 41,
+        "name": "Events.student.edit",
+        "guard_name": "web",
+        "description": "Permiso para editar defensas"
     }
 ]

@@ -20,15 +20,15 @@
         </div>
 
         <h1>Lista de defensas</h1>
-
-        @if ($status)
-        <a href="{{ route('events.create', $project->id) }}" class="btn btn-primary mb-3">Registrar defensa</a>
- 
-        @else
+        @if (!$status)
             <div class="alert alert-info mt-3">
-                No se puede registrar ni realizar cambios en defensas. Proyecto inactivo.
+                No se puede registrar ni realizar cambios en asesorías. Proyecto inactivo.
             </div>
         @endif
+        @if ($userType === 1 && $status)
+            <a href="{{ route('events.create', $project->id) }}" class="btn btn-primary mb-3">Registrar defensa</a>
+        @endif
+
         
         @if (session('success'))
             <div class="alert alert-success">
@@ -60,8 +60,15 @@
                         <td>{{ $event->place }}</td>
                         <td>{{ $event->description }}</td>
                         <td>
-                            <a href="{{ route('events.edit', ['events' => $event->id, 'project' => $project->id]) }}class="btn btn-primary"><i
-                                class="fas fa-pen"></i></a>
+                            @if ($userType === 1)
+                                <a href="{{ route('events.edit', ['events' => $event->id, 'project' => $project->id]) }}"class="btn btn-primary"> <i
+                                    class="fas fa-pen"></i></a>
+                            @endif
+                            @if ($userType === 2)
+                                <a href="{{ route('events.show', ['events' => $event->id, 'project' => $project->id]) }}" class="btn btn-primary"><i
+                                class="fas fa-eye"></i></a>
+                            @endif
+
                         </td>
                     </tr>
                 @endforeach

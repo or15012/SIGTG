@@ -14,28 +14,66 @@ use Exception;
 
 class EventsController extends Controller
 {
+    const PERMISSIONS = [
+        'index'     => ['Events.student.create', 'Events.adviser.show', 'Events.student.edit'],
+    ];
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('permission:' . implode('|', self::PERMISSIONS['index']))->only(['index']);
     }
 
     public function index(Project $project)
     {
-        $events = [];
-        $events = Events::get();
+        $userType = auth()->user()->type;
+        if($userType === 1){
+            $events = Events::select(
+                'events.id',
+                'events.name',
+                'events.description',
+                'events.place',
+                'events.date'
+            )
+            ->join('projects as p', 'events.project_id', 'p.id')
+            ->join('cycles as c', 'events.cycle_id', 'c.id')
+            ->join('schools as s', 'events.school_id', 's.id')
+            ->join('groups as g', 'events.group_id', 'g.id')
+            ->join('user_group as ug', 'ug.group_id', 'g.id')
+            ->join('users as u', 'events.user_id', 'u.id') 
+            ->where('u.id', auth()->user()->id)
+            ->get();
+        } else {
+            $events = Events::select(
+                'events.id',
+                'events.name',
+                'events.description',
+                'events.place',
+                'events.date'
+            )
+            ->join('projects as p', 'events.project_id', 'p.id')
+            ->join('cycles as c', 'events.cycle_id', 'c.id')
+            ->join('schools as s', 'events.school_id', 's.id')
+            ->join('groups as g', 'events.group_id', 'g.id')
+            ->join('teacher_group as tg', 'tg.group_id', 'g.id')
+            ->where('tg.user_id', auth()->user()->id)
+            ->get();
 
+        }
         // Creando una instancia del controlador Project
         $projectController = new ProjectController();
 
         //Llamando a la funcion disableProject
         $status = $projectController->disableProject($project);
 
-        return view('events.index', compact('events', 'project', 'status'));
+        return view('events.index', compact('userType', 'events', 'project', 'status'));
     }
 
     public function create(Project $project)
     {
-        return view('events.create')->with(compact('project'));
+        // Obtiene el tipo de usuario actual
+        $userType = auth()->user()->type;
+        return view('events.create', compact('userType', 'project'));
     }
 
 
@@ -103,12 +141,14 @@ class EventsController extends Controller
 
     public function edit(Events $events, Project $project)
     {
-        return view('events.edit') ->with(compact('events','project'));
+        $user = auth()->user();
+        return view('events.edit') ->with(compact('events','project', 'user'));
     }
 
     public function update(Request $request, Project $project, Events $event)
     {
         //dd($event);
+        $user = auth()->user();
         // Validación de los datos del formulario
         $validatedData = $request->validate([
             'name'          => 'required|string|max:255',
@@ -148,9 +188,9 @@ class EventsController extends Controller
     }
     
 
-    public function show(Events $events)
+    public function show(Events $events, Project $project)
     {
-        return view('events.show', compact('events'));
+        return view('events.show', compact('events', 'project'));
     }
 
 
