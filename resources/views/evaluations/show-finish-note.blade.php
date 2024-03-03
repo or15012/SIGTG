@@ -12,8 +12,7 @@
         @endslot
     @endcomponent
     <div class="container">
-
-        <h1>Cierre de proyecto</h1>
+        <h1>Memoria de capitalización</h1>
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -35,7 +34,6 @@
                             <a class="card-footer text-black clearfix small z-1"
                                 href="{{ route('projects.final.volume', $project->id) }}">
                                 <span class="float-left">
-
                                     @if (session('protocol') != null)
                                         @switch(session('protocol')['id'])
                                             @case(5)
@@ -70,53 +68,23 @@
                                 </div>
                                 <div class="mr-5">Aprobar etapa</div>
                             </div>
-                            @if (session('protocol') != null)
-                                @switch(session('protocol')['id'])
-                                    @case(1)
-                                        @if ($project->status == 1)
-                                            <form action="{{ route('projects.coordinator.submit.final.stage', $project->id) }}"
-                                                id="projects-approve-stage" method="POST">
-                                                @csrf
-                                                @method('PUT')
 
-                                                <input type="hidden" id="decision" name="decision" value="3">
-                                                <button type="submit"
-                                                    class="btn btn-primery card-footer text-black clearfix small z-1">
-                                                    <span class="float-left">Realizar</span>
-                                                    <span class="float-right">
-                                                        <i class="fa fa-angle-right"></i>
-                                                    </span>
-                                                </button>
-                                            </form>
-                                        @endif
-                                    @break
-
-                                    @case(3)
-                                    @case(4)
-
-                                    @case(2)
-                                    @case(5)
-                                        @if ($project->status == 2)
-                                            <form action="{{ route('projects.coordinator.submit.final.stage', $project->id) }}"
-                                                id="projects-approve-stage" method="POST">
-                                                @csrf
-                                                @method('PUT')
-
-                                                <input type="hidden" id="decision" name="decision" value="3">
-                                                <button type="submit"
-                                                    class="btn btn-primery card-footer text-black clearfix small z-1">
-                                                    <span class="float-left">Realizar</span>
-                                                    <span class="float-right">
-                                                        <i class="fa fa-angle-right"></i>
-                                                    </span>
-                                                </button>
-                                            </form>
-                                        @endif
-                                    @break
-
-                                    @default
-                                @endswitch
+                            @if ($project->status == 2)
+                                <form action="{{ route('evaluations.coordinator.submit.final.stage', $project->id) }}"
+                                    id="projects-approve-stage" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <input type="hidden" id="note" name="note" value="">
+                                    <input type="hidden" id="decision" name="decision" value="3">
+                                    <button type="button" id="submit-final-stage"  class="btn btn-primery card-footer text-black clearfix small z-1">
+                                        <span class="float-left">Realizar</span>
+                                        <span class="float-right">
+                                            <i class="fa fa-angle-right"></i>
+                                        </span>
+                                    </button>
+                                </form>
                             @endif
+
 
                         </div>
                     </div>
@@ -136,6 +104,7 @@
                                     id="projects-submit-final-stage" method="POST">
                                     @csrf
                                     @method('PUT')
+
 
                                     <input type="hidden" id="decision" name="decision" value="2">
                                     <button type="submit" class="btn btn-primery card-footer text-black clearfix small z-1">
@@ -207,4 +176,6 @@
 
 @section('script')
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+    <script src="{{ URL::asset('js/show-finish-note.js') }}"></script>
+
 @endsection

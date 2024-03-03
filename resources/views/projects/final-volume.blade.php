@@ -13,7 +13,25 @@
         @endslot
     @endcomponent
     <div class="container">
-        <h1>Agregar tomo final</h1>
+        <h1>
+            @if (session('protocol') != null)
+                @switch(session('protocol')['id'])
+                    @case(5)
+                        Agregar Memoria de capitalización
+                    @break
+
+                    @case(3)
+                    @case(4)
+
+                    @case(2)
+                    @case(1)
+                        Agregar tomo final
+                    @break
+
+                    @default
+                @endswitch
+            @endif
+        </h1>
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -34,7 +52,25 @@
             </div>
 
             <div class="mb-3">
-                <label for="path_final_volume" class="form-label">Tomo final</label>
+                <label for="path_final_volume" class="form-label">
+                    @if (session('protocol') != null)
+                        @switch(session('protocol')['id'])
+                            @case(5)
+                                Memoria de capitalización
+                            @break
+
+                            @case(3)
+                            @case(4)
+
+                            @case(2)
+                            @case(1)
+                                Tomo final
+                            @break
+
+                            @default
+                        @endswitch
+                    @endif
+                </label>
                 <input type="file" id="path_final_volume" class="form-control" name="path_final_volume">
             </div>
 

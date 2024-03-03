@@ -8,6 +8,7 @@ use App\Models\CriteriaSubarea;
 use App\Models\EvaluationCriteria;
 use App\Models\EvaluationCritSubareaCrit;
 use App\Models\EvaluationStage;
+use App\Models\EvaluationStageNote;
 use App\Models\EvaluationSubarea;
 use App\Models\EvaluationSubareaNote;
 use App\Models\Group;
@@ -18,6 +19,7 @@ use App\Models\SubareaCriteria;
 use App\Models\SubareaDocument;
 use App\Models\User;
 use App\Models\UserNotification;
+use App\Models\UserProjectNote;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -482,6 +484,83 @@ class EvaluationController extends Controller
             return redirect()->route('stages.coordinator.evaluations.index', $stage_id)->with('success', 'Se actualizo la evaluación correctamente.');
         } catch (Exception $e) {
             return redirect()->route('stages.coordinator.evaluations.index', $stage_id)->with('error', 'La evaluacion está duplicada.');
+        }
+    }
+
+    public function coordinatorSubmitFinalStage(Request $request, Project $project)
+    {
+
+        $project->status = $request->decision;
+        $project->update();
+
+
+        if ($request->decision == 3) {
+            // Prorroga aceptada, actualiza la fecha de vencimiento
+            //  $this->handleProrrogaAcceptance($project);
+
+
+            $group = $project->group;
+            $students = Group::join('user_group as ug', 'ug.group_id', 'groups.id')
+                ->where('groups.id', $group->id)
+                ->get();
+
+            foreach ($students as $student) {
+                // Obtener el ID del estudiante
+                $studentId = $student->user_id;
+
+                // Encuentra todas las notas de las etapas evaluativas para el estudiante dado
+                $evaluationNotes = EvaluationStageNote::where('user_id', $studentId)->get();
+
+                $totalFinalGrade = 0;
+
+                // Calcular la nota final ponderada para el estudiante actual
+                foreach ($evaluationNotes as $note) {
+                    // Obtén el porcentaje de la etapa evaluativa actual
+                    $evaluationStage = EvaluationStage::find($note->evaluation_stage_id);
+                    $stage = Stage::find($evaluationStage->stage_id);
+
+                    $stagePercentage = $stage->percentage;
+                    $stageGrade = $note->note;
+
+                    // Aplica el porcentaje de la etapa evaluativa a la nota y suma al total
+                    $totalFinalGrade += ($stageGrade * $stagePercentage) / 100;
+                }
+
+                // Realiza acciones con la $totalFinalGrade del estudiante si es necesario
+                // Por ejemplo, guardarla en la base de datos o realizar otras operaciones
+
+                // Puedes hacer algo como guardar la nota final en un campo del estudiante o en otra tabla
+                $userProjectNote = UserProjectNote::create([
+                    'user_id'       => $studentId,
+                    'project_id'    => $project->id,
+                    'note'          => $totalFinalGrade,
+
+                ]);
+            }
+        } elseif ($request->decision == 1) {
+            // Grupo aceptado, actualiza la fecha de vencimiento
+            $this->handleGroupAcceptance($project);
+        }
+
+        //identificare si es la ultima etapa para cargar las notas finales
+
+        switch (session('protocol')['id']) {
+            case '5':
+                return redirect()
+                    ->route('evaluations.coordinator.show', [$project->id])
+                    ->with('success', 'Proyecto actualizado correctamente.');
+                break;
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+                return redirect()
+                    ->route('projects.coordinator.show', [$project->id])
+                    ->with('success', 'Proyecto actualizado correctamente.');
+                break;
+
+            default:
+                break;
         }
     }
 }

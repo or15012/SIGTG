@@ -276,7 +276,7 @@ mix.js('resources/js/course.js', 'public/js/course.js');
 mix.js('resources/js/courses.js', 'public/js/courses.js');
 mix.js('resources/js/application_coordinator_show.js', 'public/js/application_coordinator_show.js');
 mix.js('resources/js/withdrawal_coordinator_show.js', 'public/js/withdrawal_coordinator_show.js');
-
+mix.js('resources/js/show-finish-note.js', 'public/js/show-finish-note.js');
 
 mix.combine('resources/js/pages/invoice-list.init.js', folder.dist_assets + "js/pages/invoice-list.init.js");
 mix.combine('resources/js/pages/leaflet-us-states.js', folder.dist_assets + "js/pages/leaflet-us-states.js");

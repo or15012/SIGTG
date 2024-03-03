@@ -326,7 +326,7 @@ Route::group(['prefix' => 'projects', 'as' => 'projects.'], function () {
     Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
         Route::get('/', [ProjectController::class, 'coordinatorIndex'])->name('index');
         Route::get('/show/{project}', [ProjectController::class, 'coordinatorShow'])->name('show');
-        Route::put('/subir-final-stage/{project}', [ProjectController::class, 'coordinatorSubmitFinalStage'])->name('submit.final.stage');
+        Route::put('/submit-final-stage/{project}', [ProjectController::class, 'coordinatorSubmitFinalStage'])->name('submit.final.stage');
     });
 
 
@@ -346,6 +346,9 @@ Route::group(['prefix' => 'evaluations', 'as' => 'evaluations.'], function () {
         Route::get('/', [EvaluationController::class, 'coordinatorIndex'])->name('index');
         Route::get('/show/{project}', [EvaluationController::class, 'coordinatorShow'])->name('show');
         Route::get('/approve-stage/{project}/{stage}',  [EvaluationController::class, 'approveStage'])->name('approve.stage');
+
+        Route::put('/submit-final-stage/{project}', [EvaluationController::class, 'coordinatorSubmitFinalStage'])->name('submit.final.stage');
+
     });
 
 

@@ -301,7 +301,23 @@ class ProjectController extends Controller
         }
         $project->update();
 
-        return redirect()->action([ProjectController::class, 'index'])->with('success', 'Tomo final guardado.');
+        $text = "";
+        switch (session('protocol')['id']) {
+            case '5':
+                $text = "Memoria de capitalización";
+                break;
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+                $text = "Tomo final";
+                break;
+
+            default:
+                break;
+        }
+
+        return redirect()->action([ProjectController::class, 'index'])->with('success', "$text guardado.");
     }
 
     public function download(Project $project, $file)
@@ -542,5 +558,17 @@ class ProjectController extends Controller
         }
 
         return $status;
+    }
+
+
+
+    public function finishNote(Project $project)
+    {
+        $status = $this->disableProject($project);
+
+        return view('evaluations.show-finish-note', [
+            "project"               => $project,
+            "status"                => $status
+        ]);
     }
 }
