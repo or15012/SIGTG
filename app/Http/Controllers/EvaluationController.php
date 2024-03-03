@@ -160,12 +160,18 @@ class EvaluationController extends Controller
             ->join('subarea_criterias as stg', 'evaluation_subareas.subarea_criteria_id', 'stg.id')
             ->get();
 
+        // dd($evaluationSubareas, $evaluationStages);
+        $evaluationStage = EvaluationStage::where('stage_id', $area->id)
+            ->where('project_id', $project->id)
+            ->first();
+
         return view('evaluations.subareas.show-list', [
             "area"                  => $area,
             "project"               => $project,
             "evaluationSubareas"    => $evaluationSubareas,
             "status"                => $status,
             "evaluationStages"      => $evaluationStages,
+            "evaluationStage"       => $evaluationStage
         ]);
     }
 

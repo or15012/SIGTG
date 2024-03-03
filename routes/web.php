@@ -321,6 +321,8 @@ Route::group(['prefix' => 'projects', 'as' => 'projects.'], function () {
     Route::get('/final-volume/{project}', [ProjectController::class, 'finalVolume'])->name('final.volume');
     Route::post('/final-volume-store/{project}', [ProjectController::class, 'finalVolumeStore'])->name('final.volume.store');
 
+    Route::get('/finish/note/{project}', [ProjectController::class, 'finishNote'])->name('finish.note');
+
     Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
         Route::get('/', [ProjectController::class, 'coordinatorIndex'])->name('index');
         Route::get('/show/{project}', [ProjectController::class, 'coordinatorShow'])->name('show');

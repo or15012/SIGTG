@@ -247,14 +247,14 @@
                     <div class="col-xl-3 col-sm-6 mb-3 red-student">
                         <div class="card text-black o-hidden h-100 red-student">
                             <div class="card-body">
-                                <div class="mr-5 w-50 text-black">Cierre de trabajo de grado</div>
+                                <div class="mr-5 w-50 text-black">Memoria de capitalización</div>
                                 <div class="mr-5 w-50 text-black"></div>
                                 <div class="card-body-icon">
                                     <i class="fas fa-graduation-cap"></i>
                                 </div>
                             </div>
                             <a class="card-footer text-black clearfix small z-1 red-student"
-                                href="{{ route('projects.finish', [$project->id]) }}">
+                                href="{{ route('projects.finish.note', [$project->id]) }}">
                                 <span class="float-left">Ver detalles</span>
                                 <span class="float-right">
                                     <i class="fa fa-angle-right"></i>
