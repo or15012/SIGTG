@@ -244,5 +244,18 @@
         "name": "Events.student.edit",
         "guard_name": "web",
         "description": "Permiso para editar defensas"
+    },
+    {
+        "id": 42,
+        "name": "Withdrawals.students",
+        "guard_name": "web",
+        "description": "Permiso para crear solicitudes de retiros de trabajo de grado."
+    },
+    {
+        "id": 43,
+        "name": "Withdrawals.advisers",
+        "guard_name": "web",
+        "description": "Permiso para consultar solicitudes de retiros de trabajo de grado, aprobar o rechazar"
     }
+
 ]

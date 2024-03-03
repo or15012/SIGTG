@@ -54,6 +54,7 @@
                 @endforeach
             </tbody>
         </table>
+        {{-- {!! $withdrawals->withQueryString()->links('pagination::bootstrap-5') !!} --}}
     </div>
 @endsection
 
