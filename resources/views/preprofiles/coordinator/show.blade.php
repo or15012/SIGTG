@@ -28,7 +28,7 @@
                 Regresar</a>
         </div>
 
-
+        <input type="hidden" name="protocol_id" id="protocol_id" value="{{  session('protocol')['id'] }}">
         <h1 class="mb-5">
             {{  session('protocol')['id'] == 5 || session('protocol')['id'] == 3 || session('protocol')['id'] == 2 ? 'Consultar planificaciones' : 'Consultar pre perfil' }}</h1>
 

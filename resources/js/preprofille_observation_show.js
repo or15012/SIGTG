@@ -1,9 +1,15 @@
 $(document).ready(function () {
 
     $("#accept-preprofile").click(function () {
-
+        let protocol_id = $("#protocol_id").val();
         $("#decision").val("1"); // Cambiar el valor a 1 antes de enviar el formulario acepta invitacion
-        mostrarConfirmacion();
+        if (protocol_id == 5) {
+            mostrarConfirmacion();
+        } else {
+            $("#form-preprofile-confirm").submit(); // Enviar el formulario
+        }
+
+
     });
 
     $("#review-preprofile").click(function () {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DateTime;
 use App\Mail\SendMail;
 use App\Models\CriteriaSubarea;
+use App\Models\Cycle;
 use App\Models\EvaluationCriteria;
 use App\Models\EvaluationCritSubareaCrit;
 use App\Models\EvaluationStage;
@@ -20,6 +21,7 @@ use App\Models\SubareaDocument;
 use App\Models\User;
 use App\Models\UserNotification;
 use App\Models\UserProjectNote;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -489,15 +491,43 @@ class EvaluationController extends Controller
 
     public function coordinatorSubmitFinalStage(Request $request, Project $project)
     {
+        $validatedData = $request->validate([
+            'note' => 'required|numeric|min:0|max:10',
+        ]);
 
         $project->status = $request->decision;
         $project->update();
 
+        //lo primero que hare ahora es guardar la nota de la memoria
+        $cycle  = Cycle::where('status', 1)->first();
+        $stage  = Stage::where('protocol_id', session('protocol')['id'])
+            ->where('school_id', session('school')['id'])
+            ->where('cycle_id', $cycle->id)
+            ->where('category', 3)
+            ->first();
+
+        //primero creare el evaluation_stages
+        $evaluationStage                = new EvaluationStage();
+        $evaluationStage->date          = Carbon::now();
+        $evaluationStage->project_id    = $project->id;
+        $evaluationStage->stage_id      = $stage->id;
+        $evaluationStage->status        = 1;
+        $evaluationStage->save();
+
+        $group = $project->group;
+        $students = Group::join('user_group as ug', 'ug.group_id', 'groups.id')
+            ->where('groups.id', $group->id)
+            ->get();
+
+        foreach ($students as $user) {
+            $evaluationStageNote                        = new EvaluationStageNote();
+            $evaluationStageNote->evaluation_stage_id   = $evaluationStage->id;
+            $evaluationStageNote->user_id               = $user->user_id;
+            $evaluationStageNote->note                  = $request->note;
+            $evaluationStageNote->save();
+        }
 
         if ($request->decision == 3) {
-            // Prorroga aceptada, actualiza la fecha de vencimiento
-            //  $this->handleProrrogaAcceptance($project);
-
 
             $group = $project->group;
             $students = Group::join('user_group as ug', 'ug.group_id', 'groups.id')
