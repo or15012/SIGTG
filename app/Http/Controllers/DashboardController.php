@@ -233,13 +233,24 @@ class DashboardController extends Controller
                     $data[$student->user_id]['Nota ' . $notaIndex] = $stageGrade;
                     $notaIndex++;
                 }
-            $data[$student->user_id] = [
-                'Nombre' => $student->first_name.' '.$student->middle_name.' '.$student->last_name.' '.$student->second_last_name,
-                'Carnet' => $student->carnet,
-            ] + $data[$student->user_id] + [
-                'Notas' => count($evaluationNotes),
-                'Nota final' => $totalFinalGrade,
-            ];
+
+                if (empty($evaluationNotes)) {
+                    $data[$student->user_id] = [
+                        'Nombre' => $student->first_name.' '.$student->middle_name.' '.$student->last_name.' '.$student->second_last_name,
+                        'Carnet' => $student->carnet,
+                        'Notas' => 0,
+                        'Nota final' => 0,
+                    ];
+                }else{
+                    $data[$student->user_id] = [
+                        'Nombre' => $student->first_name.' '.$student->middle_name.' '.$student->last_name.' '.$student->second_last_name,
+                        'Carnet' => $student->carnet,
+                    ] + $data[$student->user_id] + [
+                        'Notas' => count($evaluationNotes),
+                        'Nota final' => $totalFinalGrade,
+                    ];
+                }
+            
 
         }
 
@@ -326,24 +337,27 @@ class DashboardController extends Controller
                     $data[$student->user_id]['Nota ' . $notaIndex] = $stageGrade;
                     $notaIndex++;
                 }
-            $data[$student->user_id] = [
-                'Nombre' => $student->first_name.' '.$student->middle_name.' '.$student->last_name.' '.$student->second_last_name,
-                'Carnet' => $student->carnet,
-            ] + $data[$student->user_id] + [
-                'Notas' => count($evaluationNotes),
-                'Nota final' => $totalFinalGrade,
-            ];
+
+                if (empty($evaluationNotes)) {
+                    $data[$student->user_id] = [
+                        'Nombre' => $student->first_name.' '.$student->middle_name.' '.$student->last_name.' '.$student->second_last_name,
+                        'Carnet' => $student->carnet,
+                        'Notas' => 0,
+                        'Nota final' => 0,
+                    ];
+                }else{
+                    $data[$student->user_id] = [
+                        'Nombre' => $student->first_name.' '.$student->middle_name.' '.$student->last_name.' '.$student->second_last_name,
+                        'Carnet' => $student->carnet,
+                    ] + $data[$student->user_id] + [
+                        'Notas' => count($evaluationNotes),
+                        'Nota final' => $totalFinalGrade,
+                    ];
+                }
 
         }
 
-        if (empty($data)) {
-            $data[] = [
-                'Nombre' => $student->first_name.' '.$student->middle_name.' '.$student->last_name.' '.$student->second_last_name,
-                'Carnet' => $student->carnet,
-                'Notas' => 0,
-                'Nota final' => 0,
-            ];
-        }
+        
 
         $data = array_values($data);
 
