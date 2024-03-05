@@ -266,6 +266,204 @@
                     </div>
                 </div>
                 --}}
+                <style>
+                    #groups-protocol,
+                    #extensions-protocol,
+                    #students-course {
+                        height: 400px;
+                    }
+                </style>
+
+
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-wrap align-items-center">
+                                <h5 class="card-title mb-0">Grupos por escuela</h5>
+                                <div class="ms-auto">
+                                <div class="mb-3">
+                                    <button id="export-groups-excel-btn" class="btn btn-success mt-3">Exportar grupos según escuela</button>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cycle-select3" class="form-label">Seleccionar Ciclo:</label>
+                                    <select class="form-select" id="cycle-select3"  onchange="updateData3()">
+                                    <option value="" selected disabled>Seleccione un ciclo</option>
+                                        @foreach($ciclos as $ciclo)
+                                            <option value="{{ $ciclo->id }}">{{$ciclo->number}} - {{$ciclo->year}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                    <canvas id="groups-protocol" ></canvas>
+                            </div>
+
+
+                            <div class="d-flex flex-wrap align-items-center">
+                                <h5 class="card-title mb-0">Extensiones por escuela</h5>
+                                <div class="ms-auto">
+                                <div class="mb-3">
+                                    <button id="export-extensions-excel-btn" class="btn btn-success mt-3">Exportar extensiones según escuela</button>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cycle-select4" class="form-label">Seleccionar Ciclo:</label>
+                                    <select class="form-select" id="cycle-select4"  onchange="updateData4()">
+                                    <option value="" selected disabled>Seleccione un ciclo</option>
+                                        @foreach($ciclos as $ciclo)
+                                            <option value="{{ $ciclo->id }}">{{$ciclo->number}} - {{$ciclo->year}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                </div>
+                            </div>
+
+
+                            <div class="text-center mt-4">
+                                    <canvas id="extensions-protocol"></canvas>
+                            </div>
+
+                            <script>
+                                var miGrafico3;
+                                document.addEventListener("DOMContentLoaded", function () {
+                                var datos = @json($datos3);
+
+                                var datosPorEscuelaYProtocolo = {};
+
+                                datos.forEach(function (elemento) {
+                                    var key = elemento.school_name + '-' + elemento.protocol_name;
+                                    if (!datosPorEscuelaYProtocolo.hasOwnProperty(key)) {
+                                        datosPorEscuelaYProtocolo[key] = {
+                                            school_name: elemento.school_name,
+                                            protocol_name: elemento.protocol_name,
+                                            cantidad: 0
+                                        };
+                                    }
+                                    datosPorEscuelaYProtocolo[key].cantidad += elemento.cantidad;
+                                });
+
+                                var etiquetas = [];
+                                var datosCantidad = [];
+                                var coloresPorEscuela = {};
+                                var coloresPorProtocolo =[];
+                                Object.values(datosPorEscuelaYProtocolo).forEach(function (elemento) {
+                                    if (!coloresPorEscuela.hasOwnProperty(elemento.school_name)) {
+                                        var r = Math.floor(Math.random() * 200 + 55); 
+                                        var g = Math.floor(Math.random() * 200 + 55); 
+                                        var b = Math.floor(Math.random() * 200 + 55); 
+                                        coloresPorEscuela[elemento.school_name] = 'rgba(' + r + ',' + g + ',' + b + ', 2.0)';
+                                    }
+                                });
+
+                                Object.values(datosPorEscuelaYProtocolo).forEach(function (elemento) {
+                                    etiquetas.push(elemento.school_name + ' - ' + elemento.protocol_name);
+                                    datosCantidad.push(elemento.cantidad);
+                                    var colorEscuela = coloresPorEscuela[elemento.school_name];
+                                    coloresPorProtocolo[elemento.protocol_name] = colorEscuela;
+                                });
+
+                                var ctx = document.getElementById('groups-protocol').getContext('2d');
+                                miGrafico3 = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: etiquetas,
+                                        datasets: [{
+                                            label: '',
+                                            data: datosCantidad,
+                                            backgroundColor: etiquetas.map(function(etiqueta) {
+                                                var protocolo = etiqueta.split(' - ')[1];
+                                                return coloresPorProtocolo[protocolo];
+                                            }),
+                                            borderColor: 'rgba(75, 192, 192, 1)',
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        },
+                                        maintainAspectRatio: false,
+                                        
+                                    }
+                                });
+                            });
+
+                                var miGrafico4;
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    var datos = @json($datos4); 
+
+                                    var datosPorEscuelaYProtocolo = {};
+
+                                datos.forEach(function (elemento) {
+                                    var key = elemento.school_name + '-' + elemento.protocol_name;
+                                    if (!datosPorEscuelaYProtocolo.hasOwnProperty(key)) {
+                                        datosPorEscuelaYProtocolo[key] = {
+                                            school_name: elemento.school_name,
+                                            protocol_name: elemento.protocol_name,
+                                            cantidad: 0
+                                        };
+                                    }
+                                    datosPorEscuelaYProtocolo[key].cantidad += elemento.cantidad;
+                                });
+
+                                var etiquetas = [];
+                                var datosCantidad = [];
+                                var coloresPorEscuela = {};
+                                var coloresPorProtocolo =[];
+                                Object.values(datosPorEscuelaYProtocolo).forEach(function (elemento) {
+                                    if (!coloresPorEscuela.hasOwnProperty(elemento.school_name)) {
+                                        var r = Math.floor(Math.random() * 200 + 55); 
+                                        var g = Math.floor(Math.random() * 200 + 55); 
+                                        var b = Math.floor(Math.random() * 200 + 55); 
+                                        coloresPorEscuela[elemento.school_name] = 'rgba(' + r + ',' + g + ',' + b + ', 2.0)';
+                                    }
+                                });
+
+                                Object.values(datosPorEscuelaYProtocolo).forEach(function (elemento) {
+                                    etiquetas.push(elemento.school_name + ' - ' + elemento.protocol_name);
+                                    datosCantidad.push(elemento.cantidad);
+                                    var colorEscuela = coloresPorEscuela[elemento.school_name];
+                                    coloresPorProtocolo[elemento.protocol_name] = colorEscuela;
+                                });
+
+                                var ctx = document.getElementById('extensions-protocol').getContext('2d');
+                                miGrafico4 = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: etiquetas,
+                                        datasets: [{
+                                            label: '',
+                                            data: datosCantidad,
+                                            backgroundColor: etiquetas.map(function(etiqueta) {
+                                                var protocolo = etiqueta.split(' - ')[1];
+                                                return coloresPorProtocolo[protocolo];
+                                            }),
+                                            borderColor: 'rgba(75, 192, 192, 1)',
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        },
+                                        maintainAspectRatio: false,
+                                        
+                                    }
+                                });
+                            });
+
+
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
                 <div class="col-xl-12">
                     <div class="card">
@@ -304,7 +502,7 @@
                                         return elemento.cantidad_estudiantes;
                                     });
                                     var colores = datos.map(function () {
-                                        return 'rgba(' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ', 0.2)';
+                                        return 'rgba(' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ', 1)';
                                     });
 
                                     var ctx = document.getElementById('students-protocol').getContext('2d');
@@ -325,7 +523,9 @@
                                                 y: {
                                                     beginAtZero: true
                                                 }
-                                            }
+                                            },
+                                            maintainAspectRatio: false,
+                                        
                                         }
                                     });
                                 });
@@ -373,7 +573,7 @@
                                     });
 
                                     var colores = datos.map(function () {
-                                        return 'rgba(' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ', 0.2)';
+                                        return 'rgba(' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ', 1)';
                                     });
 
                                     var ctx = document.getElementById('students-course').getContext('2d');
@@ -393,8 +593,11 @@
                                             scales: {
                                                 y: {
                                                     beginAtZero: true
-                                                }
-                                            }
+                                                },
+                                        
+                                            },
+                                            
+                                            maintainAspectRatio: false,
                                         }
                                     });
                                 });
@@ -1226,6 +1429,86 @@
 
         }
 
+        function updateData3(){
+            var id = document.getElementById('cycle-select3').value;
+            
+            $.ajax({
+                    url: '{{route('dashboard.group')}}/'+id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        var datos = data.new_datos;
+
+                        var etiquetas = [];
+                                var datosCantidad = [];
+                                var coloresPorEscuela = {};
+                                var coloresPorProtocolo =[];
+                                Object.values(datos).forEach(function (elemento) {
+                                    if (!coloresPorEscuela.hasOwnProperty(elemento.school_name)) {
+                                        var r = Math.floor(Math.random() * 200 + 55); 
+                                        var g = Math.floor(Math.random() * 200 + 55); 
+                                        var b = Math.floor(Math.random() * 200 + 55); 
+                                        coloresPorEscuela[elemento.school_name] = 'rgba(' + r + ',' + g + ',' + b + ', 2.0)';
+                                    }
+                                });
+
+                                Object.values(datos).forEach(function (elemento) {
+                                    etiquetas.push(elemento.school_name + ' - ' + elemento.protocol_name);
+                                    datosCantidad.push(elemento.cantidad);
+                                    var colorEscuela = coloresPorEscuela[elemento.school_name];
+                                    coloresPorProtocolo[elemento.protocol_name] = colorEscuela;
+                                });
+
+                        // Actualizar datos del gráfico
+                        miGrafico3.data.labels = etiquetas;
+                        miGrafico3.data.datasets[0].data = datosCantidad;
+                        miGrafico3.update();
+                    }
+                });
+
+        }
+
+        function updateData4(){
+            var id = document.getElementById('cycle-select4').value;
+            
+            $.ajax({
+                    url: '{{route('dashboard.group')}}/'+id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        var datos = data.new_datos;
+
+                        var etiquetas = [];
+                        var datosCantidad = [];
+                        var coloresPorEscuela = {};
+                        var coloresPorProtocolo =[];
+                        Object.values(datos).forEach(function (elemento) {
+                            if (!coloresPorEscuela.hasOwnProperty(elemento.school_name)) {
+                                var r = Math.floor(Math.random() * 200 + 55); 
+                                var g = Math.floor(Math.random() * 200 + 55); 
+                                var b = Math.floor(Math.random() * 200 + 55); 
+                                coloresPorEscuela[elemento.school_name] = 'rgba(' + r + ',' + g + ',' + b + ', 2.0)';
+                                }
+                            });
+
+                        Object.values(datos).forEach(function (elemento) {
+                                etiquetas.push(elemento.school_name + ' - ' + elemento.protocol_name);
+                                datosCantidad.push(elemento.cantidad);
+                                var colorEscuela = coloresPorEscuela[elemento.school_name];
+                                coloresPorProtocolo[elemento.protocol_name] = colorEscuela;
+                            });
+
+                        // Actualizar datos del gráfico
+                        miGrafico4.data.labels = etiquetas;
+                        miGrafico4.data.datasets[0].data = datosCantidad;
+                        miGrafico4.update();
+                    }
+                });
+
+        }
+        
+
+
         $(document).ready(function() {
             $('#export-excel-btn').click(function() {
                 excelproto();
@@ -1233,11 +1516,49 @@
             $('#export-excel-btn2').click(function() {
                 excelcourse();
             });
+            $('#export-groups-excel-btn').click(function(){
+                excelgroups();
+            })
+
+            $('#export-extensions-excel-btn').click(function(){
+                excelextensions();
+            })
+        });
+
+        document.getElementById('cycle-select').addEventListener('change', function() {
+            if (this.value) {
+                this.style.borderColor = ''; // Restablecer el color de borde al valor predeterminado
+            }
+        });
+
+        document.getElementById('cycle-select2').addEventListener('change', function() {
+            if (this.value) {
+                this.style.borderColor = ''; // Restablecer el color de borde al valor predeterminado
+            }
+        });
+
+        document.getElementById('cycle-select3').addEventListener('change', function() {
+            if (this.value) {
+                this.style.borderColor = ''; // Restablecer el color de borde al valor predeterminado
+            }
+        });
+
+        document.getElementById('cycle-select4').addEventListener('change', function() {
+            if (this.value) {
+                this.style.borderColor = ''; // Restablecer el color de borde al valor predeterminado
+            }
         });
 
         
         function excelproto(){
             var id = document.getElementById('cycle-select').value;
+
+            if (!id) {
+                document.getElementById('cycle-select').style.borderColor = 'red';
+                alert("Por favor, seleccione un ciclo.");
+                return; 
+            }
+
             
             $.ajax({
                     url: '{{route('dashboard.excel_proto')}}/'+id,
@@ -1264,6 +1585,12 @@
 
         function excelcourse(){
             var id = document.getElementById('cycle-select2').value;
+
+            if (!id) {
+                document.getElementById('cycle-select2').style.borderColor = 'red';
+                alert("Por favor, seleccione un ciclo.");
+                return; 
+            }
             
             $.ajax({
                     url: '{{route('dashboard.excel_course')}}/'+id,
@@ -1276,6 +1603,68 @@
                         var url = window.URL.createObjectURL(data);
                         a.href = url;
                         a.download = 'students.xlsx'; // Nombre del archivo
+                        document.body.append(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error en la solicitud AJAX:", error);
+                    }
+                });
+
+        }
+
+        function excelgroups(){
+            var id = document.getElementById('cycle-select3').value;
+            if (!id) {
+                document.getElementById('cycle-select3').style.borderColor = 'red';
+                alert("Por favor, seleccione un ciclo.");
+                return; 
+            }
+            
+            $.ajax({
+                    url: '{{route('dashboard.excel_groups')}}/'+id,
+                    type: 'GET',
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    success: function(data) {
+                        var a = document.createElement('a');
+                        var url = window.URL.createObjectURL(data);
+                        a.href = url;
+                        a.download = 'groups.xlsx'; // Nombre del archivo
+                        document.body.append(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error en la solicitud AJAX:", error);
+                    }
+                });
+
+        }
+
+        function excelextensions(){
+            var id = document.getElementById('cycle-select4').value;
+            if (!id) {
+                document.getElementById('cycle-select4').style.borderColor = 'red';
+                alert("Por favor, seleccione un ciclo.");
+                return; 
+            }
+            
+            $.ajax({
+                    url: '{{route('dashboard.excel_extensions')}}/'+id,
+                    type: 'GET',
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    success: function(data) {
+                        var a = document.createElement('a');
+                        var url = window.URL.createObjectURL(data);
+                        a.href = url;
+                        a.download = 'extensions.xlsx'; // Nombre del archivo
                         document.body.append(a);
                         a.click();
                         window.URL.revokeObjectURL(url);
