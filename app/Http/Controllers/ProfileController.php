@@ -411,16 +411,23 @@ class ProfileController extends Controller
                 break;
             case 2:
             case 3:
+                if ($request->decision == 1) {
+
+                    $preprofile->type = 1;
+
+                    $project                = new Project();
+                    $project->name          = $preprofile->name;
+                    $project->group_id      = $preprofile->group_id;
+                    $project->profile_id    = $preprofile->id;
+                    $project->save();
+                }
+
+                break;
             case 5:
                 if ($request->decision == 1) {
-                    if( session('protocol')['id'] == 5){
-                        $validatedData = $request->validate([
-                            'note' => 'required|numeric|min:0|max:10',
-                        ]);
-                    }
-
-
-
+                    $validatedData = $request->validate([
+                        'note' => 'required|numeric|min:0|max:10',
+                    ]);
 
                     $preprofile->type = 1;
 
