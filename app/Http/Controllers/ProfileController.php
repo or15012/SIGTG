@@ -413,9 +413,12 @@ class ProfileController extends Controller
             case 3:
             case 5:
                 if ($request->decision == 1) {
-                    $validatedData = $request->validate([
-                        'note' => 'required|numeric|min:0|max:10',
-                    ]);
+                    if( session('protocol')['id'] == 5){
+                        $validatedData = $request->validate([
+                            'note' => 'required|numeric|min:0|max:10',
+                        ]);
+                    }
+
 
 
 
