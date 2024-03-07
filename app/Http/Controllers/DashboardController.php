@@ -63,7 +63,7 @@ class DashboardController extends Controller
             $datos->groupBy('cy.id', 'proto.id','proto.name', 'cy.year','cy.number')
             ->select('cy.id as cycle_id', 'proto.id as protocol_id', 'proto.name as protocol_name', 'cy.year as cycle_year', 'cy.number as cycle_number', 
                 DB::raw('COUNT(u.id) as cantidad_estudiantes'))
-            ->get();
+            ->get();  
 
             $datos= $datos->get();
 
