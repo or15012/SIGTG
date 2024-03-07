@@ -16,6 +16,9 @@
         @if (session('protocol') !== null)
             @switch(session('protocol')['id'])
                 @case(1)
+                @case(2)
+                @case(3)
+                @case(4)
                     <h1>Registrar criterio de evaluación</h1>
                 @break
 
@@ -49,6 +52,9 @@
             @if (session('protocol') !== null)
                 @switch(session('protocol')['id'])
                     @case(1)
+                    @case(2)
+                    @case(3)
+                    @case(4)
                         <p>
                             Etapa evaluativa:
                             {{ $stage->name }}
@@ -117,6 +123,9 @@
                     @if (session('protocol') !== null)
                         @switch(session('protocol')['id'])
                             @case(1)
+                            @case(2)
+                            @case(3)
+                            @case(4)
                                 Etapa evaluativa:
                             @break
 
