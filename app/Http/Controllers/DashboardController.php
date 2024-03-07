@@ -59,6 +59,10 @@ class DashboardController extends Controller
             if(session('school')['id'] != -1){
                 $datos->where('u.school_id', session('school')['id']);
             }
+
+            if(isset(session('protocol')['id']) && session('protocol')['id'] != -1){
+                $datos->where('proto.id', session('protocol')['id']);
+            }
             //->where('proto.id', session('protocol')['id'])
             $datos->groupBy('cy.id', 'proto.id','proto.name', 'cy.year','cy.number')
             ->select('cy.id as cycle_id', 'proto.id as protocol_id', 'proto.name as protocol_name', 'cy.year as cycle_year', 'cy.number as cycle_number', 
@@ -80,7 +84,7 @@ class DashboardController extends Controller
             if(session('school')['id'] != -1){
                 $datos2->where('u.school_id', session('school')['id']);
             }
-            if(session('protocol')['id'] != -1){
+            if(isset(session('protocol')['id']) && session('protocol')['id'] != -1){
                 $datos2->where('proto.id', session('protocol')['id']);
             }
             $datos2->groupBy('cy.id', 'proto.id','cou.name', 'cy.year','cy.number')
@@ -134,7 +138,7 @@ class DashboardController extends Controller
         if(session('school')['id'] != -1){
             $datos->where('u.school_id', session('school')['id']);
         }
-        if(session('protocol')['id'] != -1){
+        if(isset(session('protocol')['id']) &&session('protocol')['id'] != -1){
             $datos->where('proto.id', session('protocol')['id']);
         }
         $datos->groupBy('cy.id', 'proto.id','cou.name', 'cy.year','cy.number')
@@ -245,7 +249,6 @@ class DashboardController extends Controller
                     $data[$student->user_id] = [
                         'Nombre' => $student->first_name.' '.$student->middle_name.' '.$student->last_name.' '.$student->second_last_name,
                         'Carnet' => $student->carnet,
-                    ] + $data[$student->user_id] + [
                         'Notas' => count($evaluationNotes),
                         'Nota final' => $totalFinalGrade,
                     ];
@@ -254,14 +257,7 @@ class DashboardController extends Controller
 
         }
 
-        if (empty($data)) {
-            $data[] = [
-                'Nombre' => $student->first_name.' '.$student->middle_name.' '.$student->last_name.' '.$student->second_last_name,
-                'Carnet' => $student->carnet,
-                'Notas' => 0,
-                'Nota final' => 0,
-            ];
-        }
+        
 
 
         $data = array_values($data);
@@ -311,7 +307,7 @@ class DashboardController extends Controller
         if(session('school')['id'] != -1){
             $datos->where('u.school_id', session('school')['id']);
         }
-        if(session('protocol')['id'] != -1){
+        if(isset(session('protocol')['id']) && session('protocol')['id'] != -1){
             $datos->where('proto.id', session('protocol')['id']);
         }
         $datos->select('u.id as user_id', 'u.first_name','u.middle_name','u.last_name', 'u.second_last_name', 'u.carnet') 
@@ -349,7 +345,6 @@ class DashboardController extends Controller
                     $data[$student->user_id] = [
                         'Nombre' => $student->first_name.' '.$student->middle_name.' '.$student->last_name.' '.$student->second_last_name,
                         'Carnet' => $student->carnet,
-                    ] + $data[$student->user_id] + [
                         'Notas' => count($evaluationNotes),
                         'Nota final' => $totalFinalGrade,
                     ];
