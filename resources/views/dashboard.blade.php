@@ -297,7 +297,7 @@
                             </div>
 
                             <div class="text-center mt-4">
-                                    <canvas id="groups-protocol" ></canvas>
+                                    <div id="groups-protocol" ></div>
                             </div>
 
 
@@ -321,141 +321,219 @@
 
 
                             <div class="text-center mt-4">
-                                    <canvas id="extensions-protocol"></canvas>
+                                    <div id="extensions-protocol"></div>
                             </div>
 
                             <script>
-                                var miGrafico3;
+                                var chart1;
                                 document.addEventListener("DOMContentLoaded", function () {
-                                var datos = @json($datos3);
+                                    var datos = @json($datos3);
 
-                                var datosPorEscuelaYProtocolo = {};
+                                    //datos
+                                    var resultados = {};
 
-                                datos.forEach(function (elemento) {
-                                    var key = elemento.school_name + '-' + elemento.protocol_name;
-                                    if (!datosPorEscuelaYProtocolo.hasOwnProperty(key)) {
-                                        datosPorEscuelaYProtocolo[key] = {
-                                            school_name: elemento.school_name,
-                                            protocol_name: elemento.protocol_name,
-                                            cantidad: 0
-                                        };
+                                    var escuelasUnicas = Array.from(new Set(datos.map(dato => dato.school_name)));
+
+                                    var coloresEscuelas = {};
+
+                                    datos.forEach(function(dato) {
+                                        var protocolo = dato.protocol_name;
+                                        var escuela = dato.school_name;
+                                        var cantidad = dato.cantidad;
+
+                                        if (!resultados[protocolo]) {
+                                            resultados[protocolo] = {
+                                                name: protocolo,
+                                                data: Array(escuelasUnicas.length).fill(0),
+                                                color: obtenerColorEscuela(escuela)
+                                            };
+                                        }
+
+                                        var indiceEscuela = escuelasUnicas.indexOf(escuela);
+
+                                        resultados[protocolo].data[indiceEscuela] = cantidad;
+                                    });
+
+                                    var resultadosArray = Object.values(resultados);
+
+                                    console.log(resultadosArray);
+
+                                  
+                                    //Etiquetas
+                                    var datosPorEscuela = {};
+
+                                    datos.forEach(function (dato) {
+                                        if (!datosPorEscuela[dato.school_name]) {
+                                            datosPorEscuela[dato.school_name] = {};
+                                        }
+                                        datosPorEscuela[dato.school_name][dato.protocol_name] = dato.cantidad;
+                                    });
+
+                                    var etiquetas = Object.keys(datosPorEscuela);
+
+
+                                    // Definir colores personalizados
+                                    function obtenerColorEscuela(escuela) {
+                                        if (!coloresEscuelas.hasOwnProperty(escuela)) {
+                                            // Generar un nuevo color si la escuela no tiene uno asignado
+                                            coloresEscuelas[escuela] = obtenerColorAleatorio();
+                                        }
+                                        return coloresEscuelas[escuela];
                                     }
-                                    datosPorEscuelaYProtocolo[key].cantidad += elemento.cantidad;
-                                });
 
-                                var etiquetas = [];
-                                var datosCantidad = [];
-                                var coloresPorEscuela = {};
-                                var coloresPorProtocolo =[];
-                                Object.values(datosPorEscuelaYProtocolo).forEach(function (elemento) {
-                                    if (!coloresPorEscuela.hasOwnProperty(elemento.school_name)) {
-                                        var r = Math.floor(Math.random() * 200 + 55); 
-                                        var g = Math.floor(Math.random() * 200 + 55); 
-                                        var b = Math.floor(Math.random() * 200 + 55); 
-                                        coloresPorEscuela[elemento.school_name] = 'rgba(' + r + ',' + g + ',' + b + ', 2.0)';
+                                    // Función para obtener un color aleatorio
+                                    function obtenerColorAleatorio() {
+                                        var letras = '0123456789ABCDEF';
+                                        var color = '#';
+                                        for (var i = 0; i < 6; i++) {
+                                            color += letras[Math.floor(Math.random() * 16)];
+                                        }
+                                        return color;
                                     }
-                                });
 
-                                Object.values(datosPorEscuelaYProtocolo).forEach(function (elemento) {
-                                    etiquetas.push(elemento.school_name + ' - ' + elemento.protocol_name);
-                                    datosCantidad.push(elemento.cantidad);
-                                    var colorEscuela = coloresPorEscuela[elemento.school_name];
-                                    coloresPorProtocolo[elemento.protocol_name] = colorEscuela;
-                                });
-
-                                var ctx = document.getElementById('groups-protocol').getContext('2d');
-                                miGrafico3 = new Chart(ctx, {
-                                    type: 'bar',
-                                    data: {
-                                        labels: etiquetas,
-                                        datasets: [{
-                                            label: '',
-                                            data: datosCantidad,
-                                            backgroundColor: etiquetas.map(function(etiqueta) {
-                                                var protocolo = etiqueta.split(' - ')[1];
-                                                return coloresPorProtocolo[protocolo];
-                                            }),
-                                            borderColor: 'rgba(75, 192, 192, 1)',
-                                            borderWidth: 1
-                                        }]
-                                    },
-                                    options: {
-                                        scales: {
-                                            y: {
-                                                beginAtZero: true
+                                    var options = {
+                                        chart: {
+                                            type: 'bar',
+                                            height: 350,
+                                            toolbar: {
+                                                show: false
                                             }
                                         },
-                                        maintainAspectRatio: false,
-                                        
-                                    }
-                                });
-                            });
+                                        plotOptions: {
+                                            bar: {
+                                                horizontal: false,                 
+                                                columnWidth: '35%',
+                                                endingShape: 'rounded'
+                                            },
+                                        },
+                                        dataLabels: {
+                                            enabled: true
+                                        },
+                                        stroke: {
+                                            show: true,
+                                            width: 1,
+                                            colors: ['transparent']
+                                        },
+                                        series: resultadosArray,
+                                        xaxis: {
+                                            categories: etiquetas,
+                                        },
+                                        legend: {
+                                            show: false
+                                        },
+                                        fill: {
+                                            opacity: 1
+                                        }
+                                    };
 
-                                var miGrafico4;
+                                    chart1 = new ApexCharts(document.querySelector("#groups-protocol"), options);
+                                    chart1.render();
+                                });
+
+                                var chart2;
                                 document.addEventListener("DOMContentLoaded", function () {
-                                    var datos = @json($datos4); 
+                                    var datos = @json($datos4);
 
-                                    var datosPorEscuelaYProtocolo = {};
+                                    //datos
+                                    var resultados = {};
 
-                                datos.forEach(function (elemento) {
-                                    var key = elemento.school_name + '-' + elemento.protocol_name;
-                                    if (!datosPorEscuelaYProtocolo.hasOwnProperty(key)) {
-                                        datosPorEscuelaYProtocolo[key] = {
-                                            school_name: elemento.school_name,
-                                            protocol_name: elemento.protocol_name,
-                                            cantidad: 0
-                                        };
+                                    var escuelasUnicas = Array.from(new Set(datos.map(dato => dato.school_name)));
+
+                                    var coloresEscuelas = {};
+
+                                    datos.forEach(function(dato) {
+                                        var protocolo = dato.protocol_name;
+                                        var escuela = dato.school_name;
+                                        var cantidad = dato.cantidad;
+
+                                        if (!resultados[protocolo]) {
+                                            resultados[protocolo] = {
+                                                name: protocolo,
+                                                data: Array(escuelasUnicas.length).fill(0),
+                                                color: obtenerColorEscuela(escuela)
+                                            };
+                                        }
+
+                                        var indiceEscuela = escuelasUnicas.indexOf(escuela);
+
+                                        resultados[protocolo].data[indiceEscuela] = cantidad;
+                                    });
+
+                                    var resultadosArray = Object.values(resultados);
+
+                                    console.log(resultadosArray);
+
+                                  
+                                    //Etiquetas
+                                    var datosPorEscuela = {};
+
+                                    datos.forEach(function (dato) {
+                                        if (!datosPorEscuela[dato.school_name]) {
+                                            datosPorEscuela[dato.school_name] = {};
+                                        }
+                                        datosPorEscuela[dato.school_name][dato.protocol_name] = dato.cantidad;
+                                    });
+
+                                    var etiquetas = Object.keys(datosPorEscuela);
+
+
+                                    // Definir colores personalizados
+                                    function obtenerColorEscuela(escuela) {
+                                        if (!coloresEscuelas.hasOwnProperty(escuela)) {
+                                            // Generar un nuevo color si la escuela no tiene uno asignado
+                                            coloresEscuelas[escuela] = obtenerColorAleatorio();
+                                        }
+                                        return coloresEscuelas[escuela];
                                     }
-                                    datosPorEscuelaYProtocolo[key].cantidad += elemento.cantidad;
-                                });
 
-                                var etiquetas = [];
-                                var datosCantidad = [];
-                                var coloresPorEscuela = {};
-                                var coloresPorProtocolo =[];
-                                Object.values(datosPorEscuelaYProtocolo).forEach(function (elemento) {
-                                    if (!coloresPorEscuela.hasOwnProperty(elemento.school_name)) {
-                                        var r = Math.floor(Math.random() * 200 + 55); 
-                                        var g = Math.floor(Math.random() * 200 + 55); 
-                                        var b = Math.floor(Math.random() * 200 + 55); 
-                                        coloresPorEscuela[elemento.school_name] = 'rgba(' + r + ',' + g + ',' + b + ', 2.0)';
+                                    // Función para obtener un color aleatorio
+                                    function obtenerColorAleatorio() {
+                                        var letras = '0123456789ABCDEF';
+                                        var color = '#';
+                                        for (var i = 0; i < 6; i++) {
+                                            color += letras[Math.floor(Math.random() * 16)];
+                                        }
+                                        return color;
                                     }
-                                });
 
-                                Object.values(datosPorEscuelaYProtocolo).forEach(function (elemento) {
-                                    etiquetas.push(elemento.school_name + ' - ' + elemento.protocol_name);
-                                    datosCantidad.push(elemento.cantidad);
-                                    var colorEscuela = coloresPorEscuela[elemento.school_name];
-                                    coloresPorProtocolo[elemento.protocol_name] = colorEscuela;
-                                });
-
-                                var ctx = document.getElementById('extensions-protocol').getContext('2d');
-                                miGrafico4 = new Chart(ctx, {
-                                    type: 'bar',
-                                    data: {
-                                        labels: etiquetas,
-                                        datasets: [{
-                                            label: '',
-                                            data: datosCantidad,
-                                            backgroundColor: etiquetas.map(function(etiqueta) {
-                                                var protocolo = etiqueta.split(' - ')[1];
-                                                return coloresPorProtocolo[protocolo];
-                                            }),
-                                            borderColor: 'rgba(75, 192, 192, 1)',
-                                            borderWidth: 1
-                                        }]
-                                    },
-                                    options: {
-                                        scales: {
-                                            y: {
-                                                beginAtZero: true
+                                    var options = {
+                                        chart: {
+                                            type: 'bar',
+                                            height: 350,
+                                            toolbar: {
+                                                show: false
                                             }
                                         },
-                                        maintainAspectRatio: false,
-                                        
-                                    }
+                                        plotOptions: {
+                                            bar: {
+                                                horizontal: false,                 
+                                                columnWidth: '35%',
+                                                endingShape: 'rounded'
+                                            },
+                                        },
+                                        dataLabels: {
+                                            enabled: true
+                                        },
+                                        stroke: {
+                                            show: true,
+                                            width: 1,
+                                            colors: ['transparent']
+                                        },
+                                        series: resultadosArray,
+                                        xaxis: {
+                                            categories: etiquetas,
+                                        },
+                                        legend: {
+                                            show: false
+                                        },
+                                        fill: {
+                                            opacity: 1
+                                        }
+                                    };
+
+                                    chart2 = new ApexCharts(document.querySelector("#extensions-protocol"), options);
+                                    chart2.render();
                                 });
-                            });
 
 
                             </script>
@@ -534,7 +612,7 @@
                     </div>
                 </div>
             </div>
-            @if(session('protocol')['id'] != null)
+            @if(session('protocol')['id'] != 4)
             <div class="col-xl-12">
                     <div class="card">
                         <div class="card-body">
@@ -557,10 +635,10 @@
                             </div>
 
                             <div class="text-center mt-4">
-                                    <canvas id="students-course"></canvas>
+                                    <div id="students-course"></div>
                             </div>
                             <script>
-                                var miGrafico2;
+                                var chart3;
                                 document.addEventListener("DOMContentLoaded", function () {
                                     var datos = @json($datos2); 
 
@@ -576,30 +654,29 @@
                                         return 'rgba(' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ', 1)';
                                     });
 
-                                    var ctx = document.getElementById('students-course').getContext('2d');
-                                    miGrafico2 = new Chart(ctx, {
-                                        type: 'bar',
-                                        data: {
-                                            labels: etiquetas,
-                                            datasets: [{
-                                                label: 'Cantidad de Estudiantes por Curso',
-                                                data: datosEstudiantes,
-                                                backgroundColor: colores,
-                                                borderColor: 'rgba(75, 192, 192, 1)',
-                                                borderWidth: 1
-                                            }]
+                                    var options = {
+                                        chart: {
+                                            type: 'pie',
+                                            height: 350
                                         },
-                                        options: {
-                                            scales: {
-                                                y: {
-                                                    beginAtZero: true
+                                        labels: etiquetas,
+                                        series: datosEstudiantes,
+                                        colors: colores,
+                                        responsive: [{
+                                            breakpoint: 480,
+                                            options: {
+                                                chart: {
+                                                    width: 200
                                                 },
-                                        
-                                            },
-                                            
-                                            maintainAspectRatio: false,
-                                        }
-                                    });
+                                                legend: {
+                                                    position: 'bottom'
+                                                }
+                                            }
+                                        }]
+                                    };
+
+                                    chart3 = new ApexCharts(document.querySelector("#students-course"), options);
+                                    chart3.render();
                                 });
                             </script>
                         </div>
@@ -1366,9 +1443,9 @@
             </div>--}}
 @endsection
 @section('script')
-    {{--<script src="{{ URL::asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>--}}
+    <script src="{{ URL::asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ URL::asset('assets/js/pages/chartjs.js') }}"></script>
-    <script src="{{ URL::asset('assets/js/pages/dashboard.init.js') }}"></script>
+    {{--<script src="{{ URL::asset('assets/js/pages/dashboard.init.js') }}"></script>--}}
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
@@ -1412,18 +1489,20 @@
                     success: function(data) {
                         var datos = data.new_datos;
 
-                        var etiquetas = datos.map(function (elemento) {
+                        var nuevasEtiquetas = datos.map(function (elemento) {
                             return elemento.course_name + ' (' + elemento.cycle_number + '-' + elemento.cycle_year+')';
                         });
 
-                        var datosEstudiantes = datos.map(function (elemento) {
+                        var nuevosDatos = datos.map(function (elemento) {
                             return elemento.cantidad_estudiantes;
                         });
 
-                        miGrafico2.data.labels = etiquetas;
-                        miGrafico2.data.datasets[0].data = datosEstudiantes;
 
-                        miGrafico2.update();
+
+                        chart3.updateOptions({
+                            labels: nuevasEtiquetas,
+                            series: nuevosDatos
+                        });
                     }
                 });
 
@@ -1439,30 +1518,72 @@
                     success: function(data) {
                         var datos = data.new_datos;
 
-                        var etiquetas = [];
-                                var datosCantidad = [];
-                                var coloresPorEscuela = {};
-                                var coloresPorProtocolo =[];
-                                Object.values(datos).forEach(function (elemento) {
-                                    if (!coloresPorEscuela.hasOwnProperty(elemento.school_name)) {
-                                        var r = Math.floor(Math.random() * 200 + 55); 
-                                        var g = Math.floor(Math.random() * 200 + 55); 
-                                        var b = Math.floor(Math.random() * 200 + 55); 
-                                        coloresPorEscuela[elemento.school_name] = 'rgba(' + r + ',' + g + ',' + b + ', 2.0)';
-                                    }
-                                });
+                        //datos
+                        var resultados = {};
 
-                                Object.values(datos).forEach(function (elemento) {
-                                    etiquetas.push(elemento.school_name + ' - ' + elemento.protocol_name);
-                                    datosCantidad.push(elemento.cantidad);
-                                    var colorEscuela = coloresPorEscuela[elemento.school_name];
-                                    coloresPorProtocolo[elemento.protocol_name] = colorEscuela;
-                                });
+                        var escuelasUnicas = Array.from(new Set(datos.map(dato => dato.school_name)));
 
-                        // Actualizar datos del gráfico
-                        miGrafico3.data.labels = etiquetas;
-                        miGrafico3.data.datasets[0].data = datosCantidad;
-                        miGrafico3.update();
+                        var coloresEscuelas = {};
+
+                        datos.forEach(function(dato) {
+                            var protocolo = dato.protocol_name;
+                            var escuela = dato.school_name;
+                            var cantidad = dato.cantidad;
+
+                            if (!resultados[protocolo]) {
+                                resultados[protocolo] = {
+                                    name: protocolo,
+                                    data: Array(escuelasUnicas.length).fill(0),
+                                    color: obtenerColorEscuela(escuela)
+                                };
+                            }
+
+                            var indiceEscuela = escuelasUnicas.indexOf(escuela);
+
+                            resultados[protocolo].data[indiceEscuela] = cantidad;
+                        });
+
+                        var nuevosDatos = Object.values(resultados);
+
+                        console.log(nuevosDatos);
+
+
+                        //Etiquetas
+                        var datosPorEscuela = {};
+
+                        datos.forEach(function (dato) {
+                            if (!datosPorEscuela[dato.school_name]) {
+                                datosPorEscuela[dato.school_name] = {};
+                            }
+                            datosPorEscuela[dato.school_name][dato.protocol_name] = dato.cantidad;
+                        });
+
+                        var etiquetas = Object.keys(datosPorEscuela);
+
+
+                        // Definir colores personalizados
+                        function obtenerColorEscuela(escuela) {
+                            if (!coloresEscuelas.hasOwnProperty(escuela)) {
+                                // Generar un nuevo color si la escuela no tiene uno asignado
+                                coloresEscuelas[escuela] = obtenerColorAleatorio();
+                            }
+                            return coloresEscuelas[escuela];
+                        }
+
+                        // Función para obtener un color aleatorio
+                        function obtenerColorAleatorio() {
+                            var letras = '0123456789ABCDEF';
+                            var color = '#';
+                            for (var i = 0; i < 6; i++) {
+                                color += letras[Math.floor(Math.random() * 16)];
+                            }
+                            return color;
+                        }
+
+
+                        chart1.updateOptions({
+                            series: nuevosDatos
+                        });
                     }
                 });
 
@@ -1478,30 +1599,72 @@
                     success: function(data) {
                         var datos = data.new_datos;
 
-                        var etiquetas = [];
-                        var datosCantidad = [];
-                        var coloresPorEscuela = {};
-                        var coloresPorProtocolo =[];
-                        Object.values(datos).forEach(function (elemento) {
-                            if (!coloresPorEscuela.hasOwnProperty(elemento.school_name)) {
-                                var r = Math.floor(Math.random() * 200 + 55); 
-                                var g = Math.floor(Math.random() * 200 + 55); 
-                                var b = Math.floor(Math.random() * 200 + 55); 
-                                coloresPorEscuela[elemento.school_name] = 'rgba(' + r + ',' + g + ',' + b + ', 2.0)';
-                                }
-                            });
+                        //datos
+                        var resultados = {};
 
-                        Object.values(datos).forEach(function (elemento) {
-                                etiquetas.push(elemento.school_name + ' - ' + elemento.protocol_name);
-                                datosCantidad.push(elemento.cantidad);
-                                var colorEscuela = coloresPorEscuela[elemento.school_name];
-                                coloresPorProtocolo[elemento.protocol_name] = colorEscuela;
-                            });
+                        var escuelasUnicas = Array.from(new Set(datos.map(dato => dato.school_name)));
 
-                        // Actualizar datos del gráfico
-                        miGrafico4.data.labels = etiquetas;
-                        miGrafico4.data.datasets[0].data = datosCantidad;
-                        miGrafico4.update();
+                        var coloresEscuelas = {};
+
+                        datos.forEach(function(dato) {
+                            var protocolo = dato.protocol_name;
+                            var escuela = dato.school_name;
+                            var cantidad = dato.cantidad;
+
+                            if (!resultados[protocolo]) {
+                                resultados[protocolo] = {
+                                    name: protocolo,
+                                    data: Array(escuelasUnicas.length).fill(0),
+                                    color: obtenerColorEscuela(escuela)
+                                };
+                            }
+
+                            var indiceEscuela = escuelasUnicas.indexOf(escuela);
+
+                            resultados[protocolo].data[indiceEscuela] = cantidad;
+                        });
+
+                        var nuevosDatos = Object.values(resultados);
+
+                        console.log(nuevosDatos);
+
+
+                        //Etiquetas
+                        var datosPorEscuela = {};
+
+                        datos.forEach(function (dato) {
+                            if (!datosPorEscuela[dato.school_name]) {
+                                datosPorEscuela[dato.school_name] = {};
+                            }
+                            datosPorEscuela[dato.school_name][dato.protocol_name] = dato.cantidad;
+                        });
+
+                        var etiquetas = Object.keys(datosPorEscuela);
+
+
+                        // Definir colores personalizados
+                        function obtenerColorEscuela(escuela) {
+                            if (!coloresEscuelas.hasOwnProperty(escuela)) {
+                                // Generar un nuevo color si la escuela no tiene uno asignado
+                                coloresEscuelas[escuela] = obtenerColorAleatorio();
+                            }
+                            return coloresEscuelas[escuela];
+                        }
+
+                        // Función para obtener un color aleatorio
+                        function obtenerColorAleatorio() {
+                            var letras = '0123456789ABCDEF';
+                            var color = '#';
+                            for (var i = 0; i < 6; i++) {
+                                color += letras[Math.floor(Math.random() * 16)];
+                            }
+                            return color;
+                        }
+
+
+                        chart2.updateOptions({
+                            series: nuevosDatos
+                        });
                     }
                 });
 
