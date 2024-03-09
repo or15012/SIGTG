@@ -1,6 +1,6 @@
-// 
+//
 // _layouts.scss
-// 
+//
 
 body[data-layout-size="boxed"] {
     background-color: $boxed-body-bg;
@@ -93,6 +93,7 @@ body[data-layout-mode="dark"] {
 
 // Layout Setting Button
 .layout-setting-btn {
+    display: none;
     position: fixed;
     top: 47.5%;
     right: 0;
