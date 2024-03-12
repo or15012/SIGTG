@@ -11,4 +11,13 @@ class TypeAgreement extends Model
 {
     use HasFactory, SoftDeletes;
     use LogsActivityTrait;
+
+    protected $table = 'type_agreements'; // Nombre de la tabla en la base de datos
+
+    protected $fillable = [
+        'name',
+        'affect',
+        'created_at',
+        'updated_at',
+    ];
 }

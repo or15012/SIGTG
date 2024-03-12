@@ -15,6 +15,14 @@ return new class extends Migration
     {
         Schema::create('agreements', function (Blueprint $table) {
             $table->id();
+            $table->string('number');
+            $table->unsignedBigInteger('user_load_id')->nullable();
+            $table->foreign('user_load_id')->references('id')->on('users')->onDelete('restrict');
+            $table->foreignId('group_id')->nullable()->constrained('groups')->onDelete('restrict');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('restrict');
+            $table->foreignId('protocol_id')->nullable()->constrained('protocols')->onDelete('restrict');
+            $table->foreignId('school_id')->nullable()->constrained('schools')->onDelete('restrict');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

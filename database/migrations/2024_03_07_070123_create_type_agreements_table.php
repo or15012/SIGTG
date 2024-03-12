@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('affect'); // 1 estudiante, 2 grupo, 3 protocolo escuela, 4 escuela;
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
