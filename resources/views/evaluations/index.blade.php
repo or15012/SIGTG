@@ -161,9 +161,7 @@
                 </table>
             </div>
         </div>
-        <div id="phase" class="phase d-none">
-            <h2>Fase actual: <span id="name-phase"></span></h4>
-        </div>
+
         <div>
             <h3>Areas evaluativas:</h3>
         </div>
@@ -216,6 +214,16 @@
                         @php
                             $flag = true;
                         @endphp
+                        <div id="phase" class="phase">
+                            <h2>Fase actual: <span id="name-phase">
+                                    @php
+                                        $phase = getPhase($stage);
+                                    @endphp
+                                    @if (isset($phase))
+                                        {{ $phase->name }}
+                                    @endif
+                                </span></h4>
+                        </div>
                     @else
                         <div class="col-xl-3 col-sm-6 mb-3">
                             <div class="card text-black o-hidden h-100">
@@ -293,8 +301,11 @@
                                     @foreach ($stagesNote as $item)
                                         <td>
                                             @php
-                                                $existingGrade = $evaluationStagesNotes->first(function ($evaluationStagesNotes) use ($user, $item) {
-                                                    return $evaluationStagesNotes->user_id === $user->id && $evaluationStagesNotes->id === $item->id;
+                                                $existingGrade = $evaluationStagesNotes->first(function (
+                                                    $evaluationStagesNotes,
+                                                ) use ($user, $item) {
+                                                    return $evaluationStagesNotes->user_id === $user->id &&
+                                                        $evaluationStagesNotes->id === $item->id;
                                                 });
                                             @endphp
                                             <label class="note"

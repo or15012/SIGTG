@@ -59,5 +59,5 @@
 
 @section('script')
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
-    <script src="{{ URL::asset('js/stages.js') }}"></script>
+    {{-- <script src="{{ URL::asset('js/stages.js') }}"></script> --}}
 @endsection

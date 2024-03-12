@@ -509,6 +509,22 @@ Route::group(['prefix' => 'withdrawals', 'as' => 'withdrawals.'], function () {
     });
 });
 
+
+
+// Retiros (withdrawals).
+// Route::group(['prefix' => 'agreements', 'as' => 'agreements.'], function () {
+//     Route::get('/', [Agrr::class, 'index'])->name('index');
+//     Route::get('/create', [RoleController::class, 'create'])->name('create');
+//     Route::post('/', [RoleController::class, 'store'])->name('store');
+//     Route::get('/{role}', [RoleController::class, 'show'])->name('show');
+//     Route::get('/{role}/edit', [RoleController::class, 'edit'])->name('edit');
+//     Route::put('/{role}', [RoleController::class, 'update'])->name('update');
+//     Route::delete('/{role}', [RoleController::class, 'destroy'])->name('destroy');
+
+// });
+
+
+
 // Estas rutas dejarlas de ultimo
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 //Language Translation

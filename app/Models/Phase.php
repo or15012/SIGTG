@@ -12,6 +12,7 @@ class Phase extends Model
     use LogsActivityTrait;
 
     protected $fillable = [
+        'id',
         'name',
         'description',
         'cycle_id',
