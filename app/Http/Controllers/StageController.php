@@ -278,6 +278,11 @@ class StageController extends Controller
         return response()->download(public_path('uploads/stages/formato-importacion-criterios.xlsx'));
     }
 
+    public function downloadTemplateSubareas()
+    {
+        return response()->download(public_path('uploads/stages/formato-importacion-subareas.xlsx'));
+    }
+
     public function modalLoadCriterias(Request $request)
     {
         return view('stage.modal.attach_load_criterias', ['stage_id' => $request->stage_id]);
@@ -323,30 +328,50 @@ class StageController extends Controller
 
             foreach ($listado as $key => $item) {
 
-                if ($item[0] == null || $item[1] == null || $item[2] == null) {
-                    continue;
-                }
-                if ($item[0] == "" || $item[1] == "" || $item[2] == "") {
-                    continue;
-                }
+                if (session('protocol')['id'] != 5) {
+                    if ($item[0] == null || $item[1] == null || $item[2] == null) {
+                        continue;
+                    }
+                    if ($item[0] == "" || $item[1] == "" || $item[2] == "") {
+                        continue;
+                    }
 
-                if ($key !== 0) {
-                    $temp = array(
-                        'name'          => $item[0],
-                        'description'   => $item[1],
-                        'percentage'    => $item[2],
-                        'stage_id'      => $request->stage_id,
-                    );
-                    $data[]             = $temp;
-                    $tempPercentage     = intval($item[2]);
-                    $totalPercentage    = $totalPercentage + $tempPercentage;
+                    if ($key !== 0) {
+                        $temp = array(
+                            'name'          => $item[0],
+                            'description'   => $item[1],
+                            'percentage'    => $item[2],
+                            'stage_id'      => $request->stage_id,
+                        );
+                        $data[]             = $temp;
+                        $tempPercentage     = intval($item[2]);
+                        $totalPercentage    = $totalPercentage + $tempPercentage;
+                    }
+                } else {
+                    if ($item[0] == null || $item[1] == null) {
+                        continue;
+                    }
+                    if ($item[0] == "" || $item[1] == "") {
+                        continue;
+                    }
+
+                    if ($key !== 0) {
+                        $temp = array(
+                            'name'          => $item[0],
+                            'description'   => $item[1],
+                            'stage_id'      => $request->stage_id,
+                        );
+                        $data[]             = $temp;
+                    }
                 }
             }
-            // dd($data);
 
-            if (($currentlyPercentage + $totalPercentage) > 100) {
-                return redirect()->back()->with('error', 'Lo sentimos el porcentaje de los criterios supera el 100%.');
+            if (session('protocol')['id'] != 5) {
+                if (($currentlyPercentage + $totalPercentage) > 100) {
+                    return redirect()->back()->with('error', 'Lo sentimos el porcentaje de los criterios supera el 100%.');
+                }
             }
+
 
             $inserts = EvaluationCriteria::insert($data);
 
@@ -373,4 +398,8 @@ class StageController extends Controller
                 ->withInput();
         }
     }
+
+
+
+
 }

@@ -222,7 +222,7 @@ Route::group(['prefix' => 'stages', 'as' => 'stages.'], function () {
     Route::put('/{stage}', [StageController::class, 'update'])->name('update');
     Route::delete('/{stage}', [StageController::class, 'destroy'])->name('destroy');
     Route::get('/download-template', [StageController::class, 'downloadTemplate'])->name('download.template');
-
+    Route::get('/download-template-subareas', [StageController::class, 'downloadTemplateSubareas'])->name('download.template.subareas');
     Route::get('/modal-load-criterias', [StageController::class, 'modalLoadCriterias'])->name('modal.load.criterias');
     Route::post('/modal-load-criterias', [StageController::class, 'storeLoadCriterias'])->name('store.load.criterias');
 
@@ -244,6 +244,8 @@ Route::group(['prefix' => 'stages', 'as' => 'stages.'], function () {
                 Route::get('/index/{evaluation}', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasIndex'])->name('index');
                 Route::get('/edit/{criteria}', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasEdit'])->name('edit');
                 Route::put('/update/{criteria}', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasUpdate'])->name('update');
+                Route::get('/modal', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasModal'])->name('modal');
+                Route::post('/load', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasLoad'])->name('load');
             });
         });
     });

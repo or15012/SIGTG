@@ -54,26 +54,27 @@
             @endif
         </a>
         <div class="float-end d-flex justify-content-end align-items-center">
-            <a href="{{ route('stages.download.template') }}" class="btn btn-primary">
-
-                @if (session('protocol') != null)
-                    @switch(session('protocol')['id'])
-                        @case(1)
-                        @case(2)
-
-                        @case(3)
-                        @case(4)
+            @if (session('protocol') != null)
+                @switch(session('protocol')['id'])
+                    @case(1)
+                    @case(2)
+                    @case(3)
+                    @case(4)
+                        <a href="{{ route('stages.download.template') }}" class="btn btn-primary">
                             Descargar plantilla para carga de criterios
-                        @break
+                        </a>
+                    @break
 
-                        @case(5)
+                    @case(5)
+                        <a href="{{ route('stages.download.template.subareas') }}" class="btn btn-primary">
                             Descargar plantilla para carga de subáreas
-                        @break
+                        </a>
+                    @break
 
-                        @default
-                    @endswitch
-                @endif
-            </a>
+                    @default
+                @endswitch
+            @endif
+
         </div>
         @if (session('success'))
             <div class="alert alert-success">
@@ -183,16 +184,16 @@
 
                                     @case(3)
                                     @case(4)
-                                        <a href="{{ route('stages.edit', $stage->id) }}" class="btn btn-primary my-1" title="Editar etapa"><i
-                                                class="fas fa-pen"></i></a>
+                                        <a href="{{ route('stages.edit', $stage->id) }}" class="btn btn-primary my-1"
+                                            title="Editar etapa"><i class="fas fa-pen"></i></a>
 
-                                        <button class="btn btn-danger buttonDelete my-1"  title="Eliminar etapa"
+                                        <button class="btn btn-danger buttonDelete my-1" title="Eliminar etapa"
                                             onclick="mostrarConfirmacion('{{ route('stages.destroy', $stage->id) }}', '{{ csrf_token() }}')">
                                             <i class="fas fa-trash-alt"></i> </button>
 
                                         <br>
-                                        <a href="{{ route('criterias.index', $stage->id) }}" class="btn btn-primary my-1" title="Ver criterios"><i
-                                                class="fas fa-eye"></i></a>
+                                        <a href="{{ route('criterias.index', $stage->id) }}" class="btn btn-primary my-1"
+                                            title="Ver criterios"><i class="fas fa-eye"></i></a>
                                         <a href="{{ route('criterias.create', $stage->id) }}" class="btn btn-primary my-1"
                                             title="Registar criterio">
                                             <i class="fas fa-file-medical"></i>
@@ -205,35 +206,34 @@
                                     @break
 
                                     @case(5)
-                                        <a href="{{ route('stages.edit', $stage->id) }}" class="btn btn-primary my-1" title="Editar área"><i
-                                                class="fas fa-pen"></i></a>
+                                        <a href="{{ route('stages.edit', $stage->id) }}" class="btn btn-primary my-1"
+                                            title="Editar área"><i class="fas fa-pen"></i></a>
 
-                                        <button class="btn btn-danger buttonDelete my-1"  title="Eliminar área"
+                                        <button class="btn btn-danger buttonDelete my-1" title="Eliminar área"
                                             onclick="mostrarConfirmacion('{{ route('stages.destroy', $stage->id) }}', '{{ csrf_token() }}')">
                                             <i class="fas fa-trash-alt"></i> </button>
 
                                         <br>
-                                        <a href="{{ route('criterias.index', $stage->id) }}" class="btn btn-primary my-1"  title="Ver subáreas"><i
-                                                class="fas fa-eye"></i></a>
+                                        <a href="{{ route('criterias.index', $stage->id) }}" class="btn btn-primary my-1"
+                                            title="Ver subáreas"><i class="fas fa-eye"></i></a>
                                         <a href="{{ route('criterias.create', $stage->id) }}" class="btn btn-primary my-1"
                                             title="Registrar subarea">
                                             <i class="fas fa-file-medical"></i>
                                         </a>
                                         <button class="btn btn-secondary ajax-modal my-1" data-title="Cargar subáreas"
-                                            title="Cargar subáreas" title="Cargar criterios"
+                                            title="Cargar subáreas" title="Cargar subáreas"
                                             href="{{ route('stages.modal.load.criterias', ['stage_id' => $stage->id]) }}">
                                             <i class="fas fa-file"></i>
                                         </button>
                                         <br>
                                         <a href="{{ route('stages.coordinator.evaluations.index', $stage->id) }}"
                                             class="btn btn-primary my-1" title="Ver evaluaciones">
-                                            <i class="fas fa-eye"></i>
+                                            <i class="fas fa-file-signature"></i>
                                         </a>
                                         <a href="{{ route('stages.coordinator.evaluations.create', $stage->id) }}"
                                             class="btn btn-primary my-1" title="Registrar evaluación">
-                                            <i class="fas fa-file-medical"></i>
+                                            <i class="fas fa-folder-plus"></i>
                                         </a>
-
                                     @break
                                 @endswitch
                             @endif

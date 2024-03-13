@@ -8,9 +8,11 @@ use App\Models\Stage;
 use App\Models\EvaluationCriteria;
 use App\Models\SubareaCriteria;
 use Exception;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
 class EvaluationCriteriaController extends Controller
 {
@@ -214,6 +216,94 @@ class EvaluationCriteriaController extends Controller
             return redirect()->route('stages.index')->with('success', 'Criterio de Evaluación actualizado exitosamente.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'El criterio de evaluación ya se encuentra registrado, revisar.');
+        }
+    }
+
+    public function stagesCoordinatorEvaluationsCriteriasModal(Request $request)
+    {
+        return view('evaluations.modal.attach_load_criterias', ['stage_id' => $request->stage_id]);
+    }
+
+    public function stagesCoordinatorEvaluationsCriteriasLoad(Request $request)
+    {
+
+        try {
+            $validator = Validator::make(
+                $request->all(),
+                [
+                    'criterias.required' => 'Selecciona un archivo de tipo .xslx',
+                ]
+            );
+
+            if (!is_dir(Storage::path('public/uploads/stages'))) {
+
+                mkdir(Storage::path('public/uploads/stages'), 0755, true);
+            }
+
+
+
+            $extension = $request->file('criterias')->getClientOriginalExtension();
+            $request->file('criterias')->storeAs('uploads/stages', 'file.' . $extension, 'public');
+
+            $reader         = new Xlsx();
+            $spreadsheet    = $reader->load(Storage::path('public/uploads/stages/file.' . $extension));
+            $worksheet      = $spreadsheet->getActiveSheet();
+            $listado        = $worksheet->toArray(null, true);
+            $stage          = SubareaCriteria::find($request->stage_id);
+            // $criterias      = $stage->criterias
+            $currentlyPercentage = 0;
+            $currentlyPercentage   = Criteria::where('subarea_criteria_id', $request->stage_id)->sum('percentage');
+
+            // $currentlyPercentage = 0;
+            // foreach ($criterias as $key => $item) {
+            //     $currentlyPercentage = $currentlyPercentage + $item->percentage;
+            // }
+
+            $totalPercentage    = 0;
+            $data               = array();
+
+            DB::beginTransaction();
+
+            foreach ($listado as $key => $item) {
+
+                if ($item[0] == null || $item[1] == null || $item[2] == null) {
+                    continue;
+                }
+                if ($item[0] == "" || $item[1] == "" || $item[2] == "") {
+                    continue;
+                }
+
+                if ($key !== 0) {
+                    $temp = array(
+                        'name'                  => $item[0],
+                        'description'           => $item[1],
+                        'percentage'            => $item[2],
+                        'subarea_criteria_id'   => $request->stage_id,
+                    );
+                    $data[]             = $temp;
+                    $tempPercentage     = intval($item[2]);
+                    $totalPercentage    = $totalPercentage + $tempPercentage;
+                }
+            }
+
+            if (($currentlyPercentage + $totalPercentage) > 100) {
+                return redirect()->back()->with('error', 'Lo sentimos el porcentaje de los criterios supera el 100%.');
+            }
+
+
+
+            $inserts = Criteria::insert($data);
+
+            DB::commit();
+
+
+            return redirect()->back()->with('success', 'Criterios cargados exitosamente');
+        } catch (Exception $th) {
+            DB::rollBack();
+            dd($th);
+            return redirect()->route('stages.index')
+                ->with('error', 'Error, los criterios no pudieron cargarse.')
+                ->withInput();
         }
     }
 }

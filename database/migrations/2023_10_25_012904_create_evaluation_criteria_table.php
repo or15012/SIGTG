@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string("name");
             $table->mediumText("description")->nullable()->default(null);
-            $table->integer("percentage");
+            $table->integer("percentage")->nullable()->default(null);
             $table->foreignId('stage_id')->constrained('stages')->onDelete('restrict');
             $table->timestamps();
             $table->softDeletes();
