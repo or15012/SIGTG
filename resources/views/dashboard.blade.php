@@ -289,7 +289,7 @@
                                     <select class="form-select" id="cycle-select3"  onchange="updateData3()">
                                     <option value="" selected disabled>Seleccione un ciclo</option>
                                         @foreach($ciclos as $ciclo)
-                                            <option value="{{ $ciclo->id }}">{{$ciclo->number}} - {{$ciclo->year}}</option>
+                                            <option value="{{ $ciclo->id }}" @if($ciclo->id == $actualCycle->id) selected @endif>{{$ciclo->number}} - {{$ciclo->year}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -312,7 +312,7 @@
                                     <select class="form-select" id="cycle-select4"  onchange="updateData4()">
                                     <option value="" selected disabled>Seleccione un ciclo</option>
                                         @foreach($ciclos as $ciclo)
-                                            <option value="{{ $ciclo->id }}">{{$ciclo->number}} - {{$ciclo->year}}</option>
+                                            <option value="{{ $ciclo->id }}" @if($ciclo->id == $actualCycle->id) selected @endif>{{$ciclo->number}} - {{$ciclo->year}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -557,7 +557,7 @@
                                     <select class="form-select" id="cycle-select"  onchange="updateData()">
                                     <option value="" selected disabled>Seleccione un ciclo</option>
                                         @foreach($ciclos as $ciclo)
-                                            <option value="{{ $ciclo->id }}">{{$ciclo->number}} - {{$ciclo->year}}</option>
+                                            <option value="{{ $ciclo->id }}" @if($ciclo->id == $actualCycle->id) selected @endif>{{$ciclo->number}} - {{$ciclo->year}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -612,7 +612,7 @@
                     </div>
                 </div>
             </div>
-            @if(session('protocol')['id'] != 4)
+            @if(isset(session('protocol')['id']) && session('protocol')['id'] != 4)
             <div class="col-xl-12">
                     <div class="card">
                         <div class="card-body">
@@ -627,7 +627,7 @@
                                     <select class="form-select" id="cycle-select2"  onchange="updateData2()">
                                     <option value="" selected disabled>Seleccione un ciclo</option>
                                         @foreach($ciclos as $ciclo)
-                                            <option value="{{ $ciclo->id }}">{{$ciclo->number}} - {{$ciclo->year}}</option>
+                                            <option value="{{ $ciclo->id }}" @if($ciclo->id == $actualCycle->id) selected @endif>{{$ciclo->number}} - {{$ciclo->year}}</option>
                                         @endforeach
                                     </select>
                                 </div>
