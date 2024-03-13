@@ -50,6 +50,7 @@
                 @endswitch
             @endif
         </h1>
+
         <div class="float-end d-flex justify-content-end align-items-center mb-2">
             @if (session('protocol') != null)
                 <a href="{{ route('stages.download.template') }}" class="btn btn-primary">
@@ -60,7 +61,12 @@
 
         <p>Para: {{ $stage->name }}</p>
 
-
+        @if (session('protocol') != null)
+            <a href="{{ route('stages.coordinator.evaluations.create', $stage->id) }}" class="btn btn-primary my-1"
+                title="Registrar evaluación">
+                Añadir evaluación
+            </a>
+        @endif
 
         <table class="table table-bordered table-striped table-hover">
             <thead>
@@ -115,8 +121,9 @@
                                             <i class="fas fa-file-medical"></i>
                                         </a>
 
-                                        <button class="btn btn-secondary ajax-modal my-1" data-title="Cargar criterios de evaluación"
-                                            title="Cargar criterios de evaluación" title="Cargar criterios"
+                                        <button class="btn btn-secondary ajax-modal my-1"
+                                            data-title="Cargar criterios de evaluación" title="Cargar criterios de evaluación"
+                                            title="Cargar criterios"
                                             href="{{ route('stages.coordinator.evaluations.criterias.modal', ['stage_id' => $evaluation->id]) }}">
                                             <i class="fas fa-file"></i>
                                         </button>

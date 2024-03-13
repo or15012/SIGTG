@@ -39,6 +39,7 @@ class StageController extends Controller
         $stages = Stage::with('protocol', 'cycle', 'school')
             ->where('protocol_id', session('protocol')['id'])
             ->where('school_id', session('school', ['id']))
+            ->where('visible', 1)
             ->paginate(10);
         return view('stage.index', compact('stages'));
     }
