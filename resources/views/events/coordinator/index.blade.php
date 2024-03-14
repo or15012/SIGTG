@@ -9,7 +9,7 @@
             SIGTG - FIA
         @endslot
         @slot('title')
-        Welcome !
+            Welcome !
         @endslot
     @endcomponent
 
@@ -18,25 +18,12 @@
             <a href="{{ route('projects.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
-
         <h1>Lista de defensas</h1>
-        @if (!$status)
-            <div class="alert alert-info mt-3">
-                No se puede registrar ni realizar cambios en asesorías. Proyecto inactivo.
-            </div>
-        @endif
 
-        <a href="{{ route('events.create', $project->id) }}" class="btn btn-primary mb-3">Registrar defensa</a>
-        
+
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
-            </div>
-        @endif
-
-        @if (session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
             </div>
         @endif
 
@@ -47,7 +34,7 @@
                     <th style="width: 20%">Fecha</th>
                     <th style="width: 20%">Lugar</th>
                     <th style="width: 30%">Descripcion</th>
-                    <th style="width: 20%">Estado</th>
+                    <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -60,14 +47,15 @@
                         <td>{{ $event->description }}</td>
                         <td>{{ $withdrawal->status() }}</td>
                         <td>
-                            <a href="{{ route('events.edit', ['events' => $event->id, 'project' => $project->id]) }}"class="btn btn-primary"> 
-                                <i class="fas fa-pen"></i></a>
+                            <a href="{{ route('events.coordinator.show', $event->id) }}" class="btn btn-primary"><i
+                                    class="fas fa-eye"></i></a>
+
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
-        {!! $events->withQueryString()->links('pagination::bootstrap-5') !!}
+        {{-- {!! $event->withQueryString()->links('pagination::bootstrap-5') !!} --}}
     </div>
 @endsection
 

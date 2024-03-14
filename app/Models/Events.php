@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\LogsActivityTrait;
 
 class Events extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     use LogsActivityTrait;
 
     protected $fillable = [
@@ -16,6 +17,7 @@ class Events extends Model
         'description',
         'place',
         'date',
+        'status',
         'user_id',
         'group_id',
         'project_id',
@@ -48,6 +50,24 @@ class Events extends Model
     public function project()
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function status()
+    {
+        switch ($this->status) {
+            case 0:
+                return 'Presentada';
+                break;
+            case 1:
+                return 'Aprobada';
+                break;
+            case 2:
+                return 'Rechazada';
+                break;
+            default:
+                return 'Not found';
+                break;
+        }
     }
 }
 

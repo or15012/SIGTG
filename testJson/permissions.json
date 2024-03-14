@@ -229,13 +229,13 @@
     },
     {
         "id": 39,
-        "name": "Events.student.create",
+        "name": "Events.students",
         "guard_name": "web",
         "description": "Permiso para registrar defensa"
     },
     {
         "id": 40,
-        "name": "Events.adviser.show",
+        "name": "Events.advisers",
         "guard_name": "web",
         "description": "Permiso para ver defensas"
     },
