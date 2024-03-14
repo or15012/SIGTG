@@ -20,9 +20,9 @@ use Illuminate\Support\Facades\Auth;
 class EventsController extends Controller
 {
     const PERMISSIONS = [
-        'index.advisers'    => 'Events.adviser.show',
-        'index.students'    => 'Events.students',
-    ];
+        'index.advisers' => 'Events.advisers',
+        'index.students' => 'Events.students',
+    ];    
 
     public function __construct()
     {
@@ -45,9 +45,9 @@ class EventsController extends Controller
             })
             ->first();
 
-            if (!isset($group)) {
-                return redirect('home')->withErrors(['message' => 'No tienes un grupo activo.']);
-            }
+        if (!isset($group)) {
+            return redirect('home')->withErrors(['message' => 'No tienes un grupo activo.']);
+        }
 
             $events = Events::select(
                 'events.id',
@@ -64,21 +64,13 @@ class EventsController extends Controller
             ->join('users as u', 'events.user_id', 'u.id') 
             ->where('u.id', auth()->user()->id)
             ->get();
-       
-        // Creando una instancia del controlador Project
-        $projectController = new ProjectController();
 
-        //Llamando a la funcion disableProject
-        $status = $projectController->disableProject($project);
-
-        return view('events.index', compact('userType', 'events', 'project', 'status'));
+        return view('events.index', compact('events', 'project'));
     }
 
     public function create(Project $project)
     {
-        // Obtiene el tipo de usuario actual
-        $userType = auth()->user()->type;
-        return view('events.create', compact('userType', 'project'));
+        return view('events.create', compact('project'));
     }
 
 
@@ -90,7 +82,7 @@ class EventsController extends Controller
             'description'   => 'required|string|max:255',
             'place'         => 'required|string',
             'date'          => 'required|date',
-            'status'        => 'required',
+            'status'        =>  0,
             'user_id'       => 'required',
             'group_id'      => 'required',
             'project_id'    => 'required',
@@ -118,8 +110,8 @@ class EventsController extends Controller
             $getStudents = Group::join('user_group as ug', 'groups.id', 'ug.group_id')
                 ->join('users as u', 'u.id', 'ug.user_id')
                 ->join('user_protocol as up', 'up.user_id', 'u.id')
-                ->where('groups.cycle_id', $validatedData['cycle_id'])
-                ->where('u.school_id', $validatedData['school_id'])
+                ->where('groups.cycle_id', $request->input('cycle_id'))
+                ->where('u.school_id', $request->input('school_id'))
                 ->where('up.status', true)
                 ->where('up.protocol_id', 3)
                 ->select('u.email', 'u.first_name', 'u.last_name')

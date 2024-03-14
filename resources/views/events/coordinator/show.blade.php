@@ -48,12 +48,12 @@
             </div>
         </div>
         @if ($events->status == 0)
-            <form action="{{ route('withdrawals.coordinator.update', $events->id) }}" id="form-withdrawal-confirm"
+            <form action="{{ route('events.coordinator.update', $events->id) }}" id="form-event-confirm"
                 method="POST">
                 @csrf
                 @method('PUT')
 
-                <input type="hidden" name="withdrawal_id" value="{{ $events->id }}">
+                <input type="hidden" name="event_id" value="{{ $events->id }}">
                 <input type="hidden" id="decision" name="decision" value="">
 
                 <button type="button" id="accept-withdrawal" class="btn btn-primary" data-bs-toggle="tooltip"

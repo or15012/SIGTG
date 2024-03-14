@@ -20,11 +20,6 @@
         </div>
 
         <h1>Lista de defensas</h1>
-        @if (!$status)
-            <div class="alert alert-info mt-3">
-                No se puede registrar ni realizar cambios en asesorías. Proyecto inactivo.
-            </div>
-        @endif
 
         <a href="{{ route('events.create', $project->id) }}" class="btn btn-primary mb-3">Registrar defensa</a>
         
@@ -67,7 +62,7 @@
                 @endforeach
             </tbody>
         </table>
-        {!! $events->withQueryString()->links('pagination::bootstrap-5') !!}
+
     </div>
 @endsection
 

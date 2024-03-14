@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('event_id');
             $table->text('comment');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

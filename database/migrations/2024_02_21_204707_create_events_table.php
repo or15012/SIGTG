@@ -26,6 +26,7 @@ return new class extends Migration
             $table->foreignId('cycle_id')->constrained('cycles')->onDelete('restrict');
             $table->foreignId('school_id')->constrained('schools')->onDelete('restrict');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
