@@ -40,7 +40,7 @@
             </div>
             <div class="mt-3 text-end">
                 <a href="{{ route('users.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
-                <button class="btn btn-primary w-sm waves-effect waves-light" type="submit">Guardar</button>
+                <button class="btn btn-primary w-sm waves-effect waves-light" type="submit">Actualizar</button>
             </div>
         </form>
     </div>
