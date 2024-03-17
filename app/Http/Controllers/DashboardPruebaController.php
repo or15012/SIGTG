@@ -28,6 +28,7 @@ class DashboardPruebaController extends Controller
             )
             ->join('groups AS gr', 'gr.id', 'pj.group_id')
             ->join('protocols as pt', 'pt.id', 'gr.protocol_id')
+            ->join('user_group as ug', 'ug.group_id', 'gr.id')
             ->join('user_protocol as up', 'up.protocol_id', 'pt.id')
             ->join('users as us', 'us.id', 'up.user_id')
             ->join('schools as sch', 'us.school_id', 'sch.id')
@@ -52,12 +53,14 @@ class DashboardPruebaController extends Controller
     public function ajaxStatus($cycle_id)
     {
         $datos5 = DB::table('projects as pj')
+            ->select('pj.name', 'pj.status', 'gr.number', 'pt.name')
             ->select(
                 'pj.status',
                 DB::raw('COUNT(*) as count')
             )
             ->join('groups AS gr', 'gr.id', 'pj.group_id')
             ->join('protocols as pt', 'pt.id', 'gr.protocol_id')
+            ->join('user_group as ug', 'ug.group_id', 'gr.id')
             ->join('user_protocol as up', 'up.protocol_id', 'pt.id')
             ->join('users as us', 'us.id', 'up.user_id')
             ->join('schools as sch', 'us.school_id', 'sch.id')
@@ -65,8 +68,10 @@ class DashboardPruebaController extends Controller
             ->orderBy('pj.status');
 
         if (session('school')['id'] != -1) {
-         $datos5->where('us.school_id', session('school')['id']);
+            //       $datos5->where('u.school_id', session('school')['id']);
+            $datos5->where('us.school_id', session('school')['id']);
         }
+        //->where('proto.id', session('protocol')['id'])
         $datos5->where('pt.id', session('protocol')['id']);
 
         $datos5->where('gr.cycle_id', '=', $cycle_id);
@@ -80,20 +85,40 @@ class DashboardPruebaController extends Controller
         ]);
     }
 
-
-
     //Estados de proyecto
     public function ajaxExcelStatus($cycle_id)
     {
-
         $datos = DB::table('projects as pj')
-            ->select('pt.name as protocol_name','sch.name as name_school', 'gr.number as group_number', 'pj.name as project_name', 'pj.status')
+            ->select(
+                'pt.name as protocol_name',
+                'sch.name as name_school',
+                'gr.number as group_number',
+                'pj.name as project_name',
+                'us.first_name as name_student',
+                'us.middle_name as second_name_student',
+                'us.last_name as last_name_student',
+                'us.second_last_name as second_last_name_student',
+                'us.carnet as carnet_student',
+                'pj.status'
+            )
             ->join('groups AS gr', 'gr.id', 'pj.group_id')
             ->join('protocols as pt', 'pt.id', 'gr.protocol_id')
+            ->join('user_group as ug', 'ug.group_id', 'gr.id')
             ->join('user_protocol as up', 'up.protocol_id', 'pt.id')
             ->join('users as us', 'us.id', 'up.user_id')
             ->join('schools as sch', 'us.school_id', 'sch.id')
-            ->groupBy('pt.name', 'sch.name', 'gr.number', 'pj.name', 'pj.status') // Agregar todas las columnas select en GROUP BY
+            ->groupBy(
+                'pt.name',
+                'sch.name',
+                'gr.number',
+                'pj.name',
+                'pj.status',
+                'us.first_name',
+                'us.middle_name',
+                'us.last_name',
+                'us.second_last_name',
+                'us.carnet'
+            ) // Agregar todas las columnas select en GROUP BY
             ->orderBy('pj.status');
         if (session('school')['id'] != -1) {
             $datos->where('us.school_id', session('school')['id']);
@@ -103,6 +128,18 @@ class DashboardPruebaController extends Controller
 
         $datos = $datos->get();
 
+        // Convertir los estados a texto
+        foreach ($datos as $dato) {
+            if ($dato->status == 1) {
+                $dato->status_text = 'Iniciado';
+            } elseif ($dato->status == 2) {
+                $dato->status_text = 'En proceso';
+            } elseif ($dato->status == 3) {
+                $dato->status_text = 'Finalizado';
+            } else {
+                $dato->status_text = ''; // Manejar otro caso si es necesario
+            }
+        }
 
         $data =  json_decode(json_encode($datos), true);
 
@@ -114,37 +151,49 @@ class DashboardPruebaController extends Controller
         $currentSchool = ''; // Variable para rastrear la escuela actual
         foreach ($datos as $row) {
             if ($row->name_school !== $currentSchool) {
-                // Agregar el nombre de la escuela antes del nombre del protocolo
-                $sheet->setCellValue('A' . $rowIndex, $row->name_school);
+                // Agregar el nombre de la escuela con formato y estilo
+                $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true);
+                $sheet->setCellValue('A' . $rowIndex, 'Nombre de escuela: ' . $row->name_school);
                 $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para la escuela
-                $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER); // Centrar el texto
+                $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Alinear a la izquierda
                 $currentSchool = $row->name_school;
                 $rowIndex++;
             }
 
-            // Agregar el nombre del protocolo como tema centrado en la fila
-            $sheet->setCellValue('A' . $rowIndex, $row->protocol_name);
-            $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para el tema
-            $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER); // Centrar el texto
+            // Agregar el nombre del protocolo con formato y estilo
+            $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true);
+            $sheet->setCellValue('A' . $rowIndex, 'Nombre de protocolo: ' . $row->protocol_name);
+            $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para el protocolo
+            $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Alinear a la izquierda
             $rowIndex++;
 
             // Añadir encabezados de columnas debajo del tema
-            $sheet->setCellValue('A' . $rowIndex, 'Group Number');
-            $sheet->setCellValue('B' . $rowIndex, 'Project Name');
-            $sheet->setCellValue('C' . $rowIndex, 'Project Status');
+            $sheet->setCellValue('A' . $rowIndex, 'Número de grupo');
+            $sheet->setCellValue('B' . $rowIndex, 'Nombre de proyecto');
+            $sheet->setCellValue('C' . $rowIndex, 'Estado de proyecto');
+            $sheet->setCellValue('D' . $rowIndex, 'Nombres de estudiante');
+            $sheet->setCellValue('E' . $rowIndex, 'Apellidos de estudiante');
+            $sheet->setCellValue('F' . $rowIndex, 'CARNET');
             $rowIndex++;
 
             // Añadir datos correspondientes
             $sheet->setCellValue('A' . $rowIndex, $row->group_number);
             $sheet->setCellValue('B' . $rowIndex, $row->project_name);
-            $sheet->setCellValue('C' . $rowIndex, $row->status);
+            $sheet->setCellValue('C' . $rowIndex, $row->status_text); // Usar el nuevo campo 'status_text' en lugar de 'status'
+            $sheet->setCellValue('D' . $rowIndex, $row->name_student . ' ' . $row->second_name_student);
+            $sheet->setCellValue('E' . $rowIndex, $row->last_name_student . ' ' . $row->second_last_name_student);
+            $sheet->setCellValue('F' . $rowIndex, $row->carnet_student);
             $rowIndex++;
         }
 
         // Establecer anchos de columna (opcional)
-        $sheet->getColumnDimension('A')->setWidth(15);
-        $sheet->getColumnDimension('B')->setWidth(40);
-        $sheet->getColumnDimension('C')->setWidth(15);
+        $sheet->getColumnDimension('A')->setWidth(20);
+        $sheet->getColumnDimension('B')->setWidth(50);
+        $sheet->getColumnDimension('C')->setWidth(25);
+        $sheet->getColumnDimension('D')->setWidth(40);
+        $sheet->getColumnDimension('E')->setWidth(40);
+        $sheet->getColumnDimension('F')->setWidth(40);
+
 
         // Crear un objeto de escritura
         $writer = new Xlsx($spreadsheet);
