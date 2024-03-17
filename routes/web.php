@@ -486,7 +486,7 @@ Route::group(['prefix' => 'events', 'as' => 'events.'], function () {
     Route::get('/create/{project}', [EventsController::class, 'create'])->name('create');
     Route::post('/store', [EventsController::class,  'store'])->name('store');
     Route::get('/{events}/edit/{project}', [EventsController::class, 'edit'])->name('edit');
-    Route::put('/{events}', [EventsController::class, 'update'])->name('update');
+    Route::put('/update/{events}', [EventsController::class, 'update'])->name('update');
 
     Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
         Route::get('/', [EventsController::class, 'coordinatorIndex'])->name('index');

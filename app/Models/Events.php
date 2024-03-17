@@ -23,33 +23,34 @@ class Events extends Model
         'project_id',
         'cycle_id',
         'school_id',
+        
     ];
 
     protected $dates = ['date']; // Para asegurar que 'date' sea un objeto Carbon
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function cycle()
     {
-        return $this->belongsTo(Cycle::class);
+        return $this->belongsTo(Cycle::class, 'cycle_id');
     }
 
     public function school()
     {
-        return $this->belongsTo(School::class);
+        return $this->belongsTo(School::class, 'school_id');
     }
 
     public function group()
     {
-        return $this->belongsTo(Group::class);
+        return $this->belongsTo(Group::class, 'group_id');
     }
 
     public function project()
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(Project::class, 'project_id');
     }
 
     public function status()

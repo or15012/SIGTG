@@ -48,28 +48,20 @@ class EventsController extends Controller
         if (!isset($group)) {
             return redirect('home')->withErrors(['message' => 'No tienes un grupo activo.']);
         }
+        //dd($year);
+        $events = Events::join('groups as gr', 'events.group_id', 'gr.id')
+            ->where('gr.protocol_id', session('protocol')['id'])
+            ->where('events.group_id', $group->id)
+            ->select('events.*')
+            ->paginate(30);
 
-            $events = Events::select(
-                'events.id',
-                'events.name',
-                'events.description',
-                'events.place',
-                'events.date'
-            )
-            ->join('projects as p', 'events.project_id', 'p.id')
-            ->join('cycles as c', 'events.cycle_id', 'c.id')
-            ->join('schools as s', 'events.school_id', 's.id')
-            ->join('groups as g', 'events.group_id', 'g.id')
-            ->join('user_group as ug', 'ug.group_id', 'g.id')
-            ->join('users as u', 'events.user_id', 'u.id') 
-            ->where('u.id', auth()->user()->id)
-            ->get();
-
+            //dd($events);
         return view('events.index', compact('events', 'project'));
     }
 
     public function create(Project $project)
     {
+        //dd($project);
         return view('events.create', compact('project'));
     }
 
@@ -82,13 +74,14 @@ class EventsController extends Controller
             'description'   => 'required|string|max:255',
             'place'         => 'required|string',
             'date'          => 'required|date',
-            'status'        =>  0,
             'user_id'       => 'required',
             'group_id'      => 'required',
             'project_id'    => 'required',
             'cycle_id'      => 'required',
             'school_id'     => 'required',   
         ]);
+
+        //dd($validatedData);
 
         try {
             // Crear el evento
@@ -154,47 +147,114 @@ class EventsController extends Controller
 
     public function update(Request $request, Project $project, Events $event)
     {
-        //dd($event);
-        $user = auth()->user();
         // Validación de los datos del formulario
         $validatedData = $request->validate([
             'name'          => 'required|string|max:255',
             'description'   => 'required|string|max:255',
             'place'         => 'required|string',
-            'date'          => 'required|date', 
-            'status'        => 'required',
-            'user_id'       => 'required',
-            'group_id'      => 'required',
-            'project_id'    => 'required',
-            'cycle_id'      => 'required',
-            'school_id'     => 'required',   
+            'date'          => 'required|date',
         ]);
-    
+
         try {
+            $user = Auth::user();
+            
+            // Verifica si el evento existe
             if (!$event) {
                 return redirect()->route('events.index', ['project' => $validatedData['project_id']])->with('error', 'El evento no existe.');
             }
-    
-            $event->update([
-                'name'        => $request->input('name'),
-                'description' => $request->input('description'),
-                'place'       => $request->input('place'),
-                'date'        => date('Y-m-d H:i:s', strtotime($validatedData['date'])),
-                'status'      => 0,
-                'school_id'   => $request->input('school_id'),
-                'cycle_id'    => $request->input('cycle_id'),
-                'user_id'     => $request->input('user_id'),
-                'group_id'    => $request->input('group_id'),
-                'project_id'  => $request->input('project_id'),
-            ]);
-    
-            //dd($event);
-            return redirect()->route('events.index', ['project' => $validatedData['project_id']])->with('success', 'Se actualizó la defensa correctamente.');
-        } catch (\Throwable $th) {
-            //dd($th);
-            return redirect()->route('events.index', ['project' => $validatedData['project_id']])->with('error', 'La defensa no pudo ser actualizada.');
+
+            // Obtiene el año actual
+            $year = date('Y');
+            $group = Group::where('groups.year', $year)
+                ->where('groups.status', 1)
+                ->whereHas('users', function ($query) use ($user) {
+                    $query->where('users.id', $user->id);
+                })
+                ->first();
+
+            // Actualiza los campos del evento
+            $fields = [
+                'group_id'      => $group->id,
+                'name'          => $request['name'],
+                'description'   => $request['description'],
+                'place'         => $request['place'],
+                'date'          => $request['date'],
+            ];
+            $event->update($fields);
+
+            //Envío de correo a coordinador.
+            $role = 'Coordinador General';
+            $userRoles = User::role($role)->get(); //modificar para diferenciar por modalidades.
+
+            $notificationStudent = Notification::create(['title' => 'Alerta de defensa de trabajo de grado', 'message' => "Se ha enviado una actualización de la solicitud de retiro de trabajo de grado exitosamente, está pendiente de revisión", 'user_id' => Auth::user()->id]);
+            
+            foreach ($userRoles as $coordinator) {
+                try {
+                    $emailData = [
+                        'user'                => $coordinator,
+                        'name'                => $request['name'],
+                        'description'         => $request['description'],
+                        'status'              => $request['status']
+                    ];
+
+                    // Envía correo al coordinador
+                    Mail::to($coordinator->email)->send(new SendMail('mail.event-coordinator-updated', 'Modificación de retiro de trabajo de grado presentado', $emailData));
+
+                    // Crea notificación para el coordinador
+                    $notificationCoordinator = Notification::create(['title' => 'Alerta de retiro de trabajo de grado', 'message' => "El estudiante ha enviado una actualización de su solicitud de defensa de trabajo de grado para revisión",  'user_id' => $coordinator->id]);
+                    UserNotification::create(['user_id' => $coordinator->id, 'notification_id' => $notificationCoordinator->id, 'is_read' => 0]);
+                } catch (\Throwable $th) {
+                    //dd($th);
+                }
+            }
+
+            // Envío de correo electrónico a estudiante
+            try {
+                $emailData = [
+                    'user'         => $user,
+                    'name'         => $request['name'],
+                    'description'  => $request['description'],
+                    'status'       => $request['status']
+                ];
+
+                // Envía correo al estudiante
+                Mail::to($user->email)->send(new SendMail('mail.event-update', 'Modificación de defensa de trabajo de grado enviado con éxito', $emailData));
+                UserNotification::create(['user_id' => $user->id, 'notification_id' => $notificationStudent->id, 'is_read' => 0]);
+            } catch (Exception $th) {
+                // Manejar la excepción
+            }
+
+            // Envío de correo a coordinador
+            foreach ($userRoles as $coordinator) {
+                try {
+                    $emailData = [
+                        'user'         => $coordinator,
+                        'name'         => $request['name'],
+                        'description'  => $request['description'],
+                        'status'       => $request['status']
+                    ];
+
+                    // Envía correo al coordinador
+                    Mail::to($coordinator->email)->send(new SendMail('mail.event-coordinator-updated', 'Modificación de retiro de trabajo de grado presentado', $emailData));
+
+                    // Crea notificación para el coordinador
+                    $notificationCoordinator = Notification::create(['title' => 'Alerta de retiro de trabajo de grado', 'message' => "El estudiante ha enviado una actualización de su solicitud de defensa de trabajo de grado para revisión",  'user_id' => $coordinator->id]);
+                    UserNotification::create(['user_id' => $coordinator->id, 'notification_id' => $notificationCoordinator->id, 'is_read' => 0]);
+                } catch (\Throwable $th) {
+                    // Manejar la excepción
+                }
+            }
+            //        return view('events.edit') ->with(compact('events','project', 'user'));
+
+            return redirect()->route('events.index')->with('success', 'Se actualizó la defensa correctamente.')->with(compact('project'));
+            
+        } catch (Exception $e) {
+            //dd($e);
+            dd($e->getMessage());
+            return redirect()->back()->with('error', 'Algo salió mal. Intente nuevamente.');
         }
     }
+
 
     public function destroy(Events $events)
     {
@@ -221,30 +281,42 @@ class EventsController extends Controller
         return view('events.coordinator.index', compact('events'));
     }
 
-    public function coordinatorShow(Events $events)
+    public function coordinatorShow($eventId)
     {
-
-        $events = Events::all();
-
-        return view('events.coordinator.show')->with(compact('events'));
+        //$events = Events::first(); // Obtener el primer evento
+        $event = Events::findOrFail($eventId);
+        return view('events.coordinator.show', compact('event'));
+        //return view('events.coordinator.show', compact('events'));
     }
+    
 
-    public function coordinatorUpdate(Request $request, Events $events)
+    public function coordinatorUpdate(Request $request, Events $event)
     {
-        $user       = $events->user; //Obteniendo usuario que ha presentado retiro
-
+        $user       = $event->user; //Obteniendo usuario que ha presentado retiro
         $validatedData = $request->validate([
             'decision' => 'required',
         ]);
 
-        $events->status = $request->decision;
+        $event->status = $request->decision;
+        $event->update();
+        //dd($event);
 
-        $events->update();
+        // Envío de notificación y correo electrónico al estudiante del estado de la defensa
+         $notificationStudent = Notification::create([
+            'title' => 'Alerta de solicitud de defensa de trabajo de grado',
+            'message' => "Se ha recibido una actualización sobre el estado de su solicitud de defensa de trabajo de grado",
+            'user_id' => $user->id,
+        ]);
 
-
-        // Envío de notificación y correo electrónico al estudiante deñ estado de la defensa
-        try {
+         try {
+            $emailData = [
+                'user' => $user,
+                'event' => $event,
+                'name'  => $event->name
+            ];
             //dd($emailData);
+            Mail::to($user->email)->send(new SendMail('mail.event-coordinator-updated', 'Estado de solicitud de defensa de trabajo de grado actualizada con éxito', $emailData));
+            UserNotification::create(['user_id' => $user->id, 'notification_id' => $notificationStudent->id, 'is_read' => 0]);
         } catch (Exception $th) {
             // Manejar la excepción
             // dd($th);

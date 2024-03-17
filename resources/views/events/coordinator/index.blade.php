@@ -45,7 +45,7 @@
                         <td>{{ \Carbon\Carbon::parse($event->date)->format('d-m-Y H:i:s') }}</td>
                         <td>{{ $event->place }}</td>
                         <td>{{ $event->description }}</td>
-                        <td>{{ $withdrawal->status() }}</td>
+                        <td>{{ $event->status() }}</td>
                         <td>
                             <a href="{{ route('events.coordinator.show', $event->id) }}" class="btn btn-primary"><i
                                     class="fas fa-eye"></i></a>
