@@ -85,9 +85,12 @@
             @endif
         </form>
 
+
         <div class="agreements">
             <div>
                 <h3>Acuerdos de grupo</h3>
+                <a href="{{ route('agreements.create.group',$id) }}" class="btn btn-primary mb-3">Registrar acuerdo de grupo</a>
+
             </div>
             <table class="table table-bordered">
                 <thead>
@@ -96,7 +99,7 @@
                         <th>Número de acuerdo</th>
                         <th>Fecha de aprobación</th>
                         <th>Fecha de subida</th>
-                        <th>Usuario</th>
+                        <th>Registrado por</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AdviserController;
+use App\Http\Controllers\AgreementController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CriteriaStageController;
@@ -514,6 +515,11 @@ Route::group(['prefix' => 'type_agreements', 'as' => 'type_agreements.'], functi
     Route::get('/{TypeAgreement}/edit', [TypeAgreementController::class, 'edit'])->name('edit');
     Route::put('/{TypeAgreement}', [TypeAgreementController::class, 'update'])->name('update');
     Route::delete('/{TypeAgreement}', [TypeAgreementController::class, 'destroy'])->name('destroy');
+});
+
+Route::group(['prefix' => 'agreements', 'as' => 'agreements.'], function () {
+    Route::get('/create/group/{group}', [AgreementController::class, 'createAgreementGroup'])->name('create.group');
+    Route::post('/store/group/{group}', [AgreementController::class, 'storeAgreementGroup'])->name('store.group');
 });
 
 
