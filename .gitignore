@@ -26,3 +26,5 @@ composer.lock
 package-lock.json
 package.json
 /storage/*.docx
+storage/*.docx
+storage/*.pdf

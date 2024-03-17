@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SendMail;
+use App\Models\Agreement;
 use App\Models\Cycle;
 use App\Models\Group;
 use App\Models\Notification;
@@ -267,7 +268,13 @@ class GroupController extends Controller
             ->where('ug.status', 1)
             ->get();
 
-        return view('groups.edit', compact('group', 'id'));
+
+        $agreements = Agreement::where('group_id', $id)
+            ->join('type_agreements as ta', 'ta.id', 'agreements.type_agreement_id')
+            ->join('users as u', 'u.id','agreements.user_load_id')
+            ->get();
+
+        return view('groups.edit', compact('group', 'id', 'agreements'));
     }
 
     public function update(Request $request, $id)
@@ -545,7 +552,19 @@ class GroupController extends Controller
                 }
                 $group->authorization_letter_higher_members = $request->file('authorization_letter_higher_members')->storeAs('groups_authorization', $group->id . '-' . $request->file('authorization_letter_higher_members')->getClientOriginalName());
             }
+
             $group->save();
+
+            //Insertare el acuerdo del grupo
+            $agreement                      = new Agreement();
+            $agreement->number              = $request->number_agreement;
+            $agreement->approval_date       = $request->date_agreement;
+            $agreement->group_id            = $request->group_id;
+            $agreement->user_load_id        = auth()->user()->id;
+            $agreement->type_agreement_id   = 1;
+            $agreement->save();
+
+
             return redirect()->action([GroupController::class, 'index'])->with('success', 'Carta de autorización subida exitosamente.');
         } catch (\Throwable $th) {
 
@@ -569,10 +588,19 @@ class GroupController extends Controller
                 $group->path_agreement = $request->file('path_agreement')->storeAs('agreement', $group->id . '-' . $request->file('path_agreement')->getClientOriginalName());
 
                 $group->save();
+                //Insertare el acuerdo del grupo
+                $agreement                      = new Agreement();
+                $agreement->number              = $request->number_agreement;
+                $agreement->approval_date       = $request->date_agreement;
+                $agreement->group_id            = $group->group_id;
+                $agreement->user_load_id        = auth()->user()->id;
+                $agreement->type_agreement_id   = 2;
+                $agreement->save();
 
                 return redirect()->action([GroupController::class, 'index'])->with('success', 'Carta de acuerdo subida exitosamente.');
             }
         } catch (Exception $th) {
+            Log::info($th->getMessage());
             return redirect()->action([GroupController::class, 'index'])->with('error', 'Algo salió mal. Intente nuevamente.');
         }
     }

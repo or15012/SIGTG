@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.Dashboard')
+    Tipos de acuerdos
 @endsection
 
 @section('content')
@@ -40,19 +40,19 @@
                         <td>
                             @switch($typeagreement->affect)
                                 @case(1)
-                                    {{ "Estudiante" }}
+                                    {{ 'Estudiante' }}
                                 @break
 
                                 @case(2)
-                                    {{ "Grupo" }}
+                                    {{ 'Grupo' }}
                                 @break
 
                                 @case(3)
-                                    {{ "Protocolo" }}
+                                    {{ 'Protocolo' }}
                                 @break
 
                                 @case(4)
-                                    {{ "Escuela" }}
+                                    {{ 'Escuela' }}
                                 @break
 
                                 @default
@@ -61,13 +61,14 @@
                         <td>
                             <a href="{{ route('type_agreements.edit', $typeagreement->id) }}" class="btn btn-primary"><i
                                     class="fas fa-pen"></i></a>
-                            <form action="{{ route('type_agreements.destroy', $typeagreement->id) }}" method="POST"
-                                style="display: inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger buttonDelete"><i
-                                        class="fas fa-trash-alt"></i></button>
-                            </form>
+
+                            @if ($typeagreement->id !== 1 && $typeagreement->id !== 2 && $typeagreement->id !== 3 && $typeagreement->id !== 4)
+                                <button class="btn btn-danger buttonDelete my-1"
+                                    onclick="mostrarConfirmacion('{{ route('type_agreements.destroy', $typeagreement->id) }}', '{{ csrf_token() }}')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            @endif
+
                         </td>
                     </tr>
                 @endforeach
@@ -80,4 +81,52 @@
 
 @section('script')
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+    <script>
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+
+
+
+        function mostrarConfirmacion(url, token) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "No podrás revertir esto",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminarlo'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si el usuario confirma, realiza una petición POST para eliminar el elemento
+                    eliminarElemento(url, token);
+                }
+            });
+        }
+
+        function eliminarElemento(url, token) {
+            var form = document.createElement("form");
+            form.setAttribute("method", "POST");
+            form.setAttribute("action", url);
+            form.style.display = "none";
+
+            var csrfTokenInput = document.createElement("input");
+            csrfTokenInput.setAttribute("type", "hidden");
+            csrfTokenInput.setAttribute("name", "_token");
+            csrfTokenInput.setAttribute("value", token);
+
+            var methodField = document.createElement("input");
+            methodField.setAttribute("type", "hidden");
+            methodField.setAttribute("name", "_method");
+            methodField.setAttribute("value", "DELETE");
+
+            form.appendChild(csrfTokenInput);
+            form.appendChild(methodField);
+
+            document.body.appendChild(form);
+
+            form.submit();
+        }
+    </script>
 @endsection

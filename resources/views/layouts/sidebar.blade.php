@@ -520,7 +520,12 @@
                 </li>
                 @endcan
 
-
+                <li>
+                    <a href="{{ route('type_agreements.index') }}">
+                        <i class="bx bx-highlight icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-withdrawalsadviser">@lang('translation.TypesAgreements')</span>
+                    </a>
+                </li>
 
                 {{-- <li>
                     <a href="{{ route('evaluations_documents.index') }}">

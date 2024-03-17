@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('agreements', function (Blueprint $table) {
             $table->id();
             $table->string('number');
+            $table->date('approval_date');
+            $table->foreignId('type_agreement_id')->constrained('type_agreements')->onDelete('restrict');
             $table->unsignedBigInteger('user_load_id')->nullable();
             $table->foreign('user_load_id')->references('id')->on('users')->onDelete('restrict');
             $table->foreignId('group_id')->nullable()->constrained('groups')->onDelete('restrict');
