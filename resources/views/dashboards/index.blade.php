@@ -25,44 +25,45 @@
                 {{ session('error') }}
             </div>
         @endif
-        
+
     </div>
 
     <div class="row">
-        
-                <div class="col-xl-4 ">
-                    <div class="card bg-primary">
-                        <div class="card-body">
-                            <div class="text-center py-3">
-                                <ul class="bg-bubbles ps-0">
-                                    <li><i class="bx bx-grid-alt font-size-24"></i></li>
-                                    <li><i class="bx bx-tachometer font-size-24"></i></li>
-                                    <li><i class="bx bx-store font-size-24"></i></li>
-                                    <li><i class="bx bx-cube font-size-24"></i></li>
-                                    <li><i class="bx bx-cylinder font-size-24"></i></li>
-                                    <li><i class="bx bx-command font-size-24"></i></li>
-                                    <li><i class="bx bx-hourglass font-size-24"></i></li>
-                                    <li><i class="bx bx-pie-chart-alt font-size-24"></i></li>
-                                    <li><i class="bx bx-coffee font-size-24"></i></li>
-                                    <li><i class="bx bx-polygon font-size-24"></i></li>
-                                </ul>
-                                <div class="main-wid position-relative">
-                                    <h3 class="text-white">SIGTG - FIADashboard</h3>
 
-                                    <h3 class="text-white mb-0"> Bienvenido {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</h3>
-                                    {{--
+        <div class="col-xl-4 ">
+            <div class="card bg-primary">
+                <div class="card-body">
+                    <div class="text-center py-3">
+                        <ul class="bg-bubbles ps-0">
+                            <li><i class="bx bx-grid-alt font-size-24"></i></li>
+                            <li><i class="bx bx-tachometer font-size-24"></i></li>
+                            <li><i class="bx bx-store font-size-24"></i></li>
+                            <li><i class="bx bx-cube font-size-24"></i></li>
+                            <li><i class="bx bx-cylinder font-size-24"></i></li>
+                            <li><i class="bx bx-command font-size-24"></i></li>
+                            <li><i class="bx bx-hourglass font-size-24"></i></li>
+                            <li><i class="bx bx-pie-chart-alt font-size-24"></i></li>
+                            <li><i class="bx bx-coffee font-size-24"></i></li>
+                            <li><i class="bx bx-polygon font-size-24"></i></li>
+                        </ul>
+                        <div class="main-wid position-relative">
+                            <h3 class="text-white">SIGTG - FIA Dashboard</h3>
+
+                            <h3 class="text-white mb-0"> Bienvenido {{ Auth::user()->first_name }}
+                                {{ Auth::user()->last_name }}</h3>
+                            {{--
                                     <p class="text-white-50 px-4 mt-4">Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien libero tincidunt.</p>
 
                                     <div class="mt-4 pt-2 mb-2">
                                         <a href="" class="btn btn-success">View Profile <i class="mdi mdi-arrow-right ms-1"></i></a>
-                                    </div>--}}
-                                </div>
-                            </div>
+                                    </div> --}}
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                {{--
+        {{--
                 <div class="col-xl-8">
                     <div class="row">
                         <div class="col-lg-3 col-md-6">
@@ -170,8 +171,8 @@
             </div>
             --}}
 
-            <div class="row">
-                {{--
+        <div class="row">
+            {{--
                 <div class="col-xl-8">
                     <div class="card">
                         <div class="card-body">
@@ -266,7 +267,7 @@
                     </div>
                 </div>
                 --}}
-                <style>
+            {{-- <style>
                     #groups-protocol,
                     #extensions-protocol,
                     #students-course {
@@ -277,8 +278,8 @@
 
                 <div class="col-xl-12">
                     <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex flex-wrap align-items-center">
+                        <div class="card-body"> --}}
+            {{-- <div class="d-flex flex-wrap align-items-center">
                                 <h5 class="card-title mb-0">Grupos por escuela</h5>
                                 <div class="ms-auto">
                                 <div class="mb-3">
@@ -288,20 +289,20 @@
                                     <label for="cycle-select3" class="form-label">Seleccionar Ciclo:</label>
                                     <select class="form-select" id="cycle-select3"  onchange="updateData3()">
                                     <option value="" selected disabled>Seleccione un ciclo</option>
-                                        @foreach($ciclos as $ciclo)
-                                            <option value="{{ $ciclo->id }}" @if($ciclo->id == $actualCycle->id) selected @endif>{{$ciclo->number}} - {{$ciclo->year}}</option>
+                                        @foreach ($ciclos as $ciclo)
+                                            <option value="{{ $ciclo->id }}">{{$ciclo->number}} - {{$ciclo->year}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
-                            <div class="text-center mt-4">
+            {{-- <div class="text-center mt-4">
                                     <div id="groups-protocol" ></div>
                             </div>
+ --}}
 
-
-                            <div class="d-flex flex-wrap align-items-center">
+            {{-- <div class="d-flex flex-wrap align-items-center">
                                 <h5 class="card-title mb-0">Extensiones por escuela</h5>
                                 <div class="ms-auto">
                                 <div class="mb-3">
@@ -311,20 +312,20 @@
                                     <label for="cycle-select4" class="form-label">Seleccionar Ciclo:</label>
                                     <select class="form-select" id="cycle-select4"  onchange="updateData4()">
                                     <option value="" selected disabled>Seleccione un ciclo</option>
-                                        @foreach($ciclos as $ciclo)
-                                            <option value="{{ $ciclo->id }}" @if($ciclo->id == $actualCycle->id) selected @endif>{{$ciclo->number}} - {{$ciclo->year}}</option>
+                                        @foreach ($ciclos as $ciclo)
+                                            <option value="{{ $ciclo->id }}">{{$ciclo->number}} - {{$ciclo->year}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
 
-                            <div class="text-center mt-4">
+            {{-- <div class="text-center mt-4">
                                     <div id="extensions-protocol"></div>
-                            </div>
+                            </div> --}}
 
-                            <script>
+            {{-- <script>
                                 var chart1;
                                 document.addEventListener("DOMContentLoaded", function () {
                                     var datos = @json($datos3);
@@ -352,13 +353,13 @@
                                         var indiceEscuela = escuelasUnicas.indexOf(escuela);
 
                                         resultados[protocolo].data[indiceEscuela] = cantidad;
-                                    });
+                                    }); --}}
 
-                                    var resultadosArray = Object.values(resultados);
+            {{-- var resultadosArray = Object.values(resultados);
 
                                     console.log(resultadosArray);
 
-                                  
+
                                     //Etiquetas
                                     var datosPorEscuela = {};
 
@@ -401,7 +402,7 @@
                                         },
                                         plotOptions: {
                                             bar: {
-                                                horizontal: false,                 
+                                                horizontal: false,
                                                 columnWidth: '35%',
                                                 endingShape: 'rounded'
                                             },
@@ -463,7 +464,7 @@
 
                                     console.log(resultadosArray);
 
-                                  
+
                                     //Etiquetas
                                     var datosPorEscuela = {};
 
@@ -506,7 +507,7 @@
                                         },
                                         plotOptions: {
                                             bar: {
-                                                horizontal: false,                 
+                                                horizontal: false,
                                                 columnWidth: '35%',
                                                 endingShape: 'rounded'
                                             },
@@ -514,8 +515,8 @@
                                         dataLabels: {
                                             enabled: true
                                         },
-                                        stroke: {
-                                            show: true,
+                                        stroke: { --}}
+            {{-- show: true,
                                             width: 1,
                                             colors: ['transparent']
                                         },
@@ -540,79 +541,159 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
 
-                <div class="col-xl-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex flex-wrap align-items-center">
-                                <h5 class="card-title mb-0">Estudiantes por protocolo</h5>
-                                <div class="ms-auto">
+            {{-- <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap align-items-center">
+                            <h5 class="card-title mb-0">Estudiantes por protocolo</h5>
+                            <div class="ms-auto">
                                 <div class="mb-3">
-                                    <button id="export-excel-btn" class="btn btn-primary mt-3">Exportar notas según protocolo</button>
+                                    <button id="export-excel-btn" class="btn btn-primary mt-3">Exportar notas según
+                                        protocolo</button>
                                 </div>
                                 <div class="mb-3">
                                     <label for="cycle-select" class="form-label">Seleccionar Ciclo:</label>
-                                    <select class="form-select" id="cycle-select"  onchange="updateData()">
-                                    <option value="" selected disabled>Seleccione un ciclo</option>
-                                        @foreach($ciclos as $ciclo)
-                                            <option value="{{ $ciclo->id }}" @if($ciclo->id == $actualCycle->id) selected @endif>{{$ciclo->number}} - {{$ciclo->year}}</option>
+                                    <select class="form-select" id="cycle-select" onchange="updateData()">
+                                        <option value="" selected disabled>Seleccione un ciclo</option>
+                                        @foreach ($ciclos as $ciclo)
+                                            <option value="{{ $ciclo->id }}">{{ $ciclo->number }} - {{ $ciclo->year }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <canvas id="students-protocol"></canvas>
+                        </div>
+                        <script>
+                            var miGrafico;
+                            document.addEventListener("DOMContentLoaded", function() {
+                                var datos = @json($datos);
+
+                                var etiquetas = datos.map(function(elemento) {
+                                    return elemento.protocol_name + ' (' + elemento.cycle_number + '-' + elemento.cycle_year +
+                                        ')';
+                                });
+
+                                var datosEstudiantes = datos.map(function(elemento) {
+                                    return elemento.cantidad_estudiantes;
+                                });
+                                var colores = datos.map(function() {
+                                    return 'rgba(' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) +
+                                        ',' + Math.floor(Math.random() * 256) + ', 1)';
+                                });
+
+                                var ctx = document.getElementById('students-protocol').getContext('2d');
+                                miGrafico = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: etiquetas,
+                                        datasets: [{
+                                            label: 'Cantidad de Estudiantes por Protocolo',
+                                            data: datosEstudiantes,
+                                            backgroundColor: colores,
+                                            borderColor: 'rgba(75, 192, 192, 1)',
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        },
+                                        maintainAspectRatio: false,
+
+                                    }
+                                });
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div> --}}
+
+
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap align-items-center">
+                            <h5 class="card-title mb-0">Proyectos por estado</h5>
+                            <div class="ms-auto">
+                                <div class="mb-3">
+                                    <button id="export-status-excel-btn" class="btn btn-primary mt-3">Exportar proyectos
+                                        según
+                                        estado</button>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cycle-select" class="form-label">Seleccionar Ciclo:</label>
+                                    <select class="form-select" id="cycle-select5" onchange="updateData5()">
+                                        <option value="" selected disabled>Seleccione un ciclo</option>
+                                        @foreach ($ciclos as $ciclo)
+                                            <option value="{{ $ciclo->id }}">{{ $ciclo->number }} - {{ $ciclo->year }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
-
-                            <div class="text-center mt-4">
-                                    <canvas id="students-protocol"></canvas>
-                            </div>
-                            <script>
-                                var miGrafico;
-                                document.addEventListener("DOMContentLoaded", function () {
-                                    var datos = @json($datos); 
-
-                                    var etiquetas = datos.map(function (elemento) {
-                                        return elemento.protocol_name + ' (' + elemento.cycle_number + '-' + elemento.cycle_year+')';
-                                    });
-
-                                    var datosEstudiantes = datos.map(function (elemento) {
-                                        return elemento.cantidad_estudiantes;
-                                    });
-                                    var colores = datos.map(function () {
-                                        return 'rgba(' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ', 1)';
-                                    });
-
-                                    var ctx = document.getElementById('students-protocol').getContext('2d');
-                                    miGrafico = new Chart(ctx, {
-                                        type: 'bar',
-                                        data: {
-                                            labels: etiquetas,
-                                            datasets: [{
-                                                label: 'Cantidad de Estudiantes por Protocolo',
-                                                data: datosEstudiantes,
-                                                backgroundColor: colores,
-                                                borderColor: 'rgba(75, 192, 192, 1)',
-                                                borderWidth: 1
-                                            }]
-                                        },
-                                        options: {
-                                            scales: {
-                                                y: {
-                                                    beginAtZero: true
-                                                }
-                                            },
-                                            maintainAspectRatio: false,
-                                        
-                                        }
-                                    });
-                                });
-                            </script>
                         </div>
+
+                        <div class="text-center mt-4">
+                            <canvas id="project-status"></canvas>
+                        </div>
+                        <script>
+                            var miGrafico;
+                            document.addEventListener("DOMContentLoaded", function() {
+                                var datos = @json($datos);
+
+                                var etiquetas = datos.map(function(elemento) {
+                                    return elemento.protocol_name + ' (' + elemento.cycle_number + '-' + elemento.cycle_year +
+                                        ')';
+                                });
+
+                                var datosEstudiantes = datos.map(function(elemento) {
+                                    return elemento.cantidad_estudiantes;
+                                });
+                                var colores = datos.map(function() {
+                                    return 'rgba(' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) +
+                                        ',' + Math.floor(Math.random() * 256) + ', 1)';
+                                });
+
+                                var ctx = document.getElementById('project-status').getContext('2d');
+                                miGrafico = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: etiquetas,
+                                        datasets: [{
+                                            label: 'Estados por proyecto',
+                                            data: datosEstudiantes,
+                                            backgroundColor: colores,
+                                            borderColor: 'rgba(75, 192, 192, 1)',
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        },
+                                        maintainAspectRatio: false,
+
+                                    }
+                                });
+                            });
+                        </script>
                     </div>
                 </div>
             </div>
-            @if(isset(session('protocol')['id']) && session('protocol')['id'] != 4)
+
+
+            {{-- @if (session('protocol')['id'] != 4)
             <div class="col-xl-12">
                     <div class="card">
                         <div class="card-body">
@@ -626,8 +707,8 @@
                                     <label for="cycle-select2" class="form-label">Seleccionar Ciclo:</label>
                                     <select class="form-select" id="cycle-select2"  onchange="updateData2()">
                                     <option value="" selected disabled>Seleccione un ciclo</option>
-                                        @foreach($ciclos as $ciclo)
-                                            <option value="{{ $ciclo->id }}" @if($ciclo->id == $actualCycle->id) selected @endif>{{$ciclo->number}} - {{$ciclo->year}}</option>
+                                        @foreach ($ciclos as $ciclo)
+                                            <option value="{{ $ciclo->id }}">{{$ciclo->number}} - {{$ciclo->year}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -640,7 +721,7 @@
                             <script>
                                 var chart3;
                                 document.addEventListener("DOMContentLoaded", function () {
-                                    var datos = @json($datos2); 
+                                    var datos = @json($datos2);
 
                                     var etiquetas = datos.map(function (elemento) {
                                         return elemento.course_name + ' (' + elemento.cycle_number + '-' + elemento.cycle_year+')';
@@ -683,7 +764,7 @@
                     </div>
                 </div>
             </div>
-            @endif
+            @endif --}}
             {{--
             <div class="row">
                 <div class="col-xl-8">
@@ -1162,7 +1243,7 @@
                     </div>
                 </div>
                 </div>
-            </div>--}}
+            </div> --}}
 
             {{--
             <div class="row">
@@ -1440,405 +1521,480 @@
                         </div>
                     </div>
                 </div>
-            </div>--}}
-@endsection
-@section('script')
-    <script src="{{ URL::asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
-    <script src="{{ URL::asset('assets/js/pages/chartjs.js') }}"></script>
-    {{--<script src="{{ URL::asset('assets/js/pages/dashboard.init.js') }}"></script>--}}
-    <script src="{{ URL::asset('assets/js/app.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+            </div> --}}
+        @endsection
+        @section('script')
+            <script src="{{ URL::asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
+            <script src="{{ URL::asset('assets/js/pages/chartjs.js') }}"></script>
+            {{-- <script src="{{ URL::asset('assets/js/pages/dashboard.init.js') }}"></script> --}}
+            <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+            <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-    <script>
-        function updateData(){
-            var id = document.getElementById('cycle-select').value;
-            
-            $.ajax({
-                    url: '{{route('dashboard.proto')}}/'+id,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(data) {
-                        var nuevosDatos = data.new_datos;
+            <script>
+                // function updateData() {
+                //     var id = document.getElementById('cycle-select').value;
 
-                        var etiquetas = nuevosDatos.map(function (elemento) {
-                            return elemento.protocol_name + ' (' + elemento.cycle_number + '-' + elemento.cycle_year+')';
-                        });
+                //     $.ajax({
+                //         url: '{{ route('dashboard.proto') }}/' + id,
+                //         type: 'GET',
+                //         dataType: 'json',
+                //         success: function(data) {
+                //             var nuevosDatos = data.new_datos;
 
-                        var datosEstudiantes = nuevosDatos.map(function (elemento) {
-                            return elemento.cantidad_estudiantes;
-                        });
+                //             var etiquetas = nuevosDatos.map(function(elemento) {
+                //                 return elemento.protocol_name + ' (' + elemento.cycle_number + '-' + elemento
+                //                     .cycle_year + ')';
+                //             });
 
-                        miGrafico.data.labels = etiquetas;
-                        miGrafico.data.datasets[0].data = datosEstudiantes;
+                //             var datosEstudiantes = nuevosDatos.map(function(elemento) {
+                //                 return elemento.cantidad_estudiantes;
+                //             });
 
-
-                        miGrafico.update();
-
-                    }
-                });
-
-        }
-
-        function updateData2(){
-            var id = document.getElementById('cycle-select2').value;
-            
-            $.ajax({
-                    url: '{{route('dashboard.course')}}/'+id,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(data) {
-                        var datos = data.new_datos;
-
-                        var nuevasEtiquetas = datos.map(function (elemento) {
-                            return elemento.course_name + ' (' + elemento.cycle_number + '-' + elemento.cycle_year+')';
-                        });
-
-                        var nuevosDatos = datos.map(function (elemento) {
-                            return elemento.cantidad_estudiantes;
-                        });
+                //             miGrafico.data.labels = etiquetas;
+                //             miGrafico.data.datasets[0].data = datosEstudiantes;
 
 
+                //             miGrafico.update();
 
-                        chart3.updateOptions({
-                            labels: nuevasEtiquetas,
-                            series: nuevosDatos
-                        });
-                    }
-                });
+                //         }
+                //     });
 
-        }
+                // }
 
-        function updateData3(){
-            var id = document.getElementById('cycle-select3').value;
-            
-            $.ajax({
-                    url: '{{route('dashboard.group')}}/'+id,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(data) {
-                        var datos = data.new_datos;
+                function updateData5() {
+                    var id = document.getElementById('cycle-select5').value;
 
-                        //datos
-                        var resultados = {};
+                    $.ajax({
+                        url: '{{ route('dashboards.status') }}/' + id,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            console.log(data)
+                            var nuevosDatos = data.new_datos;
 
-                        var escuelasUnicas = Array.from(new Set(datos.map(dato => dato.school_name)));
+                            var etiquetas = nuevosDatos.map(function(elemento) {
+                                return elemento.protocol_name + ' (' + elemento.cycle_number + '-' + elemento
+                                    .cycle_year + ')';
+                            });
 
-                        var coloresEscuelas = {};
+                            var datosEstudiantes = nuevosDatos.map(function(elemento) {
+                                return elemento.status;
+                            });
 
-                        datos.forEach(function(dato) {
-                            var protocolo = dato.protocol_name;
-                            var escuela = dato.school_name;
-                            var cantidad = dato.cantidad;
-
-                            if (!resultados[protocolo]) {
-                                resultados[protocolo] = {
-                                    name: protocolo,
-                                    data: Array(escuelasUnicas.length).fill(0),
-                                    color: obtenerColorEscuela(escuela)
-                                };
-                            }
-
-                            var indiceEscuela = escuelasUnicas.indexOf(escuela);
-
-                            resultados[protocolo].data[indiceEscuela] = cantidad;
-                        });
-
-                        var nuevosDatos = Object.values(resultados);
-
-                        console.log(nuevosDatos);
+                            miGrafico.data.labels = etiquetas;
+                            miGrafico.data.datasets[0].data = datosEstudiantes;
 
 
-                        //Etiquetas
-                        var datosPorEscuela = {};
+                            miGrafico.update();
 
-                        datos.forEach(function (dato) {
-                            if (!datosPorEscuela[dato.school_name]) {
-                                datosPorEscuela[dato.school_name] = {};
-                            }
-                            datosPorEscuela[dato.school_name][dato.protocol_name] = dato.cantidad;
-                        });
-
-                        var etiquetas = Object.keys(datosPorEscuela);
-
-
-                        // Definir colores personalizados
-                        function obtenerColorEscuela(escuela) {
-                            if (!coloresEscuelas.hasOwnProperty(escuela)) {
-                                // Generar un nuevo color si la escuela no tiene uno asignado
-                                coloresEscuelas[escuela] = obtenerColorAleatorio();
-                            }
-                            return coloresEscuelas[escuela];
                         }
+                    });
 
-                        // Función para obtener un color aleatorio
-                        function obtenerColorAleatorio() {
-                            var letras = '0123456789ABCDEF';
-                            var color = '#';
-                            for (var i = 0; i < 6; i++) {
-                                color += letras[Math.floor(Math.random() * 16)];
-                            }
-                            return color;
+                }
+
+                // function updateData2(){
+                //     var id = document.getElementById('cycle-select2').value;
+
+                //     $.ajax({
+                //             url: '{{ route('dashboard.course') }}/'+id,
+                //             type: 'GET',
+                //             dataType: 'json',
+                //             success: function(data) {
+                //                 var datos = data.new_datos;
+
+                //                 var nuevasEtiquetas = datos.map(function (elemento) {
+                //                     return elemento.course_name + ' (' + elemento.cycle_number + '-' + elemento.cycle_year+')';
+                //                 });
+
+                //                 var nuevosDatos = datos.map(function (elemento) {
+                //                     return elemento.cantidad_estudiantes;
+                //                 });
+
+
+
+                //                 chart3.updateOptions({
+                //                     labels: nuevasEtiquetas,
+                //                     series: nuevosDatos
+                //                 });
+                //             }
+                //         });
+
+                // }
+
+                // function updateData3(){
+                //     var id = document.getElementById('cycle-select3').value;
+
+                //     $.ajax({
+                //             url: '{{ route('dashboard.group') }}/'+id,
+                //             type: 'GET',
+                //             dataType: 'json',
+                //             success: function(data) {
+                //                 var datos = data.new_datos;
+
+                //                 //datos
+                //                 var resultados = {};
+
+                //                 var escuelasUnicas = Array.from(new Set(datos.map(dato => dato.school_name)));
+
+                //                 var coloresEscuelas = {};
+
+                //                 datos.forEach(function(dato) {
+                //                     var protocolo = dato.protocol_name;
+                //                     var escuela = dato.school_name;
+                //                     var cantidad = dato.cantidad;
+
+                //                     if (!resultados[protocolo]) {
+                //                         resultados[protocolo] = {
+                //                             name: protocolo,
+                //                             data: Array(escuelasUnicas.length).fill(0),
+                //                             color: obtenerColorEscuela(escuela)
+                //                         };
+                //                     }
+
+                //                     var indiceEscuela = escuelasUnicas.indexOf(escuela);
+
+                //                     resultados[protocolo].data[indiceEscuela] = cantidad;
+                //                 });
+
+                //                 var nuevosDatos = Object.values(resultados);
+
+                //                 console.log(nuevosDatos);
+
+
+                //                 //Etiquetas
+                //                 var datosPorEscuela = {};
+
+                //                 datos.forEach(function (dato) {
+                //                     if (!datosPorEscuela[dato.school_name]) {
+                //                         datosPorEscuela[dato.school_name] = {};
+                //                     }
+                //                     datosPorEscuela[dato.school_name][dato.protocol_name] = dato.cantidad;
+                //                 });
+
+                //                 var etiquetas = Object.keys(datosPorEscuela);
+
+
+                //                 // Definir colores personalizados
+                //                 function obtenerColorEscuela(escuela) {
+                //                     if (!coloresEscuelas.hasOwnProperty(escuela)) {
+                //                         // Generar un nuevo color si la escuela no tiene uno asignado
+                //                         coloresEscuelas[escuela] = obtenerColorAleatorio();
+                //                     }
+                //                     return coloresEscuelas[escuela];
+                //                 }
+
+                //                 // Función para obtener un color aleatorio
+                //                 function obtenerColorAleatorio() {
+                //                     var letras = '0123456789ABCDEF';
+                //                     var color = '#';
+                //                     for (var i = 0; i < 6; i++) {
+                //                         color += letras[Math.floor(Math.random() * 16)];
+                //                     }
+                //                     return color;
+                //                 }
+
+
+                //                 chart1.updateOptions({
+                //                     series: nuevosDatos
+                //                 });
+                //             }
+                //         });
+
+                // }
+
+                // function updateData4(){
+                //     var id = document.getElementById('cycle-select4').value;
+
+                //     $.ajax({
+                //             url: '{{ route('dashboard.group') }}/'+id,
+                //             type: 'GET',
+                //             dataType: 'json',
+                //             success: function(data) {
+                //                 var datos = data.new_datos;
+
+                //                 //datos
+                //                 var resultados = {};
+
+                //                 var escuelasUnicas = Array.from(new Set(datos.map(dato => dato.school_name)));
+
+                //                 var coloresEscuelas = {};
+
+                //                 datos.forEach(function(dato) {
+                //                     var protocolo = dato.protocol_name;
+                //                     var escuela = dato.school_name;
+                //                     var cantidad = dato.cantidad;
+
+                //                     if (!resultados[protocolo]) {
+                //                         resultados[protocolo] = {
+                //                             name: protocolo,
+                //                             data: Array(escuelasUnicas.length).fill(0),
+                //                             color: obtenerColorEscuela(escuela)
+                //                         };
+                //                     }
+
+                //                     var indiceEscuela = escuelasUnicas.indexOf(escuela);
+
+                //                     resultados[protocolo].data[indiceEscuela] = cantidad;
+                //                 });
+
+                //                 var nuevosDatos = Object.values(resultados);
+
+                //                 console.log(nuevosDatos);
+
+
+                //                 //Etiquetas
+                //                 var datosPorEscuela = {};
+
+                //                 datos.forEach(function (dato) {
+                //                     if (!datosPorEscuela[dato.school_name]) {
+                //                         datosPorEscuela[dato.school_name] = {};
+                //                     }
+                //                     datosPorEscuela[dato.school_name][dato.protocol_name] = dato.cantidad;
+                //                 });
+
+                //                 var etiquetas = Object.keys(datosPorEscuela);
+
+
+                //                 // Definir colores personalizados
+                //                 function obtenerColorEscuela(escuela) {
+                //                     if (!coloresEscuelas.hasOwnProperty(escuela)) {
+                //                         // Generar un nuevo color si la escuela no tiene uno asignado
+                //                         coloresEscuelas[escuela] = obtenerColorAleatorio();
+                //                     }
+                //                     return coloresEscuelas[escuela];
+                //                 }
+
+                //                 // Función para obtener un color aleatorio
+                //                 function obtenerColorAleatorio() {
+                //                     var letras = '0123456789ABCDEF';
+                //                     var color = '#';
+                //                     for (var i = 0; i < 6; i++) {
+                //                         color += letras[Math.floor(Math.random() * 16)];
+                //                     }
+                //                     return color;
+                //                 }
+
+
+                //                 chart2.updateOptions({
+                //                     series: nuevosDatos
+                //                 });
+                //             }
+                //         });
+
+                // }
+
+
+
+                $(document).ready(function() {
+                    // $('#export-excel-btn').click(function() {
+                    //     excelproto();
+                    // });
+
+                    $('#export-status-excel-btn').click(function() {
+                        excelstatus();
+                    });
+
+                    // $('#export-excel-btn2').click(function() {
+                    //     excelcourse();
+                    // });
+                    // $('#export-groups-excel-btn').click(function(){
+                    //     excelgroups();
+                    // })
+
+                    // $('#export-extensions-excel-btn').click(function(){
+                    //     excelextensions();
+                    // })
+                });
+
+                // document.getElementById('cycle-select').addEventListener('change', function() {
+                //     if (this.value) {
+                //         this.style.borderColor = ''; // Restablecer el color de borde al valor predeterminado
+                //     }
+                // });
+
+                document.getElementById('cycle-select5').addEventListener('change', function() {
+                    if (this.value) {
+                        this.style.borderColor = ''; // Restablecer el color de borde al valor predeterminado
+                    }
+                });
+                // document.getElementById('cycle-select2').addEventListener('change', function() {
+                //     if (this.value) {
+                //         this.style.borderColor = ''; // Restablecer el color de borde al valor predeterminado
+                //     }
+                // });
+
+                // document.getElementById('cycle-select3').addEventListener('change', function() {
+                //     if (this.value) {
+                //         this.style.borderColor = ''; // Restablecer el color de borde al valor predeterminado
+                //     }
+                // });
+
+                // document.getElementById('cycle-select4').addEventListener('change', function() {
+                //     if (this.value) {
+                //         this.style.borderColor = ''; // Restablecer el color de borde al valor predeterminado
+                //     }
+                // });
+
+
+                // function excelproto() {
+                //     var id = document.getElementById('cycle-select').value;
+
+                //     if (!id) {
+                //         document.getElementById('cycle-select').style.borderColor = 'red';
+                //         alert("Por favor, seleccione un ciclo.");
+                //         return;
+                //     }
+
+
+                //     $.ajax({
+                //         url: '{{ route('dashboard.excel_proto') }}/' + id,
+                //         type: 'GET',
+                //         xhrFields: {
+                //             responseType: 'blob'
+                //         },
+                //         success: function(data) {
+                //             var a = document.createElement('a');
+                //             var url = window.URL.createObjectURL(data);
+                //             a.href = url;
+                //             a.download = 'students.xlsx'; // Nombre del archivo
+                //             document.body.append(a);
+                //             a.click();
+                //             window.URL.revokeObjectURL(url);
+
+                //         },
+                //         error: function(xhr, status, error) {
+                //             console.error("Error en la solicitud AJAX:", error);
+                //         }
+                //     });
+
+                // }
+
+
+                function excelstatus() {
+                    var id = document.getElementById('cycle-select5').value;
+
+                    if (!id) {
+                        document.getElementById('cycle-select5').style.borderColor = 'red';
+                        alert("Por favor, seleccione un ciclo.");
+                        return;
+                    }
+
+
+                    $.ajax({
+                        url: '{{ route('dashboards.excel_status') }}/' + id,
+                        type: 'GET',
+                        xhrFields: {
+                            responseType: 'blob'
+                        },
+                        success: function(data) {
+                            var a = document.createElement('a');
+                            var url = window.URL.createObjectURL(data);
+                            a.href = url;
+                            a.download = 'students.xlsx'; // Nombre del archivo
+                            document.body.append(a);
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error en la solicitud AJAX:", error);
                         }
+                    });
 
+                }
 
-                        chart1.updateOptions({
-                            series: nuevosDatos
-                        });
-                    }
-                });
+                // function excelcourse(){
+                //     var id = document.getElementById('cycle-select2').value;
 
-        }
+                //     if (!id) {
+                //         document.getElementById('cycle-select2').style.borderColor = 'red';
+                //         alert("Por favor, seleccione un ciclo.");
+                //         return;
+                //     }
 
-        function updateData4(){
-            var id = document.getElementById('cycle-select4').value;
-            
-            $.ajax({
-                    url: '{{route('dashboard.group')}}/'+id,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(data) {
-                        var datos = data.new_datos;
+                //     $.ajax({
+                //             url: '{{ route('dashboard.excel_course') }}/'+id,
+                //             type: 'GET',
+                //             xhrFields: {
+                //                 responseType: 'blob'
+                //             },
+                //             success: function(data) {
+                //                 var a = document.createElement('a');
+                //                 var url = window.URL.createObjectURL(data);
+                //                 a.href = url;
+                //                 a.download = 'students.xlsx'; // Nombre del archivo
+                //                 document.body.append(a);
+                //                 a.click();
+                //                 window.URL.revokeObjectURL(url);
 
-                        //datos
-                        var resultados = {};
+                //             },
+                //             error: function(xhr, status, error) {
+                //                 console.error("Error en la solicitud AJAX:", error);
+                //             }
+                //         });
 
-                        var escuelasUnicas = Array.from(new Set(datos.map(dato => dato.school_name)));
+                // }
 
-                        var coloresEscuelas = {};
+                // function excelgroups(){
+                //     var id = document.getElementById('cycle-select3').value;
+                //     if (!id) {
+                //         document.getElementById('cycle-select3').style.borderColor = 'red';
+                //         alert("Por favor, seleccione un ciclo.");
+                //         return;
+                //     }
 
-                        datos.forEach(function(dato) {
-                            var protocolo = dato.protocol_name;
-                            var escuela = dato.school_name;
-                            var cantidad = dato.cantidad;
+                //     $.ajax({
+                //             url: '{{ route('dashboard.excel_groups') }}/'+id,
+                //             type: 'GET',
+                //             xhrFields: {
+                //                 responseType: 'blob'
+                //             },
+                //             success: function(data) {
+                //                 var a = document.createElement('a');
+                //                 var url = window.URL.createObjectURL(data);
+                //                 a.href = url;
+                //                 a.download = 'groups.xlsx'; // Nombre del archivo
+                //                 document.body.append(a);
+                //                 a.click();
+                //                 window.URL.revokeObjectURL(url);
 
-                            if (!resultados[protocolo]) {
-                                resultados[protocolo] = {
-                                    name: protocolo,
-                                    data: Array(escuelasUnicas.length).fill(0),
-                                    color: obtenerColorEscuela(escuela)
-                                };
-                            }
+                //             },
+                //             error: function(xhr, status, error) {
+                //                 console.error("Error en la solicitud AJAX:", error);
+                //             }
+                //         });
 
-                            var indiceEscuela = escuelasUnicas.indexOf(escuela);
+                // }
 
-                            resultados[protocolo].data[indiceEscuela] = cantidad;
-                        });
+                // function excelextensions(){
+                //     var id = document.getElementById('cycle-select4').value;
+                //     if (!id) {
+                //         document.getElementById('cycle-select4').style.borderColor = 'red';
+                //         alert("Por favor, seleccione un ciclo.");
+                //         return;
+                //     }
 
-                        var nuevosDatos = Object.values(resultados);
+                //     $.ajax({
+                //             url: '{{ route('dashboard.excel_extensions') }}/'+id,
+                //             type: 'GET',
+                //             xhrFields: {
+                //                 responseType: 'blob'
+                //             },
+                //             success: function(data) {
+                //                 var a = document.createElement('a');
+                //                 var url = window.URL.createObjectURL(data);
+                //                 a.href = url;
+                //                 a.download = 'extensions.xlsx'; // Nombre del archivo
+                //                 document.body.append(a);
+                //                 a.click();
+                //                 window.URL.revokeObjectURL(url);
 
-                        console.log(nuevosDatos);
+                //             },
+                //             error: function(xhr, status, error) {
+                //                 console.error("Error en la solicitud AJAX:", error);
+                //             }
+                //         });
 
-
-                        //Etiquetas
-                        var datosPorEscuela = {};
-
-                        datos.forEach(function (dato) {
-                            if (!datosPorEscuela[dato.school_name]) {
-                                datosPorEscuela[dato.school_name] = {};
-                            }
-                            datosPorEscuela[dato.school_name][dato.protocol_name] = dato.cantidad;
-                        });
-
-                        var etiquetas = Object.keys(datosPorEscuela);
-
-
-                        // Definir colores personalizados
-                        function obtenerColorEscuela(escuela) {
-                            if (!coloresEscuelas.hasOwnProperty(escuela)) {
-                                // Generar un nuevo color si la escuela no tiene uno asignado
-                                coloresEscuelas[escuela] = obtenerColorAleatorio();
-                            }
-                            return coloresEscuelas[escuela];
-                        }
-
-                        // Función para obtener un color aleatorio
-                        function obtenerColorAleatorio() {
-                            var letras = '0123456789ABCDEF';
-                            var color = '#';
-                            for (var i = 0; i < 6; i++) {
-                                color += letras[Math.floor(Math.random() * 16)];
-                            }
-                            return color;
-                        }
-
-
-                        chart2.updateOptions({
-                            series: nuevosDatos
-                        });
-                    }
-                });
-
-        }
-        
-
-
-        $(document).ready(function() {
-            $('#export-excel-btn').click(function() {
-                excelproto();
-            });
-            $('#export-excel-btn2').click(function() {
-                excelcourse();
-            });
-            $('#export-groups-excel-btn').click(function(){
-                excelgroups();
-            })
-
-            $('#export-extensions-excel-btn').click(function(){
-                excelextensions();
-            })
-        });
-
-        document.getElementById('cycle-select').addEventListener('change', function() {
-            if (this.value) {
-                this.style.borderColor = ''; // Restablecer el color de borde al valor predeterminado
-            }
-        });
-
-        document.getElementById('cycle-select2').addEventListener('change', function() {
-            if (this.value) {
-                this.style.borderColor = ''; // Restablecer el color de borde al valor predeterminado
-            }
-        });
-
-        document.getElementById('cycle-select3').addEventListener('change', function() {
-            if (this.value) {
-                this.style.borderColor = ''; // Restablecer el color de borde al valor predeterminado
-            }
-        });
-
-        document.getElementById('cycle-select4').addEventListener('change', function() {
-            if (this.value) {
-                this.style.borderColor = ''; // Restablecer el color de borde al valor predeterminado
-            }
-        });
-
-        
-        function excelproto(){
-            var id = document.getElementById('cycle-select').value;
-
-            if (!id) {
-                document.getElementById('cycle-select').style.borderColor = 'red';
-                alert("Por favor, seleccione un ciclo.");
-                return; 
-            }
-
-            
-            $.ajax({
-                    url: '{{route('dashboard.excel_proto')}}/'+id,
-                    type: 'GET',
-                    xhrFields: {
-                        responseType: 'blob'
-                    },
-                    success: function(data) {
-                        var a = document.createElement('a');
-                        var url = window.URL.createObjectURL(data);
-                        a.href = url;
-                        a.download = 'students.xlsx'; // Nombre del archivo
-                        document.body.append(a);
-                        a.click();
-                        window.URL.revokeObjectURL(url);
-
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error en la solicitud AJAX:", error);
-                    }
-                });
-
-        }
-
-        function excelcourse(){
-            var id = document.getElementById('cycle-select2').value;
-
-            if (!id) {
-                document.getElementById('cycle-select2').style.borderColor = 'red';
-                alert("Por favor, seleccione un ciclo.");
-                return; 
-            }
-            
-            $.ajax({
-                    url: '{{route('dashboard.excel_course')}}/'+id,
-                    type: 'GET',
-                    xhrFields: {
-                        responseType: 'blob'
-                    },
-                    success: function(data) {
-                        var a = document.createElement('a');
-                        var url = window.URL.createObjectURL(data);
-                        a.href = url;
-                        a.download = 'students.xlsx'; // Nombre del archivo
-                        document.body.append(a);
-                        a.click();
-                        window.URL.revokeObjectURL(url);
-
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error en la solicitud AJAX:", error);
-                    }
-                });
-
-        }
-
-        function excelgroups(){
-            var id = document.getElementById('cycle-select3').value;
-            if (!id) {
-                document.getElementById('cycle-select3').style.borderColor = 'red';
-                alert("Por favor, seleccione un ciclo.");
-                return; 
-            }
-            
-            $.ajax({
-                    url: '{{route('dashboard.excel_groups')}}/'+id,
-                    type: 'GET',
-                    xhrFields: {
-                        responseType: 'blob'
-                    },
-                    success: function(data) {
-                        var a = document.createElement('a');
-                        var url = window.URL.createObjectURL(data);
-                        a.href = url;
-                        a.download = 'groups.xlsx'; // Nombre del archivo
-                        document.body.append(a);
-                        a.click();
-                        window.URL.revokeObjectURL(url);
-
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error en la solicitud AJAX:", error);
-                    }
-                });
-
-        }
-
-        function excelextensions(){
-            var id = document.getElementById('cycle-select4').value;
-            if (!id) {
-                document.getElementById('cycle-select4').style.borderColor = 'red';
-                alert("Por favor, seleccione un ciclo.");
-                return; 
-            }
-            
-            $.ajax({
-                    url: '{{route('dashboard.excel_extensions')}}/'+id,
-                    type: 'GET',
-                    xhrFields: {
-                        responseType: 'blob'
-                    },
-                    success: function(data) {
-                        var a = document.createElement('a');
-                        var url = window.URL.createObjectURL(data);
-                        a.href = url;
-                        a.download = 'extensions.xlsx'; // Nombre del archivo
-                        document.body.append(a);
-                        a.click();
-                        window.URL.revokeObjectURL(url);
-
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error en la solicitud AJAX:", error);
-                    }
-                });
-
-        }
-
-    </script>
-@endsection
+                // }
+            </script>
+        @endsection

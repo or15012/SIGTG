@@ -13,18 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('evaluation_criteria', function (Blueprint $table) {
+        Schema::create('type_agreements', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
-            $table->mediumText("description")->nullable()->default(null);
-            $table->integer("percentage")->nullable()->default(null);
-            $table->foreignId('stage_id')->constrained('stages')->onDelete('restrict');
+            $table->string('name');
+            $table->string('affect'); // 1 estudiante, 2 grupo, 3 protocolo escuela, 4 escuela;
             $table->timestamps();
             $table->softDeletes();
-
-
-             //Restricción de unicidad
-             $table->unique(['name','stage_id']);
         });
     }
 
@@ -35,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('evaluation_criteria');
+        Schema::dropIfExists('type_agreements');
     }
 };

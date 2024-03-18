@@ -69,7 +69,7 @@
                                 <div class="mr-5">Aprobar etapa</div>
                             </div>
 
-                            @if ($project->status == 2)
+                            {{-- @if ($project->status == 2) --}}
                                 <form action="{{ route('evaluations.coordinator.submit.final.stage', $project->id) }}"
                                     id="projects-approve-stage" method="POST">
                                     @csrf
@@ -83,7 +83,7 @@
                                         </span>
                                     </button>
                                 </form>
-                            @endif
+                            {{-- @endif --}}
 
 
                         </div>

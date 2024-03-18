@@ -20,6 +20,9 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
+
+        $actualCycle = Cycle::where('status',1)->first();
+
         // Grupos
         $datos3 = DB::table('groups AS g')
         ->select('sp.school_id','sch.name as school_name','p.id as protocol_id','p.name as protocol_name',DB::raw('COUNT(*) as cantidad'))
@@ -28,10 +31,12 @@ class DashboardController extends Controller
         ->join('schools as sch', 'sch.id','sp.school_id')
         ->groupBy('sp.school_id','sch.name','p.id','p.name');
         if(session('school')['id'] != -1){
+            //dd(session('school')['id']);
             $datos3->where('sp.school_id', session('school')['id']);
         }
-        $datos3->get();
+        $datos3->where('g.cycle_id', '=', $actualCycle->id);
         $datos3 = $datos3->get();
+
         // Extensiones
         $datos4 = DB::table('extensions as ext') 
             ->select('sp.school_id','sch.name as school_name','p.id as protocol_id','p.name as protocol_name',DB::raw('COUNT(*) as cantidad'))
@@ -45,6 +50,7 @@ class DashboardController extends Controller
         if(session('school')['id'] != -1){
             $datos4->where('sp.school_id', session('school')['id']);
         }
+        $datos4->where('g.cycle_id', '=', $actualCycle->id);
         $datos4 = $datos4->get();
 
         //  Estudiantes en un protocolo por escuela
@@ -67,6 +73,7 @@ class DashboardController extends Controller
             $datos->groupBy('cy.id', 'proto.id','proto.name', 'cy.year','cy.number')
             ->select('cy.id as cycle_id', 'proto.id as protocol_id', 'proto.name as protocol_name', 'cy.year as cycle_year', 'cy.number as cycle_number', 
                 DB::raw('COUNT(u.id) as cantidad_estudiantes'))
+                ->where('gro.cycle_id', '=', $actualCycle->id)
             ->get();  
 
             $datos= $datos->get();
@@ -90,13 +97,14 @@ class DashboardController extends Controller
             $datos2->groupBy('cy.id', 'proto.id','cou.name', 'cy.year','cy.number')
             ->select('cy.id as cycle_id', 'proto.id as protocol_id', 'cou.name as course_name', 'cy.year as cycle_year', 'cy.number as cycle_number', 
                 DB::raw('COUNT(u.id) as cantidad_estudiantes'))
+                ->where('gro.cycle_id', '=', $actualCycle->id)
             ->get();
 
             $datos2 = $datos2->get();
 
             $ciclos = Cycle::latest()->take(10)->get();
 
-            return view('dashboard', compact('datos','datos2','datos3','datos4','ciclos'));
+            return view('dashboard', compact('datos','datos2','datos3','datos4','ciclos','actualCycle'));
     }
 
     public function ajaxProto($cycle_id){

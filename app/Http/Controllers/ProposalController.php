@@ -99,7 +99,6 @@ class ProposalController extends Controller
             //dd($proposals);
             return redirect()->route('proposals.index')->with('success', 'Se añadió la propuesta correctamente.');
         } catch (\Throwable $th) {
-            dd($th->getMessage());
             return redirect()->route('proposals.index')->with('error', 'La propuesta no pudo ser añadida.');
         }
     }
@@ -300,6 +299,8 @@ class ProposalController extends Controller
 
             return redirect()->route('proposals.applications.index', [$proposal->proposal_id])->with('success', 'Has aplicado correctamente a la pasantía.');
         }
+        return redirect()->route('proposals.applications.index', [$proposal->proposal_id])->with('success', 'Has aplicado correctamente a la pasantía.');
+
     }
 
     //El coorinador acepta o rechaza CV

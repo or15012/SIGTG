@@ -193,4 +193,5 @@ return [
     "Workshops"              => "Talleres",
     "WithdrawalsAdviser"     => "Retiros (Coordinador)",
     "Withdrawals"            => "Retiros",
+    "TypesAgreements"        => "Tipos de acuerdos",
 ];

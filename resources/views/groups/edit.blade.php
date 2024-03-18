@@ -12,7 +12,7 @@
     @endcomponent
     <div class="container">
         <div class="d-flex justify-content-between align-items-center">
-            <h1>Actualizar grupo</h1>
+            <h1>Detalle de grupo</h1>
 
 
             <div class="d-flex justify-content-end align-items-center">
@@ -33,23 +33,19 @@
             </div>
         @endif
         <div class="d-flex justify-content-end">
-            <a class="btn btn-secondary mx-1"
-                href="{{ route('document.authorization.letter', $id) }}">
+            <a class="btn btn-secondary mx-1" href="{{ route('document.authorization.letter', $id) }}">
                 <i class="fa fa-file"></i>&nbsp;&nbsp;Plantilla carta de autorización
             </a>
-
             @if ($group[0]->authorization_letter)
                 <a class=" btn btn-secondary mx-1"
                     href="{{ route('download', ['file' => $group[0]->authorization_letter]) }}"><i
                         class="fa fa-file"></i>&nbsp;&nbsp;Carta adjunta</a>
             @endif
-
             @if ($group[0]->authorization_letter_higher_members)
                 <a class=" btn btn-secondary mx-1"
                     href="{{ route('download', ['file' => $group[0]->authorization_letter_higher_members]) }}"><i
                         class="fa fa-file"></i>&nbsp;&nbsp;Carta grupo mayor a 5 integrantes</a>
             @endif
-
         </div>
         <form action="{{ route('groups.update', $id) }}" method="POST" id="form-group-confirm">
             @csrf
@@ -64,7 +60,6 @@
                     </div>
                 @endif
                 <div class="row mb-3" id="list-group">
-
                     <div class="col-12 col-md-12 col-lg-12" id="user-{{ $user->id }}">
                         <div class="card mb-2">
                             <div class="card-header">
@@ -76,7 +71,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             @empty
                 <div class="col-12 col-md-12 col-lg-12 ">
@@ -90,6 +84,49 @@
                 </div>
             @endif
         </form>
+
+
+        <div class="agreements">
+            <div>
+                <h3>Acuerdos de grupo</h3>
+                <a href="{{ route('agreements.create.group',$id) }}" class="btn btn-primary mb-3">Registrar acuerdo de grupo</a>
+
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="table-danger">
+                        <th>Nombre de acuerdo</th>
+                        <th>Número de acuerdo</th>
+                        <th>Fecha de aprobación</th>
+                        <th>Fecha de subida</th>
+                        <th>Registrado por</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($agreements as $agreement)
+                        <tr>
+                            <td>{{ $agreement->name }}</td>
+                            <td>{{ $agreement->number }}</td>
+                            <td>{{ \Carbon\Carbon::parse($agreement->approval_date)->format('d-m-Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($agreement->created_at)->format('d-m-Y') }}</td>
+                            <td>{{ $agreement->first_name }} {{ $agreement->last_name }}</td>
+                            <td>
+                                <form action="{{ route('workshop.destroy', $agreement->id) }}" method="POST"
+                                    style="display: inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger buttonDelete"><i
+                                            class="fas fa-trash-alt"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                    @endforelse
+
+                </tbody>
+            </table>
+        </div>
     </div>
 @endsection
 @section('script')

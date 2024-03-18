@@ -1,32 +1,40 @@
 [
-        {
-            "id" : 1,
-            "name" : "Planificación de actividades para la ejecución del EXG",
-            "protocol_id" : 5,
-            "cycle_id" : 1,
-            "school_id" : 1,
-            "created_at" : "2024-02-08 19:59:11",
-            "updated_at" : "2024-02-08 19:59:11",
-            "deleted_at" : null,
-            "percentage" : 5,
-            "sort" : 1,
-            "type" : 0,
-            "course_id" : null
-        },
-
-        {
-            "id" : 2,
-            "name" : "Memoria de Capitalización de Experiencias del EXG",
-            "protocol_id" : 5,
-            "cycle_id" : 1,
-            "school_id" : 1,
-            "created_at" : "2024-02-08 20:36:42",
-            "updated_at" : "2024-02-08 20:36:42",
-            "deleted_at" : null,
-            "percentage" : 10,
-            "sort" : 3,
-            "type" : 0,
-            "course_id" : null
-        }
-
+    {
+        "id": 1,
+        "name": "Planificación de actividades para la ejecución del EXG",
+        "protocol_id": 5,
+        "cycle_id": 1,
+        "school_id": 1,
+        "created_at": "2024-02-08 19:59:11",
+        "updated_at": "2024-02-08 19:59:11",
+        "deleted_at": null,
+        "percentage": 5,
+        "sort": 1,
+        "type": 0,
+        "course_id": null,
+        "visible": 0,
+        "start_date": null,
+        "end_date": null,
+        "days": null,
+        "category": 2
+    },
+    {
+        "id": 2,
+        "name": "Memoria de Capitalización de Experiencias del EXG",
+        "protocol_id": 5,
+        "cycle_id": 1,
+        "school_id": 1,
+        "created_at": "2024-02-08 20:36:42",
+        "updated_at": "2024-02-08 20:36:42",
+        "deleted_at": null,
+        "percentage": 10,
+        "sort": 10000,
+        "type": 0,
+        "course_id": null,
+        "start_date"    : null,
+        "end_date"      : null,
+        "days"          : null,
+        "category"      : 3,
+        "visible"       : 0
+    }
 ]

@@ -13,6 +13,7 @@ class PhaseStage extends Model
     protected $table = 'phase_stage'; // Nombre de la tabla en la base de datos
 
     protected $fillable = [
+        'id',
         'phase_id',
         'stage_id',
         'created_at',

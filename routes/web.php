@@ -1,15 +1,13 @@
 <?php
 
-use App\Http\Controllers\ActivityControlador;
-use App\Http\Controllers\ActivityControllador;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AdviserController;
+use App\Http\Controllers\AgreementController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CriteriaStageController;
 use App\Http\Controllers\CycleController;
 use App\Http\Controllers\EvaluationCriteriaController;
-use App\Http\Controllers\EvaluationStageController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
@@ -18,9 +16,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ConsultingController;
-use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DocumentController;
-use App\Http\Controllers\EntityController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\EvaluationDocumentController;
 use App\Http\Controllers\EventsController;
@@ -34,10 +30,7 @@ use App\Http\Controllers\SubAreaController;
 use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\WithdrawalController;
 use App\Http\Controllers\LogController;
-use App\Models\Activity;
-use App\Models\Group;
-use App\Models\Withdrawals;
-use Illuminate\Http\Request;
+use App\Http\Controllers\TypeAgreementController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -229,7 +222,7 @@ Route::group(['prefix' => 'stages', 'as' => 'stages.'], function () {
     Route::put('/{stage}', [StageController::class, 'update'])->name('update');
     Route::delete('/{stage}', [StageController::class, 'destroy'])->name('destroy');
     Route::get('/download-template', [StageController::class, 'downloadTemplate'])->name('download.template');
-
+    Route::get('/download-template-subareas', [StageController::class, 'downloadTemplateSubareas'])->name('download.template.subareas');
     Route::get('/modal-load-criterias', [StageController::class, 'modalLoadCriterias'])->name('modal.load.criterias');
     Route::post('/modal-load-criterias', [StageController::class, 'storeLoadCriterias'])->name('store.load.criterias');
 
@@ -251,6 +244,8 @@ Route::group(['prefix' => 'stages', 'as' => 'stages.'], function () {
                 Route::get('/index/{evaluation}', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasIndex'])->name('index');
                 Route::get('/edit/{criteria}', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasEdit'])->name('edit');
                 Route::put('/update/{criteria}', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasUpdate'])->name('update');
+                Route::get('/modal', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasModal'])->name('modal');
+                Route::post('/load', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasLoad'])->name('load');
             });
         });
     });
@@ -510,6 +505,26 @@ Route::group(['prefix' => 'withdrawals', 'as' => 'withdrawals.'], function () {
         Route::put('/update/{withdrawal}', [WithdrawalController::class, 'coordinatorUpdate'])->name('update');
     });
 });
+
+
+
+// Retiros (withdrawals).
+Route::group(['prefix' => 'type_agreements', 'as' => 'type_agreements.'], function () {
+    Route::get('/', [TypeAgreementController::class, 'index'])->name('index');
+    Route::get('/create', [TypeAgreementController::class, 'create'])->name('create');
+    Route::post('/', [TypeAgreementController::class, 'store'])->name('store');
+    // Route::get('/{type}', [TypeAgreementController::class, 'show'])->name('show');
+    Route::get('/{TypeAgreement}/edit', [TypeAgreementController::class, 'edit'])->name('edit');
+    Route::put('/{TypeAgreement}', [TypeAgreementController::class, 'update'])->name('update');
+    Route::delete('/{TypeAgreement}', [TypeAgreementController::class, 'destroy'])->name('destroy');
+});
+
+Route::group(['prefix' => 'agreements', 'as' => 'agreements.'], function () {
+    Route::get('/create/group/{group}', [AgreementController::class, 'createAgreementGroup'])->name('create.group');
+    Route::post('/store/group/{group}', [AgreementController::class, 'storeAgreementGroup'])->name('store.group');
+});
+
+
 
 // Estas rutas dejarlas de ultimo
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
