@@ -65,6 +65,7 @@ class ProfileController extends Controller
         }
 
         $preprofiles = Profile::join('groups as gr', 'profiles.group_id', 'gr.id')
+        ->select('profiles.name','profiles.description', 'profiles.created_at', 'profiles.proposal_priority', 'profiles.status','profiles.id')
             ->where('protocol_id', session('protocol')['id'])
             ->where('group_id', $group->id)
             ->where('type', 0)
