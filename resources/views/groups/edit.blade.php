@@ -97,6 +97,7 @@
                     <tr class="table-danger">
                         <th>Nombre de acuerdo</th>
                         <th>Número de acuerdo</th>
+                        <th>Descripción</th>
                         <th>Fecha de aprobación</th>
                         <th>Fecha de subida</th>
                         <th>Registrado por</th>
@@ -108,6 +109,7 @@
                         <tr>
                             <td>{{ $agreement->name }}</td>
                             <td>{{ $agreement->number }}</td>
+                            <td>{{ $agreement->description }}</td>
                             <td>{{ \Carbon\Carbon::parse($agreement->approval_date)->format('d-m-Y') }}</td>
                             <td>{{ \Carbon\Carbon::parse($agreement->created_at)->format('d-m-Y') }}</td>
                             <td>{{ $agreement->first_name }} {{ $agreement->last_name }}</td>

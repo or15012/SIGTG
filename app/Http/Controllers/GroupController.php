@@ -559,6 +559,7 @@ class GroupController extends Controller
             $agreement                      = new Agreement();
             $agreement->number              = $request->number_agreement;
             $agreement->approval_date       = $request->date_agreement;
+            $agreement->description         = $request->description;
             $agreement->group_id            = $request->group_id;
             $agreement->user_load_id        = auth()->user()->id;
             $agreement->type_agreement_id   = 1;
@@ -592,6 +593,7 @@ class GroupController extends Controller
                 $agreement                      = new Agreement();
                 $agreement->number              = $request->number_agreement;
                 $agreement->approval_date       = $request->date_agreement;
+                $agreement->description         = $request->description;
                 $agreement->group_id            = $group->group_id;
                 $agreement->user_load_id        = auth()->user()->id;
                 $agreement->type_agreement_id   = 2;
