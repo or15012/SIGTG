@@ -271,8 +271,20 @@ class GroupController extends Controller
 
         $agreements = Agreement::where('group_id', $id)
             ->join('type_agreements as ta', 'ta.id', 'agreements.type_agreement_id')
-            ->join('users as u', 'u.id','agreements.user_load_id')
+            ->join('users as u', 'u.id', 'agreements.user_load_id')
+            ->select(
+                'agreements.id',
+                'ta.name',
+                'agreements.number',
+                'agreements.description',
+                'agreements.approval_date',
+                'agreements.created_at',
+                'u.first_name',
+                'u.last_name'
+            )
             ->get();
+
+
 
         return view('groups.edit', compact('group', 'id', 'agreements'));
     }

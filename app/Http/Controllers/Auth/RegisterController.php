@@ -456,6 +456,16 @@ class RegisterController extends Controller
         $agreements = Agreement::join('type_agreements as ta', 'ta.id', 'agreements.type_agreement_id')
             ->join('users as u', 'u.id', 'agreements.user_load_id')
             ->where('user_id', $user->id)
+            ->select(
+                'agreements.id',
+                'ta.name',
+                'agreements.number',
+                'agreements.description',
+                'agreements.approval_date',
+                'agreements.created_at',
+                'u.first_name',
+                'u.last_name'
+            )
             ->get();
 
         return view('auth.agreements', [

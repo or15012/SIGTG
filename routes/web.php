@@ -526,8 +526,7 @@ Route::group(['prefix' => 'agreements', 'as' => 'agreements.'], function () {
     Route::post('/store/group/{group}', [AgreementController::class, 'storeAgreementGroup'])->name('store.group');
     Route::get('/create/student/{student}', [AgreementController::class, 'createAgreementStudent'])->name('create.student');
     Route::post('/store/student/{student}', [AgreementController::class, 'storeAgreementStudent'])->name('store.student');
-    Route::delete('/{agreement}', [AgreementController::class, 'destroy'])->name('destroy');
-
+    Route::delete('/delete/{agreement}', [AgreementController::class, 'destroy'])->name('destroy');
 });
 
 

@@ -84,4 +84,11 @@ class AgreementController extends Controller
             return redirect()->action([GroupController::class, 'index'])->with('error', 'Algo salió mal. Intente nuevamente.');
         }
     }
+
+    public function destroy(Agreement $agreement)
+    {
+        $agreement->delete();
+
+        return redirect()->back()->with('success', 'Acuerdo eliminada exitosamente.');
+    }
 }
