@@ -359,6 +359,15 @@ Route::group(['prefix' => 'extensions', 'as' => 'extensions.'], function () {
     Route::post('/', [ExtensionController::class,  'store'])->name('store');
     Route::get('/{extension}/edit/{project}', [ExtensionController::class, 'edit'])->name('edit');
     Route::put('/{extension}', [ExtensionController::class, 'update'])->name('update');
+
+    Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
+        Route::get('/', [ExtensionController::class, 'coordinatorIndex'])->name('index');
+        Route::get('show/{extension}', [ExtensionController::class, 'coordinatorShow'])->name('show');
+        Route::put('/update/{extension}', [ExtensionController::class, 'coordinatorUpdate'])->name('update');
+        // rutas para adjuntar acta de aprobación
+        Route::get('/modal-approvement', [ExtensionController::class, 'modalApprovement'])->name('modal.approvement');
+        Route::post('/store-approvement', [ExtensionController::class, 'storeApprovement'])->name('store.approvement');
+    });
 });
 
 // Documentos

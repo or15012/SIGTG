@@ -256,6 +256,13 @@
         "name": "Withdrawals.advisers",
         "guard_name": "web",
         "description": "Permiso para consultar solicitudes de retiros de trabajo de grado, aprobar o rechazar"
+    },
+    {
+        "id": 44,
+        "name": "Extensions.advisers",
+        "guard_name": "web",
+        "description": "Permiso para consultar solicitudes de prorroga de trabajo de grado, aprobar o rechazar"
     }
+
 
 ]

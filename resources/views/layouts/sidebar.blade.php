@@ -327,8 +327,8 @@
 
                             @case(5)
                                 <!--
-                                                                                                                            Esta opción no se mostrará al Coordinador del protocolo.
-                                                                                                                        -->
+                                                                                                                                        Esta opción no se mostrará al Coordinador del protocolo.
+                                                                                                                                    -->
                             @break
 
                             @default
@@ -504,20 +504,29 @@
                 @endif
 
                 @can('Withdrawals.students')
-                <li>
-                    <a href="{{ route('withdrawals.index') }}">
-                        <i class="bx bx-dislike icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-withdrawals">@lang('translation.Withdrawals')</span>
-                    </a>
-                </li>
+                    <li>
+                        <a href="{{ route('withdrawals.index') }}">
+                            <i class="bx bx-dislike icon nav-icon"></i>
+                            <span class="menu-item" data-key="t-withdrawals">@lang('translation.Withdrawals')</span>
+                        </a>
+                    </li>
                 @endcan
                 @can('Withdrawals.advisers')
-                <li>
-                    <a href="{{ route('withdrawals.coordinator.index') }}">
-                        <i class="bx bx-dislike icon nav-icon"></i>
-                        <span class="menu-item" data-key="t-withdrawalsadviser">@lang('translation.WithdrawalsAdviser')</span>
-                    </a>
-                </li>
+                    <li>
+                        <a href="{{ route('withdrawals.coordinator.index') }}">
+                            <i class="bx bx-dislike icon nav-icon"></i>
+                            <span class="menu-item" data-key="t-withdrawalsadviser">@lang('translation.WithdrawalsAdviser')</span>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('Extensions.advisers')
+                    <li>
+                        <a href="{{ route('extensions.coordinator.index') }}">
+                            <i class="bx bx-plus icon nav-icon"></i>
+                            <span class="menu-item" data-key="t-extensionsadviser">@lang('translation.ExtensionsAdviser')</span>
+                        </a>
+                    </li>
                 @endcan
 
                 <li>
