@@ -271,8 +271,20 @@ class GroupController extends Controller
 
         $agreements = Agreement::where('group_id', $id)
             ->join('type_agreements as ta', 'ta.id', 'agreements.type_agreement_id')
-            ->join('users as u', 'u.id','agreements.user_load_id')
+            ->join('users as u', 'u.id', 'agreements.user_load_id')
+            ->select(
+                'agreements.id',
+                'ta.name',
+                'agreements.number',
+                'agreements.description',
+                'agreements.approval_date',
+                'agreements.created_at',
+                'u.first_name',
+                'u.last_name'
+            )
             ->get();
+
+
 
         return view('groups.edit', compact('group', 'id', 'agreements'));
     }
@@ -559,6 +571,7 @@ class GroupController extends Controller
             $agreement                      = new Agreement();
             $agreement->number              = $request->number_agreement;
             $agreement->approval_date       = $request->date_agreement;
+            $agreement->description         = $request->description;
             $agreement->group_id            = $request->group_id;
             $agreement->user_load_id        = auth()->user()->id;
             $agreement->type_agreement_id   = 1;
@@ -592,6 +605,7 @@ class GroupController extends Controller
                 $agreement                      = new Agreement();
                 $agreement->number              = $request->number_agreement;
                 $agreement->approval_date       = $request->date_agreement;
+                $agreement->description         = $request->description;
                 $agreement->group_id            = $group->group_id;
                 $agreement->user_load_id        = auth()->user()->id;
                 $agreement->type_agreement_id   = 2;

@@ -75,6 +75,7 @@ Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
     Route::post('/import', [RegisterController::class, 'import'])->name('import');
     Route::get('/assign-roles/{user}', [RegisterController::class, 'assignRoles'])->name('assign.roles');
     Route::post('/assign-roles-store/{user}', [RegisterController::class, 'assignRolesStore'])->name('assign.roles.store');
+    Route::get('/agreements/{user}', [RegisterController::class, 'agreements'])->name('agreements');
     Route::get('/{id}/edit', [RegisterController::class, 'showEditForm'])->name('edit');
     Route::put('/{id}/update', [RegisterController::class, 'update'])->name('update');
 });
@@ -343,7 +344,6 @@ Route::group(['prefix' => 'evaluations', 'as' => 'evaluations.'], function () {
         Route::get('/approve-stage/{project}/{stage}',  [EvaluationController::class, 'approveStage'])->name('approve.stage');
 
         Route::put('/submit-final-stage/{project}', [EvaluationController::class, 'coordinatorSubmitFinalStage'])->name('submit.final.stage');
-
     });
 
 
@@ -503,6 +503,10 @@ Route::group(['prefix' => 'withdrawals', 'as' => 'withdrawals.'], function () {
         Route::get('/', [WithdrawalController::class, 'coordinatorIndex'])->name('index');
         Route::get('show/{withdrawal}', [WithdrawalController::class, 'coordinatorShow'])->name('show');
         Route::put('/update/{withdrawal}', [WithdrawalController::class, 'coordinatorUpdate'])->name('update');
+
+        // rutas para adjuntar acta de aprobación
+        Route::get('/modal-approvement', [WithdrawalController::class, 'modalApprovement'])->name('modal.approvement');
+        Route::post('/store-approvement', [WithdrawalController::class, 'storeApprovement'])->name('store.approvement');
     });
 });
 
@@ -522,6 +526,9 @@ Route::group(['prefix' => 'type_agreements', 'as' => 'type_agreements.'], functi
 Route::group(['prefix' => 'agreements', 'as' => 'agreements.'], function () {
     Route::get('/create/group/{group}', [AgreementController::class, 'createAgreementGroup'])->name('create.group');
     Route::post('/store/group/{group}', [AgreementController::class, 'storeAgreementGroup'])->name('store.group');
+    Route::get('/create/student/{student}', [AgreementController::class, 'createAgreementStudent'])->name('create.student');
+    Route::post('/store/student/{student}', [AgreementController::class, 'storeAgreementStudent'])->name('store.student');
+    Route::delete('/delete/{agreement}', [AgreementController::class, 'destroy'])->name('destroy');
 });
 
 

@@ -4,25 +4,21 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Controllers\Controller;
-use App\Models\Cycle;
-use App\Models\Withdrawal;
-use App\Models\Project;
-use App\Models\Protocol;
-use App\Models\School;
-use Illuminate\Http\Request;
-use App\Models\Stage;
-use App\Models\TypeWithdrawal;
 use Illuminate\Support\Facades\Storage;
-use PhpParser\Node\Stmt\TryCatch;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Request;
 use App\Mail\SendMail;
+use App\Models\Agreement;
 use App\Models\Group;
 use App\Models\Notification;
-use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use App\Models\UserNotification;
-use Database\Seeders\TypeWithdrawalSeeder;
+use App\Models\TypeWithdrawal;
+use App\Models\Withdrawal;
+
 use Exception;
-use Illuminate\Support\Facades\Auth;
+
 
 class WithdrawalController extends Controller
 {
@@ -322,5 +318,34 @@ class WithdrawalController extends Controller
         }
 
         return redirect()->route('withdrawals.coordinator.index')->with('success', 'Estado de retiro actualizado.');
+    }
+
+    public function modalApprovement(Request $request)
+    {
+        return view('withdrawals.modal.attach_approvement', ['withdrawal_id' => $request->withdrawal_id]);
+    }
+
+    public function storeApprovement(Request $request)
+    {
+        try {
+
+            $withdrawal = Withdrawal::find($request->withdrawal_id);
+            $withdrawal->status = 1;
+            $withdrawal->update();
+
+            //Insertare el acuerdo del estudiante
+            $agreement                     = new Agreement();
+            $agreement->number             = $request->number_agreement;
+            $agreement->approval_date      = $request->date_agreement;
+            $agreement->description        = $request->description;
+            $agreement->user_id            = $withdrawal->user_id;
+            $agreement->user_load_id       = auth()->user()->id;
+            $agreement->type_agreement_id  = 3;
+            $agreement->save();
+            return redirect()->back()->with('success', 'Retiro aceptado.');
+        } catch (\Throwable $th) {
+
+            return redirect()->back()->with('error', 'Algo salió mal, intente nuevamente.');
+        }
     }
 }
