@@ -20,13 +20,18 @@ class SessionController extends Controller
 
         // Obtener la ruta de origen
         $previousRoute = url()->previous();
-
         if (strpos($previousRoute, '/dashboard') !== false) {
             // Si la ruta de origen es "/dashboard", redireccionar a "/dashboard"
             return redirect()->route('dashboard.index');
         } else if (strpos($previousRoute, '/dashboards') !== false) {
             // Si la ruta de origen es "/dashboards", redireccionar a "/dashboards"
             return redirect()->route('dashboards.index');
+        } else if (strpos($previousRoute, '/coursereports') !== false) {
+            // Si la ruta de origen es "/coursereports", redireccionar a "/coursereports"
+            return redirect()->route('coursereports.index');
+        } else if (strpos($previousRoute, '/groupreports') !== false) {
+            // Si la ruta de origen es "/groupreports", redireccionar a "/groupreports"
+            return redirect()->route('groupreports.index');
         } else {
             // Si la ruta de origen no es "/roles", redireccionar a "/home" por defecto
             return redirect('home');
@@ -50,6 +55,12 @@ class SessionController extends Controller
         } else if (strpos($previousRoute, '/dashboards') !== false) {
             // Si la ruta de origen es "/dashboards", redireccionar a "/dashboards"
             return redirect()->route('dashboards.index');
+        } else if (strpos($previousRoute, '/coursereports') !== false) {
+            // Si la ruta de origen es "/coursereports", redireccionar a "/coursereports"
+            return redirect()->route('coursereports.index');
+        } else if (strpos($previousRoute, '/groupreports') !== false) {
+            // Si la ruta de origen es "/groupreports", redireccionar a "/groupreports"
+            return redirect()->route('groupreports.index');
         } else {
             // Si la ruta de origen no es "/roles", redireccionar a "/home" por defecto
             return redirect('home');
@@ -74,6 +85,12 @@ class SessionController extends Controller
         } else if (strpos($previousRoute, '/dashboards') !== false) {
             // Si la ruta de origen es "/dashboards", redireccionar a "/dashboards"
             return redirect()->route('dashboards.index');
+        } else if (strpos($previousRoute, '/coursereports') !== false) {
+            // Si la ruta de origen es "/coursereports", redireccionar a "/coursereports"
+            return redirect()->route('coursereports.index');
+        } else if (strpos($previousRoute, '/groupreports') !== false) {
+            // Si la ruta de origen es "/groupreports", redireccionar a "/groupreports"
+            return redirect()->route('groupreports.index');
         } else {
             // Si la ruta de origen no es "/roles", redireccionar a "/home" por defecto
             return redirect('home');
@@ -97,6 +114,12 @@ class SessionController extends Controller
         } else if (strpos($previousRoute, '/dashboards') !== false) {
             // Si la ruta de origen es "/dashboards", redireccionar a "/dashboards"
             return redirect()->route('dashboards.index');
+        } else if (strpos($previousRoute, '/coursereports') !== false) {
+            // Si la ruta de origen es "/coursereports", redireccionar a "/coursereports"
+            return redirect()->route('coursereports.index');
+        } else if (strpos($previousRoute, '/groupreports') !== false) {
+            // Si la ruta de origen es "/groupreports", redireccionar a "/groupreports"
+            return redirect()->route('groupreports.index');
         } else {
             // Si la ruta de origen no es "/roles", redireccionar a "/home" por defecto
             return redirect('home');
