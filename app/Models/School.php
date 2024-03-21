@@ -27,4 +27,9 @@ class School extends Model
     {
         return $this->hasMany(Phase::class);
     }
+
+    public function protocols()
+    {
+        return $this->belongsToMany(Protocol::class, 'school_protocol');
+    }
 }

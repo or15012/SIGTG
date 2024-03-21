@@ -24,4 +24,14 @@ class Protocol extends Model
             ->withPivot('status') // Esto permite acceder a la columna 'status' de la tabla intermedia
             ->withTimestamps();
     }
+
+    public function schools()
+    {
+        return $this->belongsToMany(School::class, 'school_protocol');
+    }
+
+    public function groups()
+    {
+        return $this->hasMany(Group::class);
+    }
 }
