@@ -20,5 +20,11 @@ use Illuminate\Support\Facades\Response;
 
 class GroupStudentsReportController extends Controller
 {
+    public function index(Request $request)
+    {
+        $actualCycle = Cycle::where('status', 1)->first();
+
+        
+    }
 
 }
