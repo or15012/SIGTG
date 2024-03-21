@@ -67,17 +67,22 @@
                         <div class="d-flex flex-wrap align-items-center">
                             <h5 class="card-title mb-0">Proyectos por estado</h5>
                             <div class="ms-auto">
-                                <div class="mb-3">
-                                    <button id="export-status-excel-btn" class="btn btn-primary mt-3">Exportar proyectos
-                                        según
-                                        estado</button>
-                                </div>
+                                @if (session('school')['id'] === -1 && session('protocol')['id'] === -1)
+                                    {{-- No mostrar el botón exportar --}}
+                                @else
+                                    <div class="mb-3">
+                                        <button id="export-status-excel-btn" class="btn btn-primary mt-3">Exportar proyectos
+                                            según
+                                            estado</button>
+                                    </div>
+                                @endif
                                 <div class="mb-3">
                                     <label for="cycle-select" class="form-label">Seleccionar Ciclo:</label>
                                     <select class="form-select" id="cycle-select5" onchange="updateData5()">
                                         <option value="" selected disabled>Seleccione un ciclo</option>
                                         @foreach ($ciclos as $ciclo)
-                                            <option value="{{ $ciclo->id }}">{{ $ciclo->number }} - {{ $ciclo->year }}
+                                            <option value="{{ $ciclo->id }}">{{ $ciclo->number }} -
+                                                {{ $ciclo->year }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -161,8 +166,6 @@
                     </div>
                 </div>
             </div>
-
-
         @endsection
         @section('script')
             <script src="{{ URL::asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
@@ -172,7 +175,6 @@
             <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
             <script>
-
                 function updateData5() {
                     var id = document.getElementById('cycle-select5').value;
 
@@ -269,7 +271,5 @@
                     });
 
                 }
-
-
             </script>
         @endsection
