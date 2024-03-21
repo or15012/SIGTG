@@ -56,30 +56,20 @@ class TypeAgreementController extends Controller
     public function update(Request $request, TypeAgreement $TypeAgreement)
     {
         $request->validate([
-
-            'description'   => 'nullable|string|max:255',
-            'permissions'   => 'array',
+            'name'              => 'required|unique:type_agreements,name,' . $TypeAgreement->id,
+            'selectedAffect'    => 'required|integer',
         ]);
 
-        if (!in_array($TypeAgreement->id, [1, 2, 3, 4, 5])) {
-            $TypeAgreement->name = $request->input('name');
-        }
+        $TypeAgreement->name    = $request->name;
+        $TypeAgreement->affect  = $request->selectedAffect;
+        $TypeAgreement->update();
 
-        $TypeAgreement->description = $request->input('description');
-        $TypeAgreement->save();
-
-        if ($request->has('permissions')) {
-            $TypeAgreement->syncPermissions($request->input('permissions'));
-        } else {
-            $TypeAgreement->syncPermissions([]);
-        }
-
-        return redirect()->route('type_agreements.index')->with('success', 'Rol actualizado correctamente.');
+        return redirect()->route('type_agreements.index')->with('success', 'Tipo de acuerdo actualizado correctamente.');
     }
 
     public function destroy(TypeAgreement $TypeAgreement)
     {
         $TypeAgreement->delete();
-        return redirect()->route('type_agreements.index')->with('success', 'Rol eliminado correctamente.');
+        return redirect()->route('type_agreements.index')->with('success', 'Tipo de acuerdo eliminado correctamente.');
     }
 }

@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.Dashboard')
+    Tribunal evaluador
 @endsection
 
 @section('content')

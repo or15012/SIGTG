@@ -81,7 +81,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                {{-- <div class="col-md-3">
                     <div class="card mb-4">
                         <div class="card-body">
                             <p>Escuela</p>
@@ -93,7 +93,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
             <div class="contenedor">
                 <a href="{{ route('type_agreements.index') }}" class="btn btn-danger regresar-button">Cancelar</a>

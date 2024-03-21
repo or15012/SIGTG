@@ -75,6 +75,7 @@ Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
     Route::post('/import', [RegisterController::class, 'import'])->name('import');
     Route::get('/assign-roles/{user}', [RegisterController::class, 'assignRoles'])->name('assign.roles');
     Route::post('/assign-roles-store/{user}', [RegisterController::class, 'assignRolesStore'])->name('assign.roles.store');
+    Route::get('/agreements/{user}', [RegisterController::class, 'agreements'])->name('agreements');
     Route::get('/{id}/edit', [RegisterController::class, 'showEditForm'])->name('edit');
     Route::put('/{id}/update', [RegisterController::class, 'update'])->name('update');
 });
@@ -222,7 +223,7 @@ Route::group(['prefix' => 'stages', 'as' => 'stages.'], function () {
     Route::put('/{stage}', [StageController::class, 'update'])->name('update');
     Route::delete('/{stage}', [StageController::class, 'destroy'])->name('destroy');
     Route::get('/download-template', [StageController::class, 'downloadTemplate'])->name('download.template');
-
+    Route::get('/download-template-subareas', [StageController::class, 'downloadTemplateSubareas'])->name('download.template.subareas');
     Route::get('/modal-load-criterias', [StageController::class, 'modalLoadCriterias'])->name('modal.load.criterias');
     Route::post('/modal-load-criterias', [StageController::class, 'storeLoadCriterias'])->name('store.load.criterias');
 
@@ -244,6 +245,8 @@ Route::group(['prefix' => 'stages', 'as' => 'stages.'], function () {
                 Route::get('/index/{evaluation}', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasIndex'])->name('index');
                 Route::get('/edit/{criteria}', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasEdit'])->name('edit');
                 Route::put('/update/{criteria}', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasUpdate'])->name('update');
+                Route::get('/modal', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasModal'])->name('modal');
+                Route::post('/load', [EvaluationCriteriaController::class, 'stagesCoordinatorEvaluationsCriteriasLoad'])->name('load');
             });
         });
     });
@@ -341,7 +344,6 @@ Route::group(['prefix' => 'evaluations', 'as' => 'evaluations.'], function () {
         Route::get('/approve-stage/{project}/{stage}',  [EvaluationController::class, 'approveStage'])->name('approve.stage');
 
         Route::put('/submit-final-stage/{project}', [EvaluationController::class, 'coordinatorSubmitFinalStage'])->name('submit.final.stage');
-
     });
 
 
@@ -357,6 +359,15 @@ Route::group(['prefix' => 'extensions', 'as' => 'extensions.'], function () {
     Route::post('/', [ExtensionController::class,  'store'])->name('store');
     Route::get('/{extension}/edit/{project}', [ExtensionController::class, 'edit'])->name('edit');
     Route::put('/{extension}', [ExtensionController::class, 'update'])->name('update');
+
+    Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
+        Route::get('/', [ExtensionController::class, 'coordinatorIndex'])->name('index');
+        Route::get('show/{extension}', [ExtensionController::class, 'coordinatorShow'])->name('show');
+        Route::put('/update/{extension}', [ExtensionController::class, 'coordinatorUpdate'])->name('update');
+        // rutas para adjuntar acta de aprobación
+        Route::get('/modal-approvement', [ExtensionController::class, 'modalApprovement'])->name('modal.approvement');
+        Route::post('/store-approvement', [ExtensionController::class, 'storeApprovement'])->name('store.approvement');
+    });
 });
 
 // Documentos
@@ -499,6 +510,10 @@ Route::group(['prefix' => 'withdrawals', 'as' => 'withdrawals.'], function () {
         Route::get('/', [WithdrawalController::class, 'coordinatorIndex'])->name('index');
         Route::get('show/{withdrawal}', [WithdrawalController::class, 'coordinatorShow'])->name('show');
         Route::put('/update/{withdrawal}', [WithdrawalController::class, 'coordinatorUpdate'])->name('update');
+
+        // rutas para adjuntar acta de aprobación
+        Route::get('/modal-approvement', [WithdrawalController::class, 'modalApprovement'])->name('modal.approvement');
+        Route::post('/store-approvement', [WithdrawalController::class, 'storeApprovement'])->name('store.approvement');
     });
 });
 
@@ -513,6 +528,17 @@ Route::group(['prefix' => 'type_agreements', 'as' => 'type_agreements.'], functi
     Route::get('/{TypeAgreement}/edit', [TypeAgreementController::class, 'edit'])->name('edit');
     Route::put('/{TypeAgreement}', [TypeAgreementController::class, 'update'])->name('update');
     Route::delete('/{TypeAgreement}', [TypeAgreementController::class, 'destroy'])->name('destroy');
+});
+
+Route::group(['prefix' => 'agreements', 'as' => 'agreements.'], function () {
+    Route::get('/create/group/{group}', [AgreementController::class, 'createAgreementGroup'])->name('create.group');
+    Route::post('/store/group/{group}', [AgreementController::class, 'storeAgreementGroup'])->name('store.group');
+    Route::get('/create/student/{student}', [AgreementController::class, 'createAgreementStudent'])->name('create.student');
+    Route::post('/store/student/{student}', [AgreementController::class, 'storeAgreementStudent'])->name('store.student');
+    Route::delete('/delete/{agreement}', [AgreementController::class, 'destroy'])->name('destroy');
+    Route::get('/create/protocol', [AgreementController::class, 'createAgreementProtocol'])->name('create.protocol');
+    Route::post('/store/protocol', [AgreementController::class, 'storeAgreementProtocol'])->name('store.protocol');
+    Route::get('/protocol/school', [AgreementController::class, 'agreementsProtocolSchool'])->name('protocol.school');
 });
 
 

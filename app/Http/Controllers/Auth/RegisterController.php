@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Mail\SendMail;
+use App\Models\Agreement;
 use App\Models\Group;
 use App\Models\Modality;
 use App\Models\Notification;
@@ -120,7 +121,6 @@ class RegisterController extends Controller
             'password'          => ['required', 'string', 'min:8', 'confirmed'],
             'type'              => ['required'],
             'modality_id'       => ['required'],
-            // 'roles'             => ['required', 'array'],
         ]);
     }
 
@@ -163,15 +163,14 @@ class RegisterController extends Controller
             $user->assignRole($roles); // Asignar los roles al usuario recién creado
         }
 
-        $notification = Notification::create(['title'=>'Alerta de usuario', 'message'=>"Tu usuario ha sido creado exitosamente.", 'user_id'=>Auth::user()->id]);
+        $notification = Notification::create(['title' => 'Alerta de usuario', 'message' => "Tu usuario ha sido creado exitosamente.", 'user_id' => Auth::user()->id]);
         try {
             Mail::to($user->email)->send(new SendMail('mail.user-created', 'Creación de usuario', ['user' => $user]));
-            UserNotification::create(['user_id'=>$user->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
+            UserNotification::create(['user_id' => $user->id, 'notification_id' => $notification->id, 'is_read' => 0]);
         } catch (\Exception $th) {
-            //throw $th;
+            Log::info($th);
         }
         return $user;
-        // return redirect()->route('users.index')->with('success', 'Usuario creado correctamente.');
     }
 
 
@@ -215,7 +214,7 @@ class RegisterController extends Controller
             DB::beginTransaction();
             $existen = false;
 
-            $notification = Notification::create(['title'=>'Alerta de usuario', 'message'=>"Tu usuario ha sido creado exitosamente.", 'user_id'=>Auth::user()->id]);
+            $notification = Notification::create(['title' => 'Alerta de usuario', 'message' => "Tu usuario ha sido creado exitosamente.", 'user_id' => Auth::user()->id]);
             for ($i = 1; $i < count($listado); $i++) {
                 if ($listado[$i][0] == null) {
                     continue;
@@ -251,7 +250,7 @@ class RegisterController extends Controller
 
                 try {
                     Mail::to($user->email)->send(new SendMail('mail.user-created', 'Creación de usuario', ['user' => $user]));
-                    UserNotification::create(['user_id'=>$user->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
+                    UserNotification::create(['user_id' => $user->id, 'notification_id' => $notification->id, 'is_read' => 0]);
                 } catch (Exception $th) {
                     Log::info($th->getMessage());
                 }
@@ -332,7 +331,6 @@ class RegisterController extends Controller
             'password'          => ['required', 'string', 'min:8', 'confirmed'],
             'type'              => ['required'],
             'modality_id'       => ['required'],
-            // 'roles'             => ['required', 'array'],
         ]);
 
         $user = User::create([
@@ -365,13 +363,13 @@ class RegisterController extends Controller
             $user->assignRole($roles); // Asignar los roles al usuario recién creado
         }
 
-        $notification = Notification::create(['title'=>'Alerta de usuario', 'message'=>"Tu usuario ha sido creado exitosamente.", 'user_id'=>Auth::user()->id]);
+        $notification = Notification::create(['title' => 'Alerta de usuario', 'message' => "Tu usuario ha sido creado exitosamente.", 'user_id' => Auth::user()->id]);
 
         try {
             Mail::to($user->email)->send(new SendMail('mail.user-created', 'Creación de usuario', ['user' => $user]));
-            UserNotification::create(['user_id'=>$user->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
+            UserNotification::create(['user_id' => $user->id, 'notification_id' => $notification->id, 'is_read' => 0]);
         } catch (\Exception $th) {
-            //throw $th;
+            Log::info($th);
         }
         return redirect()->route('users.index')->with('success', 'Usuario creado con éxito');
     }
@@ -384,12 +382,10 @@ class RegisterController extends Controller
         $protocols      = Protocol::all();
         $modalities     = Modality::all();
         $roles          = Role::all();
-        // $user           = Auth::user();
-        // $userRoles      = $user->roles;
 
         $user = User::find($id);
 
-        $user->email = explode('@', $user->email)[0]??'';
+        $user->email = explode('@', $user->email)[0] ?? '';
 
         return view('auth.edit', [
             'schools'       => $schools,
@@ -397,7 +393,6 @@ class RegisterController extends Controller
             'protocols'     => $protocols,
             'modalities'    => $modalities,
             'roles'         => $roles,
-            // 'userRoles'     => $userRoles,
             'user'          => $user,
             'id'            => $id
         ]);
@@ -413,12 +408,10 @@ class RegisterController extends Controller
             'carnet'            => ['required', 'string', 'max:7'],
             'email'             => ['required', 'string', 'max:255', 'not_regex:/@/'],
             'school'            => ['required', 'exists:schools,id'], // Asegúrate de que exista una escuela con ese ID
-            // 'password'          => ['string', 'min:8', 'confirmed'],
             'type'              => ['required'],
             'modality_id'       => ['required'],
         ]);
         $user = User::find($id);
-        // $user->id =  $id;
         $user->first_name =  $request['first_name'];
         $user->middle_name =  $request['middle_name'];
         $user->last_name =  $request['last_name'];
@@ -430,12 +423,9 @@ class RegisterController extends Controller
         $user->modality_id =  $request['modality_id'];
 
         if (trim($request->password) != '') {
-            $request->validate(['password'=> ['string', 'min:8', 'confirmed']]);
+            $request->validate(['password' => ['string', 'min:8', 'confirmed']]);
             $user->password = Hash::make($request['password']);
         }
-
-        // $user = User::edit($dataEdit);
-
 
         // Agregar un protocolo con status 1 y establecer status 0 para otros protocolos
         if (!empty($request['protocol_id'])) {
@@ -446,24 +436,41 @@ class RegisterController extends Controller
             // Establecer status 0 para otros protocolos
             $user->protocols()->where('user_id', '!=', $user->id)->update(['status' => 0]);
         }
-
-        // $user->password = $request['password'];
-
         $user->save();
 
-        // if (isset($request['roles']) && is_array($request['roles'])) {
-        //     $roles = Role::whereIn('id', $request['roles'])->get(); // Obtener los roles seleccionados
-        //     $user->assignRole($roles); // Asignar los roles al usuario recién creado
-        // }
-
-        $notification = Notification::create(['title'=>'Alerta de usuario', 'message'=>"Tu usuario ha sido modificado exitosamente.", 'user_id'=>Auth::user()->id]);
+        $notification = Notification::create(['title' => 'Alerta de usuario', 'message' => "Tu usuario ha sido modificado exitosamente.", 'user_id' => Auth::user()->id]);
         try {
             Mail::to($user->email)->send(new SendMail('mail.user-created', 'Modificación de usuario', ['user' => $user]));
-            UserNotification::create(['user_id'=>$user->id, 'notification_id'=>$notification->id, 'is_read'=>0]);
+            UserNotification::create(['user_id' => $user->id, 'notification_id' => $notification->id, 'is_read' => 0]);
         } catch (\Exception $th) {
-            //throw $th;
+            Log::info($th);
         }
-        // return $user;
+
         return redirect()->route('users.index')->with('success', 'Usuario actualizado correctamente.');
+    }
+
+
+    public function agreements(User $user)
+    {
+
+        $agreements = Agreement::join('type_agreements as ta', 'ta.id', 'agreements.type_agreement_id')
+            ->join('users as u', 'u.id', 'agreements.user_load_id')
+            ->where('user_id', $user->id)
+            ->select(
+                'agreements.id',
+                'ta.name',
+                'agreements.number',
+                'agreements.description',
+                'agreements.approval_date',
+                'agreements.created_at',
+                'u.first_name',
+                'u.last_name'
+            )
+            ->get();
+
+        return view('auth.agreements', [
+            "user"          => $user,
+            "agreements"    => $agreements
+        ]);
     }
 }

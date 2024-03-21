@@ -65,6 +65,14 @@ class DatabaseSeeder extends Seeder
             StagesSeeder::class,
             EvaluationCriteriaSeeder::class,
 
+
+            /*
+             * Seeders generales.
+             **/
+            TypesAgreementSeeder::class,
+
+
+
         ]);
     }
 }

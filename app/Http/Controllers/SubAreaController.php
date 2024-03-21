@@ -141,7 +141,13 @@ class SubAreaController extends Controller
                 $criteria->evaluationCriterias()->attach($subareas);
             }
 
-            return redirect()->route('stages.index')->with('success', 'Se añadió el criterio de evaluación correctamente.');
+            if (session('protocol')['id'] == 5) {
+                return redirect()->route('stages.coordinator.evaluations.index',$stage_id )->with('success', 'Se añadió evaluación correctamente.');
+            }else{
+                return redirect()->route('stages.index')->with('success', 'Se añadió el criterio de evaluación correctamente.');
+
+
+            }
         } catch (Exception $e) {
             dd($e);
             return redirect()->route('stages.index')->with('error', 'El criterio de evaluacion está duplicado.');

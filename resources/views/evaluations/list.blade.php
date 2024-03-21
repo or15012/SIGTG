@@ -2,7 +2,6 @@
 @section('title')
     @if (session('protocol') != null)
         @switch(session('protocol')['id'])
-
             @case(5)
                 Evaluaciones
             @break
@@ -39,6 +38,7 @@
             <a href="{{ route('stages.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
+
         <h1>
             @if (session('protocol') != null)
                 @switch(session('protocol')['id'])
@@ -50,7 +50,23 @@
                 @endswitch
             @endif
         </h1>
+
+        <div class="float-end d-flex justify-content-end align-items-center mb-2">
+            @if (session('protocol') != null)
+                <a href="{{ route('stages.download.template') }}" class="btn btn-primary">
+                    Descargar plantilla para carga de criterios
+                </a>
+            @endif
+        </div>
+
         <p>Para: {{ $stage->name }}</p>
+
+        @if (session('protocol') != null)
+            <a href="{{ route('stages.coordinator.evaluations.create', $stage->id) }}" class="btn btn-primary my-1"
+                title="Registrar evaluación">
+                Añadir evaluación
+            </a>
+        @endif
 
         <table class="table table-bordered table-striped table-hover">
             <thead>
@@ -86,7 +102,8 @@
                             @endswitch
                         @endif
                         <td>
-                            <a href="{{ route('stages.coordinator.evaluations.edit', $evaluation->id) }}" class="btn btn-primary">
+                            <a href="{{ route('stages.coordinator.evaluations.edit', $evaluation->id) }}"
+                                class="btn btn-primary">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-pencil-fill" viewBox="0 0 16 16">
                                     <path
@@ -97,12 +114,19 @@
                             @if (session('protocol') != null)
                                 @switch(session('protocol')['id'])
                                     @case(5)
-                                        <a href="{{ route('stages.coordinator.evaluations.criterias.index', $evaluation->id) }}" class="btn btn-primary my-1"><i
-                                                class="fas fa-eye"></i></a>
+                                        <a href="{{ route('stages.coordinator.evaluations.criterias.index', $evaluation->id) }}"
+                                            class="btn btn-primary my-1"><i class="fas fa-eye"></i></a>
                                         <a href="{{ route('stages.coordinator.evaluations.criterias.create', $evaluation->id) }}"
                                             class="btn btn-primary my-1" title="Registrar criterio">
                                             <i class="fas fa-file-medical"></i>
                                         </a>
+
+                                        <button class="btn btn-secondary ajax-modal my-1"
+                                            data-title="Cargar criterios de evaluación" title="Cargar criterios de evaluación"
+                                            title="Cargar criterios"
+                                            href="{{ route('stages.coordinator.evaluations.criterias.modal', ['stage_id' => $evaluation->id]) }}">
+                                            <i class="fas fa-file"></i>
+                                        </button>
                                     @break
 
                                     @default

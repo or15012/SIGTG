@@ -6,6 +6,31 @@
 
 @section('content')
     <div class="container">
+
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="contenedor">
             <a href="{{ route('withdrawals.coordinator.index') }}" class="btn btn-danger regresar-button">
                 <i class="fas fa-arrow-left"></i> Regresar
@@ -59,10 +84,11 @@
                 <input type="hidden" name="withdrawal_id" value="{{ $withdrawal->id }}">
                 <input type="hidden" id="decision" name="decision" value="">
 
-                <button type="button" id="accept-withdrawal" class="btn btn-primary" data-bs-toggle="tooltip"
-                    data-bs-placement="bottom" aria-label="Dark" data-bs-original-title="Aceptar retiro.">
+                <a class="btn btn-primary ajax-modal" style="margin-left: 5px" data-title="Acuerdo de retiro"
+                    data-bs-toggle="tooltip" data-bs-title="Acuerdo de retiro"
+                    href="{{ route('withdrawals.coordinator.modal.approvement', ['withdrawal_id' => $withdrawal->id]) }}">
                     <i class="fas fa-check"></i>
-                </button>
+                </a>
                 <button type="button" id="deny-withdrawal" class="btn btn-danger buttonDelete waves-effect waves-light"
                     data-bs-toggle="tooltip" data-bs-placement="bottom" title="Rechazar retiro.">
                     <i class="fas fa-window-close"></i>
