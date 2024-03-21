@@ -68,6 +68,12 @@ class ExtensionController extends Controller
 
 
         try {
+            $conteo = Extension::where('project_id', $request['project_id'])
+                ->where('status', 0)->count();
+            if ($conteo >= 1) {
+                return redirect()->back()->with('error', 'Ya posee una prorroga presentada y sin resolución.');
+            }
+
             if ($request->hasFile('extension_request_path')) {
                 $extension_request_path = $request->file('extension_request_path')->store('extensions'); // Define la carpeta de destino donde se guardará el archivo
             }
@@ -86,7 +92,7 @@ class ExtensionController extends Controller
                 'project_id'                => $request['project_id'],
                 'type_extension_id'         => $conteo,
                 'description'               => $request['description'],
-                'status'                    => 1,
+                'status'                    => 0,
                 'extension_request_path'    => $extension_request_path,
                 'schedule_activities_path'  => $schedule_activities_path,
                 'approval_letter_path'      => $approval_letter_path,
@@ -123,6 +129,11 @@ class ExtensionController extends Controller
 
     public function edit(Extension $extension, Project $project)
     {
+        $conteo = Extension::where('id', $extension->id)
+            ->whereIn('status', [1, 2])->count();
+        if ($conteo >= 1) {
+            return redirect()->back()->with('error', 'La prorroga ya posee resolución.');
+        }
 
         $type_extensions = TypeExtension::all();
 
@@ -131,6 +142,12 @@ class ExtensionController extends Controller
 
     public function update(Request $request, Extension $extension)
     {
+        $conteo = Extension::where('id', $extension->id)
+            ->whereIn('status', [1, 2])->count();
+        if ($conteo >= 1) {
+            return redirect()->back()->with('error', 'La prorroga ya posee resolución.');
+        }
+
         $data = $request->validate([
             'project_id'          => 'required|exists:projects,id',
             'type_extension_id'    => 'required|exists:type_extensions,id',

@@ -66,6 +66,11 @@ class WithdrawalController extends Controller
 
     public function create()
     {
+        $conteo = Withdrawal::where('user_id',  auth()->user()->id)
+            ->where('status', 0)->count();
+        if ($conteo >= 1) {
+            return redirect()->back()->with('error', 'Ya posee un retiro presentado y sin resolución.');
+        }
         $type_withdrawals = TypeWithdrawal::all();
 
         return view('withdrawals.create')->with(compact('type_withdrawals'));
@@ -78,7 +83,11 @@ class WithdrawalController extends Controller
             'description'          => 'required|string|max:255',
         ]);
 
-
+        $conteo = Withdrawal::where('user_id',  auth()->user()->id)
+            ->where('status', 0)->count();
+        if ($conteo >= 1) {
+            return redirect()->back()->with('error', 'Ya posee un retiro presentado y sin resolución.');
+        }
         try {
             if ($request->hasFile('withdrawal_request_path')) {
                 $withdrawal_request_path = $request->file('withdrawal_request_path')->store('withdrawals'); // Define la carpeta de destino donde se guardará el archivo

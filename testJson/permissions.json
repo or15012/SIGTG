@@ -262,6 +262,18 @@
         "name": "Extensions.advisers",
         "guard_name": "web",
         "description": "Permiso para consultar solicitudes de prorroga de trabajo de grado, aprobar o rechazar"
+    },
+    {
+        "id": 45,
+        "name": "TypeAgreements.advisers",
+        "guard_name": "web",
+        "description": "Permiso para gestionar tipos de acuerdos"
+    },
+    {
+        "id": 46,
+        "name": "Agreements.protocol",
+        "guard_name": "web",
+        "description": "Permiso para gestionar acuerdos de protocolo."
     }
 
 

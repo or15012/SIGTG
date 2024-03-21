@@ -94,13 +94,13 @@
                 <input type="hidden" name="extension_id" value="{{ $extension->id }}">
                 <input type="hidden" id="decision" name="decision" value="">
 
-                <a class="btn btn-primary ajax-modal" style="margin-left: 5px" data-title="Acuerdo de retiro"
-                    data-bs-toggle="tooltip" data-bs-title="Acuerdo de retiro"
+                <a class="btn btn-primary ajax-modal" style="margin-left: 5px" data-title="Acuerdo de prorroga"
+                    data-bs-toggle="tooltip" data-bs-title="Acuerdo de prorroga"
                     href="{{ route('extensions.coordinator.modal.approvement', ['extension_id' => $extension->id]) }}">
                     <i class="fas fa-check"></i>
                 </a>
                 <button type="button" id="deny-extension" class="btn btn-danger buttonDelete waves-effect waves-light"
-                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="Rechazar retiro.">
+                    data-bs-toggle="tooltip" data-bs-placement="bottom" title="Rechazar prorroga.">
                     <i class="fas fa-window-close"></i>
                 </button>
             </form>

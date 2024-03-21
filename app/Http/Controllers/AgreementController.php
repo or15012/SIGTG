@@ -41,7 +41,7 @@ class AgreementController extends Controller
             $agreement->type_agreement_id   = $request->type;
             $agreement->save();
 
-            return redirect()->route('groups.edit', $request->group_id)->with('success', 'Carta de acuerdo subida exitosamente.');
+            return redirect()->route('groups.edit', $request->group_id)->with('success', 'Acuerdo registrado exitosamente.');
         } catch (Exception $th) {
             Log::info($th->getMessage());
             return redirect()->action([GroupController::class, 'index'])->with('error', 'Algo salió mal. Intente nuevamente.');
@@ -64,7 +64,7 @@ class AgreementController extends Controller
                 'number_agreement'  => 'required|max:255',
                 'date_agreement'    => 'required|date',
                 'type'              => 'required',
-                'user_id'          => 'required',
+                'user_id'            => 'required',
             ]);
 
             //Insertare el acuerdo del grupo
@@ -77,13 +77,76 @@ class AgreementController extends Controller
             $agreement->type_agreement_id   = $request->type;
             $agreement->save();
 
-            return redirect()->route('users.index', $request->user_id)->with('success', 'Carta de acuerdo subida exitosamente.');
+            return redirect()->route('users.agreements', $request->user_id)->with('success', 'Acuerdo registrado exitosamente.');
         } catch (Exception $th) {
-            dd($th);
             Log::info($th->getMessage());
             return redirect()->action([GroupController::class, 'index'])->with('error', 'Algo salió mal. Intente nuevamente.');
         }
     }
+
+
+    public function createAgreementProtocol()
+    {
+        $agreementTypes = TypeAgreement::where('affect', 3)->get();
+
+        return view('agreements.create_protocol', compact('agreementTypes'));
+    }
+
+
+    public function storeAgreementProtocol(Request $request)
+    {
+        try {
+
+            $validatedData = $request->validate([
+                'number_agreement'  => 'required|max:255',
+                'date_agreement'    => 'required|date',
+                'type'              => 'required',
+            ]);
+
+            //Insertare el acuerdo del grupo
+            $agreement                      = new Agreement();
+            $agreement->number              = $request->number_agreement;
+            $agreement->approval_date       = $request->date_agreement;
+            $agreement->description         = $request->description;
+            $agreement->protocol_id         = session('protocol')['id'];
+            $agreement->school_id           = session('school')['id'];
+            $agreement->user_load_id        = auth()->user()->id;
+            $agreement->type_agreement_id   = $request->type;
+            $agreement->save();
+
+            return redirect()->route('agreements.protocol.school')->with('success', 'Acuerdo registrado exitosamente.');
+        } catch (Exception $th) {
+            dd($th);
+            Log::info($th->getMessage());
+            return redirect()->route('agreements.protocol.school')->with('error', 'Algo salió mal. Intente nuevamente.');
+        }
+    }
+
+
+    public function agreementsProtocolSchool()
+    {
+
+        $agreements = Agreement::join('type_agreements as ta', 'ta.id', 'agreements.type_agreement_id')
+            ->join('users as u', 'u.id', 'agreements.user_load_id')
+            ->where('agreements.protocol_id', session('protocol')['id'])
+            ->where('agreements.school_id', session('school', ['id']))
+            ->select(
+                'agreements.id',
+                'ta.name',
+                'agreements.number',
+                'agreements.description',
+                'agreements.approval_date',
+                'agreements.created_at',
+                'u.first_name',
+                'u.last_name'
+            )
+            ->get();
+
+        return view('agreements.protocol_school', [
+            "agreements"    => $agreements
+        ]);
+    }
+
 
     public function destroy(Agreement $agreement)
     {
