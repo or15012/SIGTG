@@ -194,8 +194,4 @@ class GroupStudentsReportController extends Controller
     
         return response()->file($filename, ['Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']);
     }
-    
-
-
-
 }
