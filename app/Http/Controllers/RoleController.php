@@ -82,7 +82,7 @@ class RoleController extends Controller
             $role->syncPermissions([]);
         }
 
-        return redirect()->route('roles.index')->with('success', 'Rol actualizado correctamente.');
+        return redirect()->route('roles.index')->with('success', 'Permisos asignados con éxito.');
     }
 
     public function destroy(Role $role)
