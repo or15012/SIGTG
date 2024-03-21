@@ -230,7 +230,7 @@ class DashboardPruebaController extends Controller
         // Crear un objeto de escritura
         $writer = new Xlsx($spreadsheet);
 
-        // Guardar el archivo en un directorio temporal
+        // Guardar el archivo en un directorio temporal -
         $filename = 'projects.xlsx';
         $writer->save($filename);
 
