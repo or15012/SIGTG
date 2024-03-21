@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\PDF;
 use App\Models\Group;
 use App\Models\Cycle;
 use App\Models\EvaluationStage;
@@ -20,36 +21,223 @@ use Illuminate\Support\Facades\Response;
 class GroupStudentsReportController extends Controller
 {
 
-    public function generateReport()
+    public function index(Request $request)
     {
-        $reportData = Users::join('user_group', 'users.id', '=', 'user_group.user_id')
-            ->join('groups', 'user_group.group_id', '=', 'groups.id')
-            ->join('protocols', 'groups.protocol_id', '=', 'protocols.id')
-            ->join('schools', 'protocols.school_id', '=', 'schools.id')
-            ->join('cycles', 'groups.cycle_id', '=', 'cycles.id')
-            ->where('users.type', 1) // Agrega esta condición para filtrar por 'type' igual a 1
-            ->select(
-                'schools.name as Escuela',
-                'protocols.name as Protocolo',
-                'groups.number as Grupo',
-                DB::raw("CONCAT(users.first_name, ' ', users.second_name, ' ', users.last_name, ' ', users.second_last_name) as Estudiante")
-            )
-            ->get();
+        $actualCycle = Cycle::where('status', 1)->first();
 
-        // $reportData ahora contiene la información necesaria para tus reportes.
+        // Obtener estudiantes inscritos en el protocolo 4
+        $inscritosProtocoloCuatro = DB::table('groups as gro')
+            ->join('cycles as cy', 'cy.id', '=', 'gro.cycle_id')
+            ->join('protocols as proto', 'proto.id', '=', 'gro.protocol_id')
+            ->join('user_protocol as up', 'up.protocol_id', '=', 'proto.id')
+            ->join('users as u', 'u.id', '=', 'up.user_id')
+            ->join('schools as sch', 'u.school_id', 'sch.id')
+            ->leftJoin('course_registrations as cour', function ($join) {
+                $join->on('cour.user_id', '=', 'up.user_id')
+                    ->on('cour.course_id', '=', 'gro.protocol_id');
+            })
+            ->where('u.type', 1)
+            ->where('u.state', 1)
+            ->where('proto.id', 4)
+            ->where('cy.status', 1);
 
-        // Puedes utilizar $reportData para generar tu reporte en Excel o PDF, 
-        // o devolverlo a la vista para mostrarlo en HTML, según tus necesidades.
+        if (session('school')['id'] != -1) {
+            $inscritosProtocoloCuatro->where('u.school_id', session('school')['id']); // Usar la columna correcta en la condición where
+        }
+        if (isset(session('protocol')['id']) && session('protocol')['id'] != -1) {
+            $inscritosProtocoloCuatro->where('pt.id', session('protocol')['id']);
+        }
+        $inscritosProtocoloCuatro = $inscritosProtocoloCuatro->get();
 
-        // Ejemplo de exportación a Excel utilizando el paquete Maatwebsite\Excel
-        Excel::create('reporte_excel', function($excel) use ($reportData) {
-            $excel->sheet('Hoja 1', function($sheet) use ($reportData) {
-                $sheet->fromArray($reportData);
-            });
-        })->download('xlsx');
+        //dd($inscritosProtocoloCuatro);
 
-        // Ejemplo de exportación a PDF utilizando el paquete barryvdh/laravel-dompdf
-        $pdf = PDF::loadView('reporte_pdf', ['reportData' => $reportData]);
-        return $pdf->download('reporte_pdf.pdf');
+        // Obtener todos los estudiantes en el protocolo 4
+        $todosProtocoloCuatro = DB::table('groups as gro')
+            ->join('cycles as cy', 'cy.id', '=', 'gro.cycle_id')
+            ->join('protocols as proto', 'proto.id', '=', 'gro.protocol_id')
+            ->join('user_protocol as up', 'up.protocol_id', '=', 'proto.id')
+            ->join('users as u', 'u.id', '=', 'up.user_id')
+            ->join('schools as sch', 'u.school_id', 'sch.id')
+            ->where('u.type', 1)
+            ->where('u.state', 1)
+            ->where('proto.id', 4)
+            ->where('cy.status', 1);
+
+        if (session('school')['id'] != -1) {
+            $todosProtocoloCuatro->where('u.school_id', session('school')['id']); // Usar la columna correcta en la condición where
+        }
+        if (isset(session('protocol')['id']) && session('protocol')['id'] != -1) {
+            $todosProtocoloCuatro->where('pt.id', session('protocol')['id']);
+        }
+        $todosProtocoloCuatro = $todosProtocoloCuatro->count();
+
+        // Calcular estudiantes no inscritos restando el total menos los inscritos
+        $noInscritosProtocoloCuatro = $todosProtocoloCuatro - count($inscritosProtocoloCuatro);
+
+        //dd($noInscritosProtocoloCuatro);
+
+        // Cargar los datos en la vista
+        $ciclos = Cycle::latest()->take(10)->get();
+
+        return view('reports.index', compact('inscritosProtocoloCuatro', 'noInscritosProtocoloCuatro', 'ciclos'));
     }
+
+
+    public function ajaxCourses($cycle_id){
+        $datos = DB::table('groups as gro')
+            ->join('cycles as cy', 'cy.id', '=', 'gro.cycle_id')
+            ->join('protocols as proto', 'proto.id', '=', 'gro.protocol_id')
+            ->join('user_protocol as up', 'up.protocol_id', '=', 'proto.id')
+            ->join('users as u', 'u.id', '=', 'up.user_id')
+            ->leftJoin('course_registrations as cour', function ($join) {
+                $join->on('cour.user_id', '=', 'up.user_id')
+                    ->on('cour.course_id', '=', 'gro.protocol_id');
+            })
+            ->where('u.type', 1)
+            ->where('u.state', 1)
+            ->groupBy('cy.id', 'proto.id', 'cy.year', 'cy.number')
+            ->select(
+                'cy.id as cycle_id',
+                'proto.id as protocol_id',
+                'cy.year as cycle_year',
+                'cy.number as cycle_number',
+                DB::raw('COUNT(u.id) as total_students'),
+                DB::raw('COUNT(cour.user_id) as enrolled_students')
+            )
+            ->where('gro.cycle_id', '=', $cycle_id)
+            ->where('proto.id', 4); // Protocolo 4
+
+        if (session('school')['id'] != -1) {
+            $datos->where('u.school_id', session('school')['id']);
+        }
+
+        $datos = $datos->get();
+
+        return response()->json([
+            'new_datos' => $datos
+        ]);
+    }
+    
+
+    public function ajaxExcelCourses($cycle_id)
+    {
+        $datos = DB::table('projects as pj')
+            ->select(
+                'pt.name as protocol_name',
+                'sch.name as name_school',
+                'gr.number as group_number',
+                'pj.name as project_name',
+                'us.first_name as name_student',
+                'us.middle_name as second_name_student',
+                'us.last_name as last_name_student',
+                'us.second_last_name as second_last_name_student',
+                'us.carnet as carnet_student',
+                'pj.status'
+            )
+            ->join('groups AS gr', 'gr.id', 'pj.group_id')
+            ->join('protocols as pt', 'pt.id', 'gr.protocol_id')
+            ->join('user_group as ug', 'ug.group_id', 'gr.id')
+            ->join('user_protocol as up', 'up.protocol_id', 'pt.id')
+            ->join('users as us', 'us.id', 'up.user_id')
+            ->join('schools as sch', 'us.school_id', 'sch.id')
+            ->groupBy(
+                'pt.name',
+                'sch.name',
+                'gr.number',
+                'pj.name',
+                'pj.status',
+                'us.first_name',
+                'us.middle_name',
+                'us.last_name',
+                'us.second_last_name',
+                'us.carnet'
+            ) // Agregar todas las columnas select en GROUP BY
+            ->orderBy('pj.status');
+        if (session('school')['id'] != -1) {
+            $datos->where('us.school_id', session('school')['id']);
+        }
+        $datos->where('pt.id', session('protocol')['id']);
+        $datos->where('gr.cycle_id', '=', $cycle_id);
+
+        $datos = $datos->get();
+
+        // Convertir los estados a texto
+        foreach ($datos as $dato) {
+            if ($dato->status == 1) {
+                $dato->status_text = 'Iniciado';
+            } elseif ($dato->status == 2) {
+                $dato->status_text = 'En proceso';
+            } elseif ($dato->status == 3) {
+                $dato->status_text = 'Finalizado';
+            } else {
+                $dato->status_text = ''; // Manejar otro caso si es necesario
+            }
+        }
+
+        $data =  json_decode(json_encode($datos), true);
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $rowIndex = 1; // Comenzar desde la primera fila
+
+        $currentSchool = ''; // Variable para rastrear la escuela actual
+        foreach ($datos as $row) {
+            if ($row->name_school !== $currentSchool) {
+                // Agregar el nombre de la escuela con formato y estilo
+                $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true);
+                $sheet->setCellValue('A' . $rowIndex, 'Nombre de escuela: ' . $row->name_school);
+                $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para la escuela
+                $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Alinear a la izquierda
+                $currentSchool = $row->name_school;
+                $rowIndex++;
+            }
+
+            // Agregar el nombre del protocolo con formato y estilo
+            $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true);
+            $sheet->setCellValue('A' . $rowIndex, 'Nombre de protocolo: ' . $row->protocol_name);
+            $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para el protocolo
+            $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Alinear a la izquierda
+            $rowIndex++;
+
+            // Añadir encabezados de columnas debajo del tema
+            $sheet->setCellValue('A' . $rowIndex, 'Número de grupo');
+            $sheet->setCellValue('B' . $rowIndex, 'Nombre de proyecto');
+            $sheet->setCellValue('C' . $rowIndex, 'Estado de proyecto');
+            $sheet->setCellValue('D' . $rowIndex, 'Nombres de estudiante');
+            $sheet->setCellValue('E' . $rowIndex, 'Apellidos de estudiante');
+            $sheet->setCellValue('F' . $rowIndex, 'CARNET');
+            $rowIndex++;
+
+            // Añadir datos correspondientes
+            $sheet->setCellValue('A' . $rowIndex, $row->group_number);
+            $sheet->setCellValue('B' . $rowIndex, $row->project_name);
+            $sheet->setCellValue('C' . $rowIndex, $row->status_text); // Usar el nuevo campo 'status_text' en lugar de 'status'
+            $sheet->setCellValue('D' . $rowIndex, $row->name_student . ' ' . $row->second_name_student);
+            $sheet->setCellValue('E' . $rowIndex, $row->last_name_student . ' ' . $row->second_last_name_student);
+            $sheet->setCellValue('F' . $rowIndex, $row->carnet_student);
+            $rowIndex++;
+        }
+
+        // Establecer anchos de columna (opcional)
+        $sheet->getColumnDimension('A')->setWidth(20);
+        $sheet->getColumnDimension('B')->setWidth(50);
+        $sheet->getColumnDimension('C')->setWidth(25);
+        $sheet->getColumnDimension('D')->setWidth(40);
+        $sheet->getColumnDimension('E')->setWidth(40);
+        $sheet->getColumnDimension('F')->setWidth(40);
+
+
+        // Crear un objeto de escritura
+        $writer = new Xlsx($spreadsheet);
+
+        // Guardar el archivo en un directorio temporal
+        $filename = 'projects.xlsx';
+        $writer->save($filename);
+
+        return response()->file($filename, ['Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']);
+    }
+
+
+
 }

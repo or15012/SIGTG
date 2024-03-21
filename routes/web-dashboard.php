@@ -6,6 +6,7 @@ use App\Http\Controllers\CoursePreRegistrationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardPruebaController;
 use App\Http\Controllers\EntityController;
+use App\Http\Controllers\GroupStudentsReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,4 +48,18 @@ Route::group(['prefix' => 'dashboards', 'as' => 'dashboards.'], function () {
     Route::get('excel/groups/cycle/{id?}',[DashboardPruebaController::class, 'ajaxExcelGroups'])->name('excel_groups');
     Route::get('excel/extensions/cycle/{id?}',[DashboardPruebaController::class, 'ajaxExcelExtensions'])->name('excel_extensions');
     Route::get('excel/project/cycle/{id?}',[DashboardPruebaController::class, 'ajaxExcelStatus'])->name('excel_status');
+});
+
+
+//Grupo de rutas para reporte de cursos
+Route::group(['prefix' => 'reports', 'as' => 'reports.'], function () {
+    Route::get('/', [GroupStudentsReportController::class, 'index'])->name('index');
+    Route::get('/protocol/cycle/{id?}',[GroupStudentsReportController::class, 'ajaxProto'])->name('proto');
+    Route::get('/course/cycle/{id?}',[GroupStudentsReportController::class, 'ajaxCourse'])->name('course');
+    Route::get('/group/cycle/{id?}',[GroupStudentsReportController::class, 'ajaxGroup'])->name('group');
+    Route::get('/extension/cycle/{id?}',[GroupStudentsReportController::class, 'ajaxExtension'])->name('extension');
+    Route::get('excel/protocol/cycle/{id?}',[GroupStudentsReportController::class, 'ajaxExcelProto'])->name('excel_proto');
+    Route::get('excel/course/cycle/{id?}',[GroupStudentsReportController::class, 'ajaxExcelCourse'])->name('excel_course');
+    Route::get('excel/groups/cycle/{id?}',[GroupStudentsReportController::class, 'ajaxExcelGroups'])->name('excel_groups');
+    Route::get('excel/extensions/cycle/{id?}',[GroupStudentsReportController::class, 'ajaxExcelExtensions'])->name('excel_extensions');
 });
