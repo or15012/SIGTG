@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardPruebaController;
 use App\Http\Controllers\EntityController;
 use App\Http\Controllers\GroupStudentsReportController;
+use App\Http\Controllers\StudentsCousesReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,13 +54,13 @@ Route::group(['prefix' => 'dashboards', 'as' => 'dashboards.'], function () {
 
 //Grupo de rutas para reporte de cursos
 Route::group(['prefix' => 'reports', 'as' => 'reports.'], function () {
-    Route::get('/', [GroupStudentsReportController::class, 'index'])->name('index');
-    Route::get('/protocol/cycle/{id?}',[GroupStudentsReportController::class, 'ajaxProto'])->name('proto');
-    Route::get('/course/cycle/{id?}',[GroupStudentsReportController::class, 'ajaxCourse'])->name('course');
-    Route::get('/group/cycle/{id?}',[GroupStudentsReportController::class, 'ajaxGroup'])->name('group');
-    Route::get('/extension/cycle/{id?}',[GroupStudentsReportController::class, 'ajaxExtension'])->name('extension');
-    Route::get('excel/protocol/cycle/{id?}',[GroupStudentsReportController::class, 'ajaxExcelProto'])->name('excel_proto');
-    Route::get('excel/course/cycle/{id?}',[GroupStudentsReportController::class, 'ajaxExcelCourse'])->name('excel_course');
-    Route::get('excel/groups/cycle/{id?}',[GroupStudentsReportController::class, 'ajaxExcelGroups'])->name('excel_groups');
-    Route::get('excel/extensions/cycle/{id?}',[GroupStudentsReportController::class, 'ajaxExcelExtensions'])->name('excel_extensions');
+    Route::get('/', [StudentsCousesReportController::class, 'index'])->name('index');
+    Route::get('/protocol/cycle/{id?}',[StudentsCousesReportController::class, 'ajaxProto'])->name('proto');
+    Route::get('/course/cycle/{id?}',[StudentsCousesReportController::class, 'ajaxCourse'])->name('course');
+    Route::get('/group/cycle/{id?}',[StudentsCousesReportController::class, 'ajaxGroup'])->name('group');
+    Route::get('/extension/cycle/{id?}',[StudentsCousesReportController::class, 'ajaxExtension'])->name('extension');
+    Route::get('excel/protocol/cycle/{id?}',[StudentsCousesReportController::class, 'ajaxExcelProto'])->name('excel_proto');
+    Route::get('excel/course/cycle/{id?}',[StudentsCousesReportController::class, 'ajaxExcelCourse'])->name('excel_course');
+    Route::get('excel/groups/cycle/{id?}',[StudentsCousesReportController::class, 'ajaxExcelGroups'])->name('excel_groups');
+    Route::get('excel/extensions/cycle/{id?}',[StudentsCousesReportController::class, 'ajaxExcelExtensions'])->name('excel_extensions');
 });
