@@ -229,30 +229,24 @@
     },
     {
         "id": 39,
-        "name": "Events.student.create",
+        "name": "Events.students",
         "guard_name": "web",
         "description": "Permiso para registrar defensa"
     },
     {
         "id": 40,
-        "name": "Events.adviser.show",
+        "name": "Events.advisers",
         "guard_name": "web",
-        "description": "Permiso para ver defensas"
+        "description": "Permiso para consultar defensas"
     },
     {
         "id": 41,
-        "name": "Events.student.edit",
-        "guard_name": "web",
-        "description": "Permiso para editar defensas"
-    },
-    {
-        "id": 42,
         "name": "Withdrawals.students",
         "guard_name": "web",
         "description": "Permiso para crear solicitudes de retiros de trabajo de grado."
     },
     {
-        "id": 43,
+        "id": 42,
         "name": "Withdrawals.advisers",
         "guard_name": "web",
         "description": "Permiso para consultar solicitudes de retiros de trabajo de grado, aprobar o rechazar"
