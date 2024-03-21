@@ -17,7 +17,20 @@ class SessionController extends Controller
         );
 
         session(['protocol' => $protocol]);
-        return redirect('home');
+
+        // Obtener la ruta de origen
+        $previousRoute = url()->previous();
+
+        if (strpos($previousRoute, '/dashboard') !== false) {
+            // Si la ruta de origen es "/dashboard", redireccionar a "/dashboard"
+            return redirect()->route('dashboard.index');
+        } else if (strpos($previousRoute, '/dashboards') !== false) {
+            // Si la ruta de origen es "/dashboards", redireccionar a "/dashboards"
+            return redirect()->route('dashboards.index');
+        } else {
+            // Si la ruta de origen no es "/roles", redireccionar a "/home" por defecto
+            return redirect('home');
+        }
     }
 
     public function setSchool(School $school)
@@ -29,7 +42,18 @@ class SessionController extends Controller
         );
 
         session(['school' => $school]);
-        return redirect('home');
+        // Obtener la ruta de origen
+        $previousRoute = url()->previous();
+        if (strpos($previousRoute, '/dashboard') !== false) {
+            // Si la ruta de origen es "/dashboard", redireccionar a "/dashboard"
+            return redirect()->route('dashboard.index');
+        } else if (strpos($previousRoute, '/dashboards') !== false) {
+            // Si la ruta de origen es "/dashboards", redireccionar a "/dashboards"
+            return redirect()->route('dashboards.index');
+        } else {
+            // Si la ruta de origen no es "/roles", redireccionar a "/home" por defecto
+            return redirect('home');
+        }
     }
 
     public function setAllProtocol($protocol)
@@ -41,7 +65,19 @@ class SessionController extends Controller
         );
 
         session(['protocol' => $protocol]);
-        return redirect('home');
+
+        // Obtener la ruta de origen
+        $previousRoute = url()->previous();
+        if (strpos($previousRoute, '/dashboard') !== false) {
+            // Si la ruta de origen es "/dashboard", redireccionar a "/dashboard"
+            return redirect()->route('dashboard.index');
+        } else if (strpos($previousRoute, '/dashboards') !== false) {
+            // Si la ruta de origen es "/dashboards", redireccionar a "/dashboards"
+            return redirect()->route('dashboards.index');
+        } else {
+            // Si la ruta de origen no es "/roles", redireccionar a "/home" por defecto
+            return redirect('home');
+        }
     }
 
     public function setAllSchool($school)
@@ -53,6 +89,17 @@ class SessionController extends Controller
         );
 
         session(['school' => $school]);
-        return redirect('home');
+        // Obtener la ruta de origen
+        $previousRoute = url()->previous();
+        if (strpos($previousRoute, '/dashboard') !== false) {
+            // Si la ruta de origen es "/dashboard", redireccionar a "/dashboard"
+            return redirect()->route('dashboard.index');
+        } else if (strpos($previousRoute, '/dashboards') !== false) {
+            // Si la ruta de origen es "/dashboards", redireccionar a "/dashboards"
+            return redirect()->route('dashboards.index');
+        } else {
+            // Si la ruta de origen no es "/roles", redireccionar a "/home" por defecto
+            return redirect('home');
+        }
     }
 }
