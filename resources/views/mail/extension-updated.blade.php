@@ -1,14 +1,24 @@
 @extends('layouts.mail')
 @section('content')
     <div style="padding: 20px;">
-        <h1 style="color: #333;">Prorroga modificada</h1>
-        <p>Buen día, {{ $Info['user']->first_name }} {{ $Info['user']->last_name}}</p>
-        <p>Se ha modificado una prórroga para el proyecto "{{ $Info['project']->name }}". Aquí están los detalles:</p>
-        <strong>Detalles de la prórroga:</strong>
+        <h1 style="color: #333;">Estado de solicitud de prorroga de trabajo de grado actualizado</h1>
+        <p>Buen día, {{ $Info['user']->first_name }} {{ $Info['user']->last_name }}</p>
+        <p>El estado de su solicitud de prorroga de trabajo de grado ha sido actualizado.</p>
+        <strong>Detalles de la solicitud de prorroga de trabajo de grado:</strong>
         <ul>
-            <li><strong>Descripción:</strong> {{ $Info['extension']->description }}</li>
-            <li><strong>Estatus:</strong> {{ $Info['status'] }}</li>
+            <li><strong>Prorroga:</strong> {{ $Info['name'] }}</li>
+            <li><strong>Estado:</strong> {{ $Info['extension']->status() }} </li>
+            @switch($Info['extension']->status)
+                @case(1)
+                    Solicitud de prorroga de trabajo de grado aprobada
+                @break
+
+                @case(2)
+                    Solicitud de prorroga de trabajo de grado rechazada
+                @break
+            @endswitch
+            </li>
         </ul>
-        <p>¡Gracias y que tenga un buen día!</p>
+        <p>¡Que tenga un buen día!</p>
     </div>
 @endsection
