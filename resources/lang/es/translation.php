@@ -193,5 +193,6 @@ return [
     "Workshops"              => "Talleres",
     "WithdrawalsAdviser"     => "Retiros (Coordinador)",
     "Withdrawals"            => "Retiros",
-    "TypesAgreements"        => "Tipos de acuerdos",
+    "TypesAgreements"        => "Tipos de acuerdos (Coordinador)",
+    "ExtensionsAdviser"      => "Prorrogas (Coordinador)"
 ];

@@ -48,7 +48,7 @@
                 </select> --}}
                <input type="hidden" name="project_id" value="{{$project->id}}">
             </div>
-            <div class="mb-3">
+            {{-- <div class="mb-3">
                 <label for="type_extension_id" class="form-label">Tipo de extensión</label>
                 <select class="form-control" id="type_extension_id" name="type_extension_id">
                     <option value=""> Seleccione un tipo de extensión</option>
@@ -56,19 +56,19 @@
                         <option value="{{ $type_extension->id }}"> {{ $type_extension->name }}</option>
                     @endforeach
                 </select>
-            </div>
+            </div> --}}
             <div class="mb-3">
                 <label for="description" class="form-label">Descripción</label>
                 <textarea class="form-control" name="description" id="description" rows="2" cols="1">{{ old('description') }}</textarea>
             </div>
-            <div class="mb-3">
+            {{-- <div class="mb-3">
                 <label for="extension_status" class="form-label">Estado</label>
                 <select class="form-control" id="extension_status" name="status">
                     <option value="0" @if (old('status') == 0) selected @endif>Presentada</option>
                     <option value="1" @if (old('status') == 1) selected @endif>Aceptada</option>
                     <option value="2" @if (old('status') == 2) selected @endif>Rechazada</option>
                 </select>
-            </div>
+            </div> --}}
 
             <div class="mb-3">
                 <label for="extension_request_path" class="form-label">Solicitud de prórroga</label>
