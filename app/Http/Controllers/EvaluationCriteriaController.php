@@ -88,24 +88,28 @@ class EvaluationCriteriaController extends Controller
 
     public function update(Request $request, EvaluationCriteria $criteria)
     {
+        //boton para crear criterios desde lista de criterios.
+        //aqui tengo que revisar aqui
         $data = $request->validate([
             'name'          => 'required|string|max:255',
-            'percentage'    => 'required|integer|min:1|max:100',
+            // 'percentage'    => 'required|integer|min:1|max:100',
             'stage'         => 'required|integer|min:1|exists:stages,id',
             'description'   => 'required|string',
         ]);
 
         $stage_id   = $data['stage'];
-        $percentage = $data['percentage'];
-        $sumatory = DB::table('evaluation_criteria')->where('stage_id', $stage_id)->where('id', '!=', $criteria->id)->sum('percentage');
 
-        if ($sumatory + $percentage > 100) {
-            return redirect()->route('stages.index')->with('error', 'No se pudo completar la acción. El porcentaje supera el 100%.');
+        if (session('protocol')['id'] != 5) {
+            $percentage = $data['percentage'];
+            $sumatory = DB::table('evaluation_criteria')->where('stage_id', $stage_id)->where('id', '!=', $criteria->id)->sum('percentage');
+            if ($sumatory + $percentage > 100) {
+                return redirect()->route('stages.index')->with('error', 'No se pudo completar la acción. El porcentaje supera el 100%.');
+            }
+            $criteria->percentage   = $data['percentage'];
         }
 
         try {
             $criteria->name         = $data['name'];
-            $criteria->percentage   = $data['percentage'];
             $criteria->description  = $data['description'];
 
             switch (session('protocol')['id']) {
@@ -122,7 +126,13 @@ class EvaluationCriteriaController extends Controller
                     break;
             }
             $criteria->update();
-            return redirect()->route('criterias.index', ['id' => $criteria->stage_id])->with('success', 'Criterio de Evaluación actualizado exitosamente.');
+            if (session('protocol')['id'] != 5) {
+                return redirect()->route('criterias.index', ['id' => $criteria->stage_id])->with('success', 'Criterio de Evaluación actualizado exitosamente.');
+
+            } else {
+                return redirect()->route('criterias.index', ['id' => $criteria->stage_id])->with('success', 'Subárea actualizada exitosamente.');
+
+            }
         } catch (\Exception $e) {
             return redirect()->route('criterias.edit', ['criteria' => $criteria])->with('error', 'El criterio de evaluación ya se encuentra registrado, revisar.');
         }
