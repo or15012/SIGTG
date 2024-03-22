@@ -64,4 +64,9 @@ class Group extends Model
     {
         return $this->hasMany(Activity::class, 'group_id');
     }
+
+    public function protocol()
+    {
+        return $this->belongsTo(Protocol::class);
+    }
 }
