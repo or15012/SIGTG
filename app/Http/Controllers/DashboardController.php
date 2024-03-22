@@ -343,7 +343,7 @@ class DashboardController extends Controller
         $filename = 'students.xlsx';
         $writer->save($filename);
 
-        return response()->file($filename, ['Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']);
+        return response()->file($filename, ['Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])->deleteFileAfterSend(true);
     }
 
     public function ajaxExcelCourse($cycle_id)
@@ -436,7 +436,7 @@ class DashboardController extends Controller
         $filename = 'students.xlsx';
         $writer->save($filename);
 
-        return response()->file($filename, ['Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']);
+        return response()->file($filename, ['Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])->deleteFileAfterSend(true);
     }
 
 
@@ -486,7 +486,7 @@ class DashboardController extends Controller
         $filename = 'students.xlsx';
         $writer->save($filename);
 
-        return response()->file($filename, ['Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']);
+        return response()->file($filename, ['Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])->deleteFileAfterSend(true);
     }
 
     public function ajaxExcelExtensions($cycle_id)
@@ -540,6 +540,6 @@ class DashboardController extends Controller
         $filename = 'students.xlsx';
         $writer->save($filename);
 
-        return response()->file($filename, ['Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']);
+        return response()->file($filename, ['Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])->deleteFileAfterSend(true);
     }
 }
