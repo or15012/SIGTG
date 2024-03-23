@@ -261,7 +261,16 @@ class StageController extends Controller
             }
             $stage->update();
 
-            return redirect()->route('stages.index')->with('success', 'Etapa Evaluativa actualizada exitosamente.');
+            if(session('protocol')['id'] !== 5){
+                return redirect()->route('stages.index')->with('success', 'Etapa Evaluativa actualizada exitosamente.');
+            }else{
+                if($stage->category == 2){
+                    return redirect()->route('evaluations.execution', 2)->with('success', 'Etapa Evaluativa actualizada exitosamente.');
+                }else if($stage->category == 3){
+                    return redirect()->route('evaluations.execution', 3)->with('success', 'Etapa Evaluativa actualizada exitosamente.');
+                }
+            }
+
         } catch (\Exception $e) {
             return redirect()->route('stages.edit', ['stage' => $stage])->with('error', 'La Etapa Evaluativa ya se encuentra registrada, revisar.');
         }

@@ -338,6 +338,9 @@ Route::group(['prefix' => 'evaluations', 'as' => 'evaluations.'], function () {
     Route::get('/show-subarea/{project}/{subarea}', [EvaluationController::class, 'showSubarea'])->name('show.subarea');
     Route::put('/submit-stage/{evaluation_stage}', [EvaluationController::class, 'submitSubarea'])->name('submit.subarea');
 
+
+    Route::get('/execution/{type}', [EvaluationController::class, 'execution'])->name('execution');
+
     Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
         Route::get('/', [EvaluationController::class, 'coordinatorIndex'])->name('index');
         Route::get('/show/{project}', [EvaluationController::class, 'coordinatorShow'])->name('show');

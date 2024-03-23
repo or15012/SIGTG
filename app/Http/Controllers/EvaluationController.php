@@ -593,4 +593,29 @@ class EvaluationController extends Controller
                 break;
         }
     }
+
+    public function execution($type)
+    {
+        // Validar que $type sea igual a 2 o 3
+        if ($type != 2 && $type != 3) {
+            abort(404);
+        }
+
+        $stages = Stage::with([
+            'protocol', 'school',
+            'cycle' => function ($query) {
+                $query->where('status', 1);
+            }
+        ])->where('protocol_id', session('protocol')['id'])
+            ->where('school_id', session('school')['id'])
+            ->where('visible', 0)
+            ->where('category', $type)
+            ->get();
+
+        $title = "Planificación de actividades para la ejecución del EXG";
+        if($title == 3){
+            $title = "Memoria de Capitalización de Experiencias del EXG";
+        }
+        return view('evaluations.execution.evaluation', compact('stages', 'title'));
+    }
 }
