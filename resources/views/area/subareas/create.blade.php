@@ -14,7 +14,7 @@
     @endcomponent
     <div class="container">
         <div class="contenedor">
-            <a href="{{ route('areas.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
+            <a href="{{ route('areas.subareas.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
         <h1>Registrar área</h1>
@@ -38,31 +38,21 @@
         <form action="{{ route('areas.store') }}" id="form-area" method="POST">
             @csrf
             <div class="mb-3">
-                <label for="name" class="form-label">Nombre de área</label>
+                <label for="name" class="form-label">Nombre de subárea</label>
                 <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}"
                     required>
             </div>
             <div class="mb-3">
-                <label for="protocol" class="form-label">Protocolo</label>
-                <select class="form-control" id="protocol" name="protocol" disabled>
-                    <option value="0"> Seleccione un protocolo </option>
+                <label for="protocol" class="form-label">Área</label>
+                <select class="form-control" id="area_id" name="area_id">
+                    <option value="0"> Seleccione una area </option>
                     @foreach ($protocols as $protocol)
                         <option value="{{ $protocol->id }}" @if ($protocol->id == session('protocol')['id']) selected @endif>
                             {{ $protocol->name }}</option>
                     @endforeach
                 </select>
             </div>
-            <div class="mb-3">
-                <label for="school" class="form-label">Escuela</label>
-                <select class="form-control" id="school" name="school" disabled>
-                    <option value="0"> Seleccione una escuela </option>
-                    @foreach ($schools as $school)
-                        <option value="{{ $school->id }}" @if ($school->id == session('school')['id']) selected @endif>
-                            {{ $school->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+
             <div class="contenedor">
                 <a href="{{ route('areas.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
                 <button type="submit" class="btn btn-primary">Guardar</button>

@@ -278,6 +278,7 @@ mix.js('resources/js/application_coordinator_show.js', 'public/js/application_co
 mix.js('resources/js/withdrawal_coordinator_show.js', 'public/js/withdrawal_coordinator_show.js');
 mix.js('resources/js/show-finish-note.js', 'public/js/show-finish-note.js');
 mix.js('resources/js/extension_coordinator_show.js', 'public/js/extension_coordinator_show.js');
+mix.js('resources/js/areas.js', 'public/js/areas.js');
 
 
 mix.combine('resources/js/pages/invoice-list.init.js', folder.dist_assets + "js/pages/invoice-list.init.js");

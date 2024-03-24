@@ -4,15 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Cycle;
 use App\Models\Protocol;
 use App\Models\School;
-use App\Models\Area; 
+use App\Models\Area;
+use App\Models\SubArea;
 
-class AreaController extends Controller 
+class AreaController extends Controller
 {
     const PERMISSIONS = [
-        'index' => 'Areas', 
+        'index' => 'Areas',
     ];
 
     public function __construct()
@@ -23,17 +23,16 @@ class AreaController extends Controller
 
     public function index()
     {
-        $areas = Area::with('protocol', 'cycle', 'school')->get(); 
-        return view('area.index', compact('areas')); 
+        $areas = Area::with('protocol', 'school')->get();
+        return view('area.index', compact('areas'));
     }
 
     public function create()
     {
         $protocols = Protocol::all();
         $schools   = School::all();
-        $cycles    = Cycle::all();
 
-        return view('area.create')->with(compact('protocols', 'schools', 'cycles')); 
+        return view('area.create')->with(compact('protocols', 'schools'));
     }
 
     public function store(Request $request)
@@ -41,68 +40,122 @@ class AreaController extends Controller
         $data = $request->validate([
             'name'       => 'required|string|max:255',
             'protocol'   => 'required|integer|min:1|exists:protocols,id',
-            'cycle'      => 'required|integer|min:1|exists:cycles,id',
             'school'     => 'required|integer|min:1|exists:schools,id',
-            'sort'       => 'required|integer',
-            'percentage' => 'required|integer|min:1|max:100',
         ]);
 
         try {
-            $area = Area::create([ 
+            $area = Area::create([
                 'name'        => $request['name'],
                 'protocol_id' => $request['protocol'],
-                'cycle_id'    => $request['cycle'],
                 'school_id'   => $request['school'],
-                'sort'        => $request['sort'],
-                'percentage'  => $request['percentage'],
+
             ]);
 
-            return redirect()->route('areas.index')->with('success', 'Área Evaluativa creada exitosamente.'); 
+            return redirect()->route('areas.index')->with('success', 'Área creada exitosamente.');
         } catch (\Exception $e) {
-            return redirect()->route('areas.create')->with('error', 'El Área Evaluativa ya se encuentra registrada, revisar.'); 
+            return redirect()->route('areas.create')->with('error', 'El Área ya se encuentra registrada, revisar.');
         }
     }
 
-    public function edit(Area $area) 
+    public function edit(Area $area)
     {
         $protocols = Protocol::all();
         $schools   = School::all();
-        $cycles    = Cycle::all();
 
-        return view('area.edit')->with(compact('area', 'protocols', 'schools', 'cycles')); 
+        return view('area.edit')->with(compact('area', 'protocols', 'schools'));
     }
 
-    public function update(Request $request, Area $area) 
+    public function update(Request $request, Area $area)
     {
         $data = $request->validate([
             'name'       => 'required|string|max:255',
             'protocol'   => 'required|integer|min:1|exists:protocols,id',
-            'cycle'      => 'required|integer|min:1|exists:cycles,id',
             'school'     => 'required|integer|min:1|exists:schools,id',
-            'sort'       => 'required|integer',
-            'percentage' => 'required|integer|min:1|max:100',
         ]);
 
         try {
             $area->update([
                 'name'        => $request['name'],
                 'protocol_id' => $request['protocol'],
-                'cycle_id'    => $request['cycle'],
                 'school_id'   => $request['school'],
-                'sort'        => $request['sort'],
-                'percentage'  => $request['percentage'],
             ]);
 
-            return redirect()->route('areas.index')->with('success', 'Área Evaluativa actualizada exitosamente.'); 
+            return redirect()->route('areas.index')->with('success', 'Área actualizada exitosamente.');
         } catch (\Exception $e) {
-            return redirect()->route('areas.edit', ['area' => $area])->with('error', 'El Área Evaluativa ya se encuentra registrada, revisar.'); 
+            return redirect()->route('areas.edit', ['area' => $area])->with('error', 'El Área ya se encuentra registrada, revisar.');
         }
     }
 
-    public function destroy(Area $area) 
+    public function destroy(Area $area)
     {
-        $area->delete(); 
+        $area->delete();
 
-        return redirect()->route('areas.index')->with('success', 'Área Evaluativa eliminada exitosamente.');
+        return redirect()->route('areas.index')->with('success', 'Área eliminada exitosamente.');
+    }
+
+
+    public function subareasIndex()
+    {
+        $subareas = SubArea::with('area')->get();
+        return view('area.subareas.index', compact('subareas'));
+    }
+
+    public function subareasCreate()
+    {
+        $areas = Area::where('protocol_id', session('protocol')['id'])
+            ->where('school_id', session('school')['id'])->get();
+
+        return view('area.subareas.create')->with(compact('areas'));
+    }
+
+    public function subareasStore(Request $request)
+    {
+        $data = $request->validate([
+            'name'      => 'required|string|max:255',
+            'area_id'   => 'required|integer|min:1|exists:areas,id',
+        ]);
+
+        try {
+            $area = SubArea::create([
+                'name'      => $request['name'],
+                'area_id'   => $request['area_id'],
+            ]);
+
+            return redirect()->route('areas.subareas.index')->with('success', 'subarea creada exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->route('areas.subareas.create')->with('error', 'El subarea ya se encuentra registrada, revisar.');
+        }
+    }
+
+    public function subareasEdit(SubArea $subarea)
+    {
+        $areas = Area::all();
+        return view('area.subareas.edit')->with(compact('subarea', 'areas'));
+    }
+
+    public function subareasUpdate(Request $request, SubArea $subarea)
+    {
+        $data = $request->validate([
+            'name'       => 'required|string|max:255',
+            'area_id'   => 'required|integer|min:1',
+        ]);
+
+        try {
+            $subarea->update([
+                'name'      => $request['name'],
+                'area_id'   => $request['area_id'],
+            ]);
+
+            return redirect()->route('areas.subareas.index')->with('success', 'Subárea actualizada exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->route('areas.subareas.edit', ['subarea' => $subarea])->with('error', 'Subárea ya se encuentra registrada, revisar.');
+        }
+    }
+
+    public function subareasDestroy(SubArea $subarea)
+    {
+        $subarea->delete();
+
+        return redirect()->route('areas.subareas.index')->with('success', 'Subárea eliminada exitosamente.');
     }
 }

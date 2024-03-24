@@ -13,15 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('subarea', function (Blueprint $table) {
+        Schema::create('areas', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->foreignId('area_id')->constrained('area')->onDelete('restrict');
+            $table->foreignId('protocol_id')->constrained('users')->onDelete('restrict');
+            $table->foreignId('school_id')->constrained('schools')->onDelete('restrict');
             $table->timestamps();
             $table->softDeletes();
 
+
             //Restricción de unicidad
-            $table->unique(['name','area_id']);
+            $table->unique(['name','protocol_id','school_id']);
         });
     }
 
@@ -32,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subarea');
+        Schema::dropIfExists('area');
     }
 };
