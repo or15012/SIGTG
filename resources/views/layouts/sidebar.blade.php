@@ -380,7 +380,11 @@
                                         <span class="menu-item" data-key="t-evaluations">@lang('translation.Evaluations')</span>
                                     </a>
                                     <ul class="sub-menu" aria-expanded="false">
+                                        <li><a href="{{ route('evaluations.execution', 2) }}" data-key="t-phases">@lang('translation.Planning')</a>
+                                        </li>
                                         <li><a href="{{ route('phases.index') }}" data-key="t-phases">@lang('translation.Phases')</a>
+                                        </li>
+                                        <li><a href="{{ route('evaluations.execution', 3) }}" data-key="t-phases">@lang('translation.Memory')</a>
                                         </li>
                                         <li><a href="{{ route('stages.index') }}" data-key="t-stages">@lang('translation.Areas')</a>
                                         </li>
