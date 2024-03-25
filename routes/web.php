@@ -381,14 +381,6 @@ Route::group(['prefix' => 'document', 'as' => 'document.'], function () {
 
 //Grupo para las rutas de areas
 Route::group(['prefix' => 'areas', 'as' => 'areas.'], function () {
-    Route::get('/', [AreaController::class, 'index'])->name('index');
-    Route::get('/create', [AreaController::class, 'create'])->name('create');
-    Route::post('/', [AreaController::class,  'store'])->name('store');
-    Route::get('/{stage}', [AreaController::class, 'show'])->name('show');
-    Route::get('/{area}/edit', [AreaController::class, 'edit'])->name('edit');
-    Route::put('/{area}', [AreaController::class, 'update'])->name('update');
-    Route::delete('/{area}', [AreaController::class, 'destroy'])->name('destroy');
-
 
     Route::group(['prefix' => 'subareas', 'as' => 'subareas.'], function () {
         Route::get('/', [AreaController::class, 'subareasIndex'])->name('index');
@@ -399,6 +391,14 @@ Route::group(['prefix' => 'areas', 'as' => 'areas.'], function () {
         Route::put('/{area}', [AreaController::class, 'subareasUpdate'])->name('update');
         Route::delete('/{area}', [AreaController::class, 'subareasDestroy'])->name('destroy');
     });
+
+    Route::get('/', [AreaController::class, 'index'])->name('index');
+    Route::get('/create', [AreaController::class, 'create'])->name('create');
+    Route::post('/', [AreaController::class,  'store'])->name('store');
+    Route::get('/{stage}', [AreaController::class, 'show'])->name('show');
+    Route::get('/{area}/edit', [AreaController::class, 'edit'])->name('edit');
+    Route::put('/{area}', [AreaController::class, 'update'])->name('update');
+    Route::delete('/{area}', [AreaController::class, 'destroy'])->name('destroy');
 });
 
 // Grupo para las rutas de subarea
