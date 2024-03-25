@@ -53,7 +53,7 @@ Route::group(['prefix' => 'dashboards', 'as' => 'dashboards.'], function () {
 
 
 //Grupo de rutas para reporte de cursos
-Route::group(['prefix' => 'reports', 'as' => 'coursereports.'], function () {
+Route::group(['prefix' => 'coursereports', 'as' => 'coursereports.'], function () {
     Route::get('/', [StudentsCousesReportController::class, 'index'])->name('index');
     Route::get('/protocol/cycle/{id?}',[StudentsCousesReportController::class, 'ajaxProto'])->name('proto');
     Route::get('/course/cycle/{id?}',[StudentsCousesReportController::class, 'ajaxCourse'])->name('course');
@@ -65,7 +65,7 @@ Route::group(['prefix' => 'reports', 'as' => 'coursereports.'], function () {
 });
 
 //Grupo de rutas para reporte de grupos (integrantes)
-Route::group(['prefix' => 'reports', 'as' => 'groupreports.'], function () {
+Route::group(['prefix' => 'groupreports', 'as' => 'groupreports.'], function () {
     Route::get('/', [GroupStudentsReportController::class, 'index'])->name('index');
     Route::get('/protocol/cycle/{id?}',[GroupStudentsReportController::class, 'ajaxProto'])->name('proto');
     Route::get('/course/cycle/{id?}',[GroupStudentsReportController::class, 'ajaxCourse'])->name('course');

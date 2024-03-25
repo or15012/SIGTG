@@ -25,8 +25,25 @@ class StudentsCousesReportController extends Controller
     {
         $actualCycle = Cycle::where('status', 1)->first();
 
+        //Obtener grupos de protocolo 4
+        $inscritosProtocoloCuatro = DB::table('users')
+            ->join('user_group', 'users.id', '=', 'user_group.user_id')
+            ->join('groups', 'user_group.group_id', '=', 'groups.id')
+            ->join('schools', 'users.school_id', '=', 'schools.id')
+            ->join('protocols', 'groups.protocol_id', '=', 'protocols.id')
+            ->where('protocols.id', '=', '4') // Cambia 'Protocolo 4' por el nombre real del protocolo
+            ->select('schools.name as escuela', 'protocols.name as protocolo', 'groups.number as grupo', 'users.*')
+            ->get();
+
+            if (session('school')['id'] != -1) {
+                $inscritosProtocoloCuatro->where('u.school_id', session('school')['id']); // Usar la columna correcta en la condición where
+            }
+            if (isset(session('protocol')['id']) && session('protocol')['id'] != -1) {
+                $inscritosProtocoloCuatro->where('pt.id', session('protocol')['id']);
+            }
+
         // Obtener estudiantes inscritos en el protocolo 4
-        $inscritosProtocoloCuatro = DB::table('groups as gro')
+        $todosProtocoloCuatro = DB::table('groups as gro')
             ->join('cycles as cy', 'cy.id', '=', 'gro.cycle_id')
             ->join('protocols as proto', 'proto.id', '=', 'gro.protocol_id')
             ->join('user_protocol as up', 'up.protocol_id', '=', 'proto.id')
@@ -41,27 +58,7 @@ class StudentsCousesReportController extends Controller
             ->where('proto.id', 4)
             ->where('cy.status', 1);
 
-        if (session('school')['id'] != -1) {
-            $inscritosProtocoloCuatro->where('u.school_id', session('school')['id']); // Usar la columna correcta en la condición where
-        }
-        if (isset(session('protocol')['id']) && session('protocol')['id'] != -1) {
-            $inscritosProtocoloCuatro->where('pt.id', session('protocol')['id']);
-        }
-        $inscritosProtocoloCuatro = $inscritosProtocoloCuatro->get();
-
         //dd($inscritosProtocoloCuatro);
-
-        // Obtener todos los estudiantes en el protocolo 4
-        $todosProtocoloCuatro = DB::table('groups as gro')
-            ->join('cycles as cy', 'cy.id', '=', 'gro.cycle_id')
-            ->join('protocols as proto', 'proto.id', '=', 'gro.protocol_id')
-            ->join('user_protocol as up', 'up.protocol_id', '=', 'proto.id')
-            ->join('users as u', 'u.id', '=', 'up.user_id')
-            ->join('schools as sch', 'u.school_id', 'sch.id')
-            ->where('u.type', 1)
-            ->where('u.state', 1)
-            ->where('proto.id', 4)
-            ->where('cy.status', 1);
 
         if (session('school')['id'] != -1) {
             $todosProtocoloCuatro->where('u.school_id', session('school')['id']); // Usar la columna correcta en la condición where
@@ -74,51 +71,15 @@ class StudentsCousesReportController extends Controller
         // Calcular estudiantes no inscritos restando el total menos los inscritos
         $noInscritosProtocoloCuatro = $todosProtocoloCuatro - count($inscritosProtocoloCuatro);
 
+        //dd($todosProtocoloCuatro);
         //dd($noInscritosProtocoloCuatro);
 
         // Cargar los datos en la vista
         $ciclos = Cycle::latest()->take(10)->get();
 
-        return view('reports.index', compact('inscritosProtocoloCuatro', 'noInscritosProtocoloCuatro', 'ciclos'));
-    }
-
-
-    public function ajaxCourses($cycle_id){
-        $datos = DB::table('groups as gro')
-            ->join('cycles as cy', 'cy.id', '=', 'gro.cycle_id')
-            ->join('protocols as proto', 'proto.id', '=', 'gro.protocol_id')
-            ->join('user_protocol as up', 'up.protocol_id', '=', 'proto.id')
-            ->join('users as u', 'u.id', '=', 'up.user_id')
-            ->leftJoin('course_registrations as cour', function ($join) {
-                $join->on('cour.user_id', '=', 'up.user_id')
-                    ->on('cour.course_id', '=', 'gro.protocol_id');
-            })
-            ->where('u.type', 1)
-            ->where('u.state', 1)
-            ->groupBy('cy.id', 'proto.id', 'cy.year', 'cy.number')
-            ->select(
-                'cy.id as cycle_id',
-                'proto.id as protocol_id',
-                'cy.year as cycle_year',
-                'cy.number as cycle_number',
-                DB::raw('COUNT(u.id) as total_students'),
-                DB::raw('COUNT(cour.user_id) as enrolled_students')
-            )
-            ->where('gro.cycle_id', '=', $cycle_id)
-            ->where('proto.id', 4); // Protocolo 4
-
-        if (session('school')['id'] != -1) {
-            $datos->where('u.school_id', session('school')['id']);
-        }
-
-        $datos = $datos->get();
-
-        return response()->json([
-            'new_datos' => $datos
-        ]);
+        return view('reports.coursereports', compact('inscritosProtocoloCuatro', 'noInscritosProtocoloCuatro', 'ciclos'));
     }
     
-
     public function ajaxExcelCourses($cycle_id)
     {
         $inscritosProtocoloCuatro = DB::table('groups as gro')

@@ -7,8 +7,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Group;
-use App\Models\Cycle;
-use App\Models\School;
 use App\Mail\SendMail;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Mail;
@@ -64,7 +62,6 @@ class EventsController extends Controller
         //dd($project);
         return view('events.create', compact('project'));
     }
-
 
     public function store(Request $request, Project $project)
     {
@@ -141,7 +138,6 @@ class EventsController extends Controller
         }
 
         $user = auth()->user();
-
         return view('events.edit') ->with(compact('events','project', 'user'));
     }
 
@@ -324,6 +320,9 @@ class EventsController extends Controller
 
         return redirect()->route('events.coordinator.index')->with('success', 'Estado de defensa actualizada.');
     }
+
+
+    
 
 
 }
