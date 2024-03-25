@@ -388,6 +388,17 @@ Route::group(['prefix' => 'areas', 'as' => 'areas.'], function () {
     Route::get('/{area}/edit', [AreaController::class, 'edit'])->name('edit');
     Route::put('/{area}', [AreaController::class, 'update'])->name('update');
     Route::delete('/{area}', [AreaController::class, 'destroy'])->name('destroy');
+
+
+    Route::group(['prefix' => 'subareas', 'as' => 'subareas.'], function () {
+        Route::get('/', [AreaController::class, 'subareasIndex'])->name('index');
+        Route::get('/create', [AreaController::class, 'subareasCreate'])->name('create');
+        Route::post('/', [AreaController::class,  'subareasStore'])->name('store');
+        Route::get('/{stage}', [AreaController::class, 'subareasShow'])->name('show');
+        Route::get('/{area}/edit', [AreaController::class, 'subareasEdit'])->name('edit');
+        Route::put('/{area}', [AreaController::class, 'subareasUpdate'])->name('update');
+        Route::delete('/{area}', [AreaController::class, 'subareasDestroy'])->name('destroy');
+    });
 });
 
 // Grupo para las rutas de subarea

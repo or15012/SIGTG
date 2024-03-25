@@ -26,7 +26,7 @@
                     @break
 
                     @case(5)
-                        Lista de áreas
+                        Lista de áreas temáticas
                     @break
 
                     @default
@@ -46,7 +46,7 @@
                     @break
 
                     @case(5)
-                        Nueva área
+                        Nueva área temática
                     @break
 
                     @default
@@ -66,9 +66,9 @@
                     @break
 
                     @case(5)
-                        <a href="{{ route('stages.download.template.subareas') }}" class="btn btn-primary">
+                        {{-- <a href="{{ route('stages.download.template.subareas') }}" class="btn btn-primary">
                             Descargar plantilla para carga de subáreas
-                        </a>
+                        </a> --}}
                     @break
 
                     @default
@@ -108,7 +108,7 @@
                                 @break
 
                                 @case(5)
-                                    Orden de área
+                                    Orden de área temática
                                 @break
 
                                 @default
@@ -207,9 +207,9 @@
 
                                     @case(5)
                                         <a href="{{ route('stages.edit', $stage->id) }}" class="btn btn-primary my-1"
-                                            title="Editar área"><i class="fas fa-pen"></i></a>
+                                            title="Editar área temática"><i class="fas fa-pen"></i></a>
 
-                                        <button class="btn btn-danger buttonDelete my-1" title="Eliminar área"
+                                        <button class="btn btn-danger buttonDelete my-1" title="Eliminar área temática"
                                             onclick="mostrarConfirmacion('{{ route('stages.destroy', $stage->id) }}', '{{ csrf_token() }}')">
                                             <i class="fas fa-trash-alt"></i> </button>
 

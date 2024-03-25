@@ -194,5 +194,10 @@ return [
     "WithdrawalsAdviser"     => "Retiros (Coordinador)",
     "Withdrawals"            => "Retiros",
     "TypesAgreements"        => "Tipos de acuerdos (Coordinador)",
-    "ExtensionsAdviser"      => "Prorrogas (Coordinador)"
+    "ExtensionsAdviser"      => "Prorrogas (Coordinador)",
+    "Planning"               => "Planificación (Coordinador)",
+    "Execution"              => "Ejecución (Coordinador)",
+    "Memory"                 => "Memoria (Coordinador)",
+    "ThematicAreas"          => "Areás Temáticas",
+    "Areas"                  => "Areas"
 ];

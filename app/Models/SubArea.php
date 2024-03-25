@@ -10,11 +10,9 @@ class SubArea extends Model
     use HasFactory;
     use LogsActivityTrait;
 
-    protected $table = 'subarea';
-
     public function area(){
         return $this->belongsTo(Area::class, 'area_id');
     }
 
-    
+
 }
