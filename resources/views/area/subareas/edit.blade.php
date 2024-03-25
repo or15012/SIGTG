@@ -35,48 +35,33 @@
             </div>
         @endif
 
-        <form action="{{ route('areas.update', $area->id) }}" id="form-area" method="POST">
+        <form action="{{ route('areas.subareas.update', $subarea->id) }}" id="form-area" method="POST">
             @csrf
             @method('PUT')
             <div class="mb-3">
-                <label for="name" class="form-label">Nombre de la área</label>
+                <label for="name" class="form-label">Nombre de subárea</label>
                 <input type="text" class="form-control" id="name" name="name"
-                    value="{{ old('name', $area->name) }}" required>
+                    value="{{ old('name', $subarea->name) }}" required>
             </div>
             <div class="mb-3">
-                <label for="protocol" class="form-label">Protocolo</label>
-                <select class="form-control" name="protocol" id="protocol" disabled>
-                    @foreach ($protocols as $protocol)
-                        @if ($area->protocol_id == $protocol->id)
-                            <option value="{{ $protocol->id }}" selected>
-                                {{ $protocol->name }}
+                <label for="area_id" class="form-label">Área</label>
+                <select class="form-control" name="area_id" id="area_id">
+                    @foreach ($areas as $area)
+                        @if ($subarea->area_id == $area->id)
+                            <option value="{{ $area->id }}" selected>
+                                {{ $area->name }}
                             </option>
                         @else
-                            <option value="{{ $protocol->id }}">
-                                {{ $protocol->name }}
+                            <option value="{{ $area->id }}">
+                                {{ $area->name }}
                             </option>
                         @endif
                     @endforeach
                 </select>
             </div>
-            <div class="mb-3">
-                <label for="school" class="form-label">Escuela</label>
-                <select class="form-control" name="school" id="school" disabled>
-                    @foreach ($schools as $school)
-                        @if ($area->school_id == $school->id)
-                            <option value="{{ $school->id }}" selected>
-                                {{ $school->name }}
-                            </option>
-                        @else
-                            <option value="{{ $school->id }}">
-                                {{ $school->name }}
-                            </option>
-                        @endif
-                    @endforeach
-                </select>
-            </div>
+
             <div class="contenedor">
-                <a href="{{ route('areas.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
+                <a href="{{ route('areas.subareas.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
                 <button type="submit" class="btn btn-primary">Actualizar</button>
             </div>
         </form>
@@ -85,5 +70,4 @@
 
 @section('script')
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
-    <script src="{{ URL::asset('js/areas.js') }}"></script>
 @endsection

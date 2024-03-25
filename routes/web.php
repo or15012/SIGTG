@@ -386,10 +386,10 @@ Route::group(['prefix' => 'areas', 'as' => 'areas.'], function () {
         Route::get('/', [AreaController::class, 'subareasIndex'])->name('index');
         Route::get('/create', [AreaController::class, 'subareasCreate'])->name('create');
         Route::post('/', [AreaController::class,  'subareasStore'])->name('store');
-        Route::get('/{stage}', [AreaController::class, 'subareasShow'])->name('show');
-        Route::get('/{area}/edit', [AreaController::class, 'subareasEdit'])->name('edit');
-        Route::put('/{area}', [AreaController::class, 'subareasUpdate'])->name('update');
-        Route::delete('/{area}', [AreaController::class, 'subareasDestroy'])->name('destroy');
+        Route::get('/{subarea}', [AreaController::class, 'subareasShow'])->name('show');
+        Route::get('/{subarea}/edit', [AreaController::class, 'subareasEdit'])->name('edit');
+        Route::put('/{subarea}', [AreaController::class, 'subareasUpdate'])->name('update');
+        Route::delete('/{subarea}', [AreaController::class, 'subareasDestroy'])->name('destroy');
     });
 
     Route::get('/', [AreaController::class, 'index'])->name('index');
@@ -512,7 +512,7 @@ Route::group(['prefix' => 'events', 'as' => 'events.'], function () {
         Route::get('/', [EventsController::class, 'coordinatorIndex'])->name('index');
         Route::get('show/{events}', [EventsController::class, 'coordinatorShow'])->name('show');
         Route::put('/update/{events}', [EventsController::class, 'coordinatorUpdate'])->name('update');
-    }); 
+    });
     */
 });
 
