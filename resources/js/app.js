@@ -650,6 +650,47 @@ File: Main Js File
     }
   }
 
+  function initCalendar() {
+    var calendarEl = document.getElementById('calendar');
+
+    if (calendarEl) {
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: [ 'dayGrid', 'timeGrid', 'interaction' ],
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            defaultDate: new Date(),
+            navLinks: true, // can click day/week names to navigate views
+            selectable: true,
+            selectMirror: true,
+            select: function(arg) {
+                var title = prompt('Event Title:');
+                if (title) {
+                    calendar.addEvent({
+                        title: title,
+                        start: arg.start,
+                        end: arg.end,
+                        allDay: arg.allDay
+                    });
+                }
+                calendar.unselect();
+            },
+            editable: true,
+            eventLimit: true, // allow "more" link when too many events
+            events: '/events', // Assuming this is the route that returns your events
+            loading: function(bool) {
+                document.getElementById('loading').style.display =
+                bool ? 'block' : 'none';
+            }
+        });
+
+        calendar.render();
+    }
+  }
+
+
   function init() {
     initPreloader();
     initSettings();
@@ -665,7 +706,10 @@ File: Main Js File
     layoutSetting();
     initMenuItemScroll();
     initCheckAll();
+    initCalendar(); // Inicialización del calendario
   }
+
+  
 
   init();
 })();
