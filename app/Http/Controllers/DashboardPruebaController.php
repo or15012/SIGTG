@@ -143,6 +143,13 @@ class DashboardPruebaController extends Controller
                     }
                     $rowIndex = 1; // Reiniciar el índice de fila para la nueva hoja
 
+                    // Agregar el nombre de la universidad
+                    $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true);
+                    $sheet->setCellValue('A' . $rowIndex, 'UNIVERSIDAD DE EL SALVADOR');
+                    $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para la escuela
+                    $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Alinear a la izquierda
+                    $rowIndex++;
+
                     // Agregar el nombre de la escuela con formato y estilo
                     $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true);
                     $sheet->setCellValue('A' . $rowIndex, 'Nombre de escuela: ' . $row->name_school);
@@ -180,6 +187,14 @@ class DashboardPruebaController extends Controller
         } else {
             // Mostrar una sola hoja cuando se selecciona una escuela y un solo protocolo
             // o se seleccionan todas las escuelas y protocolos simultáneamente
+
+            // Agregar el nombre de la universidad
+            $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true);
+            $sheet->setCellValue('A' . $rowIndex, 'UNIVERSIDAD DE EL SALVADOR');
+            $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para la escuela
+            $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Alinear a la izquierda
+            $rowIndex++;
+
             // Agregar el nombre de la escuela con formato y estilo
             $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true);
             $sheet->setCellValue('A' . $rowIndex, 'Nombre de escuela: ' . $datos[0]->name_school);
@@ -206,6 +221,25 @@ class DashboardPruebaController extends Controller
             // Añadir datos correspondientes en la hoja única
             foreach ($datos as $row) {
                 if ($row->protocol_name == session('protocol')['name']) { // Filtrar por el protocolo seleccionado
+                    $protocolName = $datos[0]->protocol_name;
+                    switch ($protocolName) {
+                        case 'Trabajo de Investigación':
+                            $sheet->setTitle('TDI');
+                            break;
+                        case 'Pasantía de Práctica Profesional':
+                            $sheet->setTitle('PPP');
+                            break;
+                        case 'Pasantía de Investigación':
+                            $sheet->setTitle('PPI');
+                            break;
+                        case 'Cursos de Especialización':
+                            $sheet->setTitle('CDE');
+                            break;
+                        case 'Examen General Técnico Profesional':
+                            $sheet->setTitle('EXG');
+                            break;
+                    }
+
                     // Añadir datos correspondientes en la hoja
                     $sheet->setCellValue('A' . $rowIndex, $row->group_number);
                     $sheet->setCellValue('B' . $rowIndex, $row->project_name);
@@ -227,10 +261,17 @@ class DashboardPruebaController extends Controller
             $sheet->getColumnDimension('E')->setWidth(40);
             $sheet->getColumnDimension('F')->setWidth(40);
         }
+
+        // Después de generar todas las hojas
+        foreach ($spreadsheet->getSheetNames() as $sheetIndex => $sheetName) {
+            if ($sheetName === 'Worksheet') {
+                $spreadsheet->removeSheetByIndex($sheetIndex);
+            }
+        }
         // Crear un objeto de escritura
         $writer = new Xlsx($spreadsheet);
 
-        // Guardar el archivo en un directorio temporal -
+        // Guardar el archivo en un directorio temporal
         $filename = 'projects.xlsx';
         $writer->save($filename);
 
