@@ -9,6 +9,7 @@ use App\Models\Cycle;
 use App\Models\EvaluationStage;
 use App\Models\EvaluationStageNote;
 use App\Models\Stage;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\FromArray;
@@ -27,6 +28,7 @@ class DashboardPruebaController extends Controller
                 DB::raw('COUNT(*) as count')
             )
             ->join('groups AS gr', 'gr.id', 'pj.group_id')
+            ->join('cycles as cy', 'cy.id', 'gr.cycle_id')
             ->join('protocols as pt', 'pt.id', 'gr.protocol_id')
             ->join('user_group as ug', 'ug.group_id', 'gr.id')
             ->join('user_protocol as up', 'up.protocol_id', 'pt.id')
@@ -52,6 +54,9 @@ class DashboardPruebaController extends Controller
     // Estados de proyecto
     public function ajaxExcelStatus($cycle_id)
     {
+        // Obtener la fecha y hora actual
+        $now = Carbon::now()->toDateTimeString();
+
         $datos = DB::table('projects as pj')
             ->select(
                 'pt.name as protocol_name',
@@ -63,9 +68,12 @@ class DashboardPruebaController extends Controller
                 'us.last_name as last_name_student',
                 'us.second_last_name as second_last_name_student',
                 'us.carnet as carnet_student',
+                'cy.number as number_cycle',
+                'gr.year as year_cycle',
                 'pj.status'
             )
             ->join('groups AS gr', 'gr.id', 'pj.group_id')
+            ->join('cycles as cy', 'cy.id', 'gr.cycle_id')
             ->join('protocols as pt', 'pt.id', 'gr.protocol_id')
             ->join('user_group as ug', 'ug.group_id', 'gr.id')
             ->join('user_protocol as up', 'up.protocol_id', 'pt.id')
@@ -81,7 +89,9 @@ class DashboardPruebaController extends Controller
                 'us.middle_name',
                 'us.last_name',
                 'us.second_last_name',
-                'us.carnet'
+                'us.carnet',
+                'cy.number',
+                'gr.year'
             )
             ->orderBy('pj.status');
 
@@ -143,22 +153,37 @@ class DashboardPruebaController extends Controller
                     }
                     $rowIndex = 1; // Reiniciar el índice de fila para la nueva hoja
 
+
+                    // Agregar el nombre de la universidad
+                    $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true)->setSize(18);
+                    $sheet->setCellValue('A' . $rowIndex, 'UNIVERSIDAD DE EL SALVADOR');
+                    $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para la escuela
+                    $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Alinear a la izquierda
+                    $rowIndex++;
+
                     // Agregar el nombre de la escuela con formato y estilo
-                    $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true);
+                    $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true)->setSize(12);
                     $sheet->setCellValue('A' . $rowIndex, 'Nombre de escuela: ' . $row->name_school);
                     $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para la escuela
                     $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Alinear a la izquierda
                     $rowIndex++;
 
                     // Agregar el nombre del protocolo con formato y estilo
-                    $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true);
+                    $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true)->setSize(12);
                     $sheet->setCellValue('A' . $rowIndex, 'Nombre de protocolo: ' . $row->protocol_name);
                     $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para el protocolo
                     $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Alinear a la izquierda
                     $rowIndex++;
 
+                    // Agregar ciclo y año
+                    $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true)->setSize(12);
+                    $sheet->setCellValue('A' . $rowIndex, 'Ciclo: ' . $datos[0]->number_cycle . ' - ' . $datos[0]->year_cycle);
+                    $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para el protocolo
+                    $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Alinear a la izquierda
+                    $rowIndex += 3; // Añadir dos filas adicionales después del ciclo
 
                     // Añadir encabezados de columna para la nueva hoja
+                    $sheet->getStyle('A' . $rowIndex . ':F' . $rowIndex)->getFont()->setBold(true); // Establecer fuente negrita para los encabezados
                     $sheet->setCellValue('A' . $rowIndex, 'Número de grupo');
                     $sheet->setCellValue('B' . $rowIndex, 'Nombre de proyecto');
                     $sheet->setCellValue('C' . $rowIndex, 'Estado de proyecto');
@@ -180,21 +205,37 @@ class DashboardPruebaController extends Controller
         } else {
             // Mostrar una sola hoja cuando se selecciona una escuela y un solo protocolo
             // o se seleccionan todas las escuelas y protocolos simultáneamente
+
+            // Agregar el nombre de la universidad
+            $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true)->setSize(18);
+            $sheet->setCellValue('A' . $rowIndex, 'UNIVERSIDAD DE EL SALVADOR');
+            $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para la escuela
+            $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Alinear a la izquierda
+            $rowIndex++;
+
             // Agregar el nombre de la escuela con formato y estilo
-            $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true);
+            $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true)->setSize(12);;
             $sheet->setCellValue('A' . $rowIndex, 'Nombre de escuela: ' . $datos[0]->name_school);
             $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para la escuela
             $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Alinear a la izquierda
             $rowIndex++;
 
             // Agregar el nombre del protocolo con formato y estilo
-            $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true);
+            $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true)->setSize(12);
             $sheet->setCellValue('A' . $rowIndex, 'Nombre de protocolo: ' . $datos[0]->protocol_name);
             $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para el protocolo
             $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Alinear a la izquierda
-            $rowIndex++;
+            $rowIndex++; // Añadir dos filas adicionales después del nombre del protocolo
+
+            // Agregar ciclo y año
+            $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true)->setSize(12);;
+            $sheet->setCellValue('A' . $rowIndex, 'Ciclo: ' . $datos[0]->number_cycle . ' - ' . $datos[0]->year_cycle);
+            $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para el protocolo
+            $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Alinear a la izquierda
+            $rowIndex += 3; // Añadir dos filas adicionales después del ciclo
 
             // Añadir encabezados de columna para la hoja única
+            $sheet->getStyle('A' . $rowIndex . ':F' . $rowIndex)->getFont()->setBold(true); // Establecer fuente negrita para los encabezados
             $sheet->setCellValue('A' . $rowIndex, 'Número de grupo');
             $sheet->setCellValue('B' . $rowIndex, 'Nombre de proyecto');
             $sheet->setCellValue('C' . $rowIndex, 'Estado de proyecto');
@@ -203,9 +244,29 @@ class DashboardPruebaController extends Controller
             $sheet->setCellValue('F' . $rowIndex, 'CARNET');
             $rowIndex++;
 
+
             // Añadir datos correspondientes en la hoja única
             foreach ($datos as $row) {
                 if ($row->protocol_name == session('protocol')['name']) { // Filtrar por el protocolo seleccionado
+                    $protocolName = $datos[0]->protocol_name;
+                    switch ($protocolName) {
+                        case 'Trabajo de Investigación':
+                            $sheet->setTitle('TDI');
+                            break;
+                        case 'Pasantía de Práctica Profesional':
+                            $sheet->setTitle('PPP');
+                            break;
+                        case 'Pasantía de Investigación':
+                            $sheet->setTitle('PPI');
+                            break;
+                        case 'Cursos de Especialización':
+                            $sheet->setTitle('CDE');
+                            break;
+                        case 'Examen General Técnico Profesional':
+                            $sheet->setTitle('EXG');
+                            break;
+                    }
+
                     // Añadir datos correspondientes en la hoja
                     $sheet->setCellValue('A' . $rowIndex, $row->group_number);
                     $sheet->setCellValue('B' . $rowIndex, $row->project_name);
@@ -227,10 +288,62 @@ class DashboardPruebaController extends Controller
             $sheet->getColumnDimension('E')->setWidth(40);
             $sheet->getColumnDimension('F')->setWidth(40);
         }
+
+        // Después de generar todas las hojas
+        foreach ($spreadsheet->getSheetNames() as $sheetIndex => $sheetName) {
+            if ($sheetName === 'Worksheet') {
+                $spreadsheet->removeSheetByIndex($sheetIndex);
+            } else {
+
+                // Aplicar opciones de visualización y formato en cada hoja
+                $sheet = $spreadsheet->getSheetByName($sheetName);
+
+                // Establecer opciones de visualización para el archivo Excel
+                $sheet->setShowGridlines(false); // Ocultar las líneas de cuadrícula
+
+                // Establecer fondo blanco en el rango deseado
+                $sheet->getStyle('A1:F100')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+                $sheet->getStyle('A1:F100')->getFill()->getStartColor()->setARGB('FFFFFFFF');
+
+                $range = 'A7:F' . ($rowIndex - 1); // Rango desde A7 hasta la última fila de datos
+
+                // Aplicar bordes a las celdas del rango
+                $sheet->getStyle($range)->applyFromArray([
+                    'borders' => [
+                        'allBorders' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN, // Estilo de borde delgado
+                            'color' => ['rgb' => '000000'], // Color del borde (negro)
+                        ],
+                    ],
+                ]);
+
+                // Obtener la fecha y hora actual
+                $now = date('d/m/Y H:i');
+
+                // Agregar la fecha y hora al archivo Excel
+                $sheet->setCellValue('F1', 'Fecha y hora: ' . $now);
+
+                // Aplicar negrita al texto "Fecha de generación"
+                $sheet->getStyle('F1')->getFont()->setBold(true);
+
+                // Después de crear el objeto $spreadsheet
+                $logoPath = public_path('assets/images/logo-sm.jpg'); // Ruta del logo en tu proyecto
+                $logo = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                $logo->setPath($logoPath); // Establecer la ruta del logo
+                $logo->setCoordinates('B1'); // Coordenadas de la celda donde se colocará el logo (izquierda superior)
+                $logo->setOffsetX(330); // Desplazamiento horizontal (ajuste según necesidades)
+                $logo->setOffsetY(5); // Desplazamiento vertical (ajuste según necesidades)
+                $logo->setHeight(75); // Altura del logo (ajuste según necesidades)
+                $logo->setWorksheet($sheet); // Asignar el logo a la hoja actual
+
+                // Bloquear la imagen para que no se pueda mover
+                $sheet->getProtection()->setObjects(true);
+            }
+        }
         // Crear un objeto de escritura
         $writer = new Xlsx($spreadsheet);
 
-        // Guardar el archivo en un directorio temporal -
+        // Guardar el archivo en un directorio temporal
         $filename = 'projects.xlsx';
         $writer->save($filename);
 
