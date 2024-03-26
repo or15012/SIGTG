@@ -511,7 +511,7 @@
                 @can('Events.students')
                     <li>
                         <a href="{{ route('events.index')}}">
-                            <i class='bx bx-calendar nav-icon'></i><span class="menu-item" data-key="t-workshops">@lang('translation.Events')</span>
+                            <i class='bx bx-calendar nav-icon'></i><span class="menu-item" data-key="t-events">@lang('translation.Events')</span>
                         </a>
                     </li>
                 @endcan
@@ -520,7 +520,7 @@
                 @can('Events.advisers')
                     <li>
                         <a href="{{ route('events.index')}}">
-                            <i class='bx bx-calendar nav-icon'></i><span class="menu-item" data-key="t-workshops">@lang('translation.EventsAdviser')</span>
+                            <i class='bx bx-calendar nav-icon'></i><span class="menu-item" data-key="t-eventsadviser">@lang('translation.EventsAdviser')</span>
                         </a>
                     </li>
                 @endcan

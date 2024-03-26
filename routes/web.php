@@ -505,11 +505,9 @@ Route::group(['prefix' => 'logs', 'as' => 'logs.'], function () {
 //Grupo para las rutas de defensa (eventos)
 Route::group(['prefix' => 'events', 'as' => 'events.'], function () {
     Route::get('/events', [EventsController::class, 'index'])->name('index');
-    /*
-    Route::get('/index/{project}', [EventsController::class, 'index'])->name('index');
-    Route::get('/create/{project}', [EventsController::class, 'create'])->name('create');
-    Route::post('/store', [EventsController::class,  'store'])->name('store');
-    Route::get('/{events}/edit/{project}', [EventsController::class, 'edit'])->name('edit');
+    Route::get('/create', [EventsController::class, 'create'])->name('create');
+    Route::post('/', [EventsController::class,  'store'])->name('store');
+    Route::get('/{events}/edit/', [EventsController::class, 'edit'])->name('edit');
     Route::put('/update/{events}', [EventsController::class, 'update'])->name('update');
 
     Route::group(['prefix' => 'coordinator', 'as' => 'coordinator.'], function () {
@@ -517,7 +515,6 @@ Route::group(['prefix' => 'events', 'as' => 'events.'], function () {
         Route::get('show/{events}', [EventsController::class, 'coordinatorShow'])->name('show');
         Route::put('/update/{events}', [EventsController::class, 'coordinatorUpdate'])->name('update');
     });
-    */
 });
 
 
