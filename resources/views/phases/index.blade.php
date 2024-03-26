@@ -55,6 +55,9 @@
                             <a href="{{ route('phases.assig.stages', $phase->id) }}" class="btn btn-primary my-1"><i
                                     class="fas fa-exchange-alt"></i></a>
 
+                            <a href="{{ route('phases.stage.create', $phase->id) }}" class="btn btn-primary my-1"><i
+                                    class="fas fa-plus"></i></a>
+
                             <button class="btn btn-danger buttonDelete my-1"
                                 onclick="mostrarConfirmacion('{{ route('phases.destroy', $phase->id) }}', '{{ csrf_token() }}')">
                                 <i class="fas fa-trash-alt"></i> </button>

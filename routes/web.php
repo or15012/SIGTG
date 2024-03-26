@@ -434,14 +434,18 @@ Route::group(['prefix' => 'phases', 'as' => 'phases.'], function () {
     Route::get('/', [PhaseController::class, 'index'])->name('index');
     Route::get('/create', [PhaseController::class, 'create'])->name('create');
     Route::post('/store', [PhaseController::class,  'store'])->name('store');
-    Route::get('/{phase}/edit', [PhaseController::class, 'edit'])->name('edit');
-    Route::put('/{phase}', [PhaseController::class, 'update'])->name('update');
-    Route::delete('/{phase}', [PhaseController::class, 'destroy'])->name('destroy');
+    Route::get('/stages/create/{phase}', [PhaseController::class, 'stageCreate'])->name('stage.create');
+    Route::post('/stages/store', [PhaseController::class, 'stageStore'])->name('stage.store');
     Route::get('/assign-stages/{phase}', [PhaseController::class, 'assignStages'])->name('assig.stages');
     Route::post('/store-assign-stages/{phase}', [PhaseController::class, 'storeAssignStages'])->name('store.assig.stages');
 
     //para ruta ajax
     Route::get('/get_phase/{phase}', [PhaseController::class, 'getPhase'])->name('get.phase');
+
+    Route::get('/{phase}/edit', [PhaseController::class, 'edit'])->name('edit');
+    Route::put('/{phase}', [PhaseController::class, 'update'])->name('update');
+    Route::delete('/{phase}', [PhaseController::class, 'destroy'])->name('destroy');
+
 });
 
 //Grupo para las rutas de planificación

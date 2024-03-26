@@ -53,7 +53,7 @@
             </div>
         @endif
 
-        <form action="{{ route('stages.store') }}" id="form-stage" method="POST">
+        <form action="{{ route('phases.stage.store') }}" id="form-stage" method="POST">
             @csrf
             <div class="mb-3">
                 <label for="name" class="form-label">
@@ -88,7 +88,7 @@
                     @endforeach
                 </select>
             </div>
-
+            <input type="hidden" name="phase_id" value="{{$phase->id}}">
             <div class="mb-3">
                 <label for="protocol" class="form-label">Protocolo</label>
                 <select class="form-control" id="protocol" name="protocol" disabled>
@@ -160,8 +160,8 @@
                         <div class="row mb-3">
                             <div class="col-12">
                                 <label for="status" class="form-label">Fecha de inicio</label>
-                                <input  type="date" class="form-control" id="start_date"
-                                    name="start_date" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
+                                <input type="date" class="form-control" id="start_date" name="start_date"
+                                    value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
                                     min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" required>
                             </div>
                         </div>
@@ -169,10 +169,9 @@
                         <div class="row mb-3">
                             <div class="col-12">
                                 <label for="status" class="form-label">Fecha de fin</label>
-                                <input  type="date" class="form-control" id="end_date"
-                                    name="end_date" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
-                                    min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
-                                    required>
+                                <input type="date" class="form-control" id="end_date" name="end_date"
+                                    value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
+                                    min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" required>
                             </div>
                         </div>
                     @break
