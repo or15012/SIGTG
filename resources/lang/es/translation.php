@@ -199,5 +199,7 @@ return [
     "Execution"              => "Ejecución (Coordinador)",
     "Memory"                 => "Memoria (Coordinador)",
     "ThematicAreas"          => "Areás Temáticas",
-    "Areas"                  => "Areas"
+    "Areas"                  => "Areas",
+    "Events"                 => "Defensas",
+    "EventsAdviser"          => "Defensas (Coordinador)"
 ];
