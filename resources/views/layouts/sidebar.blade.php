@@ -507,6 +507,20 @@
                     @endswitch
                 @endif
 
+                
+                @can('Events.students')
+                    <a href="{{ route('events.index', $project->id) }}" style="margin-left: 5px" class="btn btn-primary float-end">
+                        <i class="bx bx-home-circle icon nav-icon"></i><span class="menu-item" data-key="t-workshops">Defensas</span>
+                    </a>
+                @endcan
+
+                @can('Events.advisers')
+                    <a href="{{ route('events.coordinator.index', $project->id) }}" style="margin-left: 5px" class="btn btn-primary float-end">
+                        <i class="bx bx-file icon nav-icon"></i><span class="menu-item" data-key="t-workshops">Defensas</span>
+                    </a>
+                @endcan
+
+
                 @can('Withdrawals.students')
                     <li>
                         <a href="{{ route('withdrawals.index') }}">

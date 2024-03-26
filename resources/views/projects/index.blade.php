@@ -43,18 +43,6 @@
                     @endif
                 @endif
 
-                @can('Events.students')
-                    <a href="{{ route('events.index', $project->id) }}" style="margin-left: 5px" class="btn btn-primary float-end">
-                        <i class="fa fa-plus"></i>&nbsp; Solicitar defensa
-                    </a>
-                @endcan
-
-                @can('Events.advisers')
-                    <a href="{{ route('events.coordinator.index', $project->id) }}" style="margin-left: 5px" class="btn btn-primary float-end">
-                        <i class="bx bx-file icon nav-icon"></i>&nbsp; Ver defensas
-                    </a>
-                @endcan
-
                 @can('Extensions.student.create')
                     @if ($today >= $date_end_mod && $today <= $date_end)
                         <a href="{{ route('extensions.index', $project->id) }}" style="margin-left: 5px" class="btn btn-primary float-end">
