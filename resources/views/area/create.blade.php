@@ -43,12 +43,23 @@
                     required>
             </div>
             <div class="mb-3">
-                <label for="area" class="form-label">Áreas disponibles</label>
-                <select class="form-control" id="area_id" name="area_id" disabled>
-                    <option value="0"> Seleccione un área </option>
-                    @foreach ($areas as $area)
-                        <option value="{{ $area->id }}">
-                            {{ $area->name }}</option>
+                <label for="protocol" class="form-label">Protocolo</label>
+                <select class="form-control" id="protocol" name="protocol" disabled>
+                    <option value="0"> Seleccione un protocolo </option>
+                    @foreach ($protocols as $protocol)
+                        <option value="{{ $protocol->id }}" @if ($protocol->id == session('protocol')['id']) selected @endif>
+                            {{ $protocol->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="school" class="form-label">Escuela</label>
+                <select class="form-control" id="school" name="school" disabled>
+                    <option value="0"> Seleccione una escuela </option>
+                    @foreach ($schools as $school)
+                        <option value="{{ $school->id }}" @if ($school->id == session('school')['id']) selected @endif>
+                            {{ $school->name }}
+                        </option>
                     @endforeach
                 </select>
             </div>

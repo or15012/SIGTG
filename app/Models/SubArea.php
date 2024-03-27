@@ -11,6 +11,7 @@ class SubArea extends Model
     use LogsActivityTrait;
     protected $table = "subareas";
     protected $fillable = [
+        'id',
         'name',
         'area_id',
     ];

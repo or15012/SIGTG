@@ -35,7 +35,7 @@
             </div>
         @endif
 
-        <form action="{{ route('areas.store') }}" id="form-area" method="POST">
+        <form action="{{ route('areas.subareas.store') }}" id="form-area" method="POST">
             @csrf
             <div class="mb-3">
                 <label for="name" class="form-label">Nombre de subárea</label>
@@ -43,18 +43,18 @@
                     required>
             </div>
             <div class="mb-3">
-                <label for="protocol" class="form-label">Área</label>
+                <label for="area" class="form-label">Área</label>
                 <select class="form-control" id="area_id" name="area_id">
                     <option value="0"> Seleccione una area </option>
-                    @foreach ($protocols as $protocol)
-                        <option value="{{ $protocol->id }}" @if ($protocol->id == session('protocol')['id']) selected @endif>
-                            {{ $protocol->name }}</option>
+                    @foreach ($areas as $area)
+                        <option value="{{ $area->id }}" >
+                            {{ $area->name }}</option>
                     @endforeach
                 </select>
             </div>
 
             <div class="contenedor">
-                <a href="{{ route('areas.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
+                <a href="{{ route('areas.subareas.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
                 <button type="submit" class="btn btn-primary">Guardar</button>
             </div>
         </form>
@@ -63,5 +63,4 @@
 
 @section('script')
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
-    <script src="{{ URL::asset('js/areas.js') }}"></script>
 @endsection

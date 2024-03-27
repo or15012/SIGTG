@@ -14,8 +14,8 @@
     @endcomponent
 
     <div class="container">
-        <h1>Lista de áreas</h1>
-        <a href="{{ route('areas.create') }}" class="btn btn-primary mb-3">Nueva área</a>
+        <h1>Lista de subáreas</h1>
+        <a href="{{ route('areas.subareas.create') }}" class="btn btn-primary mb-3">Nueva subárea</a>
 
         @if (session('success'))
             <div class="alert alert-success">
@@ -34,24 +34,22 @@
                 <tr class="table-danger">
                     <th>ID</th>
                     <th>Nombre</th>
-                    <th>Protocolo</th>
-                    <th>Escuela</th>
+                    <th>Area</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($areas as $area)
+                @foreach ($subareas as $area)
                     <tr>
                         <td>{{ $area->id }}</td>
                         <td>{{ $area->name }}</td>
-                        <td>{{ $area->protocol->name }}</td>
-                        <td>{{ $area->school->name }}</td>
+                        <td>{{ $area->area->name }}</td>
                         <td>
-                            <a href="{{ route('areas.edit', $area->id) }}" class="btn btn-primary">
+                            <a href="{{ route('areas.subareas.edit', $area->id) }}" class="btn btn-primary">
                                 <i class="fas fa-pen"></i>
                             </a>
                             <button class="btn btn-danger buttonDelete"
-                                onclick="mostrarConfirmacion('{{ route('areas.destroy', $area->id) }}', '{{ csrf_token() }}')">
+                                onclick="mostrarConfirmacion('{{ route('areas.subareas.destroy', $area->id) }}', '{{ csrf_token() }}')">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </td>
