@@ -42,6 +42,7 @@ class DashboardPruebaController extends Controller
         }
         if (isset(session('protocol')['id']) && session('protocol')['id'] != -1) {
             $datos5->where('pt.id', session('protocol')['id']);
+            Log::info('Entrando al if un solo protocolo.');
         }
         $datos5 = $datos5->get();
         //dd($datos5);
@@ -97,6 +98,10 @@ class DashboardPruebaController extends Controller
 
         if (session('school')['id'] != -1) {
             $datos->where('us.school_id', session('school')['id']);
+        }
+        if (isset(session('protocol')['id']) && session('protocol')['id'] != -1) {
+            $datos->where('pt.id', session('protocol')['id']);
+            Log::info('Entrando al if del protocolo.');
         }
 
         $datos->where('gr.cycle_id', '=', $cycle_id);
@@ -203,52 +208,23 @@ class DashboardPruebaController extends Controller
                 $rowIndex++;
             }
         } else {
-            // Mostrar una sola hoja cuando se selecciona una escuela y un solo protocolo
-            // o se seleccionan todas las escuelas y protocolos simultáneamente
 
-            // Agregar el nombre de la universidad
-            $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true)->setSize(18);
-            $sheet->setCellValue('A' . $rowIndex, 'UNIVERSIDAD DE EL SALVADOR');
-            $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para la escuela
-            $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Alinear a la izquierda
-            $rowIndex++;
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            $sheetIndex = 0; // Inicializar el índice de la hoja en 0
+            $rowIndex = 1; // Comenzar desde la primera fila
 
-            // Agregar el nombre de la escuela con formato y estilo
-            $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true)->setSize(12);;
-            $sheet->setCellValue('A' . $rowIndex, 'Nombre de escuela: ' . $datos[0]->name_school);
-            $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para la escuela
-            $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Alinear a la izquierda
-            $rowIndex++;
-
-            // Agregar el nombre del protocolo con formato y estilo
-            $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true)->setSize(12);
-            $sheet->setCellValue('A' . $rowIndex, 'Nombre de protocolo: ' . $datos[0]->protocol_name);
-            $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para el protocolo
-            $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Alinear a la izquierda
-            $rowIndex++; // Añadir dos filas adicionales después del nombre del protocolo
-
-            // Agregar ciclo y año
-            $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true)->setSize(12);;
-            $sheet->setCellValue('A' . $rowIndex, 'Ciclo: ' . $datos[0]->number_cycle . ' - ' . $datos[0]->year_cycle);
-            $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para el protocolo
-            $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Alinear a la izquierda
-            $rowIndex += 3; // Añadir dos filas adicionales después del ciclo
-
-            // Añadir encabezados de columna para la hoja única
-            $sheet->getStyle('A' . $rowIndex . ':F' . $rowIndex)->getFont()->setBold(true); // Establecer fuente negrita para los encabezados
-            $sheet->setCellValue('A' . $rowIndex, 'Número de grupo');
-            $sheet->setCellValue('B' . $rowIndex, 'Nombre de proyecto');
-            $sheet->setCellValue('C' . $rowIndex, 'Estado de proyecto');
-            $sheet->setCellValue('D' . $rowIndex, 'Nombres de estudiante');
-            $sheet->setCellValue('E' . $rowIndex, 'Apellidos de estudiante');
-            $sheet->setCellValue('F' . $rowIndex, 'CARNET');
-            $rowIndex++;
-
-
-            // Añadir datos correspondientes en la hoja única
             foreach ($datos as $row) {
+
+
                 if ($row->protocol_name == session('protocol')['name']) { // Filtrar por el protocolo seleccionado
-                    $protocolName = $datos[0]->protocol_name;
+                    // Obtener el nombre del protocolo para establecer el título de la hoja
+                    $protocolName = $row->protocol_name;
+
+                    // Crear una nueva hoja en el libro
+                    $sheetIndex++;
+                    $sheet = $spreadsheet->createSheet($sheetIndex);
+                    // Asignar nombres a las hojas según el protocolo
                     switch ($protocolName) {
                         case 'Trabajo de Investigación':
                             $sheet->setTitle('TDI');
@@ -266,16 +242,53 @@ class DashboardPruebaController extends Controller
                             $sheet->setTitle('EXG');
                             break;
                     }
+                    $rowIndex = 1; // Reiniciar el índice de fila para la nueva hoja
+                    // Agregar el nombre de la universidad
+                    $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true)->setSize(18);
+                    $sheet->setCellValue('A' . $rowIndex, 'UNIVERSIDAD DE EL SALVADOR');
+                    $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para la escuela
+                    $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Alinear a la izquierda
+                    $rowIndex++;
 
-                    // Añadir datos correspondientes en la hoja
-                    $sheet->setCellValue('A' . $rowIndex, $row->group_number);
-                    $sheet->setCellValue('B' . $rowIndex, $row->project_name);
-                    $sheet->setCellValue('C' . $rowIndex, $row->status_text);
-                    $sheet->setCellValue('D' . $rowIndex, $row->name_student . ' ' . $row->second_name_student);
-                    $sheet->setCellValue('E' . $rowIndex, $row->last_name_student . ' ' . $row->second_last_name_student);
-                    $sheet->setCellValue('F' . $rowIndex, $row->carnet_student);
+                    // Agregar el nombre de la escuela con formato y estilo
+                    $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true)->setSize(12);
+                    $sheet->setCellValue('A' . $rowIndex, 'Nombre de escuela: ' . $row->name_school);
+                    $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para la escuela
+                    $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Alinear a la izquierda
+                    $rowIndex++;
+
+                    // Agregar el nombre del protocolo con formato y estilo
+                    $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true)->setSize(12);
+                    $sheet->setCellValue('A' . $rowIndex, 'Nombre de protocolo: ' . $row->protocol_name);
+                    $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para el protocolo
+                    $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Alinear a la izquierda
+                    $rowIndex++;
+
+                    // Agregar ciclo y año
+                    $sheet->getStyle('A' . $rowIndex)->getFont()->setBold(true)->setSize(12);
+                    $sheet->setCellValue('A' . $rowIndex, 'Ciclo: ' . $datos[0]->number_cycle . ' - ' . $datos[0]->year_cycle);
+                    $sheet->mergeCells('A' . $rowIndex . ':E' . $rowIndex); // Fusionar celdas para el protocolo
+                    $sheet->getStyle('A' . $rowIndex)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT); // Alinear a la izquierda
+                    $rowIndex += 3; // Añadir dos filas adicionales después del ciclo
+
+                    // Añadir encabezados de columna para la nueva hoja
+                    $sheet->getStyle('A' . $rowIndex . ':F' . $rowIndex)->getFont()->setBold(true); // Establecer fuente negrita para los encabezados
+                    $sheet->setCellValue('A' . $rowIndex, 'Número de grupo');
+                    $sheet->setCellValue('B' . $rowIndex, 'Nombre de proyecto');
+                    $sheet->setCellValue('C' . $rowIndex, 'Estado de proyecto');
+                    $sheet->setCellValue('D' . $rowIndex, 'Nombres de estudiante');
+                    $sheet->setCellValue('E' . $rowIndex, 'Apellidos de estudiante');
+                    $sheet->setCellValue('F' . $rowIndex, 'CARNET');
                     $rowIndex++;
                 }
+                // Añadir datos correspondientes en la hoja
+                $sheet->setCellValue('A' . $rowIndex, $row->group_number);
+                $sheet->setCellValue('B' . $rowIndex, $row->project_name);
+                $sheet->setCellValue('C' . $rowIndex, $row->status_text);
+                $sheet->setCellValue('D' . $rowIndex, $row->name_student . ' ' . $row->second_name_student);
+                $sheet->setCellValue('E' . $rowIndex, $row->last_name_student . ' ' . $row->second_last_name_student);
+                $sheet->setCellValue('F' . $rowIndex, $row->carnet_student);
+                $rowIndex++;
             }
         }
 
@@ -294,6 +307,7 @@ class DashboardPruebaController extends Controller
             if ($sheetName === 'Worksheet') {
                 $spreadsheet->removeSheetByIndex($sheetIndex);
             } else {
+
 
                 // Aplicar opciones de visualización y formato en cada hoja
                 $sheet = $spreadsheet->getSheetByName($sheetName);
