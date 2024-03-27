@@ -3,6 +3,7 @@
     @lang('translation.Dashboard')
 @endsection
 
+@extends('layouts.app')
 @section('content')
     @component('components.breadcrumb')
         @slot('li_1')
@@ -14,58 +15,79 @@
     @endcomponent
 
     <div class="container">
-        <div class="contenedor">
-            <a href="{{ route('projects.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
-                Regresar</a>
-        </div>
-
-        <h1>Lista de defensas</h1>
-
-        <a href="{{ route('events.create', $project->id) }}" class="btn btn-primary mb-3">Registrar defensa</a>
-        
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if (session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
-
-        <table class="table table-bordered table-striped table-hover">
-            <thead>
-                <tr class="table-danger">
-                    <th>Nombre</th>
-                    <th style="width: 20%">Fecha</th>
-                    <th style="width: 20%">Lugar</th>
-                    <th style="width: 30%">Descripcion</th>
-                    <th style="width: 20%">Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($events as $event)
-                    <tr>
-                        <td>{{ $event->name }}</td>
-                        <td>{{ \Carbon\Carbon::parse($event->date)->format('d-m-Y H:i:s') }}</td>
-                        <td>{{ $event->place }}</td>
-                        <td>{{ $event->description }}</td>
-                        <td>{{ $event->status() }}</td>
-                        <td>
-                            <a href="{{ route('events.edit', ['events' => $event->id, 'project' => $project->id]) }}"class="btn btn-primary"> 
-                                <i class="fas fa-pen"></i></a>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-
+        <h1>Listado de defensas</h1>
+        <div id="calendar"></div>
     </div>
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#evento">
+          Evento
+        </button>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="evento" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Defensa</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('events.store', ['project' => $project->id]) }}" id="form" method="POST" enctype="multipart/form-data">
+
+                            <div class="form-group">
+                              <label for="title">Nombre del evento:</label>
+                              <input type="text" class="form-control" name="title" id="title" aria-describedby="helpId" placeholder="Escribe el nombre del evento">
+                            </div>
+
+                            <div class="form-group">
+                              <label for="description">Descripción:</label>
+                              <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                              <label for="start">Fecha de Inicio:</label>
+                              <input type="text" class="form-control" name="start" id="start" aria-describedby="helpId" placeholder="">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="end">Fecha Fin:</label>
+                                <input type="text" class="form-control" name="end" id="end" aria-describedby="helpId" placeholder="">
+                              </div>
+  
+
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="contenedor">
+                            <button type="submit" class="btn btn-primary" id="btnGuardar">Guardar</button>
+                            <button type="button" class="btn btn-warning" id="btnModificar">Modificar</button>
+                            <button type="button" class="btn btn-secondary" id="btnEliminar">Eliminar</button>
+                            <a href="{{ route('events.index', $project->id) }}" class="btn btn-danger regresar-button">Cancelar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
 @endsection
 
 @section('script')
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
+
+    <!-- CSS de Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- jQuery (necesario para los plugins de JavaScript de Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+    <!-- Popper.js (necesario para los plugins de JavaScript de Bootstrap) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+
+    <!-- JavaScript de Bootstrap -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 @endsection

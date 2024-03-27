@@ -35,7 +35,7 @@
             </div>
         @endif
 
-        <form action="{{ route('events.store', ['project' => $project->id]) }}" id="form-forum" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('events.store', ['project' => $project->id]) }}" id="form-events" method="POST" enctype="multipart/form-data">
             @csrf
 
     

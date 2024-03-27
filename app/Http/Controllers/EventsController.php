@@ -17,19 +17,21 @@ use Illuminate\Support\Facades\Auth;
 
 class EventsController extends Controller
 {
+    /* Se eliminan permisos.
     const PERMISSIONS = [
         'index.advisers' => 'Events.advisers',
         'index.students' => 'Events.students',
     ];    
+    */
 
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('permission:' . self::PERMISSIONS['index.advisers'])->only(['coordinatorIndex']);
-        $this->middleware('permission:' . self::PERMISSIONS['index.students'])->only(['index']);
+        //$this->middleware('permission:' . self::PERMISSIONS['index.advisers'])->only(['coordinatorIndex']);
+        //$this->middleware('permission:' . self::PERMISSIONS['index.students'])->only(['index']);
     }
 
-    public function index(Project $project)
+    public function index(Request $request, Project $project)
     {        
         //obtener grupo actual del user logueado
         $user = Auth::user();
@@ -72,7 +74,6 @@ class EventsController extends Controller
             'place'         => 'required|string',
             'date'          => 'required|date',
             'user_id'       => 'required',
-            'group_id'      => 'required',
             'project_id'    => 'required',
             'cycle_id'      => 'required',
             'school_id'     => 'required',   
