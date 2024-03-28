@@ -391,7 +391,7 @@ Route::group(['prefix' => 'areas', 'as' => 'areas.'], function () {
         Route::put('/{subarea}', [AreaController::class, 'subareasUpdate'])->name('update');
         Route::delete('/{subarea}', [AreaController::class, 'subareasDestroy'])->name('destroy');
     });
-
+    Route::get('/get/{area}/subareas', [AreaController::class, 'getSubareas'])->name('get.subareas');
     Route::get('/', [AreaController::class, 'index'])->name('index');
     Route::get('/create', [AreaController::class, 'create'])->name('create');
     Route::post('/', [AreaController::class,  'store'])->name('store');

@@ -128,25 +128,49 @@ class SubAreaController extends Controller
         }
 
         try {
-            $criteria = SubareaCriteria::create([
+
+            $datos = array(
                 'name'                      => $request->name,
                 'percentage'                => $percentage,
                 'stage_id'                  => $stage_id,
                 'description'               => $request->description,
                 'type'                      => $request->type
-            ]);
+            );
+            if (session('protocol')['id'] == 5) {
+                $datos['subarea_id'] =  implode(',', $request->subareas);
+            }
+
+            $criteria = SubareaCriteria::create($datos);
 
             if ($request->has('subareas')) {
-                $subareas = $request->input('subareas');
-                $criteria->evaluationCriterias()->attach($subareas);
+                // 1. Recupera los datos de las subáreas
+                $subareas = Subarea::whereIn('id', $request->subareas)->get();
+
+                // 2. Inserta estos datos en la tabla evaluation_criteria
+                $criteriaData = [];
+                foreach ($subareas as $subarea) {
+                    $criteriaData[] = [
+                        'name'          => $subarea->name,
+                        'description'   => $subarea->name,
+                        'stage_id'      => $stage_id,
+                        'percentage'    => 0,
+                        'type'          => 0,
+                        // Ajusta estos valores según tus necesidades
+                    ];
+                }
+
+                $subareasText = EvaluationCriteria::insert($criteriaData);
+
+                // 3. Recupera los IDs de las filas recién insertadas
+                $criteriaIds = EvaluationCriteria::whereIn('name', $subareas->pluck('name'))->pluck('id');
+
+                $criteria->evaluationCriterias()->attach($criteriaIds);
             }
 
             if (session('protocol')['id'] == 5) {
-                return redirect()->route('stages.coordinator.evaluations.index',$stage_id )->with('success', 'Se añadió evaluación correctamente.');
-            }else{
+                return redirect()->route('stages.coordinator.evaluations.index', $stage_id)->with('success', 'Se añadió evaluación correctamente.');
+            } else {
                 return redirect()->route('stages.index')->with('success', 'Se añadió el criterio de evaluación correctamente.');
-
-
             }
         } catch (Exception $e) {
             dd($e);

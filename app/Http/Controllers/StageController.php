@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Controllers\Controller;
+use App\Models\Area;
 use App\Models\Course;
-use App\Models\CriteriaStage;
 use Illuminate\Http\Request;
 use App\Models\Cycle;
 use App\Models\EvaluationCriteria;
@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
-use Illuminate\Validation\Rule;
 
 class StageController extends Controller
 {
@@ -41,7 +40,12 @@ class StageController extends Controller
             ->where('school_id', session('school')['id'])
             ->where('visible', 1)
             ->paginate(10);
-        return view('stage.index', compact('stages'));
+
+        $areas = Area::where('protocol_id', session('protocol')['id'])
+            ->where('school_id', session('school')['id'])
+            ->get();
+
+        return view('stage.index', compact('stages', 'areas'));
     }
 
     public function create()
@@ -261,16 +265,15 @@ class StageController extends Controller
             }
             $stage->update();
 
-            if(session('protocol')['id'] !== 5){
+            if (session('protocol')['id'] !== 5) {
                 return redirect()->route('stages.index')->with('success', 'Etapa Evaluativa actualizada exitosamente.');
-            }else{
-                if($stage->category == 2){
+            } else {
+                if ($stage->category == 2) {
                     return redirect()->route('evaluations.execution', 2)->with('success', 'Etapa Evaluativa actualizada exitosamente.');
-                }else if($stage->category == 3){
+                } else if ($stage->category == 3) {
                     return redirect()->route('evaluations.execution', 3)->with('success', 'Etapa Evaluativa actualizada exitosamente.');
                 }
             }
-
         } catch (\Exception $e) {
             return redirect()->route('stages.edit', ['stage' => $stage])->with('error', 'La Etapa Evaluativa ya se encuentra registrada, revisar.');
         }
@@ -408,8 +411,4 @@ class StageController extends Controller
                 ->withInput();
         }
     }
-
-
-
-
 }

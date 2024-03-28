@@ -33,31 +33,30 @@
                 @endswitch
             @endif
         </h1>
-        <a href="{{ route('stages.create') }}" class="btn btn-primary mb-3">
 
-            @if (session('protocol') != null)
-                @switch(session('protocol')['id'])
-                    @case(1)
-                    @case(2)
 
-                    @case(3)
-                    @case(4)
+        @if (session('protocol') != null)
+            @switch(session('protocol')['id'])
+                @case(1)
+                @case(2)
+
+                @case(3)
+                @case(4)
+                    <a href="{{ route('stages.create') }}" class="btn btn-primary mb-3">
                         Nueva etapa evaluativa
-                    @break
 
-                    @case(5)
-                        Nueva área temática
-                    @break
+                    </a>
+                @break
 
-                    @default
-                @endswitch
-            @endif
-        </a>
+                @default
+            @endswitch
+        @endif
         <div class="float-end d-flex justify-content-end align-items-center">
             @if (session('protocol') != null)
                 @switch(session('protocol')['id'])
                     @case(1)
                     @case(2)
+
                     @case(3)
                     @case(4)
                         <a href="{{ route('stages.download.template') }}" class="btn btn-primary">
@@ -214,7 +213,7 @@
                                             <i class="fas fa-trash-alt"></i> </button>
 
                                         <br>
-                                        <a href="{{ route('criterias.index', $stage->id) }}" class="btn btn-primary my-1"
+                                        {{-- <a href="{{ route('criterias.index', $stage->id) }}" class="btn btn-primary my-1"
                                             title="Ver subáreas"><i class="fas fa-eye"></i></a>
                                         <a href="{{ route('criterias.create', $stage->id) }}" class="btn btn-primary my-1"
                                             title="Registrar subarea">
@@ -224,8 +223,8 @@
                                             title="Cargar subáreas" title="Cargar subáreas"
                                             href="{{ route('stages.modal.load.criterias', ['stage_id' => $stage->id]) }}">
                                             <i class="fas fa-file"></i>
-                                        </button>
-                                        <br>
+                                        </button> --}}
+                                        {{-- <br> --}}
                                         <a href="{{ route('stages.coordinator.evaluations.index', $stage->id) }}"
                                             class="btn btn-primary my-1" title="Ver evaluaciones">
                                             <i class="fas fa-file-signature"></i>

@@ -158,4 +158,13 @@ class AreaController extends Controller
 
         return redirect()->route('areas.subareas.index')->with('success', 'Subárea eliminada exitosamente.');
     }
+
+    public function getSubareas($areaId)
+    {
+        // Consulta las subáreas relacionadas con el área proporcionada
+        $subareas = Subarea::where('area_id', $areaId)->get();
+
+        // Devuelve las subáreas en formato JSON
+        return response()->json($subareas);
+    }
 }

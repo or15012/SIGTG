@@ -13,28 +13,15 @@
         @endslot
     @endcomponent
     <div class="container">
+
         <div class="contenedor">
             <a href="{{ route('stages.index') }}" class="btn btn-danger regresar-button"><i class="fas fa-arrow-left"></i>
                 Regresar</a>
         </div>
         <h1>
-            @if (session('protocol') != null)
-                @switch(session('protocol')['id'])
-                    @case(1)
-                    @case(2)
 
-                    @case(3)
-                    @case(4)
-                        Registrar etapa evaluativa
-                    @break
+            Registrar área temática
 
-                    @case(5)
-                        Registrar área temática
-                    @break
-
-                    @default
-                @endswitch
-            @endif
         </h1>
 
         @if ($errors->any())
@@ -55,28 +42,29 @@
 
         <form action="{{ route('phases.stage.store') }}" id="form-stage" method="POST">
             @csrf
-            <div class="mb-3">
+            {{-- <div class="mb-3">
                 <label for="name" class="form-label">
-                    @if (session('protocol') != null)
-                        @switch(session('protocol')['id'])
-                            @case(1)
-                            @case(2)
 
-                            @case(3)
-                            @case(4)
-                                Nombre de etapa evaluativa
-                            @break
-
-                            @case(5)
-                                Nombre área temática
-                            @break
-
-                            @default
-                        @endswitch
-                    @endif
+                    Nombre área temática
                 </label>
                 <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}"
                     required>
+            </div> --}}
+
+            <div class="mb-3">
+                <label for="areas" class="form-label">Seleccionar áreas</label>
+                <select class="form-control" id="areas" name="areas[]" multiple>
+                    @foreach ($areas as $area)
+                        <option value="{{ $area->id }}">{{ $area->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div id="subareas-container" style="display: none;">
+                <h3 id="area-title"></h3>
+                <div id="subareas-checkboxes">
+
+                </div>
             </div>
 
             <div class="mb-3">
@@ -88,7 +76,8 @@
                     @endforeach
                 </select>
             </div>
-            <input type="hidden" name="phase_id" value="{{$phase->id}}">
+
+            <input type="hidden" name="phase_id" value="{{ $phase->id }}">
             <div class="mb-3">
                 <label for="protocol" class="form-label">Protocolo</label>
                 <select class="form-control" id="protocol" name="protocol" disabled>
@@ -124,61 +113,23 @@
                     value="{{ old('percentage') }}" required>
             </div>
 
-            @if (session('protocol') != null)
-                @switch(session('protocol')['id'])
-                    @case(1)
-                    @case(2)
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="status" class="form-label">Fecha de inicio</label>
+                    <input type="date" class="form-control" id="start_date" name="start_date"
+                        value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
+                        min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" required>
+                </div>
+            </div>
 
-                    @case(3)
-                    @case(4)
-                        <div class="mb-3">
-                            <label for="type" class="form-label">Tipo</label>
-                            <select class="form-control" id="type" name="type" required>
-                                <option value="-1"> Seleccione un tipo </option>
-                                <option value="1">Con entrega de documentos</option>
-                                <option value="0">Sin entrega de documentos</option>
-                            </select>
-                        </div>
-                    @break
-
-                    @default
-                @endswitch
-            @endif
-
-            @if (session('protocol') != null)
-                @switch(session('protocol')['id'])
-                    @case(4)
-                        <div class="mb-3">
-                            <label for="course" class="form-label">Curso</label>
-                            <select class="form-control" id="course" name="course" required>
-                                <option value="-1"> Seleccione un curso </option>
-                            </select>
-                        </div>
-                    @break
-
-                    @case(5)
-                        <div class="row mb-3">
-                            <div class="col-12">
-                                <label for="status" class="form-label">Fecha de inicio</label>
-                                <input type="date" class="form-control" id="start_date" name="start_date"
-                                    value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
-                                    min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" required>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-12">
-                                <label for="status" class="form-label">Fecha de fin</label>
-                                <input type="date" class="form-control" id="end_date" name="end_date"
-                                    value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
-                                    min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" required>
-                            </div>
-                        </div>
-                    @break
-
-                    @default
-                @endswitch
-            @endif
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="status" class="form-label">Fecha de fin</label>
+                    <input type="date" class="form-control" id="end_date" name="end_date"
+                        value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
+                        min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" required>
+                </div>
+            </div>
 
             <div class="contenedor">
                 <a href="{{ route('stages.index') }}" class="btn btn-danger regresar-button">Cancelar</a>
@@ -192,3 +143,9 @@
     <script src="{{ URL::asset('assets/js/app.js') }}"></script>
     <script src="{{ URL::asset('js/stages.js') }}"></script>
 @endsection
+
+<div id="overlay" style="display: none!important; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); z-index: 9999; display: flex; justify-content: center; align-items: center;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>

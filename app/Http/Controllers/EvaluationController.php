@@ -11,11 +11,11 @@ use App\Models\EvaluationCritSubareaCrit;
 use App\Models\EvaluationStage;
 use App\Models\EvaluationStageNote;
 use App\Models\EvaluationSubarea;
-use App\Models\EvaluationSubareaNote;
 use App\Models\Group;
 use App\Models\Notification;
 use App\Models\Project;
 use App\Models\Stage;
+use App\Models\SubArea;
 use App\Models\SubareaCriteria;
 use App\Models\SubareaDocument;
 use App\Models\User;
@@ -417,7 +417,11 @@ class EvaluationController extends Controller
 
     public function stagesCoordinatorEvaluationsCreate(Stage $stage)
     {
-        $subareas = $stage->criterias;
+        $areaIds = explode(',', $stage->area_id);
+
+        // Obtener todas las subáreas de las áreas asociadas al stage
+        $subareas = SubArea::whereIn('area_id', $areaIds)->get();
+
         $sumatory = SubareaCriteria::where('stage_id', $stage->id)->sum('percentage');
 
         return view('evaluations.create', compact('stage', 'subareas', 'sumatory'));

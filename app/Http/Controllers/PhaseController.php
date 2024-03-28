@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Area;
 use App\Models\Cycle;
 use App\Models\Parameter;
 use App\Models\Phase;
@@ -103,6 +104,7 @@ class PhaseController extends Controller
         $stages = Stage::where('protocol_id', 5)
             ->where('school_id', session('school', ['id']))
             ->whereNotIn('id', $phase->stages->pluck('id'))
+            ->where('visible', 1)
             ->get();
 
         $stagesAssigned = $phase->stages;
@@ -142,14 +144,17 @@ class PhaseController extends Controller
         $protocols  = Protocol::all();
         $schools    = School::all();
         $cycles     = Cycle::where('status', 1)->get();
+        $areas      = Area::where('protocol_id', session('protocol')['id'])
+            ->where('school_id', session('school')['id'])
+            ->get();
 
-        return view('phases.stage.create')->with(compact('protocols', 'schools', 'cycles', 'phase'));
+        return view('phases.stage.create')->with(compact('protocols', 'schools', 'cycles', 'phase', 'areas'));
     }
 
     public function stageStore(Request $request)
     {
         $data = $request->validate([
-            'name'          => 'required|string|max:255',
+            // 'name'          => 'required|string|max:255',
             'protocol'      => 'required|integer|min:1|exists:protocols,id',
             'cycle'         => 'required|integer|min:1|exists:cycles,id',
             'school'        => 'required|integer|min:1|exists:schools,id',
@@ -161,6 +166,7 @@ class PhaseController extends Controller
                 'date',
                 'after_or_equal:start_date', // Asegura que end_date sea después o igual a start_date
             ],
+            'areas'         => 'required'
         ]);
 
         try {
@@ -182,10 +188,15 @@ class PhaseController extends Controller
 
             if (($currentlyStages + intval($request->percentage)) > 100)
                 return back()->withInput()->with('error', 'No puede superar el 100% en porcentaje de áreas.');
+            // Convertir el array de IDs de áreas seleccionadas a una cadena separada por comas
+            $areaIds = implode(',', $request->areas);
+
+            // Obtener los nombres de las áreas seleccionadas
+            $areaNames = Area::whereIn('id', $request->areas)->pluck('name')->implode('/');
 
 
             $stage = new Stage();
-            $stage->name        = $request->name;
+            $stage->name        = $areaNames;
             $stage->protocol_id = $request->protocol;
             $stage->cycle_id    = $request->cycle;
             $stage->school_id   = $request->school;
@@ -193,12 +204,16 @@ class PhaseController extends Controller
             $stage->percentage  = $request->percentage;
             $stage->start_date  = $request->start_date;
             $stage->end_date    = $request->end_date;
+            $stage->area_id     = $areaIds; // Guardar los IDs de las áreas seleccionadas
+
             $stage->save();
 
             $stages_id = array();
             $stages_id[$stage->id] = ['order' => $stage->sort];
             $phase = Phase::find($request->phase_id);
             $phase->stages()->sync($stages_id);
+
+
 
             return redirect()->route('phases.index')->with('success', 'Área temática creada exitosamente.');
         } catch (\Exception $e) {
