@@ -439,7 +439,9 @@ class EvaluationController extends Controller
     {
         $stage              = Stage::find($evaluation->stage_id);
         $evaluationSubareas = EvaluationCritSubareaCrit::where('subarea_criteria_id', $evaluation->id)->get('evaluation_criteria_id');
-        $subareas           = $stage->criterias;
+        // $subareas           = $stage->criterias;
+        $areaIds            = explode(',', $stage->area_id);
+        $subareas           = SubArea::whereIn('area_id', $areaIds)->get();
         $selectedSubareas   = array();
         $sumatory           = SubareaCriteria::where('stage_id', $stage->id)->sum('percentage');
 
@@ -479,16 +481,41 @@ class EvaluationController extends Controller
             $evaluation->stage_id       = $stage_id;
             $evaluation->description    = $request->description;
             $evaluation->type           = $request->type;
+            if (session('protocol')['id'] == 5) {
+                $evaluation->subarea_id =  implode(',', $request->subareas);
+            }
             $evaluation->update();
 
             if ($request->has('subareas')) {
-                $subareas = $request->input('subareas');
                 $evaluation->evaluationCriterias()->detach();
-                $evaluation->evaluationCriterias()->attach($subareas);
+                EvaluationCriteria::where('stage_id', $stage_id)->delete();
+
+                $subareas = Subarea::whereIn('id', $request->subareas)->get();
+
+                // 2. Inserta estos datos en la tabla evaluation_criteria
+                $criteriaData = [];
+                foreach ($subareas as $subarea) {
+                    $criteriaData[] = [
+                        'name'          => $subarea->name,
+                        'description'   => $subarea->name,
+                        'stage_id'      => $stage_id,
+                        'percentage'    => 0,
+                        'type'          => 0,
+                        // Ajusta estos valores según tus necesidades
+                    ];
+                }
+                $subareasText = EvaluationCriteria::insert($criteriaData);
+
+                // 3. Recupera los IDs de las filas recién insertadas
+                $criteriaIds = EvaluationCriteria::whereIn('name', $subareas->pluck('name'))->pluck('id');
+
+
+                $evaluation->evaluationCriterias()->attach($criteriaIds);
             }
 
             return redirect()->route('stages.coordinator.evaluations.index', $stage_id)->with('success', 'Se actualizo la evaluación correctamente.');
         } catch (Exception $e) {
+            dd($e);
             return redirect()->route('stages.coordinator.evaluations.index', $stage_id)->with('error', 'La evaluacion está duplicada.');
         }
     }
@@ -617,7 +644,7 @@ class EvaluationController extends Controller
             ->get();
 
         $title = "Planificación de actividades para la ejecución del EXG";
-        if($title == 3){
+        if ($title == 3) {
             $title = "Memoria de Capitalización de Experiencias del EXG";
         }
         return view('evaluations.execution.evaluation', compact('stages', 'title'));

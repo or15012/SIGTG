@@ -220,4 +220,80 @@ class PhaseController extends Controller
             return redirect()->route('stages.create')->with('error', 'Ocurrio un error al registrar área temática.');
         }
     }
+
+
+    public function stageEdit(Stage $stage)
+    {
+        $protocols          = Protocol::all();
+        $schools            = School::all();
+        $cycles             = Cycle::where('status', 1)->get();
+        $areas              = Area::where('protocol_id', session('protocol')['id'])
+            ->where('school_id', session('school')['id'])
+            ->get();
+
+        return view('phases.stage.edit')->with(compact('stage', 'protocols', 'schools', 'cycles', 'areas'));
+    }
+
+    public function stageUpdate(Request $request, Stage $stage)
+    {
+        $data = $request->validate([
+            // 'name'          => 'required|string|max:255',
+            'protocol'      => 'required|integer|min:1|exists:protocols,id',
+            'cycle'         => 'required|integer|min:1|exists:cycles,id',
+            'school'        => 'required|integer|min:1|exists:schools,id',
+            'percentage'    => 'required|integer|min:1|max:100',
+            'start_date'    => 'required|date',
+            'end_date'      => [
+                'required',
+                'date',
+                'after_or_equal:start_date', // Asegura que end_date sea después o igual a start_date
+            ],
+            'areas'         => 'required'
+        ]);
+
+        try {
+
+            $currentlyStages = Stage::where('protocol_id', $request->protocol)
+                ->where('school_id', $request->school)
+                ->where('cycle_id', $request->cycle)
+                ->where('id', '=!', $stage->id)
+                ->sum('percentage');
+
+
+            $sortAvailable = Stage::where('protocol_id', $request->protocol)
+                ->where('school_id', $request->school)
+                ->where('cycle_id', $request->cycle)
+                ->where('sort', $request->sort)
+                ->where('id', '=!', $stage->id)
+                ->first();
+
+            if (isset($sortAvailable))
+                return back()->withInput()->with('error', 'Orden de etapa ya utilizado.');
+
+
+            if (($currentlyStages + intval($request->percentage)) > 100)
+                return back()->withInput()->with('error', 'No puede superar el 100% en porcentaje de áreas.');
+            // Convertir el array de IDs de áreas seleccionadas a una cadena separada por comas
+            $areaIds = implode(',', $request->areas);
+
+            // Obtener los nombres de las áreas seleccionadas
+            $areaNames = Area::whereIn('id', $request->areas)->pluck('name')->implode('/');
+            // dd($areaNames);
+            $stage->name        = $areaNames;
+            $stage->protocol_id = $request->protocol;
+            $stage->cycle_id    = $request->cycle;
+            $stage->school_id   = $request->school;
+            $stage->sort        = $request->sort;
+            $stage->percentage  = $request->percentage;
+            $stage->start_date  = $request->start_date;
+            $stage->end_date    = $request->end_date;
+            $stage->area_id     = $areaIds; // Guardar los IDs de las áreas seleccionadas
+
+            $stage->save();
+
+            return redirect()->route('stages.index')->with('success', 'Área temática actualizada exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Ocurrio un error al registrar área temática.');
+        }
+    }
 }

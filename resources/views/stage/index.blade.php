@@ -205,7 +205,7 @@
                                     @break
 
                                     @case(5)
-                                        <a href="{{ route('stages.edit', $stage->id) }}" class="btn btn-primary my-1"
+                                        <a href="{{ route('phases.stages.edit', $stage->id) }}" class="btn btn-primary my-1"
                                             title="Editar área temática"><i class="fas fa-pen"></i></a>
 
                                         <button class="btn btn-danger buttonDelete my-1" title="Eliminar área temática"

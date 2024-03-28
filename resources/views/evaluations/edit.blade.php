@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.Dashboard')
+    Editar evaluación
 @endsection
 
 @section('content')
@@ -59,7 +59,7 @@
                 <br>
                 Porcentaje utilizado: {{ $sumatory }}%
                 <br>
-                Porcentaje máximo: {{ $stage->percentage }}
+                Porcentaje máximo: {{ $stage->percentage }}%
             </p>
             <div class="progress">
                 <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
@@ -100,24 +100,17 @@
                     @break
 
                     @case(5)
-                        <div class="mb-3 d-none">
-                            <label for="stage" class="form-label">
-                                Área:
-                            </label>
-                            <select class="form-control" id="stage" name="stage" disabled>
-                                <option value="{{ $stage->id }}"> {{ $stage->name }}</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="subareas" class="form-label">Seleccionar Subáreas</label>
-                            <select class="form-control select2" id="subareas" name="subareas[]" multiple>
-                                @foreach ($subareas as $subarea)
-                                    <option value="{{ $subarea->id }}"
-                                        {{ in_array($subarea->id, $selectedSubareas) ? 'selected' : '' }}>{{ $subarea->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <div class="mb-3">
+                        <label for="subareas" class="form-label">Seleccionar Subáreas</label>
+                        <select class="form-control select2" id="subareas" name="subareas[]" multiple>
+                            @foreach ($subareas as $subarea)
+                                @php
+                                    $selected = in_array($subarea->id, explode(',', $evaluation->subarea_id)) ? 'selected' : '';
+                                @endphp
+                                <option value="{{ $subarea->id }}" {{ $selected }}>{{ $subarea->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     @break
 
                     @default

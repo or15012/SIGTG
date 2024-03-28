@@ -60,13 +60,6 @@
                 </select>
             </div>
 
-            <div id="subareas-container" style="display: none;">
-                <h3 id="area-title"></h3>
-                <div id="subareas-checkboxes">
-
-                </div>
-            </div>
-
             <div class="mb-3">
                 <label for="cycle" class="form-label">Ciclo</label>
                 <select class="form-control" id="cycle" name="cycle">
