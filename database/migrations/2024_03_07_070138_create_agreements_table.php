@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('number');
             $table->date('approval_date');
-            $table->date('description')->nullable();
+            $table->string('description')->nullable();
             $table->foreignId('type_agreement_id')->constrained('type_agreements')->onDelete('restrict');
             $table->unsignedBigInteger('user_load_id')->nullable();
             $table->foreign('user_load_id')->references('id')->on('users')->onDelete('restrict');
