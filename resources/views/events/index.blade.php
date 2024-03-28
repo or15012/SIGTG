@@ -48,6 +48,11 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="place">Lugar:</label>
+                                <textarea class="form-control" name="place" id="place" rows="3"></textarea>
+                              </div>
+
+                            <div class="form-group">
                               <label for="start">Fecha de Inicio:</label>
                               <input type="text" class="form-control" name="start" id="start" aria-describedby="helpId" placeholder="">
                             </div>

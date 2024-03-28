@@ -65,7 +65,7 @@ class EventsController extends Controller
                 ->select('events.*')
                 ->paginate(30);
         }
-        
+
         return view('events.index', compact('events', 'project'));
     }
 
@@ -82,11 +82,8 @@ class EventsController extends Controller
             'name'          => 'required|string|max:255',
             'description'   => 'required|string|max:255',
             'place'         => 'required|string',
-            'date'          => 'required|date',
-            'user_id'       => 'required',
-            'project_id'    => 'required',
-            'cycle_id'      => 'required',
-            'school_id'     => 'required',   
+            'start'         => 'required|date',
+            'end'           => 'required|date',  
         ]);
 
         //dd($validatedData);
@@ -97,7 +94,8 @@ class EventsController extends Controller
             $event->name        = $request->input('name');
             $event->description = $request->input('description');
             $event->place       = $request->input('place');
-            $event->date        = date('Y-m-d H:i:s', strtotime($validatedData['date']));
+            $event->start       = date('Y-m-d H:i:s', strtotime($validatedData['start']));
+            $event->end         = date('Y-m-d H:i:s', strtotime($validatedData['end']));
             $event->status      = 0;
             // Obtener los datos relacionados con el proyecto
             $event->school_id   = $request->input('school_id');

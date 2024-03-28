@@ -3,11 +3,13 @@
 
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CoursePreRegistrationController;
+use App\Http\Controllers\CourseRegistrationReportController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardPruebaController;
 use App\Http\Controllers\EntityController;
 use App\Http\Controllers\GroupStudentsReportController;
 use App\Http\Controllers\StudentsCousesReportController;
+use App\Models\CourseRegistration;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -74,4 +76,16 @@ Route::group(['prefix' => 'groupreports', 'as' => 'groupreports.'], function () 
     Route::get('excel/protocol/cycle/{id?}',[GroupStudentsReportController::class, 'ajaxExcelProto'])->name('excel_proto');
     Route::get('excel/course/cycle/{id?}',[GroupStudentsReportController::class, 'ajaxExcelCourse'])->name('excel_course');
     Route::get('excel/groups/cycle/{id?}',[GroupStudentsReportController::class, 'ajaxExcelGroups'])->name('excel_groups');
+});
+
+//Grupo de rutas para reporte de cursos (inscritos)
+Route::group(['prefix' => 'cregistrationreports', 'as' => 'cregistrationreports.'], function () {
+    Route::get('/', [CourseRegistrationReportController::class, 'index'])->name('index');
+    Route::get('/protocol/cycle/{id?}',[CourseRegistrationReportController::class, 'ajaxProto'])->name('proto');
+    Route::get('/course/cycle/{id?}',[CourseRegistrationReportController::class, 'ajaxCourse'])->name('course');
+    Route::get('/group/cycle/{id?}',[CourseRegistrationReportController::class, 'ajaxGroup'])->name('group');
+    Route::get('/extension/cycle/{id?}',[CourseRegistrationReportController::class, 'ajaxExtension'])->name('extension');
+    Route::get('excel/protocol/cycle/{id?}',[CourseRegistrationReportController::class, 'ajaxExcelProto'])->name('excel_proto');
+    Route::get('excel/course/cycle/{id?}',[CourseRegistrationReportController::class, 'ajaxExcelCourse'])->name('excel_course');
+    Route::get('excel/groups/cycle/{id?}',[CourseRegistrationReportController::class, 'ajaxExcelGroups'])->name('excel_groups');
 });
