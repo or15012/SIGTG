@@ -18,7 +18,10 @@ return new class extends Migration
             $table->string("name");
             $table->mediumText("description")->nullable()->default(null);
             $table->string("place");
-            $table->dateTime('date');
+
+            $table->dateTime('start');
+            $table->dateTime('end');
+
             $table->tinyInteger('status'); // 0 presentada, 1 aceptada, 2 rechazada
             $table->foreignId('user_id')->constrained('users')->onDelete('restrict');
             $table->foreignId('group_id')->constrained('groups')->onDelete('restrict');

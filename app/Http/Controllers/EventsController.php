@@ -44,18 +44,28 @@ class EventsController extends Controller
                 $query->where('users.id', $user->id);
             })
             ->first();
-
-        if (!isset($group)) {
+            
+        if ($user->type === 1) {
+            if (!isset($group)) {
             return redirect('home')->withErrors(['message' => 'No tienes un grupo activo.']);
-        }
-        //dd($year);
-        $events = Events::join('groups as gr', 'events.group_id', 'gr.id')
-            ->where('gr.protocol_id', session('protocol')['id'])
-            ->where('events.group_id', $group->id)
-            ->select('events.*')
-            ->paginate(30);
+            }
+            
+            //dd($year);
+            $events = Events::join('groups as gr', 'events.group_id', 'gr.id')
+                ->where('gr.protocol_id', session('protocol')['id'])
+                ->where('events.group_id', $group->id)
+                ->select('events.*')
+                ->paginate(30);
 
-            //dd($events);
+                //dd($events);
+        } elseif ($user->type === 2) {
+            // Si el usuario es de tipo 2, obtener todos los eventos
+            $events = Events::join('groups as gr', 'events.group_id', 'gr.id')
+                ->where('gr.protocol_id', session('protocol')['id'])
+                ->select('events.*')
+                ->paginate(30);
+        }
+        
         return view('events.index', compact('events', 'project'));
     }
 
